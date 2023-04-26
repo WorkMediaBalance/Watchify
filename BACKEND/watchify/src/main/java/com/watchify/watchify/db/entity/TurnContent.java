@@ -24,7 +24,7 @@ public class TurnContent implements Serializable {
 
     private int episode;
 
-    @OneToMany(mappedBy = "turn_content", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "turnContent", cascade = CascadeType.ALL)
     private List<Calender> calenders = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)

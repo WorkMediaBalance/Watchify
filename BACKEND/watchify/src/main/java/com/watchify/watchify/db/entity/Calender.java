@@ -37,6 +37,6 @@ public class Calender implements Serializable {
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "content_id")
+    @JoinColumn(name = "turn_content_id")
     private TurnContent turnContent;
 }
