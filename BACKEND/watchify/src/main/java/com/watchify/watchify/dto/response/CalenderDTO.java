@@ -9,5 +9,19 @@ import java.util.Date;
 @NoArgsConstructor
 public class CalenderDTO {
     private Long pk;
-    private Date
+    private Date date;
+    private boolean isView;
+    private boolean isDeleted;
+    private Date viewDate;
+    private String title;
+    private String imgPath;
+    private String imgName;
+    private String type;
+    private int season;
+    private int episode;
+    private String horizontalImgPath;
+    private String horizontalImgName;
+    private int runtime;
+    private String ott;
+
 }
