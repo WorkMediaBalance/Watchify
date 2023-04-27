@@ -15,12 +15,18 @@ public class MyAlarmService {
 
     @Transactional
     public void UpdateOttAlarm() {
-        System.out.println("여기서 오류가 난거 같은데 1");
         // oauth 적용전
         User user = userRepository.findById(1L).get();
-        System.out.println("여기서 오류가 난거 같은데 2");
         user.updateOttAlarm();
         userRepository.save(user);
-        System.out.println("여기서 오류가 난거 같은데 3");
     }
+
+    @Transactional
+    public void UpdateContentAlarm() {
+        // oauth 적용전
+        User user = userRepository.findById(1L).get();
+        user.updateContentAlarm();
+        userRepository.save(user);
+    }
+
 }

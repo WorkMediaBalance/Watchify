@@ -19,7 +19,21 @@ public class MyController {
 
     @PutMapping("/ottalarm")
     public ResponseEntity<?> UpdateMyOTTAlarm() throws Exception {
-        myAlarmService.UpdateOttAlarm();
-        return ResponseEntity.status(200).body("My OTT alarm updated successfully.");
+        try {
+            myAlarmService.UpdateOttAlarm();
+            return ResponseEntity.status(200).body("My OTT alarm updated successfully.");
+        } catch (Exception e) {
+            return ResponseEntity.status(404).body("My OTT alarm updated fail.");
+        }
+    }
+
+    @PutMapping("/contentalarm")
+    public ResponseEntity<?> UpdateMyContentAlarm() throws Exception {
+        try {
+            myAlarmService.UpdateContentAlarm();
+            return ResponseEntity.status(200).body("My Content alarm updated successfully.");
+        } catch (Exception e) {
+            return ResponseEntity.status(404).body("My Content alarm updated fail.");
+        }
     }
 }
