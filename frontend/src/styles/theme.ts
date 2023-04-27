@@ -7,9 +7,9 @@ export interface Theme extends DefaultTheme {
     fontColor: string;
     tabColor: string;
   };
-  watcha: {};
-  disney: {};
-  wavve: {};
+  watcha: { pointColor: string; backgroundColor: string; fontColor: string; tabColor: string };
+  disney: { pointColor: string; backgroundColor: string; fontColor: string; tabColor: string };
+  wavve: { pointColor: string; backgroundColor: string; fontColor: string; tabColor: string };
   fontFamily: string;
 }
 
@@ -20,8 +20,23 @@ export const theme: Theme = {
     fontColor: "#FFFFFF",
     tabColor: "#181818",
   },
-  watcha: {},
-  disney: {},
-  wavve: {},
+  watcha: {
+    pointColor: "#E50914",
+    backgroundColor: "#232323",
+    fontColor: "#FFFFFF",
+    tabColor: "#181818",
+  },
+  disney: {
+    pointColor: "#E50914",
+    backgroundColor: "#232323",
+    fontColor: "#FFFFFF",
+    tabColor: "#181818",
+  },
+  wavve: {
+    pointColor: "#E50914",
+    backgroundColor: "#232323",
+    fontColor: "#FFFFFF",
+    tabColor: "#181818",
+  },
   fontFamily: "Arial, sans-serif",
 };

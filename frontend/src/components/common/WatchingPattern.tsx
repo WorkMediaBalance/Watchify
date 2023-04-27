@@ -3,11 +3,11 @@ import styled, { ThemeProvider, useTheme } from "styled-components";
 import { theme } from "styles/theme";
 import { ResponsiveBar } from "@nivo/bar";
 
-import { data0, data1, data2 } from "constant/preset/watchingPatternPreset";
+import { patternData0, patternData1, patternData2 } from "constant/preset/watchingPatternPreset";
 
 const WatchingPattern = () => {
   const [activeIndex, setActiveIndex] = useState<number | null>(0);
-  const [data, setData] = useState(data1);
+  const [data, setData] = useState(patternData0);
 
   const customTheme = {
     axis: {
@@ -28,7 +28,7 @@ const WatchingPattern = () => {
           isActive={activeIndex === 0}
           onClick={() => {
             setActiveIndex(0);
-            setData(data0);
+            setData(patternData0);
           }}
         >
           밥 먹을 때 한 편씩!
@@ -37,7 +37,7 @@ const WatchingPattern = () => {
           isActive={activeIndex === 1}
           onClick={() => {
             setActiveIndex(1);
-            setData(data1);
+            setData(patternData1);
           }}
         >
           주말에 정주행!
@@ -46,7 +46,7 @@ const WatchingPattern = () => {
           isActive={activeIndex === 2}
           onClick={() => {
             setActiveIndex(2);
-            setData(data2);
+            setData(patternData2);
           }}
         >
           밸런스 형

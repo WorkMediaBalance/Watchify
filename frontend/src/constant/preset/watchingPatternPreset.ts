@@ -3,7 +3,7 @@
 //   "watch time": number;
 // }
 
-export const data0 = [
+export const patternData0 = [
   {
     day: "Mon",
     "watch time": 1,
@@ -34,7 +34,7 @@ export const data0 = [
   },
 ];
 
-export const data1 = [
+export const patternData1 = [
   {
     day: "Mon",
     "watch time": 1,
@@ -65,7 +65,7 @@ export const data1 = [
   },
 ];
 
-export const data2 = [
+export const patternData2 = [
   {
     day: "Mon",
     "watch time": 2,
