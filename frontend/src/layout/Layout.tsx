@@ -53,11 +53,18 @@ const Layout = () => {
 
   return (
     <div>
-      <AppBar title={title} />
       <div
         onClick={() => {
-          toggleInnerDotSize();
-          console.log("clikced");
+          setInnerDotSize("35%");
+          setIsSemiCircleRotated(true);
+        }}
+      >
+        <AppBar title={title} />
+      </div>
+      <div
+        onClick={() => {
+          setInnerDotSize("35%");
+          setIsSemiCircleRotated(true);
         }}
         style={{ marginTop: "5vh", minHeight: "100vh" }}
       >

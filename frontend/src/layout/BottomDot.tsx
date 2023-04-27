@@ -1,11 +1,11 @@
 // GreenDot.tsx
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { BsCalendarWeek } from "react-icons/bs";
 import { CgProfile } from "react-icons/cg";
 import { MdOutlineRecommend } from "react-icons/md";
 import { BiSearchAlt2 } from "react-icons/bi";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const BottomBar = styled.div`
   position: fixed;
@@ -125,6 +125,28 @@ const BottomDot: React.FC<BottomDotProps> = ({
     <BsCalendarWeek style={iconStyle} />,
     <CgProfile style={iconStyle} />,
   ];
+
+  const location = useLocation();
+
+  useEffect(() => {
+    const path = location.pathname;
+    switch (path) {
+      case "/search":
+        clickTabHandler(1);
+        break;
+      case "/recommend":
+        clickTabHandler(2);
+        break;
+      case "/schedule":
+        clickTabHandler(3);
+        break;
+      case "/my":
+        clickTabHandler(4);
+        break;
+      default:
+        clickTabHandler(0);
+    }
+  }, [location]);
 
   return (
     <div>
