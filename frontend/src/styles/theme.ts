@@ -11,6 +11,20 @@ export interface Theme extends DefaultTheme {
   disney: { pointColor: string; backgroundColor: string; fontColor: string; tabColor: string };
   wavve: { pointColor: string; backgroundColor: string; fontColor: string; tabColor: string };
   fontFamily: string;
+  fontSizeType: {
+    big: {
+      fontSize: string;
+      fontWeight: string;
+    };
+    middle: {
+      fontSize: string;
+      fontWeight: string;
+    };
+    small: {
+      fontSize: string;
+      fontWeight: string;
+    };
+  };
 }
 
 export const theme: Theme = {
@@ -39,4 +53,18 @@ export const theme: Theme = {
     tabColor: "#181818",
   },
   fontFamily: "Arial, sans-serif",
+  fontSizeType: {
+    big: {
+      fontSize: "1.5rem",
+      fontWeight: "600",
+    },
+    middle: {
+      fontSize: "1rem",
+      fontWeight: "500",
+    },
+    small: {
+      fontSize: "0.8rem",
+      fontWeight: "400",
+    },
+  },
 };

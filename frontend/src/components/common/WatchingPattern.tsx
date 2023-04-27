@@ -22,6 +22,7 @@ const WatchingPattern = () => {
   return (
     <>
       <Sdiv>나의 시청 패턴</Sdiv>
+      <Sdiv2>출퇴근 하면서 조금씩, 주말에 몰아서!</Sdiv2>
 
       <SBtnDiv>
         <Sbtn
@@ -89,8 +90,16 @@ const WatchingPattern = () => {
 export default WatchingPattern;
 
 const Sdiv = styled.div`
-  font-size: 1.3rem;
-  font-weight: bold;
+  font-size: 1.5rem;
+  font-weight: 600;
+  text-align: left;
+  margin: 0.5rem 0;
+  padding-left: 0.5rem;
+`;
+
+const Sdiv2 = styled.div`
+  font-size: 1rem;
+  font-weight: 500;
   text-align: left;
   margin: 0.5rem 0;
   padding-left: 0.5rem;
@@ -99,7 +108,7 @@ const Sdiv = styled.div`
 const Sbtn = styled.div<{ isActive?: boolean; color?: string }>`
   background-color: ${(props) => (props.isActive ? props.theme.netflix.pointColor : "white")};
   color: ${(props) => (props.isActive ? "white" : "black")};
-  font-size: 0.5rem;
+  font-size: ${({ theme }) => theme.fontSizeType.small.fontSize};
   margin: 0rem 0.2rem;
   padding: 0.7rem 1rem;
   border: none;

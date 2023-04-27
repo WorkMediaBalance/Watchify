@@ -12,8 +12,8 @@ const OttSubscription = () => {
 export default OttSubscription;
 
 const Sdiv = styled.div`
-  font-size: 1.3rem;
-  font-weight: bold;
+  font-size: 1.5rem;
+  font-weight: 600;
   text-align: left;
   margin: 0.5rem 0;
   padding-left: 0.5rem;
