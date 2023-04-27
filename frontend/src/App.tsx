@@ -5,6 +5,8 @@ import styled, { ThemeProvider } from "styled-components";
 import { theme } from "styles/theme";
 import { Routes, Route } from "react-router-dom";
 
+import Layout from "layout/Layout";
+
 import PageError from "./pages/PageError";
 import PageLogin from "./pages/PageLogin";
 import PageMain from "./pages/PageMain";
@@ -23,7 +25,6 @@ const App = () => {
       <ThemeProvider theme={theme}>
         <Routes>
           <Route element={<Layout />}>
-
             {/* 회원, 비회원 모두 접근 가능 */}
             <Route path="/" element={<PageMain />} />
             <Route path="/search" element={<PageSearch />} />

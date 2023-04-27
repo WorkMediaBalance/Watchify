@@ -7,7 +7,6 @@ import OttSubscription from "components/common/OttSubscription";
 const PageSchedule = () => {
   return (
     <Layout>
-      <div>상단 navbar 띄울 곳임</div>
       <WatchingPattern />
       <OttSubscription />
     </Layout>
