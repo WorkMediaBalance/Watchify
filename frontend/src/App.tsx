@@ -1,5 +1,4 @@
 import React from "react";
-import RecoilTest from "./components/RecoilTest";
 
 import { Routes, Route } from "react-router-dom";
 
@@ -44,9 +43,6 @@ const App = () => {
           <Route path="*" element={<PageError />} />
         </Route>
       </Routes>
-      <div>
-        <RecoilTest />
-      </div>
     </>
   );
 };

@@ -32,10 +32,10 @@ const AppBar: React.FC<AppBarProps> = ({ title }) => {
       <Bar>
         <AiOutlineLeft
           onClick={() => navigate(-1)}
-          style={{ marginLeft: "2vh" }}
+          style={{ marginLeft: "2vw" }}
         />
         <TitleHolder>{title}</TitleHolder>
-        <AiOutlineRight style={{ visibility: "hidden", marginRight: "2vh" }} />
+        <AiOutlineRight style={{ visibility: "hidden", marginRight: "2vw" }} />
       </Bar>
     </div>
   );
