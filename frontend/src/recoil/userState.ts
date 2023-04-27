@@ -21,3 +21,9 @@ export const userScoreState = atom<number>({
   key: "userScoreState",
   default: 10,
 });
+
+export const ottThemeState = atom<string>({
+  key: "ottThemeState",
+  default: "netflix",
+  effects_UNSTABLE: [persistAtom],
+});
