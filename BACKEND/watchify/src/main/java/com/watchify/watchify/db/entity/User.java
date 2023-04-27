@@ -46,6 +46,7 @@ public class User implements Serializable {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<UserDay> userDays = new ArrayList<>();
 
-
-
+    public void updateOttAlarm() {
+        this.isOttAlarm = !this.isOttAlarm;
+    }
 }
