@@ -25,10 +25,10 @@ public class OTT implements Serializable {
     private String name;
 
     @OneToMany(mappedBy = "ott", cascade = CascadeType.ALL)
-    private List<ContentOTT> contentOTTS = new ArrayList<>();
+    private List<ContentOtt> contentOtts = new ArrayList<>();
 
     @OneToMany(mappedBy = "ott", cascade = CascadeType.ALL)
-    private List<UserOTT> userOTTS = new ArrayList<>();
+    private List<UserOtt> userOTTS = new ArrayList<>();
 
 
 }

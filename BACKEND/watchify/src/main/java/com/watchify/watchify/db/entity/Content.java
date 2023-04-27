@@ -9,7 +9,6 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -50,7 +49,7 @@ public class Content implements Serializable {
     private List<TurnContent> turnContents = new ArrayList<>();
 
     @OneToMany(mappedBy = "content", cascade = CascadeType.ALL)
-    private List<ContentOTT> contentOTTS = new ArrayList<>();
+    private List<ContentOtt> contentOtts = new ArrayList<>();
 
     @OneToMany(mappedBy = "content", cascade = CascadeType.ALL)
     private List<ContentGenre> contentGenres = new ArrayList<>();

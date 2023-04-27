@@ -41,7 +41,7 @@ public class User implements Serializable {
     private List<Calender> calenders = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<UserOTT> userOTTS = new ArrayList<>();
+    private List<UserOtt> userOTTS = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<UserDay> userDays = new ArrayList<>();
