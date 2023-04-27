@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -20,17 +21,11 @@ public class Calender implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Temporal(TemporalType.DATE)
-    private Date date;
-
-    @Temporal(TemporalType.DATE)
-    private Date viewDate;
+    private LocalDate date;
+    private LocalDate viewDate;
 
     private boolean isView;
     private boolean isDeleted;
-
-
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -39,4 +34,10 @@ public class Calender implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "turn_content_id")
     private TurnContent turnContent;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ott_id")
+    private OTT ott;
+
+
 }

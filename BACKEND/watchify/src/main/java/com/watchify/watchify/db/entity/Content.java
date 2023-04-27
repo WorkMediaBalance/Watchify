@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -29,24 +30,15 @@ public class Content implements Serializable {
     private String imgPath;
     private String imgName;
     private int audienceAge;
-
-    @Column(nullable = true)
     private Integer season;
-
-    @Column(nullable = true)
     private Integer finalEpisode;
-
-    @Column(nullable = true)
     private String horizontialImgPath;
-
-    @Column(nullable = true)
     private String horizontialImgName;
 
     @Enumerated(EnumType.STRING)
     private EnumContentType type;
 
-    @Temporal(TemporalType.DATE)
-    private Date releaseDate;
+    private LocalDate releaseDate;
 
     @OneToMany(mappedBy = "content", cascade = CascadeType.ALL)
     private List<WishContent> wishContents = new ArrayList<>();
