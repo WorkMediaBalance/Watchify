@@ -22,9 +22,11 @@ public class MainController {
 
     @GetMapping("/schedule")
     public ResponseEntity<?> GetWeekSchedule() throws Exception{
-
-        Map<Integer, List<CalenderDTO>> res = mainScheduleService.getMainSchedule();
-        return ResponseEntity.status(200).body(res);
-
+        try {
+            Map<Integer, List<CalenderDTO>> res = mainScheduleService.getMainSchedule();
+            return ResponseEntity.status(200).body(res);
+        } catch (Exception e) {
+            return ResponseEntity.status(404).body("Failed to get main schedule.");
+        }
     }
 }
