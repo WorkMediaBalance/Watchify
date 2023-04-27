@@ -1,10 +1,24 @@
 import React, { useState, useMemo } from "react";
 import AppBar from "./AppBar";
 import { Outlet, useLocation } from "react-router-dom";
+import BottomDot from "./BottomDot";
 import styled from "styled-components";
 
 const Layout = () => {
   const [title, setTitle] = useState("");
+
+  // BottomDot용 변수
+  const [isSemiCircleRotated, setIsSemiCircleRotated] = useState(true); //TDOD: false와 true 의미 주의
+  const [innerDotSize, setInnerDotSize] = useState("35%");
+  const toggleInnerDotSize = () => {
+    if (innerDotSize === "60%") {
+      setInnerDotSize("35%");
+      setIsSemiCircleRotated(true);
+    } else {
+      setInnerDotSize("60%");
+      setIsSemiCircleRotated(false);
+    }
+  };
 
   const location = useLocation();
 
@@ -40,10 +54,22 @@ const Layout = () => {
   return (
     <div>
       <AppBar title={title} />
-      <div style={{ marginTop: "5vh" }}>
+      <div
+        onClick={() => {
+          toggleInnerDotSize();
+          console.log("clikced");
+        }}
+        style={{ marginTop: "5vh", minHeight: "100vh" }}
+      >
         <Outlet />
       </div>
-      {/* 레드닷 자리 */}
+      <BottomDot
+        isSemiCircleRotated={isSemiCircleRotated}
+        setIsSemiCircleRotated={setIsSemiCircleRotated}
+        innerDotSize={innerDotSize}
+        setInnerDotSize={setInnerDotSize}
+        toggleInnerDotSize={toggleInnerDotSize}
+      />
     </div>
   );
 };
