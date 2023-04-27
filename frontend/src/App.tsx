@@ -1,5 +1,4 @@
 import React from "react";
-import RecoilTest from "./components/RecoilTest";
 
 import styled, { ThemeProvider } from "styled-components";
 import { theme } from "styles/theme";
@@ -39,7 +38,7 @@ const App = () => {
             <Route element={<NonMemberRoute />}>
               <Route path="/login" element={<PageLogin />} />
             </Route>
-            +{/* 404 페이지 */}
+            {/* 404 페이지 */}
             <Route path="*" element={<PageError />} />
           </Route>
         </Routes>
