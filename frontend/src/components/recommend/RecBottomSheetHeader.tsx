@@ -2,7 +2,7 @@ import React, { FC } from "react";
 import styled from "styled-components";
 
 const Wrapper = styled.div`
-  height: 48px;
+  height: 20px;
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
   position: relative;

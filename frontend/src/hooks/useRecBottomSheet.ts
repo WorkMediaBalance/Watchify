@@ -1,4 +1,4 @@
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import { MIN_Y, MAX_Y } from "../constant/constant";
 
 interface BottomSheetMetrics {
@@ -11,9 +11,10 @@ interface BottomSheetMetrics {
     movingDirection: "none" | "down" | "up";
   };
   isContentAreaTouched: boolean;
+  isOpen: boolean;
 }
 
-export default function useBottomSheet() {
+export default function useRecBottomSheet() {
   const sheet = useRef<HTMLDivElement>(null);
 
   const content = useRef<HTMLDivElement>(null);
@@ -28,7 +29,20 @@ export default function useBottomSheet() {
       movingDirection: "none",
     },
     isContentAreaTouched: false,
+    isOpen: false,
   });
+
+  const [isOpenSheet, setIsOpenSheet] = useState<boolean>(false);
+  const openBottomSheet = () => {
+    metrics.current.isOpen = true;
+    setIsOpenSheet(true);
+    sheet.current!.style.setProperty("transform", `translateY(${MIN_Y - MAX_Y}px)`);
+  };
+
+  const closeBottomSheet = () => {
+    metrics.current.isOpen = false;
+    setIsOpenSheet(false);
+  };
 
   useEffect(() => {
     const canUserMoveBottomSheet = () => {
@@ -104,6 +118,7 @@ export default function useBottomSheet() {
 
       if (currentSheetY !== MIN_Y) {
         if (touchMove.movingDirection === "down") {
+          closeBottomSheet();
           sheet.current!.style.setProperty("transform", "translateY(0)");
         }
 
@@ -123,6 +138,7 @@ export default function useBottomSheet() {
           movingDirection: "none",
         },
         isContentAreaTouched: false,
+        isOpen: false,
       };
     };
 
@@ -138,5 +154,5 @@ export default function useBottomSheet() {
     content.current!.addEventListener("touchstart", handleTouchStart);
   }, []);
 
-  return { sheet, content };
+  return { sheet, content, openBottomSheet, isOpenSheet };
 }
