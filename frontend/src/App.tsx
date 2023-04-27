@@ -1,5 +1,7 @@
 import React from "react";
 
+import styled, { ThemeProvider } from "styled-components";
+import { theme } from "styles/theme";
 import { Routes, Route } from "react-router-dom";
 
 import PageError from "./pages/PageError";
@@ -19,6 +21,10 @@ import Layout from "./layout/Layout";
 const App = () => {
   return (
     <>
+
+      <ThemeProvider theme={theme}>
+        <Routes>
+
       <Routes>
         {/* 앱바 + 레드닷 */}
         <Route element={<Layout />}>
@@ -34,15 +40,24 @@ const App = () => {
             <Route path="/my" element={<PageMy />} />
           </Route>
 
+
           {/* 비회원만 접근 가능 */}
           <Route element={<NonMemberRoute />}>
             <Route path="/login" element={<PageLogin />} />
           </Route>
 
+          +{/* 404 페이지 */}
+          <Route path="*" element={<PageError />} />
+        </Routes>
+        {/* <RecoilTest /> */}
+      </ThemeProvider>
+
+
           {/* 404 페이지 */}
           <Route path="*" element={<PageError />} />
         </Route>
       </Routes>
+
     </>
   );
 };
