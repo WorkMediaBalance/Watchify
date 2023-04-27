@@ -21,8 +21,8 @@ const WatchingPattern = () => {
 
   return (
     <>
-      <Sdiv>나의 시청 패턴</Sdiv>
-      <Sdiv2>출퇴근 하면서 조금씩, 주말에 몰아서!</Sdiv2>
+      <SDiv>나의 시청 패턴</SDiv>
+      <SDiv2>출퇴근 하면서 조금씩, 주말에 몰아서!</SDiv2>
 
       <SBtnDiv>
         <Sbtn
@@ -89,17 +89,17 @@ const WatchingPattern = () => {
 
 export default WatchingPattern;
 
-const Sdiv = styled.div`
-  font-size: 1.5rem;
-  font-weight: 600;
+const SDiv = styled.div`
+  font-size: ${({ theme }) => theme.fontSizeType.big.fontSize};
+  font-weight: ${({ theme }) => theme.fontSizeType.big.fontWeight};
   text-align: left;
   margin: 0.5rem 0;
   padding-left: 0.5rem;
 `;
 
-const Sdiv2 = styled.div`
-  font-size: 1rem;
-  font-weight: 500;
+const SDiv2 = styled.div`
+  font-size: ${({ theme }) => theme.fontSizeType.middle.fontSize};
+  font-weight: ${({ theme }) => theme.fontSizeType.middle.fontWeight};
   text-align: left;
   margin: 0.5rem 0;
   padding-left: 0.5rem;
