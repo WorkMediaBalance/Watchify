@@ -1,7 +1,14 @@
+// 손민혁이 깡구현 했던 Modal... RIP... 일주일만 있다가 삭제할게요.
+
 import React from "react";
 import styled from "styled-components";
 
 import { AiOutlineClose } from "react-icons/ai";
+
+import netflixIcon from "assets/img/netflixIcon.png";
+import disneyIcon from "assets/img/disneyIcon.png";
+import watchaIcon from "assets/img/watchaIcon.png";
+import wavveIcon from "assets/img/wavveIcon.png";
 
 type Props = {
   showOttModal: boolean;
@@ -23,6 +30,7 @@ export default function OttModal({ showOttModal, setShowOttModal }: Props) {
         <>
           <Overlay onClick={onClickOutsideCloseModal} />
           <Container>
+            <Img src={netflixIcon} />
             <SIconWrapper>
               <AiOutlineClose onClick={onClickCloseModal} />
             </SIconWrapper>
@@ -63,13 +71,13 @@ const SIconWrapper = styled.div`
   margin: 1rem;
 `;
 
-// const Img = styled.img`
-//   width: 20rem;
-//   height: 20rem;
-//   margin: 0.5rem;
-//   border: 3px solid white;
-//   border-radius: 7px;
-// `;
+const Img = styled.img`
+  width: 2rem;
+  height: 2rem;
+  margin: 0.5rem;
+  border: 3px solid white;
+  border-radius: 7px;
+`;
 
 // const RelicName = styled.div`
 //   font-size: 1.7rem;

@@ -18,11 +18,13 @@ const PageSchedule = () => {
         <OttModal showOttModal={showOttModal} setShowOttModal={setShowOttModal} />
       ) : null}
       <WatchingPattern />
+
       <OttSubscription
         onClickShowOttModal={onClickShowOttModal}
         showOttModal={showOttModal}
         setShowOttModal={setShowOttModal}
       />
+      <div></div>
     </Layout>
   );
 };
