@@ -6,6 +6,8 @@ import disney from "../assets/img/disneyIcon.png";
 import netflix from "../assets/img/netflixIcon.png";
 import wavve from "../assets/img/wavveIcon.png";
 import watcha from "../assets/img/watchaIcon.png";
+import { recGenreState } from "../recoil/recommendState";
+import { useRecoilState } from "recoil";
 
 const BaseDiv = styled.div`
   height: 100vh;
@@ -25,11 +27,15 @@ const SheetBtn = styled.button`
   font-size: 1rem;
   border-radius: 12px;
   width: 32vw;
-  height: 9vw;
+  height: 4.5vh;
   font-weight: 400;
   background-color: transparent;
   border: 1px solid #ffffff;
   margin-left: 1vw;
+
+  &.plus {
+    width: 10vw;
+  }
 `;
 
 const STitleP = styled.p`
@@ -64,10 +70,33 @@ const SRecBtn = styled.button`
   border: transparent;
 `;
 
+const SGridDiv = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px 10px;
+  margin-left: 3vw;
+`;
+
+const SGenreBtn = styled.button`
+  height: 4.5vh;
+  color: #ffffff;
+  background-color: #e50914;
+  border: transparent;
+  border-radius: 12px;
+  min-width: 15.5vw;
+  font-size: 0.8rem;
+  padding-left: 8px;
+  padding-right: 8px;
+`;
+
 const PageRecommend = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isAdult, setIsAdult] = useState<boolean>(false);
   const [ott, setOtt] = useState<Array<string>>([]);
+  const [recGenre, setRecGenre] = useRecoilState(recGenreState);
+  const genreHandler = (selGenre: string) => {
+    setRecGenre(recGenre.filter((genre) => genre !== selGenre));
+  };
   const navigate = useNavigate();
   const goRecHandler = () => {
     // 추천 요청 axios 필요
@@ -93,13 +122,34 @@ const PageRecommend = () => {
     <BaseDiv>
       <SheetDiv>
         <STitleP>선호 장르</STitleP>
-        <SheetBtn
-          onClick={() => {
-            setIsOpen(true);
-          }}
-        >
-          선호 장르 선택
-        </SheetBtn>
+        {recGenre.length ? (
+          <SGridDiv>
+            {recGenre.map((genre, idx) => {
+              return (
+                <SGenreBtn onClick={() => genreHandler(genre)} key={idx}>
+                  {genre}
+                </SGenreBtn>
+              );
+            })}
+            <SheetBtn
+              style={{ width: "10vw" }}
+              onClick={() => {
+                setIsOpen(true);
+              }}
+            >
+              +
+            </SheetBtn>
+          </SGridDiv>
+        ) : (
+          <SheetBtn
+            onClick={() => {
+              setIsOpen(true);
+            }}
+          >
+            선호 장르 선택
+          </SheetBtn>
+        )}
+
         <STitleP>대상 OTT</STitleP>
         <div style={{ display: "flex" }}>
           <SImg onClick={ottChange} src={netflix} alt="netflix" />
