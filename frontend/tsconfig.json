@@ -1,5 +1,11 @@
 {
   "compilerOptions": {
+    // baseUrl을 절대경로 src로 설정
+    "baseUrl": "src",
+
+    // nivo 라이브러리 ts에서 사용위해 추가
+    "types": ["@types/nivo__bar"],
+
     "target": "es5",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
