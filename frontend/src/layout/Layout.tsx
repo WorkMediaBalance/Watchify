@@ -4,6 +4,11 @@ import { Outlet, useLocation } from "react-router-dom";
 import BottomDot from "./BottomDot";
 import styled from "styled-components";
 
+const Background = styled.div`
+  background-color: ${({ theme }) => theme.netflix.backgroundColor};
+  height: 100vh;
+`;
+
 const Layout = () => {
   const [title, setTitle] = useState("");
 
@@ -68,7 +73,9 @@ const Layout = () => {
         }}
         style={{ marginTop: "5vh", minHeight: "100vh" }}
       >
-        <Outlet />
+        <Background>
+          <Outlet />
+        </Background>
       </div>
       <BottomDot
         isSemiCircleRotated={isSemiCircleRotated}
