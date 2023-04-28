@@ -15,7 +15,11 @@ const PageSchedule = () => {
   return (
     <Container>
       <WatchingPattern />
-      <OttSubscription />
+      <OttSubscription
+        onClickShowOttModal={onClickShowOttModal}
+        showOttModal={showOttModal}
+        setShowOttModal={setShowOttModal}
+      />
     </Container>
   );
 };

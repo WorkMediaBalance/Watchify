@@ -1,4 +1,3 @@
-
 export const BASE_URL: string = "https://localhost:8080/";
 
 export const myBasicInfo: string = "api/my/basicinfo";
@@ -30,4 +29,3 @@ export const genres = [
   "Reality TV",
   "Made in Europe",
 ];
->>>>>>> frontend/src/constant/constant.ts
