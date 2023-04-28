@@ -6,18 +6,18 @@ import OttSubscription from "components/common/OttSubscription";
 
 const PageSchedule = () => {
   return (
-    <Layout>
+    <Container>
       <WatchingPattern />
       <OttSubscription />
-    </Layout>
+    </Container>
   );
 };
 
 export default PageSchedule;
 
-const Layout = styled.div`
-  background-color: ${({ theme }) => theme.netflix.backgroundColor};
+const Container = styled.div`
+  height: 100%;
+  display: flex;
+  flex-direction: column;
   color: white;
-  text-align: center;
-  height: 100vh;
 `;

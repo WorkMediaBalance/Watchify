@@ -10,16 +10,19 @@ const Bar = styled.div`
   top: 0;
   width: 100vw;
   height: 5vh;
-  background-color: #000000;
+  background-color: ${({ theme }) => theme.netflix.tabColor};
 
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  color: white;
+  color: ${({ theme }) => theme.netflix.fontColor};
 `;
 
-const TitleHolder = styled.div``;
+const TitleHolder = styled.div`
+  font-family: ${({ theme }) => theme.fontFamily};
+  font-size: ${({ theme }) => theme.fontSizeType.medium};
+`;
 
 interface AppBarProps {
   title?: string;
