@@ -96,6 +96,10 @@ const OttSubscription = ({ onClickShowOttModal, showOttModal, setShowOttModal }:
 
 export default OttSubscription;
 
+const SContainer = styled.div`
+  height: 40vh;
+`;
+
 const Sdiv = styled.div`
   font-size: ${({ theme }) => theme.fontSizeType.big.fontSize};
   font-weight: ${({ theme }) => theme.fontSizeType.big.fontWeight};

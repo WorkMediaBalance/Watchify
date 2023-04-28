@@ -13,27 +13,18 @@ const PageSchedule = () => {
     setShowOttModal(!showOttModal);
   };
   return (
-    <Layout>
-      {showOttModal ? (
-        <OttModal showOttModal={showOttModal} setShowOttModal={setShowOttModal} />
-      ) : null}
+    <Container>
       <WatchingPattern />
-
-      <OttSubscription
-        onClickShowOttModal={onClickShowOttModal}
-        showOttModal={showOttModal}
-        setShowOttModal={setShowOttModal}
-      />
-      <div></div>
-    </Layout>
+      <OttSubscription />
+    </Container>
   );
 };
 
 export default PageSchedule;
 
-const Layout = styled.div`
-  background-color: ${({ theme }) => theme.netflix.backgroundColor};
+const Container = styled.div`
+  height: 100%;
+  display: flex;
+  flex-direction: column;
   color: white;
-  text-align: center;
-  height: 100vh;
 `;

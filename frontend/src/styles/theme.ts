@@ -1,5 +1,6 @@
 import { DefaultTheme } from "styled-components";
 
+// ${({ theme }) => theme.netflix.tabColor}
 export interface Theme extends DefaultTheme {
   netflix: {
     pointColor: string;
@@ -7,9 +8,24 @@ export interface Theme extends DefaultTheme {
     fontColor: string;
     tabColor: string;
   };
-  watcha: { pointColor: string; backgroundColor: string; fontColor: string; tabColor: string };
-  disney: { pointColor: string; backgroundColor: string; fontColor: string; tabColor: string };
-  wavve: { pointColor: string; backgroundColor: string; fontColor: string; tabColor: string };
+  watcha: {
+    pointColor: string;
+    backgroundColor: string;
+    fontColor: string;
+    tabColor: string;
+  };
+  disney: {
+    pointColor: string;
+    backgroundColor: string;
+    fontColor: string;
+    tabColor: string;
+  };
+  wavve: {
+    pointColor: string;
+    backgroundColor: string;
+    fontColor: string;
+    tabColor: string;
+  };
   fontFamily: string;
   fontSizeType: {
     big: {

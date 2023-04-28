@@ -3,7 +3,11 @@ import styled from "styled-components";
 import { theme } from "styles/theme";
 import { ResponsiveBar } from "@nivo/bar";
 
-import { patternData0, patternData1, patternData2 } from "constant/preset/watchingPatternPreset";
+import {
+  patternData0,
+  patternData1,
+  patternData2,
+} from "constant/preset/watchingPatternPreset";
 
 const WatchingPattern = () => {
   const [activeIndex, setActiveIndex] = useState<number | null>(0);
@@ -20,7 +24,7 @@ const WatchingPattern = () => {
   };
 
   return (
-    <>
+    <SContainer>
       <SDiv>나의 시청 패턴</SDiv>
       <SDiv2>출퇴근 하면서 조금씩, 주말에 몰아서!</SDiv2>
 
@@ -83,11 +87,14 @@ const WatchingPattern = () => {
           maxValue={8}
         />
       </SChartContainer>
-    </>
+    </SContainer>
   );
 };
 
 export default WatchingPattern;
+const SContainer = styled.div`
+  height: 50vh;
+`;
 
 const SDiv = styled.div`
   font-size: ${({ theme }) => theme.fontSizeType.big.fontSize};
@@ -106,7 +113,8 @@ const SDiv2 = styled.div`
 `;
 
 const Sbtn = styled.div<{ isActive?: boolean; color?: string }>`
-  background-color: ${(props) => (props.isActive ? props.theme.netflix.pointColor : "white")};
+  background-color: ${(props) =>
+    props.isActive ? props.theme.netflix.pointColor : "white"};
   color: ${(props) => (props.isActive ? "white" : "black")};
   font-size: ${({ theme }) => theme.fontSizeType.small.fontSize};
   margin: 0rem 0.2rem;
@@ -124,8 +132,10 @@ const SBtnDiv = styled.div`
 const SChartContainer = styled.div`
   display: flex;
   justify-content: center;
-  height: 40%;
+  height: 60%;
   width: 100%;
   margin: 1rem 0;
   fill: white;
+  max-height: 40vh; // 추가된 부분
+  max-width: 100%; // 추가된 부분
 `;
