@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import styled, { ThemeProvider, useTheme } from "styled-components";
+import styled from "styled-components";
 import { theme } from "styles/theme";
 import { ResponsiveBar } from "@nivo/bar";
 
@@ -110,7 +110,7 @@ const Sbtn = styled.div<{ isActive?: boolean; color?: string }>`
   color: ${(props) => (props.isActive ? "white" : "black")};
   font-size: ${({ theme }) => theme.fontSizeType.small.fontSize};
   margin: 0rem 0.2rem;
-  padding: 0.7rem 1rem;
+  padding: 0.7rem 0.6rem;
   border: none;
   border-radius: 10px;
   cursor: pointer;
