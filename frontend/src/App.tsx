@@ -11,6 +11,7 @@ import PageLogin from "./pages/PageLogin";
 import PageMain from "./pages/PageMain";
 import PageMy from "./pages/PageMy";
 import PageRecommend from "./pages/PageRecommend";
+import PageRecommendResult from "pages/PageRecommendResult";
 import PageSchedule from "./pages/PageSchedule";
 import PageSearch from "./pages/PageSearch";
 import PageShare from "./pages/PageShare";
@@ -29,6 +30,7 @@ const App = () => {
             <Route path="/search" element={<PageSearch />} />
             <Route path="/schedule" element={<PageSchedule />} />
             <Route path="/recommend" element={<PageRecommend />} />
+            <Route path="/recommend/result" element={<PageRecommendResult />} />
             <Route path="/share" element={<PageShare />} />
             {/* 회원만 접근 가능 */}
             <Route element={<MemberRoute />}>
