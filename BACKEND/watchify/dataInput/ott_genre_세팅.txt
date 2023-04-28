@@ -1,0 +1,25 @@
+INSERT INTO `sins`.`ott` (`name`) VALUES ('netflix');
+INSERT INTO `sins`.`ott` (`name`) VALUES ('watcha');
+INSERT INTO `sins`.`ott` (`name`) VALUES ('wavve');
+INSERT INTO `sins`.`ott` (`name`) VALUES ('diseny');
+
+INSERT INTO `sins`.`genre` (`name`) VALUES ('액션');
+INSERT INTO `sins`.`genre` (`name`) VALUES ('애니메이션');
+INSERT INTO `sins`.`genre` (`name`) VALUES ('코미디');
+INSERT INTO `sins`.`genre` (`name`) VALUES ('범죄');
+INSERT INTO `sins`.`genre` (`name`) VALUES ('다큐멘터리');
+INSERT INTO `sins`.`genre` (`name`) VALUES ('드라마');
+INSERT INTO `sins`.`genre` (`name`) VALUES ('판타지');
+INSERT INTO `sins`.`genre` (`name`) VALUES ('역사');
+INSERT INTO `sins`.`genre` (`name`) VALUES ('공포');
+INSERT INTO `sins`.`genre` (`name`) VALUES ('가족');
+INSERT INTO `sins`.`genre` (`name`) VALUES ('음악');
+INSERT INTO `sins`.`genre` (`name`) VALUES ('스릴러');
+INSERT INTO `sins`.`genre` (`name`) VALUES ('로맨스');
+INSERT INTO `sins`.`genre` (`name`) VALUES ('SF');
+INSERT INTO `sins`.`genre` (`name`) VALUES ('스포츠');
+INSERT INTO `sins`.`genre` (`name`) VALUES ('전쟁');
+INSERT INTO `sins`.`genre` (`name`) VALUES ('서부');
+INSERT INTO `sins`.`genre` (`name`) VALUES ('Reality TV');
+INSERT INTO `sins`.`genre` (`name`) VALUES ('Made in Europe');
+INSERT INTO `sins`.`genre` (`name`) VALUES (null);
