@@ -12,7 +12,7 @@ const BottomBar = styled.div`
   bottom: 0;
   width: 100vw;
   height: 9vw;
-  background-color: #000000;
+  background-color: ${({ theme }) => theme.netflix.tabColor};
   margin: 0;
   z-index: 10;
 `;
@@ -29,7 +29,7 @@ const OuterDot = styled.span`
   display: inline-block;
   width: 15vw;
   height: 15vw;
-  background-color: #e50914;
+  background-color: ${({ theme }) => theme.netflix.pointColor};
   border-radius: 50%;
   left: 50%;
   transform: translate(-50%);
@@ -42,7 +42,7 @@ const InnerDot = styled.span<{ size: string }>`
   left: 50%;
   width: ${(props) => props.size};
   height: ${(props) => props.size};
-  background-color: #000000;
+  background-color: ${({ theme }) => theme.netflix.tabColor};
   border-radius: 50%;
   transform: translate(-50%, -50%);
   transition: width 0.3s, height 0.3s; // 크기 변경 시 애니메이션 적용
@@ -59,6 +59,7 @@ const IconWrapper = styled.div`
   left: 50%;
   transform: translate(-170%, -100%);
   z-index: 10;
+  color
   // display:flex;
   // flex-direction: column;
   // justify-content: center;
@@ -75,7 +76,10 @@ const SemiCircle = styled.span<{
   left: 50%;
   width: 50vw;
   height: 25vw;
-  background-color: ${(props) => (props.tabIdx ? "#E50914" : "#000000")};
+  background-color: ${(props) =>
+    props.tabIdx
+      ? props.theme.netflix.pointColor
+      : props.theme.netflix.tabColor};
   border-radius: 25vw 25vw 0 0;
   clip-path: polygon(
     50% 100%,
@@ -93,6 +97,28 @@ const SemiCircle = styled.span<{
   opacity: ${(props) => (props.rotated ? 0 : 1)};
   z-index: 5;
   // transition: transform 0.3s;
+`;
+
+// icons
+const StyledBiSearchAlt2 = styled(BiSearchAlt2)`
+  transform: rotate(45deg);
+  font-size: 5vw;
+  color: ${({ theme }) => theme.netflix.fontColor};
+`;
+const StyledMdOutlineRecommend = styled(MdOutlineRecommend)`
+  transform: rotate(0deg);
+  font-size: 5vw;
+  color: ${({ theme }) => theme.netflix.fontColor};
+`;
+const StyledBsCalendarWeek = styled(BsCalendarWeek)`
+  transform: rotate(-45deg);
+  font-size: 5vw;
+  color: ${({ theme }) => theme.netflix.fontColor};
+`;
+const StyledCgProfile = styled(CgProfile)`
+  transform: rotate(-90deg);
+  font-size: 5vw;
+  color: ${({ theme }) => theme.netflix.fontColor};
 `;
 
 interface BottomDotProps {
@@ -167,13 +193,7 @@ const BottomDot: React.FC<BottomDotProps> = ({
           tabIdx={isClicked === 1}
         >
           <IconWrapper>
-            <BiSearchAlt2
-              style={{
-                transform: "rotate(45deg)",
-                fontSize: "5vw",
-                color: "white",
-              }}
-            />
+            <StyledBiSearchAlt2 />
           </IconWrapper>
         </SemiCircle>
         <SemiCircle
@@ -187,13 +207,7 @@ const BottomDot: React.FC<BottomDotProps> = ({
           tabIdx={isClicked === 2}
         >
           <IconWrapper>
-            <MdOutlineRecommend
-              style={{
-                transform: "rotate(0deg)",
-                fontSize: "5vw",
-                color: "white",
-              }}
-            />
+            <StyledMdOutlineRecommend />
           </IconWrapper>
         </SemiCircle>
         <SemiCircle
@@ -207,13 +221,7 @@ const BottomDot: React.FC<BottomDotProps> = ({
           tabIdx={isClicked === 3}
         >
           <IconWrapper>
-            <BsCalendarWeek
-              style={{
-                transform: "rotate(-45deg)",
-                fontSize: "5vw",
-                color: "white",
-              }}
-            />
+            <StyledBsCalendarWeek />
           </IconWrapper>
         </SemiCircle>
         <SemiCircle
@@ -227,13 +235,7 @@ const BottomDot: React.FC<BottomDotProps> = ({
           tabIdx={isClicked === 4}
         >
           <IconWrapper>
-            <CgProfile
-              style={{
-                transform: "rotate(-90deg)",
-                fontSize: "5vw",
-                color: "white",
-              }}
-            />
+            <StyledCgProfile />
           </IconWrapper>
         </SemiCircle>
         <BottomBar />
