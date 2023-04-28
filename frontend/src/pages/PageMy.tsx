@@ -3,6 +3,7 @@ import styled from "styled-components";
 import Profile from "components/mypage/Profile";
 import Tabs, { Tab } from "react-best-tabs";
 import "react-best-tabs/dist/index.css";
+import MyWatchingPattern from "components/mypage/MyWatchingPattern";
 
 const StyledTabs = styled(Tabs)`
   & .rb-tabs-item {
@@ -11,6 +12,8 @@ const StyledTabs = styled(Tabs)`
     border-bottom: 0.5px solid ${({ theme }) => theme.netflix.fontColor};
     color: ${({ theme }) => theme.netflix.fontColor};
     font-size: ${({ theme }) => theme.fontSizeType.middle.fontSize} !important;
+    font-weight: ${({ theme }) =>
+      theme.fontSizeType.middle.fontWeight} !important;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -40,7 +43,9 @@ const PageMy = () => {
           activityClassName="activeTab"
           onClick={(event, tab) => setTab(tab)}
         >
-          <StyledTab title="시청 패턴"></StyledTab>
+          <StyledTab title="시청 패턴">
+            <MyWatchingPattern />
+          </StyledTab>
           <StyledTab title="히스토리"></StyledTab>
           <StyledTab title="찜 목록"></StyledTab>
           <StyledTab title="내 정보"></StyledTab>

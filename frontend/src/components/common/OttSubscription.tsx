@@ -3,15 +3,19 @@ import styled from "styled-components";
 
 const OttSubscription = () => {
   return (
-    <>
+    <SContainer>
       <Sdiv>보유 OTT</Sdiv>
       <SDiv2>구독중인 OTT가 있으시면 알려주세요.</SDiv2>
       <SDiv2>OTT 맞춤으로 스케줄링 할게요!</SDiv2>
-    </>
+    </SContainer>
   );
 };
 
 export default OttSubscription;
+
+const SContainer = styled.div`
+  height: 40vh;
+`;
 
 const Sdiv = styled.div`
   font-size: ${({ theme }) => theme.fontSizeType.big.fontSize};
