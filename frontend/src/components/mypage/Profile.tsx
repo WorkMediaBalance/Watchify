@@ -8,6 +8,7 @@ const ProfileContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  // height: 18vh;
 `;
 
 const PhotoAndChange = styled.div`

@@ -4,6 +4,8 @@ import Profile from "components/mypage/Profile";
 import Tabs, { Tab } from "react-best-tabs";
 import "react-best-tabs/dist/index.css";
 import MyWatchingPattern from "components/mypage/MyWatchingPattern";
+import HistoryTab from "components/mypage/HistoryTab";
+import WishTab from "components/mypage/WishTab";
 
 const StyledTabs = styled(Tabs)`
   & .rb-tabs-item {
@@ -28,7 +30,9 @@ const StyledTabs = styled(Tabs)`
     font-weight: bold;
   }
 `;
-const StyledTab = styled(Tab)``;
+const StyledTab = styled(Tab)`
+  overflow: "auto";
+`;
 
 const PageMy = () => {
   const [tab, setTab] = useState(1);
@@ -46,8 +50,12 @@ const PageMy = () => {
           <StyledTab title="시청 패턴">
             <MyWatchingPattern />
           </StyledTab>
-          <StyledTab title="히스토리"></StyledTab>
-          <StyledTab title="찜 목록"></StyledTab>
+          <StyledTab title="히스토리">
+            <HistoryTab />
+          </StyledTab>
+          <StyledTab title="찜 목록">
+            <WishTab />
+          </StyledTab>
           <StyledTab title="내 정보"></StyledTab>
         </StyledTabs>
       </div>
