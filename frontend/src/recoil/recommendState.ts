@@ -18,7 +18,7 @@ export const recResultState = atom<Array<content>>({
     {
       pk: 1,
       title: "더 글로리",
-      runtime: 1,
+      runtime: 50,
       rate: 4.5,
       img_path: "https://images.justwatch.com/poster/302518136/s592/시즌-1",
       type: "드라마",
@@ -34,7 +34,7 @@ export const recResultState = atom<Array<content>>({
     {
       pk: 2,
       title: "트와일라잇",
-      runtime: 3,
+      runtime: 60,
       rate: 3.7,
       img_path: "https://images.justwatch.com/poster/129382738/s592/twilight.webp",
       type: "영화",
@@ -50,7 +50,7 @@ export const recResultState = atom<Array<content>>({
       pk: 3,
       title:
         "고병진이 살아있다 : Walking Moving Byeongjin 고병진이 살아있다 : Walking Moving Byeongjin",
-      runtime: 8,
+      runtime: 88,
       rate: 1.2,
       img_path: "https://images.justwatch.com/poster/8733916/s592/bagmulgwani-salaissda.webp",
       type: "영화",

@@ -123,6 +123,16 @@ const PageRecommendResult = () => {
     });
   };
 
+  const runtime = recResult[selectedNum].runtime;
+  const hour = Math.floor(runtime / 60);
+  const minute = runtime % 60 === 0 ? 0 : runtime % 60;
+  const run =
+    hour >= 1 && minute === 0
+      ? `${hour}시간`
+      : hour === 0
+      ? `${minute}분`
+      : `${hour}시간 ${minute}분`;
+
   return (
     <Wrapper>
       <STitleP>{USER_NAME}님을 위한 추천 컨텐츠</STitleP>
@@ -148,7 +158,7 @@ const PageRecommendResult = () => {
             <div style={{ marginRight: "1vw" }}>
               <STextP>추천도 : 93%</STextP>
               <STextP>장르 : {recResult[selectedNum].genres.join(", ")}</STextP>
-              <STextP>재생 시간 : {recResult[selectedNum].runtime}</STextP>
+              <STextP>재생 시간 : {run}</STextP>
               <STextP>등급 : {recResult[selectedNum].audienceAge}</STextP>
               <div style={{ marginTop: "3vh", marginLeft: "-1vh" }}>{renderOTTIcons()}</div>{" "}
               {/*클릭 이벤트 (링크 이동) 필요 */}
