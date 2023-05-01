@@ -83,8 +83,12 @@ WSGI_APPLICATION = 'watchifyAI.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'sins',
+        'USER': 'watchifyadmin',
+        'PASSWORD': 'qudwlsgoa!',  # git에 올리지 않기
+        'HOST': 'watchifydb.cph3uafcff1h.ap-northeast-2.rds.amazonaws.com',
+        'PORT': '3306',
     }
 }
 
