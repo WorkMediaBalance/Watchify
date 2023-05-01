@@ -11,7 +11,7 @@ const BottomBar = styled.div`
   position: fixed;
   bottom: 0;
   width: 100vw;
-  height: 9vw;
+  height: 4vh;
   background-color: ${({ theme }) => theme.netflix.tabColor};
   margin: 0;
   z-index: 10;
