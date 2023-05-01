@@ -81,7 +81,7 @@ public class CsvImporterService {
                 statement.setString(10, csvRecord.get(13));
                 statement.setLong(11, contentID);
 
-                // statement.executeUpdate(); // 쿼리 한문장마다 실행 디버그용
+                 statement.executeUpdate(); // 쿼리 한문장마다 실행 디버그용
 
                 String OTTs = csvRecord.get(14);  // 이건 "[1, 2, 3]" 형태의 문자열을 가져옴
                 OTTs = OTTs.substring(1, OTTs.length()-1);  // "[" 와 "]"를 제거
@@ -90,8 +90,8 @@ public class CsvImporterService {
                 for (String ott_id : OTT_ids) {
                     statementContentOTT.setLong(1, contentID);  // content_id 설정
                     statementContentOTT.setLong(2, Long.parseLong(ott_id));  // ott_id 설정
-                    statementContentOTT.addBatch();
-                    // statementContentOTT.executeUpdate(); // 쿼리 한문장마다 실행 디버그용
+//                    statementContentOTT.addBatch();
+                     statementContentOTT.executeUpdate(); // 쿼리 한문장마다 실행 디버그용
                 }
 
                 String Genres = csvRecord.get(7); // 장르 리스트 문자열
@@ -101,28 +101,30 @@ public class CsvImporterService {
                     Long genreID = genreMap.get(genreName);
                     statementContentGenre.setLong(1, contentID);
                     statementContentGenre.setLong(2, genreID);
-                    statementContentGenre.addBatch();
-                    // statementContentGenre.executeUpdate(); // 쿼리 한문장마다 실행 디버그용
+//                    statementContentGenre.addBatch();
+                     statementContentGenre.executeUpdate(); // 쿼리 한문장마다 실행 디버그용
                 }
 
                 statementTurnContent.setLong(1, contentID);
                 if (finalEpisode == 0) {
                     statementTurnContent.setInt(2, 0);
-                    statementTurnContent.addBatch();
+//                    statementTurnContent.addBatch();
+                    statementTurnContent.executeUpdate(); // 쿼리 한문장 씩 실행
                 } else {
                     for (int i = 1; i < finalEpisode+1; i++) {
                         statementTurnContent.setInt(2, i);
-                        statementTurnContent.addBatch();
+//                        statementTurnContent.addBatch();
+                        statementTurnContent.executeUpdate(); // 쿼리 한문장 씩 실행
                     }
                 }
 
-                statement.addBatch();
+//                statement.addBatch();
             }
 
-            statement.executeBatch();
-            statementContentOTT.executeBatch();
-            statementContentGenre.executeBatch();
-            statementTurnContent.executeBatch();
+//            statement.executeBatch();
+//            statementContentOTT.executeBatch();
+//            statementContentGenre.executeBatch();
+//            statementTurnContent.executeBatch();
 
         } catch (Exception e) {
             e.printStackTrace();
