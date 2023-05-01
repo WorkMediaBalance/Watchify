@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 
 import Swal from "sweetalert2";
 
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import { ottSubscriptionState } from "recoil/userState";
 
 import { AiOutlineClose } from "react-icons/ai";
@@ -13,51 +14,47 @@ import disneyIcon from "assets/img/disneyIcon.png";
 import watchaIcon from "assets/img/watchaIcon.png";
 import wavveIcon from "assets/img/wavveIcon.png";
 
+// ott 추가 함수 정의를 위한 기초 설정 (왜 global 설정하고 window에서 하는지는 모름..)
 declare global {
   interface Window {
-    addOtt: () => void;
+    addOtt: (name: string, subscriptionDate: string) => void;
   }
 }
 
-type Props = {
-  onClickShowOttModal: () => void;
-  showOttModal: boolean;
-  setShowOttModal: React.Dispatch<React.SetStateAction<boolean>>;
-};
+const OttSubscription = () => {
+  const navigate = useNavigate();
+  const [otts, setOtts] = useRecoilState(ottSubscriptionState);
 
-const OttSubscription = ({ onClickShowOttModal, showOttModal, setShowOttModal }: Props) => {
-  const [otts, setOtts] = useState(useRecoilValue(ottSubscriptionState));
-
+  // OTT 삭제 함수
   const onClickDeleteOtt = (idx: number) => {
     let copy = [...otts];
     copy = copy.filter((ott, index) => index !== idx);
     setOtts(copy);
-    console.log(copy);
   };
 
-  const onClickAddOtt = () => {};
+  // OTT 추가 함수
+  window.addOtt = (name, subscriptionDate) => {
+    let copy = [...otts];
+    copy = [...otts, { name: name, subscriptionDate: subscriptionDate }];
+    setOtts(copy);
+  };
 
+  // sweetAlert 띄우기 (`` 위치 주의)
   const modalHandler = () => {
-    window.addOtt = () => {
-      let copy = [...otts];
-      copy = [...otts, { name: "watcha", subscriptionDate: "모름" }];
-      setOtts(copy);
-    };
     Swal.fire({
       title: "",
       text: "",
       html: `<div>
-        <img src="${netflixIcon}" onclick="addOtt()" />
-        <img src="${disneyIcon}" onclick="addOtt()" />
-        <img src="${watchaIcon}" onclick="addOtt()" />
-        <img src="${wavveIcon}" onclick="addOtt()" />
+        <img src="${netflixIcon}" onclick="addOtt('netflix', '2023-05-01')" />
+        <img src="${disneyIcon}" onclick="addOtt('disney', '2023-05-01')" />
+        <img src="${watchaIcon}" onclick="addOtt('watcha', '2023-05-01')" />
+        <img src="${wavveIcon}" onclick="addOtt('wavve', '2023-05-01')" />
       </div>`,
     });
   };
 
   return (
-    <>
-      <div onClick={modalHandler}>모달띄우는 버튼</div>
+    <SContainer>
       <Sdiv>보유 OTT</Sdiv>
       <SDiv2>
         구독중인 OTT가 있으시면 알려주세요. <br /> OTT 맞춤으로 스케줄링 할게요!
@@ -88,9 +85,12 @@ const OttSubscription = ({ onClickShowOttModal, showOttModal, setShowOttModal }:
         );
       })}
       <SBoxContainer>
-        <SAddBox onClick={onClickShowOttModal}>+</SAddBox>
+        <SAddBox onClick={modalHandler}>+</SAddBox>
       </SBoxContainer>
-    </>
+      <SBtnContainer>
+        <SNextBtn onClick={() => navigate("/schedule/content")}>다음</SNextBtn>
+      </SBtnContainer>
+    </SContainer>
   );
 };
 
@@ -98,6 +98,7 @@ export default OttSubscription;
 
 const SContainer = styled.div`
   height: 40vh;
+  overflow: auto;
 `;
 
 const Sdiv = styled.div`
@@ -144,4 +145,20 @@ const SAddBox = styled.div`
   height: 15vw;
   font-size: ${({ theme }) => theme.fontSizeType.big.fontSize};
   font-weight: ${({ theme }) => theme.fontSizeType.big.fontWeight};
+`;
+
+const SBtnContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  margin: 1rem;
+`;
+
+const SNextBtn = styled.div`
+  width: 85vw;
+  border-radius: 8px;
+
+  padding: 0.2rem 0;
+  background-color: ${({ theme }) => theme.netflix.pointColor};
+  font-size: ${({ theme }) => theme.fontSizeType.big.fontSize};
+  text-align: center;
 `;
