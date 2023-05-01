@@ -25,10 +25,10 @@ const SRibbonDiv = styled.div<{ selected: boolean }>`
   height: 0;
   margin-right: 2.5vw;
   border-bottom: ${(props) =>
-    props.selected ? "2.7vh solid transparent" : "2vh solid transparent"};
-  border-top: ${(props) => (props.selected ? "7vh solid #ff0000" : "5vh solid #ccc")};
-  border-left: ${(props) => (props.selected ? "2.7vh solid #ff0000" : "2vh solid #ccc")};
-  border-right: ${(props) => (props.selected ? "2.7vh solid #ff0000" : "2vh solid #ccc")};
+    props.selected ? "2.1vh solid transparent" : "1.6vh solid transparent"};
+  border-top: ${(props) => (props.selected ? "5vh solid #ff0000" : "4vh solid #ccc")};
+  border-left: ${(props) => (props.selected ? "2.1vh solid #ff0000" : "1.6vh solid #ccc")};
+  border-right: ${(props) => (props.selected ? "2.1vh solid #ff0000" : "1.6vh solid #ccc")};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -48,17 +48,16 @@ const STitleP = styled.p`
   font-size: ${theme.fontSizeType.big.fontSize};
   font-weight: ${theme.fontSizeType.big.fontWeight};
   color: ${theme.netflix.fontColor};
-  margin-top: 4vh;
+  margin-top: 2.5vh;
 `;
 
 const SMainDiv = styled.div`
   display: flex;
   width: 100vw;
-  height: 55vh;
+  height: 60vh;
   border: 1px solid ${theme.netflix.fontColor};
   border-radius: 12px;
   background-color: ${theme.netflix.tabColor};
-  margin-top: 1vh;
   flex-direction: column;
 `;
 
@@ -66,12 +65,12 @@ const SContentDiv = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 10vh;
+  margin-top: 7vh;
 `;
 
 const SImg = styled.img`
-  width: 40vw;
-  height: 60vw;
+  width: 35vw;
+  height: 53vw;
   border-radius: 12px;
   margin-right: 6vw;
   margin-left: 6vw;
@@ -82,6 +81,15 @@ const STextP = styled.p`
   font-weight: ${theme.fontSizeType.middle.fontWeight};
   color: ${theme.netflix.fontColor};
   margin-bottom: 2vh;
+  margin-top: 0.5vh;
+`;
+
+const SSummaryP = styled.p`
+  font-size: ${theme.fontSizeType.small.fontSize};
+  font-weight: ${theme.fontSizeType.small.fontWeight};
+  color: ${theme.netflix.fontColor};
+  width: 90%;
+  margin-top: 3vh;
 `;
 
 const PageRecommendResult = () => {
@@ -164,6 +172,7 @@ const PageRecommendResult = () => {
               {/*클릭 이벤트 (링크 이동) 필요 */}
             </div>
           </div>
+          <SSummaryP>{recResult[selectedNum].summarize}</SSummaryP>
         </SContentDiv>
       </SMainDiv>
     </Wrapper>
