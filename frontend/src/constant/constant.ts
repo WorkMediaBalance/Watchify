@@ -4,7 +4,7 @@ export const MIN_Y = window.innerHeight * 0.1; // 바텀 시트가 최대로 올
 export const MAX_Y = window.innerHeight * 0.55; // 바텀 시트가 최대로 내려갔을 때의 Y좌표 값
 export const BOTTOM_SHEET_HEIGHT = window.innerHeight - MIN_Y; // 바텀시트 높이
 
-export const genres = [
+export const genres: string[] = [
   "액션",
   "애니메이션",
   "코미디",
@@ -25,3 +25,5 @@ export const genres = [
   "Reality TV",
   "Made in Europe",
 ];
+
+export const USER_NAME: string = "걸무고";
