@@ -5,6 +5,7 @@ import { theme } from "styles/theme";
 import { Routes, Route } from "react-router-dom";
 
 import Layout from "layout/Layout";
+import LayoutAppBar from "layout/LayoutAppBar";
 
 import PageError from "./pages/PageError";
 import PageLogin from "./pages/PageLogin";
@@ -13,6 +14,7 @@ import PageMy from "./pages/PageMy";
 import PageRecommend from "./pages/PageRecommend";
 import PageRecommendResult from "pages/PageRecommendResult";
 import PageSchedule from "./pages/PageSchedule";
+import PageScheduleContent from "pages/PageScheduleContent";
 import PageSearch from "./pages/PageSearch";
 import PageShare from "./pages/PageShare";
 
@@ -28,7 +30,7 @@ const App = () => {
             {/* 회원, 비회원 모두 접근 가능 */}
             <Route path="/" element={<PageMain />} />
             <Route path="/search" element={<PageSearch />} />
-            <Route path="/schedule" element={<PageSchedule />} />
+
             <Route path="/recommend" element={<PageRecommend />} />
             <Route path="/recommend/result" element={<PageRecommendResult />} />
             <Route path="/share" element={<PageShare />} />
@@ -40,8 +42,15 @@ const App = () => {
             <Route element={<NonMemberRoute />}>
               <Route path="/login" element={<PageLogin />} />
             </Route>
+
             {/* 404 페이지 */}
             <Route path="*" element={<PageError />} />
+          </Route>
+
+          {/* Red Dot 없는 Layout Ver. */}
+          <Route element={<LayoutAppBar />}>
+            <Route path="/schedule" element={<PageSchedule />} />
+            <Route path="/schedule/content" element={<PageScheduleContent />} />
           </Route>
         </Routes>
       </ThemeProvider>

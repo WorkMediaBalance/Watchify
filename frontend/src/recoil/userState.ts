@@ -1,6 +1,5 @@
 import { atom } from "recoil";
 import { recoilPersist } from "recoil-persist";
-import OttSubscription from "./../components/common/OttSubscription";
 
 const { persistAtom } = recoilPersist({
   key: "recoil-persist",
@@ -29,7 +28,7 @@ export const ottThemeState = atom<string>({
   effects_UNSTABLE: [persistAtom],
 });
 
-// 민혁 추가 (ott 구독 여부)
+// 구독한 OTT 목록
 type Subscription = {
   name: string;
   subscriptionDate: string;
@@ -47,4 +46,35 @@ export const ottSubscriptionState = atom<Subscription[]>({
       subscriptionDate: "2022-02-19",
     },
   ],
+  // effects_UNSTABLE: [persistAtom],
+});
+
+// 찜 목록
+type Wish = {
+  title: string;
+};
+
+export const wishState = atom<Wish[]>({
+  key: "wishState",
+  default: [
+    {
+      title: "병진의 췌장을 먹고 싶어",
+    },
+    {
+      title: "4월은 병진의 거짓말",
+    },
+    {
+      title: "꽃보다 병진",
+    },
+    {
+      title: "내 머릿속의 병진",
+    },
+    {
+      title: "재벌집 막내 병진",
+    },
+    {
+      title: "D.P를 좋아하는 병진",
+    },
+  ],
+  // effects_UNSTABLE: [persistAtom],
 });
