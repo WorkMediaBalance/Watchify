@@ -36,12 +36,12 @@ public class CalenderDTO {
         this.viewDate = calender.getViewDate();
         this.title = calender.getTurnContent().getContent().getTitle();
         this.imgPath = calender.getTurnContent().getContent().getImgPath();
-        this.imgName = calender.getTurnContent().getContent().getImgName();
+//        this.imgName = calender.getTurnContent().getContent().getImgName();
         this.type = calender.getTurnContent().getContent().getType().getValue();
         this.season = calender.getTurnContent().getContent().getSeason() != null ? calender.getTurnContent().getContent().getSeason() : 0;
         this.episode = calender.getTurnContent().getEpisode();
         this.horizontalImgPath = calender.getTurnContent().getContent().getHorizontialImgPath();
-        this.horizontalImgName = calender.getTurnContent().getContent().getHorizontialImgName();
+//        this.horizontalImgName = calender.getTurnContent().getContent().getHorizontialImgName();
         this.runtime = calender.getTurnContent().getContent().getRuntime();
         this.ott = calender.getOtt().getName();
     }
