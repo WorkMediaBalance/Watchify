@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -16,6 +17,7 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 @AllArgsConstructor
+@DynamicUpdate // update 시에 실제 변경된 컬럼으로만 update 쿼리를 생성해 준다.
 public class User implements Serializable {
 
     @Id
@@ -30,6 +32,11 @@ public class User implements Serializable {
     private boolean isOttAlarm;
     private boolean isContentAlarm;
     private boolean isDeleted;
+
+    private String name;
+    private String nickName;
+    private String provider;
+    private String role = "ROLE_USER";
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<WishContent> wishContents = new ArrayList<>();
@@ -52,5 +59,18 @@ public class User implements Serializable {
 
     public void updateContentAlarm() {
         this.isContentAlarm = !this.isContentAlarm;
+    }
+
+    public User(String name, String email, String provider) {
+        this.name = name;
+        this.email = email;
+        this.provider = provider;
+        this.nickName = name; // 처음 별명은 이름으로 대체.
+    }
+
+    public User updateName(String name) {
+        this.name = name;
+
+        return this;
     }
 }
