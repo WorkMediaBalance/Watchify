@@ -24,7 +24,7 @@ const SheetDiv = styled.div`
 
 const SheetBtn = styled.button`
   color: #ffffff;
-  font-size: 1rem;
+  font-size: 0.9rem;
   border-radius: 12px;
   width: 32vw;
   height: 4.5vh;
