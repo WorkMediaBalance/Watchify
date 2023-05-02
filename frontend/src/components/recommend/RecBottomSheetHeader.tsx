@@ -6,7 +6,8 @@ const Wrapper = styled.div`
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
   position: relative;
-  padding-top: 1rem;
+  padding-top: 16px;
+  padding-bottom: 4px;
 `;
 
 const Handle = styled.div`
@@ -14,6 +15,7 @@ const Handle = styled.div`
   height: 4px;
   border-radius: 2px;
   background-color: #d0d0d0;
+  margin: auto;
 `;
 
 const RecBottomSheetHeader: FC = () => {
