@@ -8,7 +8,7 @@ const ProfileContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  // height: 18vh;
+  height: 20vh;
 `;
 
 const PhotoAndChange = styled.div`
@@ -88,52 +88,57 @@ const Profile = () => {
   };
 
   return (
-    <ProfileContainer>
-      <PhotoAndChange>
-        <PhotoContainer>
-          <Photo src={"http://via.placeholder.com/132x84"} alt="profileImage" />
-          <ChangePhotoButton>
-            <AiFillCamera />
-          </ChangePhotoButton>
-        </PhotoContainer>
-        <ChangePhotoInput
-        // type="file"
-        // accept={"image/*"}
-        // onChange={changePhoto}
-        // ref={imgRef}
-        />
-      </PhotoAndChange>
-      <UserNameAndChangeButtonContainer>
-        {!isNameInput ? (
-          <UserName>사용자 이름</UserName>
-        ) : (
-          <UserNameModiyInput onChange={onChange} onKeyDown={onKeyDown} />
-        )}
-        {!isNameInput ? (
-          <UserNameChangeButton>
-            <BsPencil
-              onClick={() => {
-                setIsNameInput(true);
-              }}
+    <div style={{ position: "fixed", width: "100vw" }}>
+      <ProfileContainer>
+        <PhotoAndChange>
+          <PhotoContainer>
+            <Photo
+              src={"http://via.placeholder.com/132x84"}
+              alt="profileImage"
             />
-          </UserNameChangeButton>
-        ) : (
-          <UserNameChangeButton>
-            <AiOutlineCheckCircle
-              size={20}
-              // onClick={() => changeName();}
-            />
-            <RxCrossCircled
-              size={20}
-              onClick={() => {
-                setIsNameInput(false);
-                setInputName(""); //TODO: 여기 나중에 사용자 이름으로 초기화 해주기
-              }}
-            />
-          </UserNameChangeButton>
-        )}
-      </UserNameAndChangeButtonContainer>
-    </ProfileContainer>
+            <ChangePhotoButton>
+              <AiFillCamera />
+            </ChangePhotoButton>
+          </PhotoContainer>
+          <ChangePhotoInput
+          // type="file"
+          // accept={"image/*"}
+          // onChange={changePhoto}
+          // ref={imgRef}
+          />
+        </PhotoAndChange>
+        <UserNameAndChangeButtonContainer>
+          {!isNameInput ? (
+            <UserName>사용자 이름</UserName>
+          ) : (
+            <UserNameModiyInput onChange={onChange} onKeyDown={onKeyDown} />
+          )}
+          {!isNameInput ? (
+            <UserNameChangeButton>
+              <BsPencil
+                onClick={() => {
+                  setIsNameInput(true);
+                }}
+              />
+            </UserNameChangeButton>
+          ) : (
+            <UserNameChangeButton>
+              <AiOutlineCheckCircle
+                size={20}
+                // onClick={() => changeName();}
+              />
+              <RxCrossCircled
+                size={20}
+                onClick={() => {
+                  setIsNameInput(false);
+                  setInputName(""); //TODO: 여기 나중에 사용자 이름으로 초기화 해주기
+                }}
+              />
+            </UserNameChangeButton>
+          )}
+        </UserNameAndChangeButtonContainer>
+      </ProfileContainer>
+    </div>
   );
 };
 
