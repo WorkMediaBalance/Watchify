@@ -31,3 +31,18 @@ export const genres: string[] = [
 ];
 
 export const USER_NAME: string = "걸무고";
+
+export const months = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];

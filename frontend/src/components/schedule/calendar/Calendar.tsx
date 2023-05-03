@@ -3,93 +3,15 @@ import styled from "styled-components";
 import { useSwipeable } from "react-swipeable";
 import { motion, AnimatePresence } from "framer-motion";
 import { theme } from "styles/theme";
+import { months } from "constant/constant";
 
-const Wrapper = styled.div`
-  color: ${theme.netflix.fontColor};
-  max-width: 100vw;
-`;
-
-const SCalendarDiv = styled(motion.div)`
-  color: ${theme.netflix.fontColor};
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-
-const SHeader = styled.div`
-  margin-top: 2vh;
-  padding-bottom: 0.5vh;
-  margin-bottom: 1vh;
-  width: 100vw;
-  color: ${theme.netflix.fontColor};
-`;
-
-const SMonth = styled.p`
-  font-size: ${theme.fontSizeType.big.fontSize};
-  font-weight: ${theme.fontSizeType.big.fontWeight};
-  margin-bottom: 1vh;
-  margin-top: 0;
-  text-align: center;
-`;
-
-const SToday = styled.p`
-  position: absolute;
-  right: 2vw;
-  margin-bottom: 0;
-  margin-top: 0;
-  line-height: 2;
-`;
-
-const STable = styled.table`
-  width: 100vw;
-  height: 75vh;
-  border-collapse: collapse;
-`;
-
-const STd = styled.td`
-  text-align: center;
-  vertical-align: middle;
-  width: calc(100vw / 7);
-`;
-
-const SThead = styled.thead`
-  th {
-    border-bottom: 1px solid ${theme.netflix.fontColor};
-    padding-bottom: 1vh;
-  }
-`;
-
-const STbody = styled.tbody`
-  .selected-day {
-    border: 2px solid ${theme.netflix.pointColor};
-  }
-  .today {
-    border: 2px solid yellow;
-  }
-`;
-
-const Calendar = () => {
+const Calendar = (props: { onDateClick: () => void }) => {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [clickedDay, setClickedDay] = useState<HTMLElement | null>(null);
   const weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
   const month = getMonthAbbreviation(selectedDate);
 
   function getMonthAbbreviation(date: Date) {
-    const months = [
-      "January",
-      "February",
-      "March",
-      "April",
-      "May",
-      "June",
-      "July",
-      "August",
-      "September",
-      "October",
-      "November",
-      "December",
-    ];
-
     const currentDate = new Date();
     const currentYear = currentDate.getFullYear();
     const year = date.getFullYear();
@@ -98,7 +20,6 @@ const Calendar = () => {
     if (year !== currentYear) {
       return `${year} ${months[monthIndex]}`;
     }
-
     return months[monthIndex];
   }
 
@@ -169,9 +90,8 @@ const Calendar = () => {
     }
     event.currentTarget.classList.add("selected-day");
     setClickedDay(event.currentTarget);
+    props.onDateClick();
   };
-
-  useEffect(() => {}, []);
 
   return (
     <Wrapper>
@@ -229,7 +149,9 @@ const Calendar = () => {
                             data-key={`${rowIndex}-${dayIndex}`}
                             className={className}
                           >
-                            {content}
+                            <STdDiv>
+                              <SP>{content}</SP>
+                            </STdDiv>
                           </STd>
                         );
                       })}
@@ -246,3 +168,83 @@ const Calendar = () => {
 };
 
 export default Calendar;
+
+const Wrapper = styled.div`
+  color: ${theme.netflix.fontColor};
+  max-width: 100vw;
+`;
+
+const SCalendarDiv = styled(motion.div)`
+  color: ${theme.netflix.fontColor};
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const SHeader = styled.div`
+  margin-top: 2vh;
+  padding-bottom: 0.5vh;
+  margin-bottom: 1vh;
+  width: 100vw;
+  color: ${theme.netflix.fontColor};
+`;
+
+const SMonth = styled.p`
+  font-size: ${theme.fontSizeType.big.fontSize};
+  font-weight: ${theme.fontSizeType.big.fontWeight};
+  margin-bottom: 1vh;
+  margin-top: 0;
+  text-align: center;
+`;
+
+const SToday = styled.p`
+  position: absolute;
+  right: 2vw;
+  margin-bottom: 0;
+  margin-top: 0;
+  line-height: 2;
+`;
+
+const STable = styled.table`
+  width: 100vw;
+  height: 75vh;
+  border-collapse: collapse;
+`;
+
+const STd = styled.td`
+  text-align: center;
+  width: calc(100vw / 7);
+`;
+
+const SThead = styled.thead`
+  th {
+    border-bottom: 1px solid ${theme.netflix.fontColor};
+    padding-bottom: 1vh;
+  }
+`;
+
+const STbody = styled.tbody`
+  .selected-day div {
+    border-radius: 8px;
+    // border: 1px solid ${theme.netflix.pointColor};
+    background-color: rgba(255, 0, 0, 0.2);
+  }
+  .today p {
+    background-color: rgba(209, 209, 209, 0.2);
+    border-radius: 50%;
+    width: 35%;
+  }
+`;
+
+const STdDiv = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: border-box;
+`;
+
+const SP = styled.p`
+  margin-top: 1vh;
+`;
