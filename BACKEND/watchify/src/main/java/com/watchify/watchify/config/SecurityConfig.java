@@ -23,38 +23,34 @@ public class SecurityConfig {
     private final OAuth2SuccessHandler successHandler;
     private final TokenService tokenService;
 
-    // encoder를 빈으로 등록.
-//    @Bean
-//    public BCryptPasswordEncoder bCryptPasswordEncoder() {
-//        return new BCryptPasswordEncoder();
-//    }
-
     // WebSecurityConfigurerAdapter가 더이상 쓰이지 않아서 대체
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.httpBasic().disable()
+                // rest api이기 때문에 http 로그인 페이지 폼이 없고 csrf 보안이 필요없다.
+                // 또한 토큰기반 인증을 할꺼니까 세션도 생성을 하지 않는다.
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 
                 .and()
-                .authorizeRequests()
-                .antMatchers("/token/**").permitAll()
-                .anyRequest().authenticated()
+                    .authorizeRequests()
+                    .antMatchers("/token/**").permitAll()
+                    .anyRequest().authenticated()
 
                 .and()
-                .addFilterBefore(new JwtAuthFilter(tokenService),
-                        UsernamePasswordAuthenticationFilter.class)
-                .oauth2Login() // oauth2Login 설정을 시작한다는 뜻이다.
-                .loginPage("/token/expired") // login 페이지 url을 직접 설정해준다는 뜻이다.
-                .successHandler(successHandler) // 로그인 성공 시, handler를 설정해준다.
-                .userInfoEndpoint() // oauth2 로그인 성공 후 설정을 시작한다는 말이다.
-                .userService(oAuth2UserService); // oAuth2UserService에서 처리하겠다는 말이다.
+                    .addFilterBefore(new JwtAuthFilter(tokenService),
+                            UsernamePasswordAuthenticationFilter.class)
+                    .oauth2Login() // oauth2Login 설정을 시작한다는 뜻이다.
+                        // 토큰이 만료되었을 경우 /token/expired 로 이동하여 리프레시 한다.
+                        // 위에서 .antMatchers("/token/**").permitAll() 설정으로
+                        // /token/expired 은 별도의 권한 없이 접근 가능!
+                        .loginPage("/token/expired") // login 페이지 url을 직접 설정해준다는 뜻이다.
+                        .successHandler(successHandler) // 로그인 성공 시, handler를 설정해준다.
+                        .userInfoEndpoint() // oauth2 로그인 성공 후 설정을 시작한다는 말이다.
+                        .userService(oAuth2UserService); // oAuth2UserService에서 처리하겠다는 말이다.
 
         http.addFilterBefore(new JwtAuthFilter(tokenService), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
-
-
-
 }

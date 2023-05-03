@@ -1,6 +1,7 @@
 package com.watchify.watchify.db.entity;
 
 
+import com.watchify.watchify.dto.response.UserDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -61,16 +62,19 @@ public class User implements Serializable {
         this.isContentAlarm = !this.isContentAlarm;
     }
 
-    public User(String name, String email, String provider) {
-        this.name = name;
-        this.email = email;
-        this.provider = provider;
-        this.nickName = name; // 처음 별명은 이름으로 대체.
+    public User(UserDTO userDto) {
+        this.name = userDto.getName();
+        this.email = userDto.getEmail();
+        this.provider = userDto.getProvider();
+        this.nickName = userDto.getName(); // 처음 별명은 이름으로 대체.
+        this.age = userDto.getAge();
+        this.isDeleted = userDto.isDeleted();
+        this.isContentAlarm = userDto.isContentAlarm();
+        this.isOttAlarm = userDto.isOttAlarm();
+        this.isDeleted = userDto.isDeleted();
     }
 
-    public User updateName(String name) {
-        this.name = name;
-
-        return this;
+    public void UpdateIsDeleted() {
+        this.isDeleted = !this.isDeleted;
     }
 }

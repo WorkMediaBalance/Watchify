@@ -11,11 +11,14 @@ public class UserRequestMapper {
         String email = oAuth2User.getAttribute("email");
         String name = oAuth2User.getAttribute("name");
         String imgPath = oAuth2User.getAttribute("picture");
+        String provider = oAuth2User.getAttribute("provider");
 
         return UserDTO.builder()
                 .email(email)
                 .name(name)
                 .imgPath(imgPath)
+                .provider(provider)
                 .build();
     }
+
 }

@@ -8,13 +8,13 @@ import lombok.NoArgsConstructor;
 @Getter
 public class UserDTO {
     private String email;
-    private int age;
-    private boolean gender;
+    private int age = 0;
+    private boolean gender = false;
     private String imgPath;
     private String imgName;
-    private boolean isOttAlarm;
-    private boolean isContentAlarm;
-    private boolean isDeleted;
+    private boolean isOttAlarm = false;
+    private boolean isContentAlarm = false;
+    private boolean isDeleted = false;
 
     private String name;
     private String nickName;
@@ -22,10 +22,13 @@ public class UserDTO {
 
     // oauth 에서 쓰고 있음
     @Builder
-    public UserDTO(String email, String name, String imgPath) {
+    public UserDTO(String email, String provider, String name, String imgPath) {
         this.email = email;
         this.name = name;
         this.imgPath = imgPath;
-
+        this.provider = provider;
     }
+
+    public void setUserNickName(String nickName) { this.nickName = nickName; }
+
 }
