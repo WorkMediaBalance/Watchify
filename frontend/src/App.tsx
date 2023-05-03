@@ -6,6 +6,7 @@ import { Routes, Route } from "react-router-dom";
 
 import Layout from "layout/Layout";
 import LayoutAppBar from "layout/LayoutAppBar";
+import LayoutRedDot from "layout/LayoutRedDot";
 
 import PageError from "./pages/PageError";
 import PageLogin from "./pages/PageLogin";
@@ -29,15 +30,15 @@ const App = () => {
           <Route element={<Layout />}>
             {/* 회원, 비회원 모두 접근 가능 */}
             <Route path="/" element={<PageMain />} />
-            <Route path="/search" element={<PageSearch />} />
-
             <Route path="/recommend" element={<PageRecommend />} />
             <Route path="/recommend/result" element={<PageRecommendResult />} />
             <Route path="/share" element={<PageShare />} />
+
             {/* 회원만 접근 가능 */}
             <Route element={<MemberRoute />}>
               <Route path="/my" element={<PageMy />} />
             </Route>
+
             {/* 비회원만 접근 가능 */}
             <Route element={<NonMemberRoute />}>
               <Route path="/login" element={<PageLogin />} />
@@ -51,6 +52,10 @@ const App = () => {
           <Route element={<LayoutAppBar />}>
             <Route path="/schedule" element={<PageSchedule />} />
             <Route path="/schedule/content" element={<PageScheduleContent />} />
+          </Route>
+
+          <Route element={<LayoutRedDot />}>
+            <Route path="/search" element={<PageSearch />} />
           </Route>
         </Routes>
       </ThemeProvider>
