@@ -49,8 +49,8 @@ const UserNameAndChangeButtonContainer = styled.div`
 `;
 
 const UserName = styled.div`
-  font-size: ${({ theme }) => theme.fontSizeType.medium};
-  font-weight: ${({ theme }) => theme.fontSizeType.medium};
+  font-size: ${({ theme }) => theme.fontSizeType.middle};
+  font-weight: ${({ theme }) => theme.fontSizeType.middle};
   color: ${({ theme }) => theme.netflix.fontColor};
   text-align: center;
   display: inline;
