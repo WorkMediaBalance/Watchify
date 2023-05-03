@@ -7,13 +7,13 @@ He Xiangnan et al. Neural Collaborative Filtering. In WWW 2017.
 @author: Xiangnan He (xiangnanhe@gmail.com)
 '''
 import numpy as np
-import theano.tensor as T
+# import theano.tensor as T
 import keras
 from keras import backend as K
-from keras import initializations
+from keras import initializers
 from keras.models import Sequential, Model, load_model, save_model
 from keras.layers.core import Dense, Lambda, Activation
-from keras.layers import Embedding, Input, Dense, merge, Reshape, Merge, Flatten
+from keras.layers import Embedding, Input, Dense, Concatenate, Reshape, Flatten
 from keras.optimizers import Adagrad, Adam, SGD, RMSprop
 from keras.regularizers import l2
 from Dataset import Dataset
@@ -52,7 +52,7 @@ def parse_args():
     return parser.parse_args()
 
 def init_normal(shape, name=None):
-    return initializations.normal(shape, scale=0.01, name=name)
+    return initializers.normal(shape, scale=0.01, name=name)
 
 def get_model(num_users, num_items, latent_dim, regs=[0,0]):
     # Input variables
@@ -69,7 +69,7 @@ def get_model(num_users, num_items, latent_dim, regs=[0,0]):
     item_latent = Flatten()(MF_Embedding_Item(item_input))
     
     # Element-wise product of user and item embeddings 
-    predict_vector = merge([user_latent, item_latent], mode = 'mul')
+    predict_vector = Concatenate([user_latent, item_latent], mode = 'mul')
     
     # Final prediction layer
     #prediction = Lambda(lambda x: K.sigmoid(K.sum(x)), output_shape=(1,))(predict_vector)

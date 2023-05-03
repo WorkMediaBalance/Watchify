@@ -45,10 +45,10 @@ def evaluate_model(model, testRatings, testNegatives, K, num_thread):
         return (hits, ndcgs)
     # Single thread
     for idx in range(len(_testRatings)):
-        (hr,ndcg) = eval_one_rating(idx)
+        (hr,ndcg,ranklist) = eval_one_rating(idx)
         hits.append(hr)
         ndcgs.append(ndcg)      
-    return (hits, ndcgs)
+    return (hits, ndcgs,ranklist)
 
 def eval_one_rating(idx):
     rating = _testRatings[idx]
@@ -68,9 +68,10 @@ def eval_one_rating(idx):
     
     # Evaluate top rank list
     ranklist = heapq.nlargest(_K, map_item_score, key=map_item_score.get)
+    # print('===== rank :',ranklist[:10])
     hr = getHitRatio(ranklist, gtItem)
     ndcg = getNDCG(ranklist, gtItem)
-    return (hr, ndcg)
+    return (hr, ndcg, ranklist)
 
 def getHitRatio(ranklist, gtItem):
     for item in ranklist:
