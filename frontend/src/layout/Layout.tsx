@@ -6,8 +6,7 @@ import styled from "styled-components";
 
 const Background = styled.div`
   background-color: ${({ theme }) => theme.netflix.backgroundColor};
-  // height: 91vh;
-  height: 100%;
+  min-height: 95vh;
 `;
 
 const Layout = () => {
@@ -72,7 +71,7 @@ const Layout = () => {
           setInnerDotSize("35%");
           setIsSemiCircleRotated(true);
         }}
-        style={{ marginTop: "5vh", minHeight: "100vh" }}
+        style={{ position: "relative", marginTop: "5vh" }}
       >
         <Background>
           <Outlet />
