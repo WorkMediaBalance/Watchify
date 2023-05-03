@@ -75,7 +75,7 @@ const Profile = () => {
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.value && e.target.value.length > 10) {
-      alert("닉네임은 10자 이내로 작성해주세요.");
+      alert("닉네임은 10자 이내로 작성해주세요."); //TODO: axios 보낼때도 한번 더 막아야함
     } else {
       setInputName(e.target.value);
     }
