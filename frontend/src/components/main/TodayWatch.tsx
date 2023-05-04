@@ -74,3 +74,16 @@ const BottomRectangle = styled.div<{ clickState: number }>`
     }
   }};
 `;
+
+// @keyframes diamond-out-center {
+//   from {
+//     clip-path: polygon(-50% 50%, 50% -50%, 150% 50%, 50% 150%);
+//   }
+//   to {
+//     clip-path: polygon(50% 50%, 50% 50%, 50% 50%, 50% 50%);
+//   }
+// }
+
+// [transition-style="out:diamond:center"] {
+//   animation: 1.5s cubic-bezier(.25, 1, .30, 1) diamond-out-center both;
+// }
