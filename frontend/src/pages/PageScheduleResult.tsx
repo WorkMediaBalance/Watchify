@@ -11,21 +11,10 @@ const Wrapper = styled.div`
 `;
 
 const PageScheduleResult = () => {
-  const [depth, setDepth] = useState<number>(0);
-
   return (
     <Wrapper>
-      <Calendar
-        onDateClick={() => {
-          setDepth(1);
-        }}
-      />
-      <CalendarBottomSheet
-        depth={depth}
-        onClose={() => {
-          setDepth(depth - 1);
-        }}
-      />
+      <Calendar onDateClick={() => {}} />
+      <CalendarBottomSheet />
     </Wrapper>
   );
 };

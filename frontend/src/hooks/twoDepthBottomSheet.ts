@@ -1,5 +1,5 @@
 import { useRef, useEffect, useState } from "react";
-import { TWO_MIN_Y, ONE_MIN_Y, TWO_MAX_Y, TWO_BOTTOM_SHEET_HEIGHT } from "../constant/constant";
+import { TWO_MIN_Y, ONE_MIN_Y, TWO_MAX_Y } from "../constant/constant";
 
 interface BottomSheetMetrics {
   touchStart: {
@@ -14,7 +14,7 @@ interface BottomSheetMetrics {
   depth: number;
 }
 
-export default function useRecBottomSheet() {
+export default function useTwoDepthBottomSheet() {
   const sheet = useRef<HTMLDivElement>(null);
 
   const content = useRef<HTMLDivElement>(null);
@@ -34,25 +34,11 @@ export default function useRecBottomSheet() {
 
   const [sheetDepth, setSheetDepth] = useState<number>(0);
   const openBottomSheet = () => {
-    metrics.current.depth += 1;
     setSheetDepth(sheetDepth + 1);
-    if (metrics.current.depth === 1) {
-      sheet.current!.style.setProperty("transform", `translateY(${ONE_MIN_Y - TWO_MAX_Y}px)`);
-    }
-    if (metrics.current.depth === 2) {
-      sheet.current!.style.setProperty("transform", `translateY(${TWO_MIN_Y - TWO_MAX_Y}px)`);
-    }
   };
 
   const closeBottomSheet = () => {
-    metrics.current.depth -= 1;
     setSheetDepth(sheetDepth - 1);
-    if (metrics.current.depth === 0) {
-      sheet.current!.style.setProperty("transform", "translateY(0)");
-    }
-    if (metrics.current.depth === 1) {
-      sheet.current!.style.setProperty("transform", `translateY(${ONE_MIN_Y - TWO_MAX_Y}px)`);
-    }
   };
 
   useEffect(() => {
@@ -114,7 +100,7 @@ export default function useRecBottomSheet() {
           nextSheetY = TWO_MAX_Y;
         }
 
-        sheet.current!.style.setProperty("transform", `translateY(${nextSheetY - TWO_MAX_Y}px)`); //바닥 만큼은 빼야쥬...
+        sheet.current!.style.setProperty("transform", `translateY(${nextSheetY - TWO_MAX_Y}px)`);
       } else {
         document.body.style.overflowY = "hidden";
       }
@@ -130,12 +116,10 @@ export default function useRecBottomSheet() {
       if (currentSheetY !== TWO_MIN_Y) {
         if (touchMove.movingDirection === "down") {
           closeBottomSheet();
-          // sheet.current!.style.setProperty("transform", "translateY(0)");
         }
 
         if (touchMove.movingDirection === "up") {
           openBottomSheet();
-          // sheet.current!.style.setProperty("transform", `translateY(${TWO_MIN_Y - TWO_MAX_Y}px)`);
         }
       }
 
@@ -166,5 +150,17 @@ export default function useRecBottomSheet() {
     content.current!.addEventListener("touchstart", handleTouchStart);
   }, []);
 
-  return { sheet, content, openBottomSheet, sheetDepth };
+  useEffect(() => {
+    if (sheetDepth === 0) {
+      sheet.current!.style.setProperty("transform", "translateY(0)");
+    }
+    if (sheetDepth === 1) {
+      sheet.current!.style.setProperty("transform", `translateY(${ONE_MIN_Y - TWO_MAX_Y}px)`);
+    }
+    if (sheetDepth === 2) {
+      sheet.current!.style.setProperty("transform", `translateY(${TWO_MIN_Y - TWO_MAX_Y}px)`);
+    }
+  }, [sheetDepth]);
+
+  return { sheet, content, openBottomSheet, sheetDepth, setSheetDepth };
 }
