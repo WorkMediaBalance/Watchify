@@ -16,7 +16,7 @@ export const isLoggedInState = atom<boolean>({
 
 export const userState = atom<user>({
   key: "userState",
-  default: { pk: 0, nickname: "", imgPath: "" },
+  default: { pk: 0, name: "", imgPath: "" },
   effects_UNSTABLE: [persistAtom],
 });
 

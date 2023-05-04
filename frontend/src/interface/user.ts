@@ -1,5 +1,5 @@
 export interface user {
   pk: number;
-  nickname: string;
+  name: string;
   imgPath: string;
 }

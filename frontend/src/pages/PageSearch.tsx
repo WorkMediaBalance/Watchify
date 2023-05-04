@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 import { AiOutlineLeft } from "react-icons/ai";
 import { BsSearch } from "react-icons/bs";
+import { RxCross2 } from "react-icons/rx";
 
 import logoImg from "assets/img/logo.png";
 
@@ -29,27 +30,37 @@ const PageSearch = () => {
     setSearchWord(e.target.value);
   };
 
+  // 검색 시 돋보기 아이콘 클릭 시 함수
   const onClickSearchIcon = () => {
     if (searchWord) {
       console.log(`${searchWord}이(가) 검색되었습니다.`);
       // API 요청 보내기
     } else {
+      console.log("검색어를 입력하세요.");
     }
   };
 
+  const onClickXIcon = () => {
+    setSearchWord("");
+  };
+
+  // 자동완성 텍스트 (돋보기 icon 포함) 클릭했을 때 검색 실행
   const onClickSearchAutoComplete = (word: string) => {
     console.log(`${word}이(가) 검색되었습니다.`);
     // API 요청 보내기
   };
 
+  // 엔터 터치 시 검색 실행
   function onKeyPress(event: React.KeyboardEvent<HTMLInputElement>) {
     // 모바일 환경에서도 enter 클릭했을 때 작동하는지 봐야함
+    const word = searchWord;
     if (event.key === "Enter") {
-      console.log("Enter 키를 입력해 검색했습니다.");
+      console.log(`Enter 키를 눌러 ${word}을(를) 검색했습니다.`);
       // API 요청 보내기
     }
   }
 
+  // 초기화면에서 자동완성 태그 숨기기
   const hideAutocomplete = () => {
     setAutocompleteVisible(false);
   };
@@ -65,7 +76,6 @@ const PageSearch = () => {
         <>
           <SLogoImg src={logoImg}></SLogoImg>
           <SearchContainer>
-            {/* <SAiOutlineLeft onClick={() => navigate(-1)} /> */}
             <SSearch
               onClick={(e) => {
                 e.stopPropagation();
@@ -83,7 +93,7 @@ const PageSearch = () => {
       ) : (
         <>
           <InputContainer>
-            <SAiOutlineLeft onClick={() => navigate(-1)} />
+            <SAiOutlineLeft onClick={() => navigate("/search")} />
             <SInput
               // onFocus={() => setAutocompleteVisible(true)} 웹에서 사용시 사용할 event
               // onFocus={() => setAutocompleteVisible(true)}
@@ -95,7 +105,23 @@ const PageSearch = () => {
               }}
               onChange={wordChange}
               // placeholder="찾고자 하는 컨텐츠 제목을 입력하세요."
+              value={searchWord}
             />
+            {searchWord ? (
+              <SRxCross2
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onClickXIcon();
+                }}
+              />
+            ) : (
+              <SBsSearch2
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onClickSearchIcon();
+                }}
+              />
+            )}
           </InputContainer>
           <SHr />
         </>
@@ -106,6 +132,10 @@ const PageSearch = () => {
           {autocompleteWords &&
             autocompleteWords.map((word, idx) => (
               <SAutoCompleteDiv key={idx} onClick={() => onClickSearchAutoComplete(word)}>
+                <SIconWrapper>
+                  <SBsSearch3 />
+                </SIconWrapper>
+
                 <SP>{word.length > 70 ? `${word.slice(0, 70)}...` : word}</SP>
               </SAutoCompleteDiv>
             ))}
@@ -148,14 +178,35 @@ const InputContainer = styled.div`
 `;
 
 const SAiOutlineLeft = styled(AiOutlineLeft)`
-  width: 1.5rem;
-  height: 1.5rem;
+  width: 5vw;
+  height: 5vw;
 `;
 
 const SBsSearch = styled(BsSearch)`
   position: absolute;
   top: 22%;
   left: 7%;
+  width: 5vw;
+  height: 5vw;
+`;
+
+const SBsSearch2 = styled(BsSearch)`
+  width: 4.5vw;
+  height: 4.5vw;
+`;
+
+const SIconWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  margin-right: 5vw;
+`;
+
+const SBsSearch3 = styled(BsSearch)`
+  width: 4.5vw;
+  height: 4.5vw;
+`;
+
+const SRxCross2 = styled(RxCross2)`
   width: 5vw;
   height: 5vw;
 `;
@@ -178,7 +229,7 @@ const SSearch = styled.input`
 `;
 
 const SInput = styled.input`
-  width: 85vw;
+  width: 75vw;
   height: 5vw;
   outline: none;
   box-shadow: none;
@@ -195,7 +246,8 @@ const SInput = styled.input`
 `;
 
 const SHr = styled.hr`
-  width: 85vw;
+  width: 94vw;
+  margin: 0;
 `;
 
 const SAutoContainer = styled.div`
@@ -206,10 +258,12 @@ const SAutoContainer = styled.div`
 `;
 
 const SAutoCompleteDiv = styled.div`
-  width: 71vw;
-  border-color: rgba(248, 79, 90, 0.4);
-  border-radius: 1rem;
-  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
+  display: flex;
+  width: 80vw;
+  text-align: center;
+  // border-color: rgba(248, 79, 90, 0.4);
+  // border-radius: 1rem;
+  // box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
   z-index: 3;
 `;
 

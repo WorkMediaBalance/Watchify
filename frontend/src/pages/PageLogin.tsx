@@ -25,10 +25,16 @@ const PageLogin = () => {
 export default PageLogin;
 
 const SLayout = styled.div`
+  // height: 98vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  // background-repeat: no-repeat;
+  // background-image: url("https://image.tmdb.org/t/p/original/wv22frLmCpXDRjKj4MWFwa4eTOK.jpg");
+  // background-size: cover;
+  // background-position: center center;
+  // filter: blur(2px);
 `;
 
 const SLogoImg = styled.img`
