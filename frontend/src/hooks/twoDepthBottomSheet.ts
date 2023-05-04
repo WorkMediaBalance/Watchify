@@ -1,5 +1,5 @@
 import { useRef, useEffect, useState } from "react";
-import { MIN_Y, MAX_Y } from "../constant/constant";
+import { TWO_MIN_Y, ONE_MIN_Y, TWO_MAX_Y, TWO_BOTTOM_SHEET_HEIGHT } from "../constant/constant";
 
 interface BottomSheetMetrics {
   touchStart: {
@@ -36,12 +36,23 @@ export default function useRecBottomSheet() {
   const openBottomSheet = () => {
     metrics.current.depth += 1;
     setSheetDepth(sheetDepth + 1);
-    sheet.current!.style.setProperty("transform", `translateY(${MIN_Y - MAX_Y}px)`);
+    if (metrics.current.depth === 1) {
+      sheet.current!.style.setProperty("transform", `translateY(${ONE_MIN_Y - TWO_MAX_Y}px)`);
+    }
+    if (metrics.current.depth === 2) {
+      sheet.current!.style.setProperty("transform", `translateY(${TWO_MIN_Y - TWO_MAX_Y}px)`);
+    }
   };
 
   const closeBottomSheet = () => {
     metrics.current.depth -= 1;
     setSheetDepth(sheetDepth - 1);
+    if (metrics.current.depth === 0) {
+      sheet.current!.style.setProperty("transform", "translateY(0)");
+    }
+    if (metrics.current.depth === 1) {
+      sheet.current!.style.setProperty("transform", `translateY(${ONE_MIN_Y - TWO_MAX_Y}px)`);
+    }
   };
 
   useEffect(() => {
@@ -52,7 +63,7 @@ export default function useRecBottomSheet() {
         return true;
       }
 
-      if (sheet.current!.getBoundingClientRect().y !== MIN_Y) {
+      if (sheet.current!.getBoundingClientRect().y !== TWO_MIN_Y) {
         return true;
       }
 
@@ -95,15 +106,15 @@ export default function useRecBottomSheet() {
         const touchOffset = currentTouch.clientY - touchStart.touchY;
         let nextSheetY = touchStart.sheetY + touchOffset;
 
-        if (nextSheetY <= MIN_Y) {
-          nextSheetY = MIN_Y;
+        if (nextSheetY <= TWO_MIN_Y) {
+          nextSheetY = TWO_MIN_Y;
         }
 
-        if (nextSheetY >= MAX_Y) {
-          nextSheetY = MAX_Y;
+        if (nextSheetY >= TWO_MAX_Y) {
+          nextSheetY = TWO_MAX_Y;
         }
 
-        sheet.current!.style.setProperty("transform", `translateY(${nextSheetY - MAX_Y}px)`); //바닥 만큼은 빼야쥬...
+        sheet.current!.style.setProperty("transform", `translateY(${nextSheetY - TWO_MAX_Y}px)`); //바닥 만큼은 빼야쥬...
       } else {
         document.body.style.overflowY = "hidden";
       }
@@ -116,14 +127,15 @@ export default function useRecBottomSheet() {
       // Snap Animation
       const currentSheetY = sheet.current!.getBoundingClientRect().y;
 
-      if (currentSheetY !== MIN_Y) {
+      if (currentSheetY !== TWO_MIN_Y) {
         if (touchMove.movingDirection === "down") {
           closeBottomSheet();
-          sheet.current!.style.setProperty("transform", "translateY(0)");
+          // sheet.current!.style.setProperty("transform", "translateY(0)");
         }
 
         if (touchMove.movingDirection === "up") {
-          sheet.current!.style.setProperty("transform", `translateY(${MIN_Y - MAX_Y}px)`);
+          openBottomSheet();
+          // sheet.current!.style.setProperty("transform", `translateY(${TWO_MIN_Y - TWO_MAX_Y}px)`);
         }
       }
 

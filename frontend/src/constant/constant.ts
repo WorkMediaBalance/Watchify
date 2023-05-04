@@ -8,6 +8,11 @@ export const MIN_Y = window.innerHeight * 0.1; // 바텀 시트가 최대로 올
 export const MAX_Y = window.innerHeight * 0.55; // 바텀 시트가 최대로 내려갔을 때의 Y좌표 값
 export const BOTTOM_SHEET_HEIGHT = window.innerHeight - MIN_Y; // 바텀시트 높이
 
+export const TWO_MIN_Y = window.innerHeight * 0.1; // 바텀 시트가 최대로 올라 갔을 때의 Y좌표 값
+export const ONE_MIN_Y = window.innerHeight * 0.4; // 바텀 시트가 최대로 올라 갔을 때의 Y좌표 값
+export const TWO_MAX_Y = window.innerHeight * 0.8; // 바텀 시트가 최대로 내려갔을 때의 Y좌표 값
+export const TWO_BOTTOM_SHEET_HEIGHT = window.innerHeight - MIN_Y; // 바텀시트 높이
+
 export const genres: string[] = [
   "액션",
   "애니메이션",

@@ -34,7 +34,6 @@ const App = () => {
             <Route path="/recommend" element={<PageRecommend />} />
             <Route path="/recommend/result" element={<PageRecommendResult />} />
             <Route path="/share" element={<PageShare />} />
-
             <Route path="/schedule/result" element={<PageScheduleResult />} />
             {/* 회원만 접근 가능 */}
             <Route element={<MemberRoute />}>

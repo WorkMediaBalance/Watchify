@@ -14,6 +14,7 @@ const Handle = styled.div`
   height: 4px;
   border-radius: 2px;
   background-color: #d0d0d0;
+  margin: auto;
 `;
 
 const CalendarBottomSheetHeader: FC = () => {
