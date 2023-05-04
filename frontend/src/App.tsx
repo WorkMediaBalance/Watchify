@@ -6,7 +6,6 @@ import { Routes, Route } from "react-router-dom";
 
 import Layout from "layout/Layout";
 import LayoutAppBar from "layout/LayoutAppBar";
-import LayoutRedDot from "layout/LayoutRedDot";
 
 import PageError from "./pages/PageError";
 import PageLogin from "./pages/PageLogin";
@@ -18,6 +17,7 @@ import PageSchedule from "./pages/PageSchedule";
 import PageScheduleContent from "pages/PageScheduleContent";
 import PageSearch from "./pages/PageSearch";
 import PageShare from "./pages/PageShare";
+import PageCallback from "pages/PageCallback";
 
 import MemberRoute from "./components/common/MemberRoute";
 import NonMemberRoute from "./components/common/NonMemberRoute";
@@ -33,6 +33,8 @@ const App = () => {
             <Route path="/recommend" element={<PageRecommend />} />
             <Route path="/recommend/result" element={<PageRecommendResult />} />
             <Route path="/share" element={<PageShare />} />
+            <Route path="/search" element={<PageSearch />} />
+            <Route path="/callback" element={<PageCallback />} />
 
             {/* 회원만 접근 가능 */}
             <Route element={<MemberRoute />}>
@@ -52,10 +54,6 @@ const App = () => {
           <Route element={<LayoutAppBar />}>
             <Route path="/schedule" element={<PageSchedule />} />
             <Route path="/schedule/content" element={<PageScheduleContent />} />
-          </Route>
-
-          <Route element={<LayoutRedDot />}>
-            <Route path="/search" element={<PageSearch />} />
           </Route>
         </Routes>
       </ThemeProvider>
