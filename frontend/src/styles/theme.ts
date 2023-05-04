@@ -1,7 +1,7 @@
 import { DefaultTheme } from "styled-components";
 
 // ${({ theme }) => theme.netflix.tabColor}
-export interface Theme extends DefaultTheme {
+export interface Theme {
   netflix: {
     pointColor: string;
     backgroundColor: string;
