@@ -21,7 +21,7 @@ const Bar = styled.div`
 
 const TitleHolder = styled.div`
   font-family: ${({ theme }) => theme.fontFamily};
-  font-size: ${({ theme }) => theme.fontSizeType.medium};
+  font-size: ${({ theme }) => theme.fontSizeType.middle};
 `;
 
 interface AppBarProps {
