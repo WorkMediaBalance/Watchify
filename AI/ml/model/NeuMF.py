@@ -215,7 +215,8 @@ if __name__ == '__main__':
     print('=== rank :', ranklist[:10])
     best_hr, best_ndcg, best_iter = hr, ndcg, -1
     if args.out > 0:
-        model.save_weights(model_out_file, overwrite=True) 
+        model.save(model_out_file, overwrite=True) 
+        # model.save_weights(model_out_file, overwrite=True) 
         
     # Training model
     for epoch in range(num_epochs):
@@ -239,7 +240,8 @@ if __name__ == '__main__':
             if hr > best_hr:
                 best_hr, best_ndcg, best_iter = hr, ndcg, epoch
                 if args.out > 0:
-                    model.save_weights(model_out_file, overwrite=True)
+                    model.save(model_out_file, overwrite=True)
+                    # model.save_weights(model_out_file, overwrite=True)
 
     print("End. Best Iteration %d:  HR = %.4f, NDCG = %.4f. " %(best_iter, best_hr, best_ndcg))
     if args.out > 0:

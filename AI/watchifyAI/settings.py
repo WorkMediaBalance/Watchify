@@ -139,5 +139,57 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 ############################ modifid ##################################
 MODELS = os.path.join(BASE_DIR, 'ml/models')
 
+import environ
+import os
+
+env = environ.Env(
+    # set casting, default value
+    DEBUG=(bool, False)
+)
+
+# Set the project base directory
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+# Take environment variables from .env file
+environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
 #### AWS
+AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
+AWS_REGION = os.environ.get('AWS_REGION')
+
+## S3 Storages
+AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
+DEFAULT_FILE_STORAGE = os.environ.get('DEFAULT_FILE_STORAGE')
+AWS_S3_CUSTOM_DOMAIN = ''
+AWS_S3_OBJECT_PARAMETERS = {
+    # 'ContentType' : 'image/jepg'
+}
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'path/to/store/my/files/')
+
+## CORS
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = True
+
+CORS_ALLOW_METHODS = (
+    'DELETE', 
+    'GET', 
+    'OPTIONS', 
+    'PATCH', 
+    'POST', 
+    'PUT',
+)
+
+CORS_ALLOW_HEADERS = (
+    'accept', 
+    'accept-encoding', 
+    'authorization', 
+    'content-type', 
+    'dnt', 
+    'origin', 
+    'user-agent', 
+    'x-csrftoken', 
+    'x-requested-with',
+)
+
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
