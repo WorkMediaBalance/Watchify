@@ -137,9 +137,6 @@ const BottomDot: React.FC<BottomDotProps> = ({
 
   let navigate = useNavigate();
 
-  const clickTabHandler = (tabIdx: number) => {
-    setIsClicked(tabIdx);
-  };
   const iconStyle = { fontSize: "5vw", color: "white" };
   const iconArray = [
     <></>,
@@ -151,27 +148,30 @@ const BottomDot: React.FC<BottomDotProps> = ({
 
   const location = useLocation();
 
+  const handleClick = async (tabIdx: number) => {
+    await setIsClicked(tabIdx);
+    toggleInnerDotSize();
+  };
+
   useEffect(() => {
     const path = location.pathname;
     switch (path) {
       case "/search":
-        clickTabHandler(1);
+        setIsClicked(1);
         break;
       case "/recommend":
-        clickTabHandler(2);
+        setIsClicked(2);
         break;
       case "/schedule":
-        clickTabHandler(3);
+        setIsClicked(3);
         break;
       case "/my":
-        clickTabHandler(4);
+        setIsClicked(4);
         break;
       default:
-        clickTabHandler(0);
+        setIsClicked(0);
     }
   }, [location]);
-
-  useEffect(() => {}, [isClicked]);
 
   const theme = useTheme();
 
@@ -186,7 +186,6 @@ const BottomDot: React.FC<BottomDotProps> = ({
         <AnimatePresence>
           {!isSemiCircleRotated && (
             <SemiCircle
-              layout
               initial={{
                 transform: `translate(-50%, -100%) rotate(-90deg)`,
               }}
@@ -202,9 +201,8 @@ const BottomDot: React.FC<BottomDotProps> = ({
               // }}
               onClick={() => {
                 if (isSemiCircleRotated === false) {
-                  clickTabHandler(1);
+                  handleClick(1);
                   navigate("/search");
-                  toggleInnerDotSize();
                 }
               }}
               rotated={isSemiCircleRotated}
@@ -220,7 +218,6 @@ const BottomDot: React.FC<BottomDotProps> = ({
         <AnimatePresence>
           {!isSemiCircleRotated && (
             <SemiCircle
-              layout
               initial={{
                 transform: `translate(-50%, -100%) rotate(-90deg)`,
               }}
@@ -232,9 +229,8 @@ const BottomDot: React.FC<BottomDotProps> = ({
               }}
               onClick={() => {
                 if (isSemiCircleRotated === false) {
-                  clickTabHandler(2);
+                  handleClick(2);
                   navigate("/recommend");
-                  toggleInnerDotSize();
                 }
               }}
               rotated={isSemiCircleRotated}
@@ -250,7 +246,6 @@ const BottomDot: React.FC<BottomDotProps> = ({
         <AnimatePresence>
           {!isSemiCircleRotated && (
             <SemiCircle
-              layout
               initial={{
                 transform: `translate(-50%, -100%) rotate(-90deg)`,
               }}
@@ -262,9 +257,8 @@ const BottomDot: React.FC<BottomDotProps> = ({
               }}
               onClick={() => {
                 if (isSemiCircleRotated === false) {
-                  clickTabHandler(3);
+                  handleClick(3);
                   navigate("/schedule");
-                  toggleInnerDotSize();
                 }
               }}
               rotated={isSemiCircleRotated}
@@ -280,7 +274,6 @@ const BottomDot: React.FC<BottomDotProps> = ({
         <AnimatePresence>
           {!isSemiCircleRotated && (
             <SemiCircle
-              layout
               initial={{
                 transform: `translate(-50%, -100%) rotate(-90deg)`,
               }}
@@ -292,9 +285,8 @@ const BottomDot: React.FC<BottomDotProps> = ({
               }}
               onClick={() => {
                 if (isSemiCircleRotated === false) {
-                  clickTabHandler(4);
+                  handleClick(4);
                   navigate("/my");
-                  toggleInnerDotSize();
                 }
               }}
               rotated={isSemiCircleRotated}
