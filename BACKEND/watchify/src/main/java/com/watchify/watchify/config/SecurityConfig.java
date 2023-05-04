@@ -35,6 +35,8 @@ public class SecurityConfig {
                 .and()
                     .authorizeRequests()
                     .antMatchers("/token/**").permitAll()
+                    .antMatchers("/auth/kakao/callback").permitAll()
+                    .antMatchers("/**").permitAll()
                     .anyRequest().authenticated()
 
                 .and()
