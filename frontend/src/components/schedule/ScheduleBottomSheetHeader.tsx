@@ -10,14 +10,12 @@ const ScheduleBottomSheetHeader = () => {
 };
 
 export default ScheduleBottomSheetHeader;
-
 const Wrapper = styled.div`
   height: 20px;
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
   position: relative;
-  padding-top: 16px;
-  padding-bottom: 4px;
+  padding: 1rem 0;
 `;
 
 const Handle = styled.div`

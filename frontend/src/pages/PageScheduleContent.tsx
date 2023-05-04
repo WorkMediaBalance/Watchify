@@ -1,26 +1,42 @@
-import React, { useState } from "react";
+import React, { useState, HTMLAttributes } from "react";
 
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 
+import { essListState } from "recoil/userState";
+import { useRecoilState } from "recoil";
+
 import ScheduleBottomSheet from "components/schedule/ScheduleBottomSheet";
 
-import pic from "assets/img/netflixIcon.png";
+import { AiOutlineMinusCircle } from "react-icons/ai";
 
 const PageScheduleContent = () => {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [essContents, setEssContents] = useState<string[] | null>(["병진", "용찬", "준형", "은성"]);
+  const [essList, setEssList] = useRecoilState(essListState);
+
+  const onClickDelete = (idx: number) => {
+    const index = essList.findIndex((ess, essIdx) => essIdx === idx);
+    if (index !== -1) {
+      const newEssList = [...essList];
+      newEssList.splice(index, 1);
+      setEssList(newEssList);
+    }
+  };
 
   return (
     <Container>
       <SDiv>필수 시청 목록</SDiv>
       <SDiv2>스케줄 생성시 꼭 보고 싶은 컨텐츠를 담아주세요!</SDiv2>
       <ContentsContainer>
-        {essContents &&
-          essContents.map((content, idx) => (
+        {essList &&
+          essList.map((content, idx) => (
             <SBoxContainer key={idx}>
-              <SContent />
+              <SContent imgUrl={essList[idx].img_path}>
+                <SRemoveDiv onClick={() => onClickDelete(idx)}>
+                  <SAiOutlineMinusCircle />
+                </SRemoveDiv>
+              </SContent>
             </SBoxContainer>
           ))}
         <SBoxContainer>
@@ -44,10 +60,11 @@ const PageScheduleContent = () => {
 export default PageScheduleContent;
 
 const Container = styled.div`
-  height: 100%;
+  height: 95%;
   display: flex;
   flex-direction: column;
   color: white;
+  overflow: auto;
 `;
 
 const SDiv = styled.div`
@@ -73,8 +90,13 @@ const ContentsContainer = styled.div`
   justify-items: center;
 `;
 
+interface SContentProps extends HTMLAttributes<HTMLDivElement> {
+  imgUrl?: string;
+}
+
 const SContent = styled.div`
-  background-image: url("https://picsum.photos/1920/1080");
+  background-image: url(${({ imgUrl }: SContentProps) => imgUrl});
+  background-size: cover;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -85,8 +107,23 @@ const SContent = styled.div`
   height: 35vw;
 `;
 
+const SAiOutlineMinusCircle = styled(AiOutlineMinusCircle)`
+  color: ${({ theme }) => theme.netflix.pointColor};
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  background-color: ${({ theme }) => theme.netflix.tabColor};
+`;
+
+const SRemoveDiv = styled.div`
+  position: absolute;
+  top: -5%;
+  left: 80%;
+`;
+
 const SBoxContainer = styled.div`
   display: flex;
+  position: relative;
   margin-top: 0.5rem;
 `;
 
