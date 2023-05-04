@@ -21,8 +21,8 @@ public class TokenService {
 
     // 토큰 10분
     long tokenPeriod = 1000L * 60L * 10L;
-    // 리프레시 토큰 90일
-    long refreshPeriod = 1000L * 60L * 60L * 24L * 30L * 3L;
+    // 리프레시 토큰 21일
+    long refreshPeriod = 1000L * 60L * 60L * 24L * 21L;
 
     // 객체 초기화, secretKey를 Base64로 인코딩한다.
     @PostConstruct
@@ -32,33 +32,20 @@ public class TokenService {
         key = Keys.hmacShaKeyFor(keyBytes);
     }
 
-    public Token generateToken(String userEmail, String provider, String name, String imgPath, String role) {
-
-        // JWT payload 에 저장되는 정보단위, 보통 여기서 user를 식별하는 값을 넣는다.
-        String uniqueSubject = userEmail + "_" + provider;
-        Claims claims = Jwts.claims().setSubject(uniqueSubject);
-        claims.put("role", role); // 정보는 key / value 쌍으로 저장된다.
-        claims.put("name", name);
-        claims.put("imgPath", imgPath);
-
-        Date now = new Date();
-        // Jwt 토큰 생성
-        String jwtToken = Jwts.builder()
-                .setClaims(claims)
-                .setIssuedAt(now)
-                .setExpiration(new Date(now.getTime() + tokenPeriod))
+    public String generateToken(PrincipalDetails user, long expirationTime) {
+        return Jwts.builder()
+                .claim("userId", user.getUserId())
+                .setExpiration(new Date(System.currentTimeMillis() + expirationTime))
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
+    }
 
-        // Refresh 토큰 생성
-        String refreshToken = Jwts.builder()
-                .setClaims(claims)
-                .setIssuedAt(now)
-                .setExpiration(new Date(now.getTime() + refreshPeriod))
-                .signWith(key, SignatureAlgorithm.HS256)
-                .compact();
+    public String generateRefreshToken(PrincipalDetails user) {
+        return this.generateToken(user, tokenPeriod);
+    }
 
-        return new Token(jwtToken, refreshToken);
+    public String generateAccessToken(PrincipalDetails user) {
+        return this.generateToken(user, refreshPeriod);
     }
 
     public boolean verifyToken(String token) {
