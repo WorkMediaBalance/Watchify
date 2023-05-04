@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import AppBar from "./AppBar";
 import { Outlet, useLocation } from "react-router-dom";
 import BottomDot from "./BottomDot";
