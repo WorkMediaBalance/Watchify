@@ -87,9 +87,6 @@ const OttSubscription = () => {
       <SBoxContainer>
         <SAddBox onClick={modalHandler}>+</SAddBox>
       </SBoxContainer>
-      <SBtnContainer>
-        <SNextBtn onClick={() => navigate("/schedule/content")}>다음</SNextBtn>
-      </SBtnContainer>
     </SContainer>
   );
 };
@@ -145,20 +142,4 @@ const SAddBox = styled.div`
   height: 15vw;
   font-size: ${({ theme }) => theme.fontSizeType.big.fontSize};
   font-weight: ${({ theme }) => theme.fontSizeType.big.fontWeight};
-`;
-
-const SBtnContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  margin: 1rem;
-`;
-
-const SNextBtn = styled.div`
-  width: 85vw;
-  border-radius: 8px;
-
-  padding: 0.2rem 0;
-  background-color: ${({ theme }) => theme.netflix.pointColor};
-  font-size: ${({ theme }) => theme.fontSizeType.big.fontSize};
-  text-align: center;
 `;
