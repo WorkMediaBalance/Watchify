@@ -2,59 +2,54 @@ package com.watchify.watchify.auth;
 
 import com.watchify.watchify.dto.response.UserDTO;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.util.StringUtils;
 import org.springframework.web.filter.GenericFilterBean;
+import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Arrays;
 
+@Slf4j
 @RequiredArgsConstructor
-public class JwtAuthFilter extends GenericFilterBean {
+public class JwtAuthFilter extends OncePerRequestFilter {
 
     private final TokenService tokenService;
 
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+    public void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
+
         // 헤더에 "Auth" 라는 키값에서 토큰을 가져올 수 있다. OAuth2SuccessHandler 에서 설정함
-        String token = ((HttpServletRequest)request).getHeader("Auth"); // JWT 토큰
+        final String token = tokenService.resolveToken(request);
 
-        // 헤더에 토큰이 있고 유효기간이 지나지않음
-        if (token != null && tokenService.verifyToken(token)) {
-            String email = tokenService.getUserEmail(token);
-            String provider = tokenService.getProvider(token);
-            String name = tokenService.getUserName(token);
-            String imgPath = tokenService.getUserImgPath(token);
+        // 1. request 로 보낸 token 이 valid 한지 확인
+        // StringUtils.hasText(token) token 이 null 이 아니고 길이가 0이 아닌 String 이면 true
+        if (StringUtils.hasText(token) && tokenService.isValid(token)) {
+            // 2. valid 하면 authentication 을 SecurityContext 에 저장
+            final Authentication authentication = tokenService.getAuthentication(token);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
 
-            UserDTO userDto = UserDTO.builder()
-                    .email(email)
-                    .name(name)
-                    .imgPath(imgPath)
-                    .provider(provider).build();
+            log.debug("JWT 인증 및 저장 완료 - authentication : {}", authentication);
 
-            Authentication auth = getAuthentication(userDto);
-
-            // Spring Security 의 SecurityContext 에  Authentication 객체를 설정하는 역할을 수행
-            // -> 왜 하냐면...
-            SecurityContextHolder.getContext().setAuthentication(auth);
+        } else {
+            // 3. valid 하지 않으면 authentication 이 null 이기 때문에 인증 실패
+            log.debug("token 이 올바르지 않음");
         }
+        // 4. 예외에 대한 처리는 AccessDeniedHandler 에서 처리
 
         chain.doFilter(request, response);
     }
 
 
-    // 인증 객체 Authentication를 만드는 메서드
-    // UsernamePasswordAuthenticationToken 의 2번째 인자(credentials)에는 유저의 비밀번호를 넣는다.
-    // 하지만 Jwt 토큰을 이용해서 생성하기 때문에 별도의 비밀번호를 넣지 않고, 빈문자열을 이용해서 만들어준다.
-    public Authentication getAuthentication(UserDTO userDto) {
-        return new UsernamePasswordAuthenticationToken(userDto, "",
-                Arrays.asList(new SimpleGrantedAuthority("ROLE_USER")));
-    }
+
 }

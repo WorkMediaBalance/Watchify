@@ -74,7 +74,7 @@ public class User implements Serializable {
         this.isDeleted = userDto.isDeleted();
     }
 
-    public void UpdateIsDeleted() {
+    public void updateIsDeleted() {
         this.isDeleted = !this.isDeleted;
     }
 }

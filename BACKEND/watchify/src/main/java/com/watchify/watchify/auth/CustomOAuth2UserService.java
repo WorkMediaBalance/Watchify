@@ -2,6 +2,7 @@ package com.watchify.watchify.auth;
 
 import com.watchify.watchify.db.entity.User;
 import com.watchify.watchify.db.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -12,90 +13,85 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpSession;
 import java.util.Collections;
+import java.util.Map;
+import java.util.Optional;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
 
+    private final UserRepository userRepository;
+    private final DefaultOAuth2UserService oAuth2UserService = new DefaultOAuth2UserService();
 
+
+    // OAuth 2.0 로그인 성공시 loadUser 를 통해 확인
     @Override
+    @Transactional
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
+        log.debug("사용자가 소셜 로그인 완료시 호출");
+        log.debug("provider access token : {}", userRequest.getAccessToken().getTokenValue());
 
-        // 1번
-        // DefaultOAuth2UserService 객체를 성공정보를 바탕으로 만든다.
-        OAuth2UserService<OAuth2UserRequest, OAuth2User> oAuth2UserService = new DefaultOAuth2UserService();
+        // 1. name, email, provider 획득
+        final OAuth2User oAuth2User = oAuth2UserService.loadUser(userRequest);
 
-        // 2번
-        // 생성된 Service 객체로 부터 User를 받는다.
-        OAuth2User oAuth2User = oAuth2UserService.loadUser(userRequest);
+        // provider 획득
+        final String provider = userRequest.getClientRegistration().getRegistrationId().toUpperCase();
+        log.debug("provider : {}", provider);
 
-        // 3번
-        // 받은 User로 부터 user 정보를 받는다.
-        String registrationId = userRequest.getClientRegistration().getRegistrationId();
-        String userNameAttributeName = userRequest.getClientRegistration()
-                .getProviderDetails().getUserInfoEndpoint().getUserNameAttributeName();
-        log.info("registrationId = {}", registrationId);
-        log.info("userNameAttributeName = {}", userNameAttributeName);
+        // 필요한 정보 꺼내기
+        final Map<String, Object> attributes = oAuth2User.getAttributes();
+        log.debug("attributes : {}", attributes);
 
-        // 4번
-        // SuccessHandler가 사용할 수 있도록 등록해준다.
-        OAuth2Attributes oAuth2Attribute =
-                OAuth2Attributes.of(registrationId, userNameAttributeName, oAuth2User.getAttributes());
+        //provider 마다 attributes 에서 필요한 정보를 꺼내는 방식이 달라 처리
+        final PrincipalDetails details = PrincipalDetails.of(provider, attributes);
 
-        var memberAttribute = oAuth2Attribute.convertToMap();
+        // 2. 최초로 로그인 하는지 확인
+        // 3. 최초 로그인 이면 회원 가입 + token 생성
+        if (details != null) {
+            Optional<User> optionalUser = userRepository.findByEmailAndProvider(details.getEmail(), details.getProvider());
+            if (optionalUser.isPresent()) {
+                User user = optionalUser.get();
+                details.setUserId(user.getId());
+                if (optionalUser.get().isDeleted() == false) {
+                    log.debug("이미 존재하는 회원 (user : {})", user);
+                } else {
+                    log.debug("과거 가입했지만 탈퇴한 회원 (user : {})", user);
+                    reJoinProcess(user);
+                }
+            } else {
+                // details 의 역할이 궁금
+                joinProcess(details);
+            }
+        }
 
-        return new DefaultOAuth2User(
-                Collections.singleton(new SimpleGrantedAuthority("ROLE_USER")),
-                memberAttribute, "email");
+        return null;
+    }
 
+    public void joinProcess(PrincipalDetails details) {
+        log.debug("신규 회원 가입 진행");
+
+        details.join();
+
+        final User user = User.builder()
+                .provider(details.getProvider())
+                .name(details.getName())
+                .email(details.getEmail())
+                .build();
+
+        userRepository.save(user);
+        details.setUserId(user.getId());
+        log.debug("신규 회원 가입 완료({})", user);
+    }
+
+    public void reJoinProcess(User user) {
+        log.debug("과거 회원 재가입 진행");
+
+        user.updateIsDeleted();
+        userRepository.save(user);
     }
 }
-
-//@Service
-//public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
-//
-//    @Autowired
-//    private UserRepository userRepository;
-//
-//    @Autowired
-//    private HttpSession httpSession;
-//
-//
-//    @Override
-//    public OAuth2User loadUser(OAuth2UserRequest oAuth2UserRequest) throws OAuth2AuthenticationException {
-//        System.out.println("CustomOAuth2UserService 의 loadUser 메서드 실행");
-//
-//        OAuth2UserService oAuth2UserService = new DefaultOAuth2UserService();
-//        OAuth2User oAuth2User = oAuth2UserService.loadUser(oAuth2UserRequest);
-//
-//        // 현재 진행중인 서비스를 구분하기 위해 문자열로 받는다??
-//        String registrationId = oAuth2UserRequest.getClientRegistration().getRegistrationId();
-//
-//        // OAuth2 로그인 시 키 값이 된다.
-//        // 구글은 키 값이 "sub"이고, 카카오는 "id"이다. 각각 다르므로 이렇게 따로 변수로 받아서 넣어줘야함.
-//        String userNameAttributeName = oAuth2UserRequest.getClientRegistration().getProviderDetails().getUserInfoEndpoint().getUserNameAttributeName();
-//
-//        // OAuth2 로그인을 통해 가져온 OAuth2User의 attribute를 담아주는 of 메소드.
-//        OAuthAttributes attributes = OAuthAttributes.of(registrationId, userNameAttributeName, oAuth2User.getAttributes());
-//
-//        User user = saveOrUpdate(attributes);
-//        httpSession.setAttribute("user", new SessionUser(user));
-//
-//        System.out.println("attributes.getAttributes() : " + attributes.getAttributes());
-//        return new DefaultOAuth2User(Collections.singleton(new SimpleGrantedAuthority("ROLE_USER")),
-//                attributes.getAttributes(),
-//                attributes.getNameAttributeKey());
-//
-//    }
-//
-//    // 이미 있는 정보일때 정보업데이트를 여기서 해야돼?? 굳이??
-//    private User saveOrUpdate(OAuthAttributes attributes) {
-//        User user = userRepository.findByEmailAndProvider(attributes.getEmail(), attributes.getProvider())
-//                .map(entity -> entity.updateName(attributes.getName()))
-//                .orElse(attributes.toEntity());
-//        return userRepository.save(user);
-//    }
-//}

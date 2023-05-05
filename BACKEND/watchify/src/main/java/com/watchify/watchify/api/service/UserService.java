@@ -32,7 +32,7 @@ public class UserService {
     // 유저 재가입 or 탈퇴시 isDeleted 변경
     @Transactional
     public void UpdateUserIsDeleted(User user) {
-        user.UpdateIsDeleted();
+        user.updateIsDeleted();
         userRepository.save(user);
     }
 

@@ -1,19 +1,22 @@
 package com.watchify.watchify.auth;
 
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.PostConstruct;
+import javax.servlet.http.HttpServletRequest;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Base64;
 import java.util.Date;
 
+@Slf4j
 @Service
 public class TokenService {
     private String secretKey = "token-secret-key-i-am-go-byeong-jin";
@@ -21,8 +24,8 @@ public class TokenService {
 
     // 토큰 10분
     long tokenPeriod = 1000L * 60L * 10L;
-    // 리프레시 토큰 90일
-    long refreshPeriod = 1000L * 60L * 60L * 24L * 30L * 3L;
+    // 리프레시 토큰 21일
+    long refreshPeriod = 1000L * 60L * 60L * 24L * 21L;
 
     // 객체 초기화, secretKey를 Base64로 인코딩한다.
     @PostConstruct
@@ -32,79 +35,68 @@ public class TokenService {
         key = Keys.hmacShaKeyFor(keyBytes);
     }
 
-    public Token generateToken(String userEmail, String provider, String name, String imgPath, String role) {
-
-        // JWT payload 에 저장되는 정보단위, 보통 여기서 user를 식별하는 값을 넣는다.
-        String uniqueSubject = userEmail + "_" + provider;
-        Claims claims = Jwts.claims().setSubject(uniqueSubject);
-        claims.put("role", role); // 정보는 key / value 쌍으로 저장된다.
-        claims.put("name", name);
-        claims.put("imgPath", imgPath);
-
-        Date now = new Date();
-        // Jwt 토큰 생성
-        String jwtToken = Jwts.builder()
-                .setClaims(claims)
-                .setIssuedAt(now)
-                .setExpiration(new Date(now.getTime() + tokenPeriod))
+    public String generateToken(PrincipalDetails user, long expirationTime) {
+        return Jwts.builder()
+                .claim("userId", user.getUserId())
+                .setExpiration(new Date(System.currentTimeMillis() + expirationTime))
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
-
-        // Refresh 토큰 생성
-        String refreshToken = Jwts.builder()
-                .setClaims(claims)
-                .setIssuedAt(now)
-                .setExpiration(new Date(now.getTime() + refreshPeriod))
-                .signWith(key, SignatureAlgorithm.HS256)
-                .compact();
-
-        return new Token(jwtToken, refreshToken);
     }
 
-    public boolean verifyToken(String token) {
-        try {
-            Jws<Claims> claims = Jwts.parserBuilder()
-                    .setSigningKey(key)
-                    .build()
-                    .parseClaimsJws(token);
-            return claims.getBody()
-                    .getExpiration()
-                    .after(new Date());
-        } catch (Exception e) {
-            return false;
+    public String generateRefreshToken(PrincipalDetails user) {
+        return this.generateToken(user, refreshPeriod);
+    }
+
+    public String generateAccessToken(PrincipalDetails user) {
+        return this.generateToken(user, tokenPeriod);
+    }
+
+    public String resolveToken(HttpServletRequest request) {
+        String authorization = request.getHeader("access");
+        return this.resolveToken(authorization);
+    }
+
+    public String resolveToken(String authorization) {
+        // Bearer -> JWT 또는 OAuth 인증을 사용하는 경우 붙인다
+        if (StringUtils.hasText(authorization) && authorization.startsWith("Bearer ")) {
+            return authorization.substring("Bearer ".length());
         }
+
+        return null;
     }
 
-    public String getUserEmail(String token) {
-        String subject = Jwts.parserBuilder()
-                .setSigningKey(key)
-                .build()
-                .parseClaimsJws(token).getBody().getSubject();
-        String email = subject.split("_")[0];
-        return email;
-    }
-
-    public String getProvider(String token) {
-        String subject = Jwts.parserBuilder()
-                .setSigningKey(key)
-                .build()
-                .parseClaimsJws(token).getBody().getSubject();
-        String provider = subject.split("_")[1];
-        return provider;
-    }
-
-    public String getUserName(String token) {
+    private Claims getClaims(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(key)
                 .build()
-                .parseClaimsJws(token).getBody().get("name", String.class);
+                .parseClaimsJws(token)
+                .getBody();
     }
 
-    public String getUserImgPath(String token) {
-        return Jwts.parserBuilder()
-                .setSigningKey(key)
-                .build()
-                .parseClaimsJws(token).getBody().get("imgPath", String.class);
+
+    public Authentication getAuthentication(String token) {
+        final Claims claims = this.getClaims(token);
+
+        final PrincipalDetails user = PrincipalDetails.builder()
+                .userId(((Integer) claims.get("userId")).longValue())
+                .build();
+
+        return new UsernamePasswordAuthenticationToken(user, token, null);
+    }
+
+    public boolean isValid(String token) {
+        try {
+            this.getClaims(token);
+            return true;
+        } catch (ExpiredJwtException e) {
+            log.debug("만료된 토큰");
+        } catch (JwtException e) {
+            log.debug("유효하지 않은 토큰");
+        } catch (Exception e) {
+            log.debug("토큰 유효성 검사 중 알 수 없는 예외 발생");
+        }
+
+        return false;
     }
 
 }
