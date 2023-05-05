@@ -3,6 +3,8 @@ import styled from "styled-components";
 import Carousel from "../components/common/Carousel";
 import TodayWatch from "components/main/TodayWatch";
 
+import RecommendPerOTT from "./../components/mypage/RecommendPerOTT";
+
 const PageMain = () => {
   const [clickState, setClickState] = useState(0);
   const [prevState, setPrevState] = useState(0);
@@ -19,9 +21,12 @@ const PageMain = () => {
         prevState={prevState}
         setPrevState={setPrevState}
       ></TodayWatch>
+      <PlaceHolders className="placeholder" />
       <div onClick={() => handleState(0)}>
         <Title>주간 편성표</Title>
         <Carousel />
+        <PlaceHolders />
+        <RecommendPerOTT />
       </div>
     </div>
   );
@@ -34,4 +39,8 @@ const Title = styled.div`
   font-weight: ${({ theme }) => theme.fontSizeType.big.fontWeight};
   color: ${({ theme }) => theme.netflix.fontColor};
   padding: 1vh;
+`;
+
+const PlaceHolders = styled.div`
+  height: 3vh;
 `;

@@ -8,7 +8,7 @@ import "swiper/css/effect-coverflow";
 import "swiper/css/pagination";
 
 const Container = styled.div`
-  height: 40vh;
+  height: auto;
 `;
 
 const SlideContainer = styled.div`
@@ -26,11 +26,19 @@ const SlideImage = styled.div<{ url: string }>`
   background-position: center;
 `;
 
-const Overlay = styled.div`
+const Overlay = styled.div<{ isActive: boolean }>`
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
   color: white;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+
+  ${({ isActive }) =>
+    isActive &&
+    `
+    opacity: 1;
+  `}
 `;
 
 const OverlayContainer = styled.div`
@@ -115,7 +123,7 @@ function Carousel() {
   const contentArray = [0, 0, 0, 0, 0, 0, 0];
   const [activeIndex, setActiveIndex] = useState(4);
   return (
-    <Container>
+    <Container className="CarouselContainer">
       <Swiper
         effect={"coverflow"}
         grabCursor={true}
@@ -143,31 +151,29 @@ function Carousel() {
           <SwiperSlide key={index}>
             <SlideContainer>
               <SlideImage url="https://images.justwatch.com/backdrop/302937718/s1920/mobeomtaegsi.webp">
-                {index === activeIndex && (
-                  <Overlay>
-                    <OverlayContainer>
-                      <DateContainer>
-                        <Month>{"05"}</Month>
-                        <Date>{"05"}</Date>
-                        <Day>{"FRI"}</Day>
-                      </DateContainer>
-                      <OverlayEpisodesContainer>
-                        <EpisodeAndMore>
-                          <Episode>
-                            <EpisodeTitle>{"모범택시"}</EpisodeTitle>
-                            <EpisodeNumber>{"1화"}</EpisodeNumber>
-                          </Episode>
-                          <Episode>
-                            <EpisodeTitle>{"모범택시"}</EpisodeTitle>
-                            <EpisodeNumber>{"2화"}</EpisodeNumber>
-                          </Episode>
-                          <Extra>{`외 2편`}</Extra>
-                        </EpisodeAndMore>
-                        <More>{`more >`}</More>
-                      </OverlayEpisodesContainer>
-                    </OverlayContainer>
-                  </Overlay>
-                )}
+                <Overlay isActive={activeIndex === index}>
+                  <OverlayContainer>
+                    <DateContainer>
+                      <Month>{"05"}</Month>
+                      <Date>{"05"}</Date>
+                      <Day>{"FRI"}</Day>
+                    </DateContainer>
+                    <OverlayEpisodesContainer>
+                      <EpisodeAndMore>
+                        <Episode>
+                          <EpisodeTitle>{"모범택시"}</EpisodeTitle>
+                          <EpisodeNumber>{"1화"}</EpisodeNumber>
+                        </Episode>
+                        <Episode>
+                          <EpisodeTitle>{"모범택시"}</EpisodeTitle>
+                          <EpisodeNumber>{"2화"}</EpisodeNumber>
+                        </Episode>
+                        <Extra>{`외 2편`}</Extra>
+                      </EpisodeAndMore>
+                      <More>{`more >`}</More>
+                    </OverlayEpisodesContainer>
+                  </OverlayContainer>
+                </Overlay>
               </SlideImage>
             </SlideContainer>
           </SwiperSlide>
