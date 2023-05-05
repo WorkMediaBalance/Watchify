@@ -1,14 +1,10 @@
 package com.watchify.watchify.auth;
-// https://iseunghan.tistory.com/300 xx
-// https://velog.io/@jkijki12/Spring-Boot-OAuth2-JWT-%EC%A0%81%EC%9A%A9%ED%95%B4%EB%B3%B4%EB%A6%AC%EA%B8%B0
 
-import com.watchify.watchify.db.entity.User;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
 
-import java.util.HashMap;
 import java.util.Map;
 
 
@@ -60,18 +56,6 @@ public class OAuth2Attributes {
                 .attributes(kakaoAccount)
                 .attributeKey(attributeKey)
                 .build();
-    }
-
-    Map<String, Object> convertToMap() {
-        Map<String, Object> map = new HashMap<>();
-        map.put("id", attributeKey);
-        map.put("key", attributeKey);
-        map.put("name", name);
-        map.put("email", email);
-        map.put("picture", picture);
-        map.put("provider", provider);
-
-        return map;
     }
 
 }
