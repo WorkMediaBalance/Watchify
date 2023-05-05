@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import Carousel from "../components/common/Carousel";
+import Carousel from "../components/main/Carousel";
 import TodayWatch from "components/main/TodayWatch";
 
-import RecommendPerOTT from "./../components/mypage/RecommendPerOTT";
-import RecommendRest from "components/mypage/RecommendRest";
+import RecommendPerOTT from "../components/main/RecommendPerOTT";
+import RecommendRest from "components/main/RecommendRest";
 
 const PageMain = () => {
   const [clickState, setClickState] = useState(0);
