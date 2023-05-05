@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import styled from "styled-components";
+import styled, { keyframes, css } from "styled-components";
 import { AiFillPlusCircle, AiFillCheckCircle } from "react-icons/ai";
 import disney from "assets/img/disneyIcon.png";
 import netflix from "assets/img/netflixIcon.png";
@@ -67,6 +67,30 @@ const TitleAndOTTContainer = styled.div`
   width: 100%;
 `;
 
+// Ticker 스타일
+const TickerContainer = styled.div`
+  overflow: hidden;
+  white-space: nowrap;
+  width: 100%;
+`;
+
+const ticker = keyframes`
+  0% {
+    transform: translate3d(50%, 0, 0);
+  }
+  100% {
+    transform: translate3d(-100%, 0, 0);
+  }
+`;
+
+const TickerContent = styled.div`
+  display: inline-block;
+  animation-name: ${ticker};
+  animation-duration: 10s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+`;
+
 const Title = styled.div`
   color: white;
   font-size: ${({ theme }) => theme.fontSizeType.big.fontSize};
@@ -93,6 +117,36 @@ const OTTIcon = styled.img`
   width: 12vw;
   height: 12vw;
   position: relative;
+`;
+
+const growShrink = keyframes`
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+`;
+
+// TODO: 이부분 커졌다 작아지는거, 재렌더링 때문에 그냥 애니메이션 무시되는 거 같은데, 나중에 다시 도전하기
+const Ribon = styled.div<{ isWish: boolean }>`
+  position: absolute;
+  right: 3%;
+
+  width: 15%;
+  height: 15%;
+  clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 50% 67%, 0% 100%);
+
+  background-color: ${({ isWish, theme }) =>
+    isWish ? theme.netflix.pointColor : theme.netflix.fontColor};
+  animation: ${({ isWish }) =>
+    isWish
+      ? css`
+          ${growShrink} 0.6s ease-in-out forwards
+        `
+      : css`
+          ${growShrink} 0.6s ease-in-out reverse forwards
+        `};
 `;
 
 const ContentPoster: React.FC<MoviePosterProps> = ({ imageUrl, title }) => {
@@ -151,27 +205,24 @@ const ContentPoster: React.FC<MoviePosterProps> = ({ imageUrl, title }) => {
       showOverlay={showOverlay}
     >
       <ContentContainer showOverlay={showOverlay}>
-        <WishButtonContainer>
-          {isWish ? (
-            <AiFillCheckCircle
-              size={30}
-              onClick={(event) => {
-                event.stopPropagation();
-                handleWishClick();
-              }}
-            />
-          ) : (
-            <AiFillPlusCircle
-              size={30}
-              onClick={(event) => {
-                event.stopPropagation();
-                handleWishClick();
-              }}
-            />
-          )}
-        </WishButtonContainer>
+        <Ribon
+          isWish={isWish}
+          onClick={(event) => {
+            event.stopPropagation();
+            handleWishClick();
+          }}
+        />
+
         <TitleAndOTTContainer>
-          <Title>{title}</Title>
+          {title.length >= 9 ? (
+            <TickerContainer>
+              <TickerContent>
+                <Title>{title}</Title>
+              </TickerContent>
+            </TickerContainer>
+          ) : (
+            <Title>{title}</Title>
+          )}
           {OTTStaticArray.length == 4 ? (
             <OTTGridContainer>
               {OTTStaticArray.map((OTT: string, index) => {

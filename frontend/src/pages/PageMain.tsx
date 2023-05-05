@@ -4,6 +4,7 @@ import Carousel from "../components/common/Carousel";
 import TodayWatch from "components/main/TodayWatch";
 
 import RecommendPerOTT from "./../components/mypage/RecommendPerOTT";
+import RecommendRest from "components/mypage/RecommendRest";
 
 const PageMain = () => {
   const [clickState, setClickState] = useState(0);
@@ -27,6 +28,9 @@ const PageMain = () => {
         <Carousel />
         <PlaceHolders />
         <RecommendPerOTT />
+        <PlaceHolders />
+        <Title>추천 컨텐츠!</Title>
+        <RecommendRest />
       </div>
     </div>
   );
