@@ -24,7 +24,7 @@ import NonMemberRoute from "./components/common/NonMemberRoute";
 
 const App = () => {
   return (
-    <>
+    <div style={{ height: "100%" }}>
       <ThemeProvider theme={theme}>
         <Routes>
           <Route element={<Layout />}>
@@ -59,7 +59,7 @@ const App = () => {
           </Route>
         </Routes>
       </ThemeProvider>
-    </>
+    </div>
   );
 };
 

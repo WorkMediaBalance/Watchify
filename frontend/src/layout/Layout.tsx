@@ -6,7 +6,7 @@ import styled from "styled-components";
 
 const Background = styled.div`
   background-color: ${({ theme }) => theme.netflix.backgroundColor};
-  min-height: 95vh;
+  min-height: 91vh;
 `;
 
 const Layout = () => {

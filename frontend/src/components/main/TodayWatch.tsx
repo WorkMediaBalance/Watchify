@@ -29,7 +29,7 @@ const TodayWatch: React.FC<TodayWatchProps> = ({
       }}
     >
       {clickState === 1 ? (
-        <TopInformation>
+        <TopInformation className="top">
           <div>
             <Title>{"모범택시"}</Title>
             <Episode>{"1화"}</Episode>
@@ -38,6 +38,7 @@ const TodayWatch: React.FC<TodayWatchProps> = ({
         </TopInformation>
       ) : null}
       <BottomRectangle
+        className="rectangle"
         onClick={(e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
           e.stopPropagation();
           console.log(clickState);
@@ -47,7 +48,7 @@ const TodayWatch: React.FC<TodayWatchProps> = ({
         prevState={prevState}
       >
         {clickState === 2 ? (
-          <BottomInformation>
+          <BottomInformation className="bottom">
             <div
               style={{
                 display: "flex",
@@ -72,13 +73,13 @@ const Container = styled.div<{ clickState: number }>`
   position: relative;
   width: 100vw;
   height: 30vh;
-  // overflow: hidden;
   background-image: ${({ clickState }) =>
     clickState === 1
       ? `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("https://images.justwatch.com/backdrop/302937718/s1920/mobeomtaegsi.webp")`
       : `url("https://images.justwatch.com/backdrop/302937718/s1920/mobeomtaegsi.webp")`};
   background-size: cover;
   background-position: center;
+  overflow: hidden;
 `;
 
 // 애니메이션용 키프레임
@@ -176,8 +177,8 @@ const BottomRectangle = styled.div<{ clickState: number; prevState: number }>`
   position: absolute;
   bottom: 0;
   right: 0;
-  height: 30vh;
-  width: 100vw;
+  height: 100%;
+  width: 100%;
   background-image: ${({ clickState }) =>
     clickState === 2
       ? `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("https://images.justwatch.com/backdrop/246950734/s1920/tedeu-raso.webp")`
@@ -223,6 +224,9 @@ const BottomRectangle = styled.div<{ clickState: number; prevState: number }>`
 `;
 
 const TopInformation = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
   height: 70%;
   width: 100%;
   display: flex;
