@@ -1,24 +1,25 @@
-import React from "react";
+import React, { useState } from "react";
 import Carousel from "../components/common/Carousel";
 import TodayWatch from "components/main/TodayWatch";
 
 const PageMain = () => {
+  const [clickState, setClickState] = useState(0);
+  const [prevState, setPrevState] = useState(0);
+  const handleState = async (index: number) => {
+    await setPrevState(clickState);
+    await setClickState(index);
+  };
   return (
     <div>
-      <TodayWatch></TodayWatch>
-      {/* <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          width: "auto",
-          height: "30vh",
-          background: `url(https://images.justwatch.com/backdrop/302937718/s1440/mobeomtaegsi.webp) no-repeat center center`,
-          backgroundSize: "cover",
-          marginBottom: "3vh",
-        }}
-      ></div> */}
-      <Carousel />
+      <TodayWatch
+        clickState={clickState}
+        setClickState={setClickState}
+        prevState={prevState}
+        setPrevState={setPrevState}
+      ></TodayWatch>
+      <div onClick={() => handleState(0)}>
+        <Carousel />
+      </div>
     </div>
   );
 };
