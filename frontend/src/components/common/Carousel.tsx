@@ -44,7 +44,8 @@ const DateContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: end;
-  margin: 2vw;
+  margin-top: 2vw;
+  margin-left: 2vw;
   height: 100%;
 `;
 
@@ -64,16 +65,51 @@ const Day = styled.div`
   margin-bottom: 1vh;
 `;
 
-const OverlayEpisode = styled.div`
-  font-size: 0.5rem;
-  font-weight: ${({ theme }) => theme.fontSizeType.small.fontWeight};
+const OverlayEpisodesContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: end;
+  margin-top: 2vw;
+  margin-right: 2vw;
+  height: 100%;
+  color: #e4e4e4;
 `;
 
-// const StyledSwiperSlide = styled(SwiperSlide)`
-//   display: flex;
-//   justify-content: center;
-//   align-items: center;
-// `;
+const EpisodeAndMore = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: end;
+`;
+
+const Episode = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  margin: 1vw;
+`;
+const EpisodeTitle = styled.div`
+  font-size: 1.2rem;
+  font-weight: 700;
+`;
+const EpisodeNumber = styled.div`
+  font-size: 1rem;
+  font-weight: 700;
+  margin-left: 1vw;
+`;
+
+const Extra = styled.div`
+  font-size: 0.7rem;
+  font-weight: 600;
+  margin-right: 1vw;
+`;
+
+const More = styled.div`
+  font-size: 1rem;
+  font-weight: 700;
+  margin-right: 1vw;
+  margin-bottom: 3.5vw;
+`;
 
 function Carousel() {
   const contentArray = [0, 0, 0, 0, 0, 0, 0];
@@ -115,6 +151,20 @@ function Carousel() {
                         <Date>{"05"}</Date>
                         <Day>{"FRI"}</Day>
                       </DateContainer>
+                      <OverlayEpisodesContainer>
+                        <EpisodeAndMore>
+                          <Episode>
+                            <EpisodeTitle>{"모범택시"}</EpisodeTitle>
+                            <EpisodeNumber>{"1화"}</EpisodeNumber>
+                          </Episode>
+                          <Episode>
+                            <EpisodeTitle>{"모범택시"}</EpisodeTitle>
+                            <EpisodeNumber>{"2화"}</EpisodeNumber>
+                          </Episode>
+                          <Extra>{`외 2편`}</Extra>
+                        </EpisodeAndMore>
+                        <More>{`more >`}</More>
+                      </OverlayEpisodesContainer>
                     </OverlayContainer>
                   </Overlay>
                 )}
