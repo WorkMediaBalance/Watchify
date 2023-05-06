@@ -1,4 +1,4 @@
-package com.watchify.watchify.auth;
+package com.watchify.watchify.auth.service;
 
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;

@@ -1,4 +1,4 @@
-package com.watchify.watchify.auth;
+package com.watchify.watchify.auth.repository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,9 +23,10 @@ public class CustomAuthorizationRequestRepository implements AuthorizationReques
 
     @Override
     public OAuth2AuthorizationRequest loadAuthorizationRequest(HttpServletRequest request) {
+        System.out.println("CustomAuthorizationRequestRepository // loadAuthorizationRequest 실행");
         String state = request.getParameter(OAuth2ParameterNames.STATE);
         log.debug("loadAuthorizationRequest의 request: {}, state: {}", request, state);
-
+        System.out.println("loadAuthorizationRequest // state : " + state);
         if (state == null) {
             return null;
         }
@@ -42,9 +43,11 @@ public class CustomAuthorizationRequestRepository implements AuthorizationReques
     ) {
         String state = authorizationRequest.getState();
         log.debug("saveAuthorizationRequest의 request: {}, state: {}", request, state);
+        System.out.println("레디스 저장 : " + state);
 
         String redisKey = getRedisKey(state);
         redisTemplate.opsForValue().set(redisKey, authorizationRequest, Duration.ofMinutes(5));
+//        redisTemplate.opsForValue().set(redisKey, authorizationRequest, Duration.ofDays(21));
     }
 
 
@@ -52,6 +55,7 @@ public class CustomAuthorizationRequestRepository implements AuthorizationReques
     public OAuth2AuthorizationRequest removeAuthorizationRequest(HttpServletRequest request) {
         String state = request.getParameter(OAuth2ParameterNames.STATE);
         log.debug("removeAuthorizationRequest의 request: {}, state: {}", request, state);
+        System.out.println("레디스 삭제 : " + state);
 
         if (state == null) {
             return null;

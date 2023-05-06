@@ -22,3 +22,11 @@ spring:
             authorization-uri: https://kauth.kakao.com/oauth/authorize
             token-uri: https://kauth.kakao.com/oauth/token
             user-info-uri: https://kapi.kakao.com/v2/user/me
+
+
+app:
+  oauth2:
+    authorizedRedirectUrl: "http://localhost:8080/oauth2/login/callback"
+
+jwt:
+  secret: "token-secret-key-i-am-go-byeong-jin"

@@ -1,24 +1,16 @@
 package com.watchify.watchify.auth;
 
-import com.watchify.watchify.dto.response.UserDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.StringUtils;
-import org.springframework.web.filter.GenericFilterBean;
 import org.springframework.web.filter.OncePerRequestFilter;
-
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Arrays;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -27,10 +19,12 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     private final TokenService tokenService;
 
     @Override
-    public void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
-
-        // 헤더에 "Auth" 라는 키값에서 토큰을 가져올 수 있다. OAuth2SuccessHandler 에서 설정함
+    public void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
+            throws IOException, ServletException {
+        System.out.println("JwtAuthFilter // doFilterInternal 메서드");
+        System.out.println("request : " + request.getHeader("Authorization"));
         final String token = tokenService.resolveToken(request);
+        System.out.println("JwtAuthFilter // token : " + token);
 
         // 1. request 로 보낸 token 이 valid 한지 확인
         // StringUtils.hasText(token) token 이 null 이 아니고 길이가 0이 아닌 String 이면 true
@@ -50,6 +44,5 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         chain.doFilter(request, response);
     }
 
-
-
 }
+

@@ -1,8 +1,11 @@
-package com.watchify.watchify.auth;
+package com.watchify.watchify.auth.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.watchify.watchify.auth.*;
+import com.watchify.watchify.auth.repository.CustomAuthorizationRequestRepository;
+import com.watchify.watchify.auth.service.CustomOAuth2UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -13,6 +16,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
@@ -22,9 +26,14 @@ import java.io.IOException;
 @RestController
 public class OauthLoginController {
 
+    private final TokenService tokenService;
+    private final CustomOAuth2UserService customOAuth2UserService;
+    private final CustomAuthorizationRequestRepository customAuthorizationRequestRepository;
+
+
     @GetMapping("/kakao/callback")
     @ResponseBody
-    public String KakaoCallback(String code) {
+    public String KakaoCallback(@RequestParam("code") String code, HttpServletRequest request) throws IOException{
         String REQUEST_URL = "https://kauth.kakao.com/oauth/token";
 
         RestTemplate restTemplate = new RestTemplate();
@@ -83,9 +92,32 @@ public class OauthLoginController {
         );
         // -- 여기 까지 accessToken 으로 카카오 유저 정보 받기 완료 --
 
-
+//        customAuthorizationRequestRepository.loadAuthorizationRequest(request);
+//        customOAuth2UserService.loadUser()
 
         return kakaoUserInfo.getBody();
+
+
+
+        // JWT 토큰 발급
+//        ObjectMapper objectMapper2 = new ObjectMapper();
+//        Map<String, Object> userInfoMap = null;
+//        try {
+//            userInfoMap = objectMapper.readValue(kakaoUserInfo.getBody(), Map.class);
+//        } catch (JsonProcessingException e) {
+//            e.printStackTrace();
+//        }
+//
+//        PrincipalDetails principalDetails = PrincipalDetails.of("KAKAO", userInfoMap);
+//        String jwtToken = tokenService.generateAccessToken(principalDetails);
+//        String refreshToken = tokenService.generateRefreshToken(principalDetails);
+//
+//        String redirectUrlWithTokens = UriComponentsBuilder.fromUriString("http://localhost:8080/oauth2/login/callback")
+//                .queryParam("access", jwtToken)
+//                .queryParam("refresh", refreshToken)
+//                .build().toUriString();
+//
+//        response.sendRedirect(redirectUrlWithTokens);
     }
 
     @GetMapping("/google/callback")
@@ -139,10 +171,6 @@ public class OauthLoginController {
         );
 
 
-        response.sendRedirect("http://localhost:8080/callback");
-
-
-//        return googleUserInfo.getBody();
     }
 
 

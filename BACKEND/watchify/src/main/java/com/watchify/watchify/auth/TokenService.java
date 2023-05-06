@@ -1,11 +1,14 @@
 package com.watchify.watchify.auth;
 
 
+import com.watchify.watchify.auth.service.PrincipalDetails;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -17,9 +20,9 @@ import java.util.Base64;
 import java.util.Date;
 
 @Slf4j
-@Service
+@Component
 public class TokenService {
-    private String secretKey = "token-secret-key-i-am-go-byeong-jin";
+//    private String secretKey = "token-secret-key-i-am-go-byeong-jin";
     private Key key;
 
     // 토큰 10분
@@ -28,11 +31,8 @@ public class TokenService {
     long refreshPeriod = 1000L * 60L * 60L * 24L * 21L;
 
     // 객체 초기화, secretKey를 Base64로 인코딩한다.
-    @PostConstruct
-    protected void init() {
-        secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
-        byte[] keyBytes = secretKey.getBytes(StandardCharsets.UTF_8);
-        key = Keys.hmacShaKeyFor(keyBytes);
+    protected TokenService(@Value("${jwt.secret}") String secret) {
+        this.key = Keys.hmacShaKeyFor(secret.getBytes());
     }
 
     public String generateToken(PrincipalDetails user, long expirationTime) {
@@ -59,6 +59,7 @@ public class TokenService {
     public String resolveToken(String authorization) {
         // Bearer -> JWT 또는 OAuth 인증을 사용하는 경우 붙인다
         if (StringUtils.hasText(authorization) && authorization.startsWith("Bearer ")) {
+            //authorization 문자열에서 Bearer 를 제거후 반환
             return authorization.substring("Bearer ".length());
         }
 

@@ -1,5 +1,7 @@
-package com.watchify.watchify.auth;
+package com.watchify.watchify.auth.controller;
 
+import com.watchify.watchify.auth.TokenService;
+import com.watchify.watchify.auth.UnauthorizedException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;

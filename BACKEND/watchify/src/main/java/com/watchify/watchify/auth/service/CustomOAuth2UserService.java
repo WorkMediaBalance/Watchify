@@ -1,22 +1,16 @@
-package com.watchify.watchify.auth;
+package com.watchify.watchify.auth.service;
 
 import com.watchify.watchify.db.entity.User;
 import com.watchify.watchify.db.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
-import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import javax.servlet.http.HttpSession;
-import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
 
@@ -26,16 +20,16 @@ import java.util.Optional;
 public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
 
     private final UserRepository userRepository;
-    private final DefaultOAuth2UserService oAuth2UserService = new DefaultOAuth2UserService();
-
+//    private final DefaultOAuth2UserService oAuth2UserService = new DefaultOAuth2UserService();
 
     // OAuth 2.0 로그인 성공시 loadUser 를 통해 확인
     @Override
     @Transactional
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
+        DefaultOAuth2UserService oAuth2UserService = new DefaultOAuth2UserService();
         log.debug("사용자가 소셜 로그인 완료시 호출");
         log.debug("provider access token : {}", userRequest.getAccessToken().getTokenValue());
-
+        System.out.println("CustomOAuth2UserService // 소셜 로그인 수행");
         // 1. name, email, provider 획득
         final OAuth2User oAuth2User = oAuth2UserService.loadUser(userRequest);
 

@@ -2,7 +2,7 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/sins?useUnicode=true&characterEncoding=utf8&s&zeroDateTimeBehavior=convertToNull&rewriteBatchedStatements=true&tinyInt1isBit=false
-    name: root
+    username: root
     password: '0000'
     #    url: jdbc:mysql://watchifydb.cph3uafcff1h.ap-northeast-2.rds.amazonaws.com/sins?useUnicode=true&characterEncoding=utf8&s&zeroDateTimeBehavior=convertToNull&rewriteBatchedStatements=true&tinyInt1isBit=false
     #    name: watchifyadmin
@@ -17,7 +17,7 @@ spring:
     hibernate:
       ddl-auto: update
   profiles:
-    include: oauth
+    include: dev
 
   redis:
     lettuce:
@@ -27,7 +27,7 @@ spring:
         min-idle: 2
     port: 6379
     host: 127.0.0.1
-    password: 'redis0000'
+#    password: 'redis0000'
 
 logging:
   level:
@@ -37,7 +37,3 @@ logging:
         type:
           descriptor:
             sql: trace
-
-app:
-  oauth2:
-    authorizedRedirectUrl: "http://localhost:8080/callback"

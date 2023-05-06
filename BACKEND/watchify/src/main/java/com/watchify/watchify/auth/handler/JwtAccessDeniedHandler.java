@@ -1,4 +1,4 @@
-package com.watchify.watchify.auth;
+package com.watchify.watchify.auth.handler;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
