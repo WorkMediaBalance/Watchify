@@ -9,6 +9,8 @@ import "swiper/css/pagination";
 
 const Container = styled.div`
   height: auto;
+  z-index: 0;
+  position: relative;
 `;
 
 const SlideContainer = styled.div`
