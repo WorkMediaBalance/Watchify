@@ -31,6 +31,7 @@ const PageMain = () => {
         <PlaceHolders />
         <Title>추천 컨텐츠!</Title>
         <RecommendRest />
+        <PlaceHolders />
       </div>
     </div>
   );

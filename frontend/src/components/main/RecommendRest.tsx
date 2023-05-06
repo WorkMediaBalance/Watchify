@@ -21,7 +21,14 @@ const RecommendRest = () => {
   ));
 
   return (
-    <div style={{ width: "100%", overflowX: "scroll", whiteSpace: "nowrap" }}>
+    <div
+      style={{
+        width: "100%",
+        overflowX: "scroll",
+        overflowY: "hidden",
+        whiteSpace: "nowrap",
+      }}
+    >
       {menuItems}
     </div>
   );
