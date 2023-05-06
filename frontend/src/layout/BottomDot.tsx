@@ -19,7 +19,7 @@ const BottomBar = styled.div`
 `;
 
 const DotContainer = styled.span`
-  position: sticky;
+  position: fixed;
   bottom: 0; // 하단에서의 간격 설정
   width: 100vw;
   z-index: 20;

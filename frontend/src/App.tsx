@@ -33,6 +33,9 @@ const App = () => {
             <Route path="/recommend" element={<PageRecommend />} />
             <Route path="/recommend/result" element={<PageRecommendResult />} />
             <Route path="/share" element={<PageShare />} />
+            <Route path="/schedule" element={<PageSchedule />} />
+            <Route path="/schedule/content" element={<PageScheduleContent />} />
+            <Route path="/search" element={<PageSearch />} />
 
             {/* 회원만 접근 가능 */}
             <Route element={<MemberRoute />}>
@@ -49,14 +52,6 @@ const App = () => {
           </Route>
 
           {/* Red Dot 없는 Layout Ver. */}
-          <Route element={<LayoutAppBar />}>
-            <Route path="/schedule" element={<PageSchedule />} />
-            <Route path="/schedule/content" element={<PageScheduleContent />} />
-          </Route>
-
-          <Route element={<LayoutRedDot />}>
-            <Route path="/search" element={<PageSearch />} />
-          </Route>
         </Routes>
       </ThemeProvider>
     </div>

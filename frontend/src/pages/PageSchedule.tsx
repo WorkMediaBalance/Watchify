@@ -8,7 +8,7 @@ import OttSubscription from "components/common/OttSubscription";
 const PageSchedule = () => {
   const navigate = useNavigate();
   return (
-    <Container>
+    <Container className={"container"}>
       <WatchingPattern />
       <OttSubscription />
       <SBtnContainer>
