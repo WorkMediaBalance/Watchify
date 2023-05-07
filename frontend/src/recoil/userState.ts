@@ -1,6 +1,7 @@
 import { atom } from "recoil";
 import { recoilPersist } from "recoil-persist";
 import { content } from "interface/content";
+import { user } from "interface/user";
 
 const { persistAtom } = recoilPersist({
   key: "recoil-persist",
@@ -13,14 +14,10 @@ export const isLoggedInState = atom<boolean>({
   effects_UNSTABLE: [persistAtom],
 });
 
-export const userLevelState = atom<number>({
-  key: "userLevelState",
-  default: 10,
-});
-
-export const userScoreState = atom<number>({
-  key: "userScoreState",
-  default: 10,
+export const userState = atom<user>({
+  key: "userState",
+  default: { pk: 0, name: "", imgPath: "" },
+  effects_UNSTABLE: [persistAtom],
 });
 
 export const ottThemeState = atom<string>({

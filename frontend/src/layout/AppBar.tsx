@@ -31,7 +31,7 @@ interface AppBarProps {
 const AppBar: React.FC<AppBarProps> = ({ title }) => {
   let navigate = useNavigate();
   return (
-    <div>
+    <div style={{ zIndex: "10000", position: "sticky" }}>
       <Bar>
         <AiOutlineLeft
           onClick={() => navigate(-1)}

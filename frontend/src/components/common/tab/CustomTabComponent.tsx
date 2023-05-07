@@ -9,6 +9,8 @@ interface CustomTabComponentProps {
   componentArray: Array<React.ComponentType>;
   width: string;
   minHeight: string;
+  marginTop: string;
+  top: string;
 }
 
 const CustomTabComponent: React.FC<CustomTabComponentProps> = ({
@@ -16,12 +18,14 @@ const CustomTabComponent: React.FC<CustomTabComponentProps> = ({
   componentArray,
   width,
   minHeight,
+  marginTop,
+  top,
 }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const arrayLength = titleArray.length;
   return (
     <div style={{ width: width }}>
-      <TabListItemContainerWrapper>
+      <TabListItemContainerWrapper marginTop={marginTop}>
         <TabListItemContainer
           titleArray={titleArray}
           currentIndex={currentIndex}
@@ -29,7 +33,7 @@ const CustomTabComponent: React.FC<CustomTabComponentProps> = ({
           arrayLength={arrayLength}
         ></TabListItemContainer>
       </TabListItemContainerWrapper>
-      <DisplayWrapper>
+      <DisplayWrapper top={top}>
         <DisplayContainer
           componentArray={componentArray}
           currentIndex={currentIndex}
@@ -42,15 +46,15 @@ const CustomTabComponent: React.FC<CustomTabComponentProps> = ({
 
 export default CustomTabComponent;
 
-const TabListItemContainerWrapper = styled.div`
+const TabListItemContainerWrapper = styled.div<{ marginTop: string }>`
   flex-shrink: 0;
-  margin-top: 20vh; // TODO 이거 변수화
+  margin-top: ${(props) => props.marginTop};
 `;
 
-const DisplayWrapper = styled.div`
+const DisplayWrapper = styled.div<{ top: string }>`
   position: relative;
   flex: 1;
   overflow-y: auto;
-  top: 3vh; // TODO : 이거 변수화
+  top: ${(props) => props.top};
   height: 66vh;
 `;

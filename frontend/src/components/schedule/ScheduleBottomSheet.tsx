@@ -6,7 +6,10 @@ import useRecBottomSheet from "../../hooks/useRecBottomSheet";
 import ScheduleBottomSheetHeader from "./ScheduleBottomSheetHeader";
 import ScheduleBottomSheetContent from "./ScheduleBottomSheetContent";
 
-const ScheduleBottomSheet = (props: { isOpen: boolean; onClose: () => void }) => {
+const ScheduleBottomSheet = (props: {
+  isOpen: boolean;
+  onClose: () => void;
+}) => {
   const { sheet, content, openBottomSheet, isOpenSheet } = useRecBottomSheet();
   const isOpen = props.isOpen;
   useEffect(() => {
@@ -21,7 +24,7 @@ const ScheduleBottomSheet = (props: { isOpen: boolean; onClose: () => void }) =>
   return (
     <Wrapper ref={sheet}>
       <ScheduleBottomSheetHeader />
-      <BottomSheetContent ref={content}>
+      <BottomSheetContent ref={content} className="BottomSheetContent">
         <ScheduleBottomSheetContent />
       </BottomSheetContent>
     </Wrapper>
