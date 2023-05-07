@@ -9,17 +9,9 @@ import { BsPlusCircle } from "react-icons/bs";
 
 import { content } from "interface/content";
 
-type Props = { tab: number };
-
-const WishList = ({ tab }: Props) => {
+const WishList = () => {
   const [wishList, setWishList] = useRecoilState(wishListState);
   const [essList, setEssList] = useRecoilState(essListState);
-
-  useEffect(() => {
-    if (tab === 1) {
-      //   console.log(tab);
-    }
-  }, [tab]);
 
   const onClickAddContent = (content: content) => {
     let copy = [...essList];
@@ -40,7 +32,9 @@ const WishList = ({ tab }: Props) => {
                 <S2DepthContainer>
                   <S3DepthContainer>
                     <STitleDiv>{content.title}</STitleDiv>
-                    {content.finalEpisode > 0 ? <div>{content.finalEpisode}부작</div> : null}
+                    {content.finalEpisode > 0 ? (
+                      <div>{content.finalEpisode}부작</div>
+                    ) : null}
                   </S3DepthContainer>
                   {isAlready ? (
                     <SFiCheckCircle />

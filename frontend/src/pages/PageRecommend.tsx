@@ -10,7 +10,6 @@ import { recGenreState } from "../recoil/recommendState";
 import { useRecoilState } from "recoil";
 
 const BaseDiv = styled.div`
-  height: 100vh;
   width: 100vw;
   background-color: #232323;
 `;

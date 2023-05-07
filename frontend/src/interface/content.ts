@@ -13,3 +13,4 @@ export interface content {
   summarize: string;
   audienceAge: number;
 }
+// TODO: 가로 포스터 이미지도 필요!

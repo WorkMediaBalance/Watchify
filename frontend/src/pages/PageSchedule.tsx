@@ -8,7 +8,7 @@ import OttSubscription from "components/common/OttSubscription";
 const PageSchedule = () => {
   const navigate = useNavigate();
   return (
-    <Container>
+    <Container className={"container"}>
       <WatchingPattern />
       <OttSubscription />
       <SBtnContainer>
@@ -21,10 +21,11 @@ const PageSchedule = () => {
 export default PageSchedule;
 
 const Container = styled.div`
-  height: 100%;
+  height: 95.4vh;
   display: flex;
   flex-direction: column;
   color: white;
+  margin-top: 10vw;
 `;
 
 const SBtnContainer = styled.div`
