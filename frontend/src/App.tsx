@@ -24,7 +24,7 @@ import NonMemberRoute from "./components/common/NonMemberRoute";
 
 const App = () => {
   return (
-    <>
+    <div style={{ height: "100%" }}>
       <ThemeProvider theme={theme}>
         <Routes>
           <Route element={<Layout />}>
@@ -33,8 +33,13 @@ const App = () => {
             <Route path="/recommend" element={<PageRecommend />} />
             <Route path="/recommend/result" element={<PageRecommendResult />} />
             <Route path="/share" element={<PageShare />} />
+
+            <Route path="/schedule" element={<PageSchedule />} />
+            <Route path="/schedule/content" element={<PageScheduleContent />} />
             <Route path="/search" element={<PageSearch />} />
+
             <Route path="/callback" element={<PageCallback />} />
+
 
             {/* 회원만 접근 가능 */}
             <Route element={<MemberRoute />}>
@@ -50,14 +55,10 @@ const App = () => {
             <Route path="*" element={<PageError />} />
           </Route>
 
-          {/* Red Dot 없는 Layout Ver. */}
-          <Route element={<LayoutAppBar />}>
-            <Route path="/schedule" element={<PageSchedule />} />
-            <Route path="/schedule/content" element={<PageScheduleContent />} />
-          </Route>
+
         </Routes>
       </ThemeProvider>
-    </>
+    </div>
   );
 };
 

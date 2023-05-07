@@ -18,6 +18,8 @@ const PageMy = () => {
         titleArray={titleArray}
         componentArray={componentArray}
         minHeight={"66vh"}
+        marginTop={"20vh"}
+        top={"3vh"}
       />
     </Container>
   );
