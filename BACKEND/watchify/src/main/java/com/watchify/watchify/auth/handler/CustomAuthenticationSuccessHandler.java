@@ -1,6 +1,6 @@
 package com.watchify.watchify.auth.handler;
 
-import com.watchify.watchify.auth.TokenService;
+import com.watchify.watchify.auth.service.TokenService;
 import com.watchify.watchify.auth.service.PrincipalDetails;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -60,7 +60,7 @@ public class CustomAuthenticationSuccessHandler extends SimpleUrlAuthenticationS
             // java compiler 에서 자동적으로 StringBuilder 를 사용하는 코드로 Optimization
             final String key = "user:rft:" + user.getUserId();
 
-            valueOperations.set(key, refreshToken, Duration.ofDays(21));
+            valueOperations.set(key, refreshToken, Duration.ofMinutes(5));
         } catch (NoSuchElementException e) {
             log.debug("이런 일은 일어날 수 없습니다.");
         }

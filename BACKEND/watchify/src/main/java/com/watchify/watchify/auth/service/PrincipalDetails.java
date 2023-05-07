@@ -22,7 +22,7 @@ public class PrincipalDetails implements OAuth2User, UserDetails {
     private String email;
     private String name;
     private String provider;
-    private boolean isNew;
+    private boolean isNew = false; // 기본값
 
     public static PrincipalDetails of(String provider, Map<String, Object> attributes) {
         switch (provider) {

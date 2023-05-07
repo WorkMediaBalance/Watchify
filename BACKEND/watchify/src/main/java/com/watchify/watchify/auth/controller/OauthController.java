@@ -6,6 +6,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.watchify.watchify.auth.*;
 import com.watchify.watchify.auth.repository.CustomAuthorizationRequestRepository;
 import com.watchify.watchify.auth.service.CustomOAuth2UserService;
+import com.watchify.watchify.auth.service.PrincipalDetails;
+import com.watchify.watchify.auth.service.TokenService;
+import com.watchify.watchify.auth.service.UserCheckService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -15,25 +18,28 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Map;
 
 @CrossOrigin(origins = "*")
-@RequestMapping("/oauth2/login")
+@RequestMapping("/oauth2")
 @RequiredArgsConstructor
 @RestController
-public class OauthLoginController {
+public class OauthController {
 
     private final TokenService tokenService;
     private final CustomOAuth2UserService customOAuth2UserService;
     private final CustomAuthorizationRequestRepository customAuthorizationRequestRepository;
+    private final UserCheckService userCheckService;
 
 
-    @GetMapping("/kakao/callback")
+    @GetMapping("/login/kakao/callback")
     @ResponseBody
-    public String KakaoCallback(@RequestParam("code") String code, HttpServletRequest request) throws IOException{
+    public RedirectView KakaoCallback(@RequestParam("code") String code, HttpServletRequest request, HttpServletResponse response) throws IOException{
         String REQUEST_URL = "https://kauth.kakao.com/oauth/token";
 
         RestTemplate restTemplate = new RestTemplate();
@@ -92,35 +98,28 @@ public class OauthLoginController {
         );
         // -- 여기 까지 accessToken 으로 카카오 유저 정보 받기 완료 --
 
-//        customAuthorizationRequestRepository.loadAuthorizationRequest(request);
-//        customOAuth2UserService.loadUser()
+        // 카카오 유저 정보 JSON 문자열 파싱
+        Map<String, Object> attributes = objectMapper.readValue(kakaoUserInfo.getBody(), Map.class);
 
-        return kakaoUserInfo.getBody();
+        // PrincipalDetails 객체 생성
+        PrincipalDetails principalDetails = PrincipalDetails.of("KAKAO", attributes);
 
+        // 가입자 인지 확인 후 미가입이면 가입
+        userCheckService.loadUser(principalDetails);
 
+        // 토큰 생성후 리프레시는 레디스에 저장
+        Token token = userCheckService.tokenGenerate(principalDetails);
 
-        // JWT 토큰 발급
-//        ObjectMapper objectMapper2 = new ObjectMapper();
-//        Map<String, Object> userInfoMap = null;
-//        try {
-//            userInfoMap = objectMapper.readValue(kakaoUserInfo.getBody(), Map.class);
-//        } catch (JsonProcessingException e) {
-//            e.printStackTrace();
-//        }
-//
-//        PrincipalDetails principalDetails = PrincipalDetails.of("KAKAO", userInfoMap);
-//        String jwtToken = tokenService.generateAccessToken(principalDetails);
-//        String refreshToken = tokenService.generateRefreshToken(principalDetails);
-//
-//        String redirectUrlWithTokens = UriComponentsBuilder.fromUriString("http://localhost:8080/oauth2/login/callback")
-//                .queryParam("access", jwtToken)
-//                .queryParam("refresh", refreshToken)
-//                .build().toUriString();
-//
-//        response.sendRedirect(redirectUrlWithTokens);
+        // 리다이렉트 수행
+//        String redirectUrl = String.format("http://localhost:8080/oauth2/callback?access=%s&refresh=%s&isNew=%s", token.getAccessToken(), token.getRefreshToken(), token.isNew());
+//        response.sendRedirect(redirectUrl);
+
+        String redirectUri = userCheckService.loginRedirect(token);
+        return new RedirectView(redirectUri);
+
     }
 
-    @GetMapping("/google/callback")
+    @GetMapping("/login/google/callback")
     @ResponseBody
     public void GoogleCallback(HttpServletResponse response, String code) throws IOException {
         String REQUEST_URL = "https://oauth2.googleapis.com/token";
@@ -169,10 +168,21 @@ public class OauthLoginController {
                 googleProfileReq,
                 String.class
         );
+    }
 
-
+    // 토근 만료시  401: Unauthorized 상태코드 발송
+    @GetMapping("/token/expired")
+    public String auth() {
+        throw new UnauthorizedException();
     }
 
 
+    // 리프레시 토큰으로 어세스토큰 재발급하고 리다이랙트
+    @GetMapping("/regenerate/token")
+    public RedirectView reGnerateToken(@RequestHeader("refresh") String refreshToken) {
+        Token token = userCheckService.reGenerateAccess(refreshToken);
+        String redirectUri = userCheckService.loginRedirect(token);
+        return new RedirectView(redirectUri);
+    }
 
 }

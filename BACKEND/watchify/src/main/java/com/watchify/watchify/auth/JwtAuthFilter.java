@@ -1,5 +1,6 @@
 package com.watchify.watchify.auth;
 
+import com.watchify.watchify.auth.service.TokenService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -22,9 +23,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     public void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws IOException, ServletException {
         System.out.println("JwtAuthFilter // doFilterInternal 메서드");
-        System.out.println("request : " + request.getHeader("Authorization"));
         final String token = tokenService.resolveToken(request);
-        System.out.println("JwtAuthFilter // token : " + token);
 
         // 1. request 로 보낸 token 이 valid 한지 확인
         // StringUtils.hasText(token) token 이 null 이 아니고 길이가 0이 아닌 String 이면 true

@@ -1,4 +1,4 @@
-package com.watchify.watchify.auth;
+package com.watchify.watchify.auth.service;
 
 
 import com.watchify.watchify.auth.service.PrincipalDetails;
@@ -53,18 +53,19 @@ public class TokenService {
 
     public String resolveToken(HttpServletRequest request) {
         String authorization = request.getHeader("access");
-        return this.resolveToken(authorization);
+//        return this.resolveToken(authorization);
+        return authorization;
     }
 
-    public String resolveToken(String authorization) {
-        // Bearer -> JWT 또는 OAuth 인증을 사용하는 경우 붙인다
-        if (StringUtils.hasText(authorization) && authorization.startsWith("Bearer ")) {
-            //authorization 문자열에서 Bearer 를 제거후 반환
-            return authorization.substring("Bearer ".length());
-        }
-
-        return null;
-    }
+//    public String resolveToken(String authorization) {
+//        // Bearer -> JWT 또는 OAuth 인증을 사용하는 경우 붙인다
+//        if (StringUtils.hasText(authorization) && authorization.startsWith("Bearer ")) {
+//            //authorization 문자열에서 Bearer 를 제거후 반환
+//            return authorization.substring("Bearer ".length());
+//        }
+//
+//        return null;
+//    }
 
     private Claims getClaims(String token) {
         return Jwts.parserBuilder()
@@ -99,5 +100,6 @@ public class TokenService {
 
         return false;
     }
+
 
 }
