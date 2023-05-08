@@ -15,7 +15,9 @@ const CalendarBottomSheet = (props: { sheet: number; date: string; close: number
   }, [props.sheet]);
 
   useEffect(() => {
-    setSheetDepth(0);
+    if (props.close !== 0) {
+      setSheetDepth(0);
+    }
   }, [props.close]);
 
   return (
