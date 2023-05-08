@@ -25,7 +25,7 @@ public class UserCheckService {
     private static final String REFRESH_TOKEN_PREFIX = "rft_token:";
 
     // PrincipalDetail 로 로그인한 유저가 가입자인지 아닌지 확인
-    public void loadUser(PrincipalDetails details) {
+    public void  loadUser(PrincipalDetails details) {
         if (details != null) {
             Optional<User> optionalUser = userRepository.findByEmailAndProvider(details.getEmail(), details.getProvider());
             if (optionalUser.isPresent()) {
@@ -52,6 +52,7 @@ public class UserCheckService {
         final User user = User.builder()
                 .provider(details.getProvider())
                 .name(details.getName())
+                .nickName(details.getName())
                 .email(details.getEmail())
                 .build();
 
