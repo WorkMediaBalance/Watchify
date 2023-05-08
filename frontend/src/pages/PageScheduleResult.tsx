@@ -3,7 +3,6 @@ import styled from "styled-components";
 import { theme } from "styles/theme";
 import Calendar from "components/schedule/calendar/Calendar";
 import CalendarBottomSheet from "components/schedule/calendar/CalendarBottomSheet";
-import useTwoDepthBottomSheet from "hooks/twoDepthBottomSheet";
 
 const Wrapper = styled.div`
   height: 91vh;
@@ -13,15 +12,17 @@ const Wrapper = styled.div`
 
 const PageScheduleResult = () => {
   const [sheet, setSheet] = useState(0);
+  const [date, setDate] = useState("");
 
   return (
     <Wrapper>
       <Calendar
-        onDateClick={() => {
-          setSheet(1);
+        onDateClick={(date: string) => {
+          setSheet(sheet + 1);
+          setDate(date);
         }}
       />
-      <CalendarBottomSheet sheet={sheet} />
+      <CalendarBottomSheet date={date} sheet={sheet} />
     </Wrapper>
   );
 };

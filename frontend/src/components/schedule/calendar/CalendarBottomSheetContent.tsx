@@ -1,7 +1,12 @@
 import React from "react";
+import styled from "styled-components";
 
-const CalendarBottomSheetContent = () => {
-  return <div>바텀 시트 컨텐츠</div>;
+const SDiv = styled.div`
+  color: #ffffff;
+`;
+
+const CalendarBottomSheetContent = (props: { date: string }) => {
+  return <SDiv>{props.date}</SDiv>;
 };
 
 export default CalendarBottomSheetContent;

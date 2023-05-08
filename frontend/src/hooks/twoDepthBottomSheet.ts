@@ -11,7 +11,6 @@ interface BottomSheetMetrics {
     movingDirection: "none" | "down" | "up";
   };
   isContentAreaTouched: boolean;
-  depth: number;
 }
 
 export default function useTwoDepthBottomSheet() {
@@ -29,16 +28,19 @@ export default function useTwoDepthBottomSheet() {
       movingDirection: "none",
     },
     isContentAreaTouched: false,
-    depth: 0,
   });
 
   const [sheetDepth, setSheetDepth] = useState<number>(0);
   const openBottomSheet = () => {
-    setSheetDepth(sheetDepth + 1);
+    if (sheetDepth < 2) {
+      setSheetDepth((prevDepth) => prevDepth + 1);
+    }
   };
 
   const closeBottomSheet = () => {
-    setSheetDepth(sheetDepth - 1);
+    if (sheetDepth > 0) {
+      setSheetDepth((prevDepth) => prevDepth - 1);
+    }
   };
 
   useEffect(() => {
@@ -134,14 +136,18 @@ export default function useTwoDepthBottomSheet() {
           movingDirection: "none",
         },
         isContentAreaTouched: false,
-        depth: 0,
       };
     };
 
     sheet.current!.addEventListener("touchstart", handleTouchStart);
     sheet.current!.addEventListener("touchmove", handleTouchMove);
     sheet.current!.addEventListener("touchend", handleTouchEnd);
-  }, []);
+    return () => {
+      sheet.current!.removeEventListener("touchstart", handleTouchStart);
+      sheet.current!.removeEventListener("touchmove", handleTouchMove);
+      sheet.current!.removeEventListener("touchend", handleTouchEnd);
+    };
+  }, [openBottomSheet]);
 
   useEffect(() => {
     const handleTouchStart = () => {
@@ -152,18 +158,14 @@ export default function useTwoDepthBottomSheet() {
 
   useEffect(() => {
     if (sheetDepth === 0) {
-      console.log("뎁스 0");
       sheet.current!.style.setProperty("transform", "translateY(0)");
     }
     if (sheetDepth === 1) {
-      console.log("뎁스 1");
       sheet.current!.style.setProperty("transform", `translateY(${ONE_MIN_Y - TWO_MAX_Y}px)`);
     }
     if (sheetDepth === 2) {
-      console.log("뎁스 2");
       sheet.current!.style.setProperty("transform", `translateY(${TWO_MIN_Y - TWO_MAX_Y}px)`);
     }
-    console.log(sheetDepth);
   }, [sheetDepth]);
 
   return { sheet, content, openBottomSheet, sheetDepth, setSheetDepth };
