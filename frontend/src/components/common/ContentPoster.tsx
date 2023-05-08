@@ -1,25 +1,25 @@
 import React, { useState, useEffect } from "react";
-import styled from "styled-components";
+import styled, { keyframes, css } from "styled-components";
+import ReactDOM from "react-dom";
+import Modal from "react-modal";
 import { AiFillPlusCircle, AiFillCheckCircle } from "react-icons/ai";
 import disney from "assets/img/disneyIcon.png";
 import netflix from "assets/img/netflixIcon.png";
 import watcha from "assets/img/watchaIcon.png";
 import wavve from "assets/img/wavveIcon.png";
+import ContentSwal from "./ContentSwal";
 
 interface MoviePosterProps {
   imageUrl: string;
   title: string;
 }
 
-const PosterContainer = styled.div<{ imageUrl: string; showOverlay: boolean }>`
+const PosterContainer = styled.div<{ imageUrl: string }>`
   width: 100%;
   padding-bottom: 150%;
-  background-image: ${({ showOverlay, imageUrl }) =>
-    showOverlay
-      ? `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(${imageUrl})`
-      : `url(${imageUrl})`};
-  background-size: cover; // 이 속성을 추가합니다.
-  background-position: center; // 이 속성을 추가합니다.
+  background-image: ${({ imageUrl }) => `url(${imageUrl})`};
+  background-size: cover;
+  background-position: center;
   position: relative;
 `;
 
@@ -29,84 +29,55 @@ const OTTOverlayContainer = styled.div`
   right: -2vh;
 `;
 
-const OTTOverlay = styled.div`
-  display: flex;
-  flex-direction: row-reverse;
-  position: absolute;
-  bottom: 0;
-  right: 0;
-`;
-
-const ContentContainer = styled.div<{ showOverlay: boolean }>`
-  position: absolute;
-  oveflow: hidden;
-  display: flex;
-  flex-direction: column;
-
-  width: 100%;
-  height: 100%;
-  transition: background-image 0.3s;
-  opacity: ${({ showOverlay }) => (showOverlay ? 1 : 0)};
-  transition: opacity 0.3s;
-`;
-const WishButtonContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: end;
-
-  color: white;
-  margin-top: 1vh;
-  margin-right: 1vh;
-`;
-
-const TitleAndOTTContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
-  height: 100%;
-  width: 100%;
-`;
-
-const Title = styled.div`
-  color: white;
-  font-size: ${({ theme }) => theme.fontSizeType.big.fontSize};
-  font-weight: ${({ theme }) => theme.fontSizeType.big.fontWeight};
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-
-const OTTContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-evenly;
-`;
-
-const OTTGridContainer = styled.div`
-  display: grid;
-  grid-template-columns: repeat(2, 12vw);
-  gap: 5px;
-  justify-content: center;
+const fadeInOut = keyframes`
+  0%{
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 `;
 
 const OTTIcon = styled.img`
   width: 12vw;
   height: 12vw;
   position: relative;
+  animation: ${fadeInOut} 1.5s linear ease;
 `;
 
 const ContentPoster: React.FC<MoviePosterProps> = ({ imageUrl, title }) => {
-  const [isWish, setIsWish] = useState(true); //TODO: props받아서 찜여부 초기값 설정 해주기
+  // 여기부터 모달
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const modalStyle = {
+    content: {
+      postion: "fixed",
+      top: "50%",
+      left: "50%",
+      right: "auto",
+      bottom: "auto",
+      marginRight: "-50%",
+      transform: "translate(-50%, -50%)",
 
-  const handleWishClick = () => {
-    // axios 요청보내서 찜 설정/ 해제
-    // 그 후 동작
-    setIsWish(!isWish);
+      padding: "0",
+      borderRadius: "15px",
+      border: "0",
+    },
+    overlay: {
+      backgroundColor: "rgba(0,0,0,0.75)",
+      zIndex: "1000",
+    },
   };
 
-  const [showOverlay, setShowOverlay] = useState(false);
+  const disableScroll = () => {
+    document.body.style.overflow = "hidden";
+  };
+
+  const enableScroll = () => {
+    document.body.style.overflow = "auto";
+  };
+
   const handlePosterClick = () => {
-    setShowOverlay(!showOverlay);
+    setIsModalOpen(true);
   };
 
   type OTTIconType = {
@@ -120,88 +91,53 @@ const ContentPoster: React.FC<MoviePosterProps> = ({ imageUrl, title }) => {
     wavve: wavve,
   };
 
-  const OTTStaticArray = ["disney", "netflix", "watcha", "wavve"]; //TODO: 나중에 props 여기 초기화
+  // const OTTStaticArray = ["disney", "netflix", "watcha", "wavve"]; //TODO: 나중에 props 여기 초기화
 
-  const [OTTArray, setOTTArray] = useState([
-    "disney",
-    "netflix",
-    "watcha",
-    "wavve",
-  ]); //TODO: 여기서 나중에 초기값 세팅
+  // const [OTTArray, setOTTArray] = useState([
+  //   "disney",
+  //   "netflix",
+  //   "watcha",
+  //   "wavve",
+  // ]); //TODO: 여기서 나중에 초기값 세팅
 
-  const moveOTT = () => {
-    setOTTArray((prev) => {
-      const moved = [...prev];
-      moved.push(moved.shift()!);
-      return moved;
-    });
-  };
+  // const [OTTIndex, setOTTIndex] = useState(0);
 
-  useEffect(() => {
-    const intervalId = setInterval(moveOTT, 1500);
-    return () => clearInterval(intervalId);
-  }, []);
+  // const moveOTT = () => {
+  //   setOTTIndex((prev) => {
+  //     return (prev + 1) % OTTStaticArray.length;
+  //   });
+  // };
+
+  // useEffect(() => {
+  //   const intervalId = setInterval(moveOTT, 1500);
+  //   return () => clearInterval(intervalId);
+  // }, []);
 
   return (
-    <PosterContainer
-      onClick={() => {
-        handlePosterClick();
-      }}
-      imageUrl={imageUrl}
-      showOverlay={showOverlay}
-    >
-      <ContentContainer showOverlay={showOverlay}>
-        <WishButtonContainer>
-          {isWish ? (
-            <AiFillCheckCircle
-              size={30}
-              onClick={(event) => {
-                event.stopPropagation();
-                handleWishClick();
-              }}
-            />
-          ) : (
-            <AiFillPlusCircle
-              size={30}
-              onClick={(event) => {
-                event.stopPropagation();
-                handleWishClick();
-              }}
-            />
-          )}
-        </WishButtonContainer>
-        <TitleAndOTTContainer>
-          <Title>{title}</Title>
-          {OTTStaticArray.length == 4 ? (
-            <OTTGridContainer>
-              {OTTStaticArray.map((OTT: string, index) => {
-                return <OTTIcon src={OTTIcons[OTT]}></OTTIcon>;
-              })}
-            </OTTGridContainer>
-          ) : (
-            <OTTContainer>
-              {OTTStaticArray.map((OTT: string, index) => {
-                return <OTTIcon src={OTTIcons[OTT]}></OTTIcon>;
-              })}
-            </OTTContainer>
-          )}
-        </TitleAndOTTContainer>
-      </ContentContainer>
-      {!showOverlay ? (
-        <OTTOverlayContainer>
-          <OTTOverlay>
-            {OTTArray.map((OTT: string, index) => {
-              return (
-                <OTTIcon
-                  src={OTTIcons[OTT]}
-                  style={{ marginLeft: -30, zIndex: -index + 10 }}
-                ></OTTIcon>
-              );
-            })}
-          </OTTOverlay>
-        </OTTOverlayContainer>
-      ) : null}
-    </PosterContainer>
+    <>
+      <PosterContainer
+        onClick={() => {
+          handlePosterClick();
+        }}
+        imageUrl={imageUrl}
+      >
+        {/* <OTTOverlayContainer>
+          <OTTIcon src={OTTIcons[OTTStaticArray[OTTIndex]]}></OTTIcon>
+        </OTTOverlayContainer> */}
+      </PosterContainer>
+      <Modal
+        isOpen={isModalOpen}
+        style={modalStyle}
+        onAfterOpen={disableScroll}
+        onRequestClose={() => {
+          enableScroll();
+          setIsModalOpen(false);
+        }}
+        ariaHideApp={false}
+      >
+        <ContentSwal />
+      </Modal>
+    </>
   );
 };
 

@@ -6,7 +6,6 @@ import { Routes, Route } from "react-router-dom";
 
 import Layout from "layout/Layout";
 import LayoutAppBar from "layout/LayoutAppBar";
-import LayoutRedDot from "layout/LayoutRedDot";
 
 import PageError from "./pages/PageError";
 import PageLogin from "./pages/PageLogin";
@@ -19,6 +18,7 @@ import PageScheduleContent from "pages/PageScheduleContent";
 import PageScheduleResult from "pages/PageScheduleResult";
 import PageSearch from "./pages/PageSearch";
 import PageShare from "./pages/PageShare";
+import PageCallback from "pages/PageCallback";
 
 import MemberRoute from "./components/common/MemberRoute";
 import NonMemberRoute from "./components/common/NonMemberRoute";
