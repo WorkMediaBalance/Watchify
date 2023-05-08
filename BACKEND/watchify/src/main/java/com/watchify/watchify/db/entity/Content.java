@@ -36,9 +36,6 @@ public class Content implements Serializable {
     private Integer finalEpisode;
     private String backdropPath;
 
-    @Enumerated(EnumType.STRING)
-    private EnumContentType type;
-
     private Integer releaseDate;
 
     @OneToMany(mappedBy = "content", cascade = CascadeType.ALL)
