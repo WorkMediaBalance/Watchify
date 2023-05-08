@@ -1,6 +1,7 @@
 // GreenDot.tsx
 import React, { useState, useEffect } from "react";
-import styled from "styled-components";
+import styled, { useTheme } from "styled-components";
+import { motion, AnimatePresence } from "framer-motion";
 import { BsCalendarWeek } from "react-icons/bs";
 import { CgProfile } from "react-icons/cg";
 import { MdOutlineRecommend } from "react-icons/md";
@@ -8,7 +9,7 @@ import { BiSearchAlt2 } from "react-icons/bi";
 import { useNavigate, useLocation } from "react-router-dom";
 
 const BottomBar = styled.div`
-  position: fixed;
+  position: relative;
   bottom: 0;
   width: 100vw;
   height: 4vh;
@@ -25,7 +26,8 @@ const DotContainer = styled.span`
 `;
 
 const OuterDot = styled.span`
-  position: relative;
+  position: absolute;
+  bottom: 0;
   display: inline-block;
   width: 15vw;
   height: 15vw;
@@ -45,7 +47,7 @@ const InnerDot = styled.span<{ size: string }>`
   background-color: ${({ theme }) => theme.netflix.tabColor};
   border-radius: 50%;
   transform: translate(-50%, -50%);
-  transition: width 0.3s, height 0.3s; // 크기 변경 시 애니메이션 적용
+  transition: width 1s, height 1s; // 크기 변경 시 애니메이션 적용
   z-index: 40;
   display: flex;
   flex-direction: column;
@@ -59,14 +61,9 @@ const IconWrapper = styled.div`
   left: 50%;
   transform: translate(-170%, -100%);
   z-index: 10;
-  color
-  // display:flex;
-  // flex-direction: column;
-  // justify-content: center;
-  // align-items: center;
 `;
 
-const SemiCircle = styled.span<{
+const SemiCircle = styled(motion.span)<{
   rotated: boolean;
   rotateAngle: string[];
   tabIdx: boolean;
@@ -76,27 +73,23 @@ const SemiCircle = styled.span<{
   left: 50%;
   width: 50vw;
   height: 25vw;
-  background-color: ${(props) =>
-    props.tabIdx
-      ? props.theme.netflix.pointColor
-      : props.theme.netflix.tabColor};
+
   border-radius: 25vw 25vw 0 0;
   clip-path: polygon(
     50% 100%,
     0 0,
     50% 0
   ); // 이게 45도짜리 부채꼴 -> 5번째에 있는 50%의 수치를 조절해서 각도 조절
-  transform: translate(-50%, -100%)
-    rotate(
-      ${(props) =>
-        props.rotated ? props.rotateAngle[0] : props.rotateAngle[1]}
-    );
-  // transform: translate(-50%, -100%) rotate(45deg);
+
+  background-color: ${(props) =>
+    props.tabIdx
+      ? props.theme.netflix.pointColor
+      : props.theme.netflix.tabColor};
+
   transform-origin: 50% 25vw;
-  transition: transform 0.3s, opacity 0.3s;
-  opacity: ${(props) => (props.rotated ? 0 : 1)};
+
+  // opacity: ${(props) => (props.rotated ? 0 : 1)};
   z-index: 5;
-  // transition: transform 0.3s;
 `;
 
 // icons
@@ -140,9 +133,6 @@ const BottomDot: React.FC<BottomDotProps> = ({
 
   let navigate = useNavigate();
 
-  const clickTabHandler = (tabIdx: number) => {
-    setIsClicked(tabIdx);
-  };
   const iconStyle = { fontSize: "5vw", color: "white" };
   const iconArray = [
     <></>,
@@ -154,93 +144,154 @@ const BottomDot: React.FC<BottomDotProps> = ({
 
   const location = useLocation();
 
+  const handleClick = async (tabIdx: number) => {
+    await setIsClicked(tabIdx);
+    toggleInnerDotSize();
+  };
+
   useEffect(() => {
     const path = location.pathname;
     switch (path) {
       case "/search":
-        clickTabHandler(1);
+        setIsClicked(1);
         break;
       case "/recommend":
-        clickTabHandler(2);
+        setIsClicked(2);
         break;
       case "/schedule":
-        clickTabHandler(3);
+        setIsClicked(3);
         break;
       case "/my":
-        clickTabHandler(4);
+        setIsClicked(4);
         break;
       default:
-        clickTabHandler(0);
+        setIsClicked(0);
     }
   }, [location]);
 
+  const theme = useTheme();
+
   return (
-    <div>
-      <DotContainer>
-        <OuterDot onClick={toggleInnerDotSize}>
-          <InnerDot size={innerDotSize}>
-            {!isSemiCircleRotated && iconArray[isClicked]}
-          </InnerDot>
-        </OuterDot>
-        <SemiCircle
-          onClick={() => {
-            clickTabHandler(1);
-            navigate("/search");
-            toggleInnerDotSize();
-          }}
-          rotated={isSemiCircleRotated}
-          rotateAngle={["-90deg", "-45deg"]}
-          tabIdx={isClicked === 1}
-        >
-          <IconWrapper>
-            <StyledBiSearchAlt2 />
-          </IconWrapper>
-        </SemiCircle>
-        <SemiCircle
-          onClick={() => {
-            clickTabHandler(2);
-            navigate("/recommend");
-            toggleInnerDotSize();
-          }}
-          rotated={isSemiCircleRotated}
-          rotateAngle={["-45deg", "0deg"]}
-          tabIdx={isClicked === 2}
-        >
-          <IconWrapper>
-            <StyledMdOutlineRecommend />
-          </IconWrapper>
-        </SemiCircle>
-        <SemiCircle
-          onClick={() => {
-            clickTabHandler(3);
-            navigate("/schedule");
-            toggleInnerDotSize();
-          }}
-          rotated={isSemiCircleRotated}
-          rotateAngle={["0deg", "45deg"]}
-          tabIdx={isClicked === 3}
-        >
-          <IconWrapper>
-            <StyledBsCalendarWeek />
-          </IconWrapper>
-        </SemiCircle>
-        <SemiCircle
-          onClick={() => {
-            clickTabHandler(4);
-            navigate("/my");
-            toggleInnerDotSize();
-          }}
-          rotated={isSemiCircleRotated}
-          rotateAngle={["45deg", "90deg"]}
-          tabIdx={isClicked === 4}
-        >
-          <IconWrapper>
-            <StyledCgProfile />
-          </IconWrapper>
-        </SemiCircle>
-        <BottomBar />
-      </DotContainer>
-    </div>
+    <DotContainer>
+      <OuterDot onClick={toggleInnerDotSize}>
+        <InnerDot size={innerDotSize}>
+          {!isSemiCircleRotated && iconArray[isClicked]}
+        </InnerDot>
+      </OuterDot>
+      <AnimatePresence>
+        {!isSemiCircleRotated && (
+          <SemiCircle
+            initial={{
+              transform: `translate(-50%, -27.5vw) rotate(-90deg)`,
+            }}
+            animate={{
+              transform: `translate(-50%, -27.5vw) rotate(-45deg)`,
+            }}
+            exit={{
+              transform: `translate(-50%, -27.5vw) rotate(135deg)`,
+            }}
+            onClick={() => {
+              if (isSemiCircleRotated === false) {
+                handleClick(1);
+                navigate("/search");
+              }
+            }}
+            rotated={isSemiCircleRotated}
+            rotateAngle={["-90deg", "-45deg"]}
+            tabIdx={isClicked === 1}
+          >
+            <IconWrapper>
+              <StyledBiSearchAlt2 />
+            </IconWrapper>
+          </SemiCircle>
+        )}
+      </AnimatePresence>
+      <AnimatePresence>
+        {!isSemiCircleRotated && (
+          <SemiCircle
+            initial={{
+              transform: `translate(-50%, -27.5vw) rotate(-90deg)`,
+            }}
+            animate={{
+              transform: `translate(-50%, -27.5vw) rotate(0deg)`,
+            }}
+            exit={{
+              transform: `translate(-50%, -27.5vw) rotate(135deg)`,
+            }}
+            onClick={() => {
+              if (isSemiCircleRotated === false) {
+                handleClick(2);
+                navigate("/recommend");
+              }
+            }}
+            rotated={isSemiCircleRotated}
+            rotateAngle={["-45deg", "0deg"]}
+            tabIdx={isClicked === 2}
+          >
+            <IconWrapper>
+              <StyledMdOutlineRecommend />
+            </IconWrapper>
+          </SemiCircle>
+        )}
+      </AnimatePresence>
+      <AnimatePresence>
+        {!isSemiCircleRotated && (
+          <SemiCircle
+            initial={{
+              transform: `translate(-50%, -27.5vw) rotate(-90deg)`,
+            }}
+            animate={{
+              transform: `translate(-50%, -27.5vw) rotate(45deg)`,
+            }}
+            exit={{
+              transform: `translate(-50%, -27.5vw) rotate(135deg)`,
+            }}
+            onClick={() => {
+              if (isSemiCircleRotated === false) {
+                handleClick(3);
+                navigate("/schedule");
+              }
+            }}
+            rotated={isSemiCircleRotated}
+            rotateAngle={["0deg", "45deg"]}
+            tabIdx={isClicked === 3}
+          >
+            <IconWrapper>
+              <StyledBsCalendarWeek />
+            </IconWrapper>
+          </SemiCircle>
+        )}
+      </AnimatePresence>
+      <AnimatePresence>
+        {!isSemiCircleRotated && (
+          <SemiCircle
+            initial={{
+              transform: `translate(-50%, -27.5vw) rotate(-90deg)`,
+            }}
+            animate={{
+              transform: `translate(-50%, -27.5vw) rotate(90deg)`,
+            }}
+            exit={{
+              transform: `translate(-50%, -27.5vw) rotate(135deg)`,
+            }}
+            onClick={() => {
+              if (isSemiCircleRotated === false) {
+                handleClick(4);
+                navigate("/my");
+              }
+            }}
+            rotated={isSemiCircleRotated}
+            rotateAngle={["45deg", "90deg"]}
+            tabIdx={isClicked === 4}
+          >
+            <IconWrapper>
+              <StyledCgProfile />
+            </IconWrapper>
+          </SemiCircle>
+        )}
+      </AnimatePresence>
+      <BottomBar />
+    </DotContainer>
   );
 };
 

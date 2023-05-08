@@ -78,7 +78,12 @@ const HistoryComponent = () => {
 
   return (
     <div>
-      <Container imageUrl={imageUrl}>
+      <Container
+        imageUrl={imageUrl}
+        onClick={() => {
+          console.log("ㅗㄷㄱㄷ");
+        }}
+      >
         <DecorationBar />
         <DateIndicator>
           <Date>{"18"}</Date>

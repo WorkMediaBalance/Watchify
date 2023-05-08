@@ -1,13 +1,29 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useEffect } from "react";
 import AppBar from "./AppBar";
 import { Outlet, useLocation } from "react-router-dom";
 import BottomDot from "./BottomDot";
 import styled from "styled-components";
 
-const Background = styled.div`
+const Background = styled.div<{
+  isRedDotRequired: boolean;
+  isAppBarRequired: boolean;
+}>`
   background-color: ${({ theme }) => theme.netflix.backgroundColor};
-  // height: 91vh;
-  height: 100%;
+  min-height: ${(props) => {
+    if (props.isRedDotRequired) {
+      if (props.isAppBarRequired) {
+        return "91vh";
+      } else {
+        return "96vh";
+      }
+    } else {
+      if (props.isAppBarRequired) {
+        return "95vh";
+      } else {
+        return "100vh";
+      }
+    }
+  }};
 `;
 
 const Layout = () => {
@@ -28,32 +44,50 @@ const Layout = () => {
 
   const location = useLocation();
 
-  useMemo(() => {
+  // AppBar 유무에 따른 변수
+  const [isAppBarRequired, setIsAppBarRequired] = useState(true);
+
+  // RedDot 유무에 따른 변수
+  const [isRedDotRequired, setIsRedDotRequired] = useState(true);
+
+  useEffect(() => {
     const path = location.pathname;
-    switch (path) {
-      case "/":
-        setTitle("임시메인페이지"); //TODO: 메인페이지 APPBAR는 따로 분기 처리!
-        break;
-      case "/search":
-        setTitle("검색");
-        break;
-      case "/schedule":
-        setTitle("스케줄");
-        break;
-      case "/recommend":
-        setTitle("추천");
-        break;
-      case "/share":
-        setTitle("공유하기");
-        break;
-      case "/login":
-        setTitle("로그인");
-        break;
-      case "/my":
-        setTitle("마이페이지");
-        break;
-      default:
-        setTitle("404");
+    console.log(path);
+
+    // 이 함수에서 AppBAr 사용여부와 RedDot 사용여부 설정해줄 것!
+    // 조건문 중첩해서 중첩 url 대응
+    if (path.startsWith("/search")) {
+      setTitle("검색");
+      setIsAppBarRequired(true);
+      setIsRedDotRequired(true);
+    } else if (path.startsWith("/schedule")) {
+      setTitle("스케줄");
+      setIsAppBarRequired(true);
+      setIsRedDotRequired(false);
+    } else if (path.startsWith("/recommend")) {
+      setTitle("추천");
+      setIsAppBarRequired(true);
+      setIsRedDotRequired(true);
+    } else if (path.startsWith("/share")) {
+      setTitle("공유하기");
+      setIsAppBarRequired(true);
+      setIsRedDotRequired(true);
+    } else if (path.startsWith("/login")) {
+      setTitle("로그인");
+      setIsAppBarRequired(true);
+      setIsRedDotRequired(false);
+    } else if (path.startsWith("/my")) {
+      setTitle("마이페이지");
+      setIsAppBarRequired(true);
+      setIsRedDotRequired(true);
+    } else if (path.startsWith("/")) {
+      setTitle("임시메인페이지");
+      setIsAppBarRequired(false);
+      setIsRedDotRequired(true);
+    } else {
+      setTitle("404");
+      setIsAppBarRequired(true);
+      setIsRedDotRequired(true);
     }
   }, [location]);
 
@@ -65,16 +99,22 @@ const Layout = () => {
           setIsSemiCircleRotated(true);
         }}
       >
-        <AppBar title={title} />
+        {isAppBarRequired && <AppBar title={title} />}
       </div>
       <div
         onClick={() => {
           setInnerDotSize("35%");
           setIsSemiCircleRotated(true);
         }}
-        style={{ marginTop: "5vh", minHeight: "100vh" }}
+        style={{
+          position: "relative",
+          marginTop: isAppBarRequired ? "5vh" : "0",
+        }}
       >
-        <Background>
+        <Background
+          isRedDotRequired={isRedDotRequired}
+          isAppBarRequired={isAppBarRequired}
+        >
           <Outlet />
         </Background>
       </div>

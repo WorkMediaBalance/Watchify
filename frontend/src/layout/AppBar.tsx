@@ -21,7 +21,7 @@ const Bar = styled.div`
 
 const TitleHolder = styled.div`
   font-family: ${({ theme }) => theme.fontFamily};
-  font-size: ${({ theme }) => theme.fontSizeType.medium};
+  font-size: ${({ theme }) => theme.fontSizeType.middle};
 `;
 
 interface AppBarProps {
@@ -31,7 +31,7 @@ interface AppBarProps {
 const AppBar: React.FC<AppBarProps> = ({ title }) => {
   let navigate = useNavigate();
   return (
-    <div>
+    <div style={{ zIndex: "10000", position: "sticky" }}>
       <Bar>
         <AiOutlineLeft
           onClick={() => navigate(-1)}

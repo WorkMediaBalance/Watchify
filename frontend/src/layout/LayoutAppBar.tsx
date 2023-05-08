@@ -5,7 +5,6 @@ import styled from "styled-components";
 
 const Background = styled.div`
   background-color: ${({ theme }) => theme.netflix.backgroundColor};
-  height: 100vh;
 `;
 
 const Layout = () => {
@@ -47,11 +46,9 @@ const Layout = () => {
       <div>
         <AppBar title={title} />
       </div>
-      <div style={{ marginTop: "5vh", minHeight: "100vh" }}>
-        <Background>
-          <Outlet />
-        </Background>
-      </div>
+      <Background>
+        <Outlet />
+      </Background>
     </div>
   );
 };
