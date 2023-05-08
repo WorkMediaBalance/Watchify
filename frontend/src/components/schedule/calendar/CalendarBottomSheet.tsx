@@ -1,34 +1,34 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
 import { motion } from "framer-motion";
-import { BOTTOM_SHEET_HEIGHT } from "../../constant/constant";
-import useRecBottomSheet from "../../hooks/useRecBottomSheet";
-import ScheduleBottomSheetHeader from "./ScheduleBottomSheetHeader";
-import ScheduleBottomSheetContent from "./ScheduleBottomSheetContent";
+import { TWO_BOTTOM_SHEET_HEIGHT } from "constant/constant";
+import CalendarBottomSheetHeader from "./CalendarBottomSheetHeader";
+import CalendarBottomSheetContent from "./CalendarBottomSheetContent";
+import useRecBottomSheet from "hooks/twoDepthBottomSheet";
 
-const ScheduleBottomSheet = (props: { isOpen: boolean; onClose: () => void }) => {
-  const { sheet, content, openBottomSheet, isOpenSheet } = useRecBottomSheet();
-  const isOpen = props.isOpen;
+const CalendarBottomSheet = (props: { sheet: number; date: string; close: number }) => {
+  const { sheet, content, setSheetDepth } = useRecBottomSheet();
   useEffect(() => {
-    if (isOpen) {
-      openBottomSheet();
+    if (props.sheet !== 0) {
+      setSheetDepth(1);
     }
+  }, [props.sheet]);
 
-    if (!isOpenSheet) {
-      props.onClose();
-    }
-  }, [isOpen, isOpenSheet]);
+  useEffect(() => {
+    setSheetDepth(0);
+  }, [props.close]);
+
   return (
     <Wrapper ref={sheet}>
-      <ScheduleBottomSheetHeader />
-      <BottomSheetContent ref={content} className="BottomSheetContent">
-        <ScheduleBottomSheetContent />
+      <CalendarBottomSheetHeader />
+      <BottomSheetContent ref={content}>
+        <CalendarBottomSheetContent date={props.date} />
       </BottomSheetContent>
     </Wrapper>
   );
 };
 
-export default ScheduleBottomSheet;
+export default CalendarBottomSheet;
 
 const Wrapper = styled(motion.div)`
   display: flex;
@@ -44,7 +44,7 @@ const Wrapper = styled(motion.div)`
   border-top-right-radius: 16px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.6);
   border-top: 2px solid #ffffff;
-  height: ${BOTTOM_SHEET_HEIGHT}px;
+  height: ${TWO_BOTTOM_SHEET_HEIGHT}px;
 
   // background: linear-gradient(359.26deg, #3c41c7 0.02%, #3742b2 83.23%, #3642ae 98.76%);
   background: #000000;
