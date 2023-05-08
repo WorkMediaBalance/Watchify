@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { theme } from "styles/theme";
 import { months } from "constant/constant";
 
-const Calendar = (props: { onDateClick: (date: string) => void }) => {
+const Calendar = (props: { onDateClick: (date: string) => void; onCloseSheet: () => void }) => {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [clickedDay, setClickedDay] = useState<HTMLElement | null>(null);
   const weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
@@ -69,14 +69,17 @@ const Calendar = (props: { onDateClick: (date: string) => void }) => {
 
   function thisMonth() {
     setSelectedDate(new Date());
+    props.onCloseSheet();
   }
 
   function prevMonth() {
     setSelectedDate((prevDate) => new Date(prevDate.getFullYear(), prevDate.getMonth() - 1, 1));
+    props.onCloseSheet();
   }
 
   function nextMonth() {
     setSelectedDate((prevDate) => new Date(prevDate.getFullYear(), prevDate.getMonth() + 1, 1));
+    props.onCloseSheet();
   }
 
   const handlers = useSwipeable({
