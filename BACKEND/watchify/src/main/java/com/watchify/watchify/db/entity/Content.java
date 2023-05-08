@@ -24,21 +24,25 @@ public class Content implements Serializable {
     private Long id;
 
     private String title;
+
+    @Column(length = 5000)
     private String summarize;
+
     private int runtime;
     private double rate;
     private String imgPath;
-    private String imgName;
+//    private String imgName;
     private int audienceAge;
     private Integer season;
     private Integer finalEpisode;
     private String horizontialImgPath;
-    private String horizontialImgName;
+//    private String horizontialImgName;
 
     @Enumerated(EnumType.STRING)
     private EnumContentType type;
 
-    private LocalDate releaseDate;
+//    private LocalDate releaseDate;
+    private Integer releaseDate;
 
     @OneToMany(mappedBy = "content", cascade = CascadeType.ALL)
     private List<WishContent> wishContents = new ArrayList<>();
