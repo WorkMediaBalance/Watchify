@@ -17,12 +17,10 @@ public class CalenderDTO {
     private LocalDate viewDate;
     private String title;
     private String imgPath;
-    private String imgName;
     private String type;
     private int season;
     private int episode;
-    private String horizontalImgPath;
-    private String horizontalImgName;
+    private String backdropImgPath;
     private int runtime;
     private String ott;
 
@@ -36,12 +34,10 @@ public class CalenderDTO {
         this.viewDate = calender.getViewDate();
         this.title = calender.getTurnContent().getContent().getTitle();
         this.imgPath = calender.getTurnContent().getContent().getImgPath();
-//        this.imgName = calender.getTurnContent().getContent().getImgName();
         this.type = calender.getTurnContent().getContent().getType().getValue();
         this.season = calender.getTurnContent().getContent().getSeason() != null ? calender.getTurnContent().getContent().getSeason() : 0;
         this.episode = calender.getTurnContent().getEpisode();
-        this.horizontalImgPath = calender.getTurnContent().getContent().getHorizontialImgPath();
-//        this.horizontalImgName = calender.getTurnContent().getContent().getHorizontialImgName();
+        this.backdropImgPath = calender.getTurnContent().getContent().getBackdropPath();
         this.runtime = calender.getTurnContent().getContent().getRuntime();
         this.ott = calender.getOtt().getName();
     }

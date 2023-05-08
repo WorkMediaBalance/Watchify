@@ -14,17 +14,17 @@ public class MyAlarmService {
     private final UserRepository userRepository;
 
     @Transactional
-    public void UpdateOttAlarm() {
+    public void UpdateOttAlarm(Long userId) {
         // oauth 적용전
-        User user = userRepository.findById(1L).get();
+        User user = userRepository.findById(userId).get();
         user.updateOttAlarm();
         userRepository.save(user);
     }
 
     @Transactional
-    public void UpdateContentAlarm() {
+    public void UpdateContentAlarm(Long userId) {
         // oauth 적용전
-        User user = userRepository.findById(1L).get();
+        User user = userRepository.findById(userId).get();
         user.updateContentAlarm();
         userRepository.save(user);
     }

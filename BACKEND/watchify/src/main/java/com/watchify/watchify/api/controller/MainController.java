@@ -31,7 +31,6 @@ public class MainController {
 
         String accessToken = request.getHeader("access");
         long userId = userService.findUserIdByAccessToken(accessToken);
-        System.out.println("userId : " + userId);
 
         try {
             Map<Integer, List<CalenderDTO>> res = mainScheduleService.getMainSchedule(userId);

@@ -77,4 +77,6 @@ public class User implements Serializable {
     public void updateIsDeleted() {
         this.isDeleted = !this.isDeleted;
     }
+
+    public void updateNickName(String nickName) {this.nickName = nickName;}
 }
