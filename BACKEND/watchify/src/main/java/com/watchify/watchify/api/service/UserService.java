@@ -1,5 +1,7 @@
 package com.watchify.watchify.api.service;
 
+import com.watchify.watchify.auth.service.PrincipalDetails;
+import com.watchify.watchify.auth.service.TokenService;
 import com.watchify.watchify.db.entity.User;
 import com.watchify.watchify.db.repository.UserRepository;
 import com.watchify.watchify.dto.response.UserDTO;
@@ -14,26 +16,11 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserService {
 
-    private final UserRepository userRepository;
+    private final TokenService tokenService;
 
-    @Transactional
-    public Optional<User> FindUserByEmailProvider(String email, String provider) {
-        Optional<User> userOptional =  userRepository.findByEmailAndProvider(email, provider);
-        return userOptional;
+    // 토큰에서 유저아이디 찾기
+    public long findUserIdByAccessToken(String token) {
+        PrincipalDetails principalDetails = (PrincipalDetails) tokenService.getAuthentication(token).getPrincipal();
+        return principalDetails.getUserId();
     }
-
-    // 맨 처음 로그인시 유저 저장
-    @Transactional
-    public void InitialUserSave(UserDTO userDto) {
-        User newUser = new User(userDto);
-        userRepository.save(newUser);
-    }
-
-    // 유저 재가입 or 탈퇴시 isDeleted 변경
-    @Transactional
-    public void UpdateUserIsDeleted(User user) {
-        user.updateIsDeleted();
-        userRepository.save(user);
-    }
-
 }

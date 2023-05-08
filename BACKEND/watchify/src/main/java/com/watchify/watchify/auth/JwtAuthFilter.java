@@ -22,7 +22,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     @Override
     public void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws IOException, ServletException {
-        System.out.println("JwtAuthFilter // doFilterInternal 메서드");
+
         final String token = tokenService.resolveToken(request);
 
         // 1. request 로 보낸 token 이 valid 한지 확인

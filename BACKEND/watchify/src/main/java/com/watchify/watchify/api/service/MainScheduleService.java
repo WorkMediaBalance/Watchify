@@ -19,16 +19,12 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class MainScheduleService {
 
-    private final UserRepository userRepository;
     private final CalenderRepository calenderRepository;
 
     @Transactional
-    public Map<Integer, List<CalenderDTO>> getMainSchedule() {
+    public Map<Integer, List<CalenderDTO>> getMainSchedule(Long userId) {
 
         Map<Integer, List<CalenderDTO>> res = new HashMap<>();
-
-        // oauth 적용전
-        Long userId = userRepository.findById(1L).get().getId();
 
         // 오늘날짜
         LocalDate today = LocalDate.now();
