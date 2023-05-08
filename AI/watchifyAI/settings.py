@@ -14,6 +14,19 @@ from pathlib import Path
 import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
+
+import environ
+# Set the project base directory
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+env = environ.Env(
+    # set casting, default value
+    DEBUG=(bool, False)
+)
+
+# Take environment variables from .env file
+environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
@@ -83,12 +96,12 @@ WSGI_APPLICATION = 'watchifyAI.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'sins',
-        'USER': 'watchifyadmin',
-        'PASSWORD': 'qudwlsgoa!',  # git에 올리지 않기
-        'HOST': 'watchifydb.cph3uafcff1h.ap-northeast-2.rds.amazonaws.com',
-        'PORT': '3306',
+        'ENGINE': os.environ.get('DB_ENGINE'),
+        'NAME': os.environ.get('DB_NAME'),
+        'USER': os.environ.get('DB_USER'),
+        'PASSWORD': os.environ.get('DB_PW'),  # git에 올리지 않기
+        'HOST': os.environ.get('DB_HOST'),
+        'PORT': os.environ.get('DB_PORT'),
     }
 }
 
@@ -139,19 +152,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 ############################ modifid ##################################
 MODELS = os.path.join(BASE_DIR, 'ml/models')
 
-import environ
-import os
-
-env = environ.Env(
-    # set casting, default value
-    DEBUG=(bool, False)
-)
-
-# Set the project base directory
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
-# Take environment variables from .env file
-environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
 #### AWS
 AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')

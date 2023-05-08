@@ -12,6 +12,7 @@ from serializers import *
 ######## recommend model
 import subprocess
 from recommend_models import recommend_content
+from model.Recommand import Recommands
 
 # Create your views here.
 class RecommendAPIView(APIView):
@@ -42,7 +43,8 @@ class RecommendAPIView(APIView):
             subprocess.run(args, check=True)
         except subprocess.CalledProcessError:
             print('FAIL')
-
+        predictions = Recommands(user_id)
+        
         # Plan B
         # recommend_content(user_id, 10)
 
