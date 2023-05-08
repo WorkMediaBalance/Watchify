@@ -193,6 +193,8 @@ public class OauthController {
     public RedirectView reGnerateToken(@RequestHeader("refresh") String refreshToken) {
         Token token = userCheckService.reGenerateAccess(refreshToken);
         String redirectUri = userCheckService.loginRedirect(token);
+        System.out.println(token.getRefreshToken());
+        System.out.println(token.getAccessToken());
         return new RedirectView(redirectUri);
     }
 
