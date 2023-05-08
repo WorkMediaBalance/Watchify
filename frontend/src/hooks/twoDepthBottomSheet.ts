@@ -152,14 +152,18 @@ export default function useTwoDepthBottomSheet() {
 
   useEffect(() => {
     if (sheetDepth === 0) {
+      console.log("뎁스 0");
       sheet.current!.style.setProperty("transform", "translateY(0)");
     }
     if (sheetDepth === 1) {
+      console.log("뎁스 1");
       sheet.current!.style.setProperty("transform", `translateY(${ONE_MIN_Y - TWO_MAX_Y}px)`);
     }
     if (sheetDepth === 2) {
+      console.log("뎁스 2");
       sheet.current!.style.setProperty("transform", `translateY(${TWO_MIN_Y - TWO_MAX_Y}px)`);
     }
+    console.log(sheetDepth);
   }, [sheetDepth]);
 
   return { sheet, content, openBottomSheet, sheetDepth, setSheetDepth };
