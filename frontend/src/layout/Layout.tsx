@@ -52,7 +52,7 @@ const Layout = () => {
 
   useEffect(() => {
     const path = location.pathname;
-    console.log(path);
+    // console.log(path);
 
     // 이 함수에서 AppBAr 사용여부와 RedDot 사용여부 설정해줄 것!
     // 조건문 중첩해서 중첩 url 대응
@@ -63,7 +63,7 @@ const Layout = () => {
     } else if (path.startsWith("/schedule")) {
       setTitle("스케줄");
       setIsAppBarRequired(true);
-      setIsRedDotRequired(false);
+      setIsRedDotRequired(true);
     } else if (path.startsWith("/recommend")) {
       setTitle("추천");
       setIsAppBarRequired(true);
@@ -110,11 +110,9 @@ const Layout = () => {
           position: "relative",
           marginTop: isAppBarRequired ? "5vh" : "0",
         }}
+        id="app-bar-margin"
       >
-        <Background
-          isRedDotRequired={isRedDotRequired}
-          isAppBarRequired={isAppBarRequired}
-        >
+        <Background isRedDotRequired={isRedDotRequired} isAppBarRequired={isAppBarRequired}>
           <Outlet />
         </Background>
       </div>
