@@ -29,6 +29,7 @@ export const recResultState = atom<Array<content>>({
       ott: ["netflix"],
       genres: ["드라마"],
       isWish: false,
+      isLike: 1,
       summarize:
         "어느 날 길을 걷던 걸무고는 우연히 알 수 없는 동전을 줍게 되고, 이 동전의 충격적인 정체가 알려지며 사건에 휩싸이게 되는데... 과연 걸무고는 무사할 수 있을까?",
       audienceAge: 15,
@@ -47,6 +48,7 @@ export const recResultState = atom<Array<content>>({
       ott: ["wavve", "watcha"],
       genres: ["야생", "뱀파이어"],
       isWish: true,
+      isLike: -1,
       summarize: "뱀파이어가 울부지저따. 뱀파이어는 짱 쎄따. 크와아앙",
       audienceAge: 15,
     },
@@ -65,6 +67,7 @@ export const recResultState = atom<Array<content>>({
       ott: ["wavve", "netflix", "disney"],
       genres: ["박물관", "리얼리티"],
       isWish: false,
+      isLike: 0,
       summarize:
         "한참 어린 동생으로부터 스타 도전을 받은 걸무고, 과연 그는 저그의 자존심을 지켜낼 수 있을 것인가? 5월 1일. Python 개봉 박두",
       audienceAge: 15,
@@ -83,6 +86,7 @@ export const recResultState = atom<Array<content>>({
       ott: ["wavve"],
       genres: ["박물관", "리얼리티"],
       isWish: false,
+      isLike: 0,
       summarize:
         "한참 어린 동생으로부터 스타 도전을 받은 걸무고, 과연 그는 저그의 자존심을 지켜낼 수 있을 것인가? 5월 1일. Python 개봉 박두",
       audienceAge: 15,
@@ -101,6 +105,7 @@ export const recResultState = atom<Array<content>>({
       ott: ["wavve"],
       genres: ["박물관", "리얼리티"],
       isWish: false,
+      isLike: 0,
       summarize:
         "한참 어린 동생으로부터 스타 도전을 받은 걸무고, 과연 그는 저그의 자존심을 지켜낼 수 있을 것인가? 5월 1일. Python 개봉 박두",
       audienceAge: 15,
@@ -119,6 +124,7 @@ export const recResultState = atom<Array<content>>({
       ott: ["wavve"],
       genres: ["박물관", "리얼리티"],
       isWish: false,
+      isLike: 0,
       summarize:
         "한참 어린 동생으로부터 스타 도전을 받은 걸무고, 과연 그는 저그의 자존심을 지켜낼 수 있을 것인가? 5월 1일. Python 개봉 박두",
       audienceAge: 15,
@@ -137,6 +143,7 @@ export const recResultState = atom<Array<content>>({
       ott: ["wavve"],
       genres: ["박물관", "리얼리티"],
       isWish: false,
+      isLike: 0,
       summarize:
         "한참 어린 동생으로부터 스타 도전을 받은 걸무고, 과연 그는 저그의 자존심을 지켜낼 수 있을 것인가? 5월 1일. Python 개봉 박두",
       audienceAge: 15,
@@ -152,9 +159,10 @@ export const recResultState = atom<Array<content>>({
       type: "영화",
       season: 1,
       finalEpisode: 1,
-      ott: ["wavve", "netflix", "disney"],
+      ott: ["wavve"],
       genres: ["박물관", "리얼리티"],
       isWish: false,
+      isLike: 0,
       summarize:
         "한참 어린 동생으로부터 스타 도전을 받은 걸무고, 과연 그는 저그의 자존심을 지켜낼 수 있을 것인가? 5월 1일. Python 개봉 박두",
       audienceAge: 15,
