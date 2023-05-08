@@ -34,7 +34,6 @@ public class CalenderDTO {
         this.viewDate = calender.getViewDate();
         this.title = calender.getTurnContent().getContent().getTitle();
         this.imgPath = calender.getTurnContent().getContent().getImgPath();
-        this.type = calender.getTurnContent().getContent().getType().getValue();
         this.season = calender.getTurnContent().getContent().getSeason() != null ? calender.getTurnContent().getContent().getSeason() : 0;
         this.episode = calender.getTurnContent().getEpisode();
         this.backdropImgPath = calender.getTurnContent().getContent().getBackdropPath();

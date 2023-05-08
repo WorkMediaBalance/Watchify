@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
 
 @Entity
 @Getter
@@ -22,6 +23,9 @@ public class WishContent implements Serializable {
 
     private boolean isDeleted;
 
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date updatedAt;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
@@ -29,5 +33,10 @@ public class WishContent implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "content_id")
     private Content content;
+
+    @PreUpdate
+    public void onUpdate() {
+        this.updatedAt = new Date();
+    }
 
 }
