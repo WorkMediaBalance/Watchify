@@ -82,9 +82,7 @@ const SemiCircle = styled(motion.span)<{
   ); // 이게 45도짜리 부채꼴 -> 5번째에 있는 50%의 수치를 조절해서 각도 조절
 
   background-color: ${(props) =>
-    props.tabIdx
-      ? props.theme.netflix.pointColor
-      : props.theme.netflix.tabColor};
+    props.tabIdx ? props.theme.netflix.pointColor : props.theme.netflix.tabColor};
 
   transform-origin: 50% 25vw;
 
@@ -172,11 +170,9 @@ const BottomDot: React.FC<BottomDotProps> = ({
   const theme = useTheme();
 
   return (
-    <DotContainer>
+    <DotContainer id="bottom-dot">
       <OuterDot onClick={toggleInnerDotSize}>
-        <InnerDot size={innerDotSize}>
-          {!isSemiCircleRotated && iconArray[isClicked]}
-        </InnerDot>
+        <InnerDot size={innerDotSize}>{!isSemiCircleRotated && iconArray[isClicked]}</InnerDot>
       </OuterDot>
       <AnimatePresence>
         {!isSemiCircleRotated && (

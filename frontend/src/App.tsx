@@ -17,6 +17,7 @@ import PageSchedule from "./pages/PageSchedule";
 import PageScheduleContent from "pages/PageScheduleContent";
 import PageSearch from "./pages/PageSearch";
 import PageShare from "./pages/PageShare";
+
 import PageCallback from "pages/PageCallback";
 
 import MemberRoute from "./components/common/MemberRoute";
@@ -38,8 +39,7 @@ const App = () => {
             <Route path="/schedule/content" element={<PageScheduleContent />} />
             <Route path="/search" element={<PageSearch />} />
 
-            <Route path="/callback" element={<PageCallback />} />
-
+            <Route path="/oauth2/callback" element={<PageCallback />} />
 
             {/* 회원만 접근 가능 */}
             <Route element={<MemberRoute />}>
@@ -54,8 +54,6 @@ const App = () => {
             {/* 404 페이지 */}
             <Route path="*" element={<PageError />} />
           </Route>
-
-
         </Routes>
       </ThemeProvider>
     </div>
