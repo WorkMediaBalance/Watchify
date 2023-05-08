@@ -17,7 +17,7 @@ const Handle = styled.div`
   margin: auto;
 `;
 
-const RecBottomSheetHeader: FC = () => {
+const CalendarBottomSheetHeader: FC = () => {
   return (
     <Wrapper>
       <Handle />
@@ -25,4 +25,4 @@ const RecBottomSheetHeader: FC = () => {
   );
 };
 
-export default RecBottomSheetHeader;
+export default CalendarBottomSheetHeader;
