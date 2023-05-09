@@ -1,9 +1,6 @@
 package com.watchify.watchify.dto.response;
 
-import com.watchify.watchify.db.entity.ContentGenre;
-import com.watchify.watchify.db.entity.ContentOTT;
-import com.watchify.watchify.db.entity.Genre;
-import com.watchify.watchify.db.entity.WishContent;
+import com.watchify.watchify.db.entity.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -55,7 +52,12 @@ public class DefaultContentDTO {
         this.audienceAge = wishContent.getContent().getAudienceAge();
     }
 
+    public DefaultContentDTO(Calender calender) {
+
+    }
+
     public void setIsWish(boolean flag) { this.isWish = flag;}
     public void setIsLike(int flag) {this.isLike = flag;}
+
 
 }
