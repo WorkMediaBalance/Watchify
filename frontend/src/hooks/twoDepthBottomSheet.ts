@@ -14,6 +14,8 @@ interface BottomSheetMetrics {
 }
 
 export default function useTwoDepthBottomSheet() {
+  const [bottomSheetY, setBottomSheetY] = useState(0);
+
   const sheet = useRef<HTMLDivElement>(null);
 
   const content = useRef<HTMLDivElement>(null);
@@ -102,7 +104,11 @@ export default function useTwoDepthBottomSheet() {
           nextSheetY = TWO_MAX_Y;
         }
 
-        sheet.current!.style.setProperty("transform", `translateY(${nextSheetY - TWO_MAX_Y}px)`);
+        const VIEWPORT_HEIGHT = window.innerHeight;
+        sheet.current!.style.setProperty(
+          "transform",
+          `translateY(${currentTouch.clientY - VIEWPORT_HEIGHT}px)`
+        );
       } else {
         document.body.style.overflowY = "hidden";
       }
@@ -161,10 +167,16 @@ export default function useTwoDepthBottomSheet() {
       sheet.current!.style.setProperty("transform", "translateY(0)");
     }
     if (sheetDepth === 1) {
-      sheet.current!.style.setProperty("transform", `translateY(${ONE_MIN_Y - TWO_MAX_Y}px)`);
+      sheet.current!.style.setProperty(
+        "transform",
+        `translateY(${ONE_MIN_Y - TWO_MAX_Y}px)`
+      );
     }
     if (sheetDepth === 2) {
-      sheet.current!.style.setProperty("transform", `translateY(${TWO_MIN_Y - TWO_MAX_Y}px)`);
+      sheet.current!.style.setProperty(
+        "transform",
+        `translateY(${TWO_MIN_Y - TWO_MAX_Y}px)`
+      );
     }
   }, [sheetDepth]);
 
