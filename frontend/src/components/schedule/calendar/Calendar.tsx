@@ -5,7 +5,10 @@ import { motion, AnimatePresence } from "framer-motion";
 import { theme } from "styles/theme";
 import { months } from "constant/constant";
 
-const Calendar = (props: { onDateClick: (date: string) => void; onCloseSheet: () => void }) => {
+const Calendar = (props: {
+  onDateClick: (date: number, month: number) => void;
+  onCloseSheet: () => void;
+}) => {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [clickedDay, setClickedDay] = useState<HTMLElement | null>(null);
   const weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
@@ -94,8 +97,9 @@ const Calendar = (props: { onDateClick: (date: string) => void; onCloseSheet: ()
       }
       event.currentTarget.classList.add("selected-day");
       setClickedDay(event.currentTarget);
-      const date = `${selectedDate.getMonth() + 1}월 ${event.currentTarget.innerText}일`;
-      props.onDateClick(date);
+      const date = selectedDate.getMonth() + 1;
+      const month = Number(event.currentTarget.innerText);
+      props.onDateClick(month, date);
     }
   };
 

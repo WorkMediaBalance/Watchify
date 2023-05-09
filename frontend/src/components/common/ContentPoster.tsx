@@ -8,10 +8,12 @@ import netflix from "assets/img/netflixIcon.png";
 import watcha from "assets/img/watchaIcon.png";
 import wavve from "assets/img/wavveIcon.png";
 import ContentSwal from "./ContentSwal";
+import { content } from "interface/content";
 
 interface MoviePosterProps {
   imageUrl: string;
   title: string;
+  content: content;
 }
 
 const PosterContainer = styled.div<{ imageUrl: string }>`
@@ -45,7 +47,7 @@ const OTTIcon = styled.img`
   animation: ${fadeInOut} 1.5s linear ease;
 `;
 
-const ContentPoster: React.FC<MoviePosterProps> = ({ imageUrl, title }) => {
+const ContentPoster: React.FC<MoviePosterProps> = ({ imageUrl, title, content }) => {
   // 여기부터 모달
   const [isModalOpen, setIsModalOpen] = useState(false);
   const modalStyle = {
@@ -135,7 +137,7 @@ const ContentPoster: React.FC<MoviePosterProps> = ({ imageUrl, title }) => {
         }}
         ariaHideApp={false}
       >
-        <ContentSwal />
+        <ContentSwal content={content} />
       </Modal>
     </>
   );
