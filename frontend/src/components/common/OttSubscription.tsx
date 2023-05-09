@@ -6,7 +6,7 @@ import Swal from "sweetalert2";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import { ottSubscriptionState, ottSubscriptionState2 } from "recoil/userState";
 
 import { AiOutlineClose } from "react-icons/ai";
@@ -125,6 +125,59 @@ const OttSubscription = () => {
     });
   };
 
+  const modalHandler2 = () => {
+    const result: { [key: string]: boolean } = {};
+    if (otts2.netflix.start) {
+      result["netflix"] = true;
+    } else {
+      result["netflix"] = false;
+    }
+    if (otts2.disney.start) {
+      result["disney"] = true;
+    } else {
+      result["disney"] = false;
+    }
+    if (otts2.watcha.start) {
+      result["watcha"] = true;
+    } else {
+      result["watcha"] = false;
+    }
+    if (otts2.wavve.start) {
+      result["wavve"] = true;
+    } else {
+      result["wavve"] = false;
+    }
+
+    Swal.fire({
+      title: "",
+      text: "",
+      background: myTheme.netflix.backgroundColor,
+      html: `<div>
+  ${
+    result.netflix
+      ? ""
+      : `<img src="${netflixIcon}" onclick="addOtt('netflix', '2023-05-01')" width="60vw" />`
+  }
+  ${
+    result.disney
+      ? ""
+      : `<img src="${disneyIcon}" onclick="addOtt('disney', '2023-05-01')" width="60vw"/>`
+  }
+  ${
+    result.watcha
+      ? ""
+      : `<img src="${watchaIcon}" onclick="addOtt('watcha', '2023-05-01')" width="60vw"/>`
+  }
+  ${
+    result.wavve
+      ? ""
+      : `<img src="${wavveIcon}" onclick="addOtt('wavve', '2023-05-01')" width="60vw"/>`
+  }
+
+</div>`,
+    });
+  };
+
   const handleDateChange = (date: Date, idx: number) => {
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, "0");
@@ -156,18 +209,21 @@ const OttSubscription = () => {
           icon = wavveIcon;
         }
         return (
-          <SOttDiv key={key}>
-            <SImg src={icon} alt={key} />
-            <span onClick={() => {}}>최근 구독일 : {value.start}</span>
-
-            <AiOutlineClose
-              onClick={() => onClickDeleteOtt2(key)}
-              style={{
-                fontSize: "5vw",
-                color: "white",
-              }}
-            />
-          </SOttDiv>
+          <>
+            {value.start ? (
+              <SOttDiv key={key}>
+                <SImg src={icon} alt={key} />
+                <span onClick={() => {}}>최근 구독일 : {value.start}</span>
+                <AiOutlineClose
+                  onClick={() => onClickDeleteOtt2(key)}
+                  style={{
+                    fontSize: "5vw",
+                    color: "white",
+                  }}
+                />
+              </SOttDiv>
+            ) : null}
+          </>
         );
       })}
       {otts.map((ott, idx) => {
@@ -218,6 +274,9 @@ const OttSubscription = () => {
           <SAddBox onClick={modalHandler}>+</SAddBox>
         </SBoxContainer>
       )}
+      <SBoxContainer>
+        <SAddBox onClick={modalHandler2}>객체용 +</SAddBox>
+      </SBoxContainer>
     </SContainer>
   );
 };
