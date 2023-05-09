@@ -38,7 +38,7 @@ const PageSearch = () => {
       type: "드라마",
       season: 1, // 없을 시 0
       finalEpisode: 10, // 없을 시 0
-      ott: ["netflix"], // 없을 시 빈 array
+      ott: { netflix: "https://www.netflix.com/kr/title/81519223" }, // 없을 시 빈 array
       genres: ["드라마"], // 없을 시 빈 array
       isWish: false, // 비로그인시 무조건 false
       isLike: 1, // 좋아요=1 / 없음=0 / 싫어요=-1
@@ -58,7 +58,10 @@ const PageSearch = () => {
       type: "영화",
       season: 0,
       finalEpisode: 0,
-      ott: ["wavve", "watcha"],
+      ott: {
+        wavve: "https://www.wavve.com/player/movie?movieid=MV_LO01_LO0000000038",
+        watcha: "https://watcha.com/contents/myWqyBW",
+      },
       genres: ["야생", "뱀파이어"],
       isWish: true,
       summarize: "뱀파이어가 울부지저따. 뱀파이어는 짱 쎄따. 크와아앙",
@@ -75,7 +78,11 @@ const PageSearch = () => {
       type: "영화",
       season: 0,
       finalEpisode: 0,
-      ott: ["wavve", "netflix", "disney"],
+      ott: {
+        wavve: "https://www.wavve.com/player/movie?movieid=MV_CH01_FX0000011513",
+        disney:
+          "https://www.disneyplus.com/ko-kr/movies/night-at-the-museum/7CIEBLbWIbTR?irclickid=QtOQ7aX85xyNW8FQSXWPO3CrUkAX00XKjQzmRU0&irgwc=1&cid=DSS-Affiliate-Impact-Content-JustWatch+GmbH-705874&tgclid=0f010036-956b-4d13-8f00-1ef16459f3ec&dclid=CjkKEQjw3ueiBhD6mL2q9ajRr5ABEiQAewM-7icpU5wK0vK8mOV_QSB276CtpQmwQhrtxJqj3PNNgjHw_wcB",
+      },
       genres: ["박물관", "리얼리티"],
       isWish: false,
       summarize:
@@ -232,7 +239,12 @@ const PageSearch = () => {
                 <ContentsContainer>
                   {searchResult.map((content, idx) => (
                     <ContentContainer>
-                      <ContentPoster key={idx} title={content.title} imageUrl={content.img_path} />
+                      <ContentPoster
+                        content={searchResult[idx]}
+                        key={idx}
+                        title={content.title}
+                        imageUrl={content.img_path}
+                      />
                     </ContentContainer>
                   ))}
                 </ContentsContainer>
