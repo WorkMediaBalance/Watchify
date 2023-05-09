@@ -24,6 +24,8 @@ pipeline {
         stage('Test') {
             steps {
                 echo "Test"
+                VERSION = sh(returnStdout: true, script: 'cat version.txt').trim()
+                echo "TEST 버젼: $VERSION"
             }
         }
         stage('Deploy') {
