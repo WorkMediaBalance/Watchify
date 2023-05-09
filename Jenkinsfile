@@ -4,25 +4,18 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Building'
-                sh 'pwd'
-                echo 'this is'
-                sh 'exit'
-                sh 'pwd'
                 script {
-                    // counter 변수 생성
-                    @NonCPS
-                    def counter = counter('my-counter')
+                    // version.txt 파일에서 현재 버전 가져오기
+                    def versionFile = readFile('version.txt').trim()
+                    def currentVersion = versionFile.toInteger()
+                    echo "현재 버전: $currentVersion"
 
-                    // 현재 counter값 출력
-                    echo "현재 카운터 값: ${counter}"
+                    // 빌드 및 테스트 수행
 
-                    // 카운터 값 1 증가 후 출력
-                    counter = counter.next()
-                    echo "다음 카운터 값: ${counter}"
-
-                    // 카운터 값 다시 1 증가 후 출력
-                    counter = counter.next()
-                    echo "다다음 카운터 값: ${counter}"
+                    // 버전 증가 후 version.txt에 저장
+                    def newVersion = currentVersion + 1
+                    writeFile file: 'version.txt', text: newVersion.toString()
+                    echo "새로운 버전: $newVersion"
                 }
             }
         }
