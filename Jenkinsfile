@@ -16,6 +16,8 @@ pipeline {
                     NEW_VERSION = VERSION.toInteger() + 1
                     writeFile file: 'version.txt', text: NEW_VERSION.toString()
                     echo "새로운 버전: $NEW_VERSION"
+                    VERSION = sh(returnStdout: true, script: 'cat version.txt').trim()
+                    echo "이후 버젼: $VERSION"
                 }
             }
         }
