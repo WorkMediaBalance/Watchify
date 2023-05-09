@@ -15,6 +15,7 @@ import PageRecommend from "./pages/PageRecommend";
 import PageRecommendResult from "pages/PageRecommendResult";
 import PageSchedule from "./pages/PageSchedule";
 import PageScheduleContent from "pages/PageScheduleContent";
+import PageScheduleResult from "pages/PageScheduleResult";
 import PageSearch from "./pages/PageSearch";
 import PageShare from "./pages/PageShare";
 
@@ -37,6 +38,7 @@ const App = () => {
 
             <Route path="/schedule" element={<PageSchedule />} />
             <Route path="/schedule/content" element={<PageScheduleContent />} />
+            <Route path="/schedule/result" element={<PageScheduleResult />} />
             <Route path="/search" element={<PageSearch />} />
 
             <Route path="/oauth2/callback" element={<PageCallback />} />
