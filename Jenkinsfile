@@ -9,25 +9,25 @@ pipeline {
                 sh 'exit'
                 sh 'pwd'
                 script {
-                    VERSION = sh(returnStdout: true, script: 'cat version.txt').trim()
-                    echo "현재 버전: $VERSION"
-                }
-                script {
-                    NEW_VERSION = VERSION.toInteger() + 1
-                    writeFile file: 'version.txt', text: NEW_VERSION.toString()
-                    echo "새로운 버전: $NEW_VERSION"
-                    VERSION = sh(returnStdout: true, script: 'cat version.txt').trim()
-                    echo "이후 버젼: $VERSION"
+                    // counter 변수 생성
+                    def counter = counter('my-counter')
+
+                    // 현재 counter값 출력
+                    echo "현재 카운터 값: ${counter}"
+
+                    // 카운터 값 1 증가 후 출력
+                    counter = counter.next()
+                    echo "다음 카운터 값: ${counter}"
+
+                    // 카운터 값 다시 1 증가 후 출력
+                    counter = counter.next()
+                    echo "다다음 카운터 값: ${counter}"
                 }
             }
         }
         stage('Test') {
             steps {
                 echo "Test"
-                script {
-                    VERSION = sh(returnStdout: true, script: 'cat version.txt').trim()
-                    echo "TEST 버젼: $VERSION"
-                }
             }
         }
         stage('Deploy') {
