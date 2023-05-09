@@ -6,6 +6,8 @@ pipeline {
                 echo 'Building'
                 sh 'pwd'
                 echo 'this is'
+                sh 'exit'
+                sh 'pwd'
             }
         }
         stage('Test') {
