@@ -43,7 +43,7 @@ const CalendarBottomSheetSecond = (props: { date: number; month: number }) => {
       ? `${dateScheduleList[index]["finalEpisode"]} 화`
       : "";
   return (
-    <Container>
+    <Container {...handlers}>
       <Date>{`${props.month}월 ${props.date}일`}</Date>
       {dateScheduleList.length === 0 ? (
         <div>일정이 업습</div>
