@@ -30,7 +30,7 @@ const CalendarBottomSheetFirst = (props: { date: number; month: number }) => {
   // 스와이프
   const handlers = useSwipeable({
     onSwipedLeft: nextContent,
-    onSwipedRight: nextContent,
+    onSwipedRight: prevContent,
   });
 
   const [index, setIndex] = useState(0);
