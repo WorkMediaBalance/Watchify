@@ -107,9 +107,14 @@ export default function useTwoDepthBottomSheet() {
         }
 
         const VIEWPORT_HEIGHT = window.innerHeight;
+        // translate가 윗방향이니까 음수임을 기억해
         sheet.current!.style.setProperty(
           "transform",
-          `translateY(${currentTouch.clientY - VIEWPORT_HEIGHT}px)`
+          `translateY(${
+            currentTouch.clientY - VIEWPORT_HEIGHT < TWO_MIN_Y - TWO_MAX_Y
+              ? TWO_MIN_Y - TWO_MAX_Y
+              : currentTouch.clientY - VIEWPORT_HEIGHT
+          }px)`
         );
       } else {
         document.body.style.overflowY = "hidden";
