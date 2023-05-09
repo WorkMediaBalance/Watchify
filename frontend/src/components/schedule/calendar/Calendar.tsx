@@ -5,7 +5,11 @@ import { motion, AnimatePresence } from "framer-motion";
 import { theme } from "styles/theme";
 import { months } from "constant/constant";
 
+<<<<<<< HEAD
 const Calendar = (props: { onDateClick: (date: string) => void }) => {
+=======
+const Calendar = (props: { onDateClick: (date: string) => void; onCloseSheet: () => void }) => {
+>>>>>>> 8555bfd9a43364d6716b684914f4e17035d68d76
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [clickedDay, setClickedDay] = useState<HTMLElement | null>(null);
   const weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
@@ -69,14 +73,26 @@ const Calendar = (props: { onDateClick: (date: string) => void }) => {
 
   function thisMonth() {
     setSelectedDate(new Date());
+<<<<<<< HEAD
+=======
+    props.onCloseSheet();
+>>>>>>> 8555bfd9a43364d6716b684914f4e17035d68d76
   }
 
   function prevMonth() {
     setSelectedDate((prevDate) => new Date(prevDate.getFullYear(), prevDate.getMonth() - 1, 1));
+<<<<<<< HEAD
+=======
+    props.onCloseSheet();
+>>>>>>> 8555bfd9a43364d6716b684914f4e17035d68d76
   }
 
   function nextMonth() {
     setSelectedDate((prevDate) => new Date(prevDate.getFullYear(), prevDate.getMonth() + 1, 1));
+<<<<<<< HEAD
+=======
+    props.onCloseSheet();
+>>>>>>> 8555bfd9a43364d6716b684914f4e17035d68d76
   }
 
   const handlers = useSwipeable({

@@ -9,11 +9,22 @@ const PageSchedule = () => {
   const navigate = useNavigate();
   return (
     <Container className={"container"}>
-      <WatchingPattern />
+      <div
+        style={{
+          height: "45vh",
+          width: "100%",
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "center",
+        }}
+      >
+        <WatchingPattern />
+      </div>
       <OttSubscription />
       <SBtnContainer>
         <SNextBtn onClick={() => navigate("/schedule/content")}>다음</SNextBtn>
       </SBtnContainer>
+      <PlaceHolder />
     </Container>
   );
 };
@@ -21,7 +32,7 @@ const PageSchedule = () => {
 export default PageSchedule;
 
 const Container = styled.div`
-  height: 95.4vh;
+  height: 95vh;
   display: flex;
   flex-direction: column;
   color: white;
@@ -42,4 +53,8 @@ const SNextBtn = styled.div`
   background-color: ${({ theme }) => theme.netflix.pointColor};
   font-size: ${({ theme }) => theme.fontSizeType.big.fontSize};
   text-align: center;
+`;
+
+const PlaceHolder = styled.div`
+  height: 5vh;
 `;

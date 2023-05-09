@@ -13,6 +13,10 @@ const Wrapper = styled.div`
 const PageScheduleResult = () => {
   const [sheet, setSheet] = useState(0);
   const [date, setDate] = useState("");
+<<<<<<< HEAD
+=======
+  const [close, setClose] = useState(0);
+>>>>>>> 8555bfd9a43364d6716b684914f4e17035d68d76
 
   return (
     <Wrapper>
@@ -21,8 +25,16 @@ const PageScheduleResult = () => {
           setSheet(sheet + 1);
           setDate(date);
         }}
+<<<<<<< HEAD
       />
       <CalendarBottomSheet date={date} sheet={sheet} />
+=======
+        onCloseSheet={() => {
+          setClose(close + 1);
+        }}
+      />
+      <CalendarBottomSheet close={close} date={date} sheet={sheet} />
+>>>>>>> 8555bfd9a43364d6716b684914f4e17035d68d76
     </Wrapper>
   );
 };

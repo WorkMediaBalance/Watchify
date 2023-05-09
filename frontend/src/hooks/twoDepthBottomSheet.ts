@@ -143,9 +143,15 @@ export default function useTwoDepthBottomSheet() {
     sheet.current!.addEventListener("touchmove", handleTouchMove);
     sheet.current!.addEventListener("touchend", handleTouchEnd);
     return () => {
+<<<<<<< HEAD
       sheet.current!.removeEventListener("touchstart", handleTouchStart);
       sheet.current!.removeEventListener("touchmove", handleTouchMove);
       sheet.current!.removeEventListener("touchend", handleTouchEnd);
+=======
+      sheet.current?.removeEventListener("touchstart", handleTouchStart);
+      sheet.current?.removeEventListener("touchmove", handleTouchMove);
+      sheet.current?.removeEventListener("touchend", handleTouchEnd);
+>>>>>>> 8555bfd9a43364d6716b684914f4e17035d68d76
     };
   }, [openBottomSheet]);
 

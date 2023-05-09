@@ -65,6 +65,7 @@ export const essListState = atom<content[]>({
       ott: ["wavve"],
       genres: ["박물관", "리얼리티"],
       isWish: false,
+      isLike: 0,
       summarize:
         "한참 어린 동생으로부터 스타 도전을 받은 걸무고, 과연 그는 저그의 자존심을 지켜낼 수 있을 것인가? 5월 1일. Python 개봉 박두",
       audienceAge: 15,
@@ -83,7 +84,11 @@ export const essListState = atom<content[]>({
       ott: ["wavve"],
       genres: ["박물관", "리얼리티"],
       isWish: false,
+<<<<<<< HEAD
 
+=======
+      isLike: 0,
+>>>>>>> 8555bfd9a43364d6716b684914f4e17035d68d76
       summarize:
         "한참 어린 동생으로부터 스타 도전을 받은 걸무고, 과연 그는 저그의 자존심을 지켜낼 수 있을 것인가? 5월 1일. Python 개봉 박두",
       audienceAge: 15,
@@ -108,7 +113,11 @@ export const wishListState = atom<content[]>({
       ott: ["wavve"],
       genres: ["박물관", "리얼리티"],
       isWish: false,
+<<<<<<< HEAD
 
+=======
+      isLike: 0,
+>>>>>>> 8555bfd9a43364d6716b684914f4e17035d68d76
       summarize:
         "한참 어린 동생으로부터 스타 도전을 받은 걸무고, 과연 그는 저그의 자존심을 지켜낼 수 있을 것인가? 5월 1일. Python 개봉 박두",
       audienceAge: 15,
@@ -127,6 +136,10 @@ export const wishListState = atom<content[]>({
       ott: ["wavve"],
       genres: ["박물관", "리얼리티"],
       isWish: false,
+<<<<<<< HEAD
+=======
+      isLike: 0,
+>>>>>>> 8555bfd9a43364d6716b684914f4e17035d68d76
       summarize:
         "한참 어린 동생으로부터 스타 도전을 받은 걸무고, 과연 그는 저그의 자존심을 지켜낼 수 있을 것인가? 5월 1일. Python 개봉 박두",
       audienceAge: 15,
@@ -145,6 +158,7 @@ export const wishListState = atom<content[]>({
       ott: ["wavve"],
       genres: ["박물관", "리얼리티"],
       isWish: false,
+      isLike: 0,
       summarize:
         "한참 어린 동생으로부터 스타 도전을 받은 걸무고, 과연 그는 저그의 자존심을 지켜낼 수 있을 것인가? 5월 1일. Python 개봉 박두",
       audienceAge: 15,
@@ -163,6 +177,7 @@ export const wishListState = atom<content[]>({
       ott: ["wavve"],
       genres: ["박물관", "리얼리티"],
       isWish: false,
+      isLike: 0,
       summarize:
         "한참 어린 동생으로부터 스타 도전을 받은 걸무고, 과연 그는 저그의 자존심을 지켜낼 수 있을 것인가? 5월 1일. Python 개봉 박두",
       audienceAge: 15,
@@ -181,6 +196,7 @@ export const wishListState = atom<content[]>({
       ott: ["wavve"],
       genres: ["박물관", "리얼리티"],
       isWish: false,
+      isLike: 0,
       summarize:
         "한참 어린 동생으로부터 스타 도전을 받은 걸무고, 과연 그는 저그의 자존심을 지켜낼 수 있을 것인가? 5월 1일. Python 개봉 박두",
       audienceAge: 15,
@@ -199,6 +215,7 @@ export const wishListState = atom<content[]>({
       ott: ["wavve"],
       genres: ["박물관", "리얼리티"],
       isWish: false,
+      isLike: 0,
       summarize:
         "한참 어린 동생으로부터 스타 도전을 받은 걸무고, 과연 그는 저그의 자존심을 지켜낼 수 있을 것인가? 5월 1일. Python 개봉 박두",
       audienceAge: 15,
@@ -217,6 +234,7 @@ export const wishListState = atom<content[]>({
       ott: ["wavve"],
       genres: ["박물관", "리얼리티"],
       isWish: false,
+      isLike: 0,
       summarize:
         "한참 어린 동생으로부터 스타 도전을 받은 걸무고, 과연 그는 저그의 자존심을 지켜낼 수 있을 것인가? 5월 1일. Python 개봉 박두",
       audienceAge: 15,
@@ -235,6 +253,7 @@ export const wishListState = atom<content[]>({
       ott: ["wavve"],
       genres: ["박물관", "리얼리티"],
       isWish: false,
+      isLike: 0,
       summarize:
         "한참 어린 동생으로부터 스타 도전을 받은 걸무고, 과연 그는 저그의 자존심을 지켜낼 수 있을 것인가? 5월 1일. Python 개봉 박두",
       audienceAge: 15,
