@@ -21,8 +21,7 @@ export const recResultState = atom<Array<content>>({
       runtime: 50,
       rate: 4.5,
       img_path: "https://images.justwatch.com/poster/302518136/s592/시즌-1",
-      backdrop_path:
-        "https://images.justwatch.com/poster/302518136/s592/시즌-1",
+      backdrop_path: "https://images.justwatch.com/poster/302518136/s592/시즌-1",
       isLike: 1,
       type: "드라마",
       season: 1,
@@ -40,10 +39,8 @@ export const recResultState = atom<Array<content>>({
       title: "트와일라잇",
       runtime: 60,
       rate: 3.7,
-      img_path:
-        "https://images.justwatch.com/poster/129382738/s592/twilight.webp",
-      backdrop_path:
-        "https://images.justwatch.com/poster/302518136/s592/시즌-1",
+      img_path: "https://images.justwatch.com/poster/129382738/s592/twilight.webp",
+      backdrop_path: "https://images.justwatch.com/poster/302518136/s592/시즌-1",
       isLike: 1,
       type: "영화",
       season: 0,
@@ -61,10 +58,8 @@ export const recResultState = atom<Array<content>>({
         "고병진이 살아있다 : Walking Moving Byeongjin 고병진이 살아있다 : Walking Moving Byeongjin",
       runtime: 88,
       rate: 1.2,
-      img_path:
-        "https://images.justwatch.com/poster/8733916/s592/bagmulgwani-salaissda.webp",
-      backdrop_path:
-        "https://images.justwatch.com/poster/302518136/s592/시즌-1",
+      img_path: "https://images.justwatch.com/poster/8733916/s592/bagmulgwani-salaissda.webp",
+      backdrop_path: "https://images.justwatch.com/poster/302518136/s592/시즌-1",
       isLike: 1,
       type: "영화",
       season: 0,
@@ -83,8 +78,7 @@ export const recResultState = atom<Array<content>>({
       runtime: 8,
       rate: 1.2,
       img_path: "https://images.justwatch.com/poster/302518136/s592/시즌-1",
-      backdrop_path:
-        "https://images.justwatch.com/poster/302518136/s592/시즌-1",
+      backdrop_path: "https://images.justwatch.com/poster/302518136/s592/시즌-1",
       isLike: 1,
       type: "영화",
       season: 1,
@@ -103,8 +97,7 @@ export const recResultState = atom<Array<content>>({
       runtime: 8,
       rate: 1.2,
       img_path: "https://images.justwatch.com/poster/302518136/s592/시즌-1",
-      backdrop_path:
-        "https://images.justwatch.com/poster/302518136/s592/시즌-1",
+      backdrop_path: "https://images.justwatch.com/poster/302518136/s592/시즌-1",
       isLike: 1,
       type: "영화",
       season: 1,
@@ -123,8 +116,7 @@ export const recResultState = atom<Array<content>>({
       runtime: 8,
       rate: 1.2,
       img_path: "https://images.justwatch.com/poster/302518136/s592/시즌-1",
-      backdrop_path:
-        "https://images.justwatch.com/poster/302518136/s592/시즌-1",
+      backdrop_path: "https://images.justwatch.com/poster/302518136/s592/시즌-1",
       isLike: 1,
       type: "영화",
       season: 1,
@@ -143,8 +135,7 @@ export const recResultState = atom<Array<content>>({
       runtime: 8,
       rate: 1.2,
       img_path: "https://images.justwatch.com/poster/302518136/s592/시즌-1",
-      backdrop_path:
-        "https://images.justwatch.com/poster/302518136/s592/시즌-1",
+      backdrop_path: "https://images.justwatch.com/poster/302518136/s592/시즌-1",
       isLike: 1,
       type: "영화",
       season: 1,
@@ -163,8 +154,7 @@ export const recResultState = atom<Array<content>>({
       runtime: 8,
       rate: 1.2,
       img_path: "https://images.justwatch.com/poster/302518136/s592/시즌-1",
-      backdrop_path:
-        "https://images.justwatch.com/poster/302518136/s592/시즌-1",
+      backdrop_path: "https://images.justwatch.com/poster/302518136/s592/시즌-1",
       isLike: 1,
       type: "영화",
       season: 1,

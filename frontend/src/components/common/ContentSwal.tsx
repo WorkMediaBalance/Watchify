@@ -6,11 +6,17 @@ import netflix from "assets/img/netflixIcon.png";
 import watcha from "assets/img/watchaIcon.png";
 import wavve from "assets/img/wavveIcon.png";
 
-const ContentSwal = () => {
-  const [isWish, setIsWish] = useState(false); //TODO: props받아서 찜여부 초기값 설정 해주기
+import { content } from "interface/content";
+
+interface ContentSwalProps {
+  content: content;
+}
+
+const ContentSwal: React.FC<ContentSwalProps> = ({ content: content }) => {
+  const [isWish, setIsWish] = useState(content.isWish); //TODO: props받아서 찜여부 초기값 설정 해주기
 
   const handleWishClick = () => {
-    // axios 요청보내서 찜 설정/ 해제
+    //TODO: axios 요청보내서 찜 설정/ 해제
     // 그 후 동작
     setIsWish(!isWish);
   };
@@ -26,14 +32,9 @@ const ContentSwal = () => {
     wavve: wavve,
   };
 
-  const OTTStaticArray = ["disney", "netflix", "watcha", "wavve"]; //TODO: 나중에 props 여기 초기화
+  const OTTStaticArray = content.ott; //TODO: 나중에 props 여기 초기화
 
-  const [OTTArray, setOTTArray] = useState([
-    "disney",
-    "netflix",
-    "watcha",
-    "wavve",
-  ]); //TODO: 여기서 나중에 초기값 세팅
+  // const [OTTArray, setOTTArray] = useState(["disney", "netflix", "watcha", "wavve"]); //TODO: 여기서 나중에 초기값 세팅
 
   return (
     <Container className="myModal">
@@ -42,29 +43,28 @@ const ContentSwal = () => {
       ) : (
         <RibonFalse onClick={() => handleWishClick()} />
       )}
-      <BackdropContainer
-        className="backdropContainer"
-        backdrop={
-          "https://images.justwatch.com/backdrop/302937718/s1920/mobeomtaegsi.webp"
-        }
-      >
+      <BackdropContainer className="backdropContainer" backdrop={content.backdrop_path}>
         <TitleSeasonContainer>
-          <Title>{"모범택시"}</Title>
-          <Season>{"시즌 1"}</Season>
+          <Title>{content.title}</Title>
+          <Season>{content.season > 0 ? `시즌 ${content.season}` : ""}</Season>
         </TitleSeasonContainer>
         <RateAndGenresContainer>
-          <Rate>{"5.0 / 5.0"}</Rate>
-          <Genres>{"액션, 드라마"}</Genres>
-          <FinalEpisode>{"16부작"}</FinalEpisode>
+          <Rate>{`${content.rate} / 5.0`}</Rate>
+          <Genres>
+            {content.genres.length > 1
+              ? `${content.genres.join(", ")}`
+              : content.genres.length === 1
+              ? content.genres[0]
+              : ""}
+          </Genres>
+          <FinalEpisode>
+            {content.finalEpisode > 0 ? `${content.finalEpisode}부작` : ""}
+          </FinalEpisode>
         </RateAndGenresContainer>
       </BackdropContainer>
 
       <ContentContainer>
-        <Summarize>
-          {
-            "“정의가 실종된 사회, 전화 한 통이면 오케이” 베일에 가려진 택시회사 무지개 운수와 택시기사 김도기가 억울한 피해자를 대신해 복수를 완성하는 사적 복수 대행극"
-          }
-        </Summarize>
+        <Summarize>{content.summarize}</Summarize>
         <Footer>
           <LinkDescriptions>보러가기</LinkDescriptions>
           <OTTContainer>
@@ -112,6 +112,8 @@ const ContentContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: end;
+  justify-content: space-between;
+  height: 21vh;
 `;
 const TitleSeasonContainer = styled.div`
   display: flex;

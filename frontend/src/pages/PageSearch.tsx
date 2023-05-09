@@ -181,7 +181,12 @@ const PageSearch = () => {
                 <ContentsContainer>
                   {searchResult.map((content, idx) => (
                     <ContentContainer>
-                      <ContentPoster key={idx} title={content.title} imageUrl={content.img_path} />
+                      <ContentPoster
+                        content={searchResult[idx]}
+                        key={idx}
+                        title={content.title}
+                        imageUrl={content.img_path}
+                      />
                     </ContentContainer>
                   ))}
                 </ContentsContainer>

@@ -9,10 +9,10 @@ const SDiv = styled.div`
   color: ${({ theme }) => theme.netflix.fontColor};
 `;
 
-const CalendarBottomSheetContent = (props: { date: string }) => {
+const CalendarBottomSheetContent = (props: { date: number; month: number }) => {
   return (
     <SDiv>
-      <CalendarBottomSheetFirst></CalendarBottomSheetFirst>;
+      <CalendarBottomSheetFirst date={props.date} month={props.month}></CalendarBottomSheetFirst>;
     </SDiv>
   );
 };

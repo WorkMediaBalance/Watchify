@@ -1,41 +1,80 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { AiOutlinePlusCircle } from "react-icons/ai";
 import ContentPoster from "components/common/ContentPoster";
+// month 스케줄 state
+import { monthScheduleState } from "recoil/scheduleState";
+import { useRecoilState } from "recoil";
+// 좌우 스와이프
+import { useSwipeable } from "react-swipeable";
 
-const CalendarBottomSheetFirst = () => {
+const CalendarBottomSheetFirst = (props: { date: number; month: number }) => {
+  // month 스케줄
+  const [monthSchedule, setMonthSchedule] = useRecoilState(monthScheduleState);
+  // const [dateSchedule, setDateSchedule] = useState(monthSchedule[Number(props.date)]);
+  //  useEffect(() => {
+  // const [dateScheduleList, setDateScheduleList] = useState(monthSchedule[props.date]);
+  //   }, )
+  const dateScheduleList = monthSchedule[props.date];
+
+  const nextContent = () => {
+    if (dateScheduleList.length > 1 && index !== dateScheduleList.length - 1) {
+      setIndex(index + 1);
+    }
+  };
+  const prevContent = () => {
+    if (dateScheduleList.length > 1 && index !== 0) {
+      setIndex(index - 1);
+    }
+  };
+  // 스와이프
+  const handlers = useSwipeable({
+    onSwipedLeft: nextContent,
+    onSwipedRight: nextContent,
+  });
+
+  const [index, setIndex] = useState(0);
   return (
-    <Container>
-      <DateAndAdd>
-        <Date>{"4월 19일"}</Date>
-        <Add>
-          {"컨텐츠 일정 추가"} <AiOutlinePlusCircle />
-        </Add>
-      </DateAndAdd>
-      <ContentContainer>
-        <PosterContainer>
-          <ContentPoster
-            imageUrl={
-              "https://images.justwatch.com/poster/302148591/s166/%EC%8B%9C%EC%A6%8C-2.webp"
-            }
-            title={"메이어 킹스타운"}
-          ></ContentPoster>
-        </PosterContainer>
-        <TextContainer>
-          <TitleAndDot>
-            <Title>{"메이어 킹스타운"}</Title>
-            <Dot></Dot>
-          </TitleAndDot>
-          <ButtonContainer>
-            <SeenButton>{"시청함"}</SeenButton>
-            <PostponeButton>{"미루기"}</PostponeButton>
-          </ButtonContainer>
-        </TextContainer>
-      </ContentContainer>
-      <Footer>
-        <PageDotContainer></PageDotContainer>
-      </Footer>
-    </Container>
+    <div>
+      <Container {...handlers}>
+        <DateAndAdd>
+          <Date>{`${props.month}월 ${props.date}일`}</Date>
+          <Add>
+            {"컨텐츠 일정 추가"} <AiOutlinePlusCircle />
+          </Add>
+        </DateAndAdd>
+        {dateScheduleList.length === 0 ? (
+          <div>일정이 업습</div>
+        ) : (
+          <ContentContainer>
+            <PosterContainer>
+              <ContentPoster
+                imageUrl={dateScheduleList[index]["img_path"]}
+                title={dateScheduleList[index]["title"]}
+                content={dateScheduleList[index]}
+              ></ContentPoster>
+            </PosterContainer>
+            <TextContainer>
+              <TitleAndDot>
+                <Title>{dateScheduleList[index]["title"]}</Title>
+                <Dot></Dot>
+              </TitleAndDot>
+              <ButtonContainer>
+                <SeenButton>{"시청함"}</SeenButton>
+                <PostponeButton>{"미루기"}</PostponeButton>
+              </ButtonContainer>
+            </TextContainer>
+          </ContentContainer>
+        )}
+        <Footer>
+          <PageDotContainer>
+            {dateScheduleList.map((data, i) => (
+              <PageDot status={index === i} />
+            ))}
+          </PageDotContainer>
+        </Footer>
+      </Container>
+    </div>
   );
 };
 
@@ -135,4 +174,11 @@ const PageDotContainer = styled.div`
   justify-content: space-evenly;
 `;
 
-const PageDot = styled.div``;
+const PageDot = styled.div<{ status: boolean }>`
+  background-color: ${({ theme }) => `${theme.netflix.fontColor}`};
+  opacity: ${({ status }) => (status ? 1 : 0.5)};
+  width: 2vw;
+  height: 2vw;
+  border-radius: 50%;
+  margin: 1vw;
+`;
