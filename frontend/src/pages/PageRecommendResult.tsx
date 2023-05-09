@@ -102,7 +102,7 @@ const PageRecommendResult = () => {
   };
 
   const renderOTTIcons = () => {
-    const ottList = recResult[selectedNum].ott;
+    const ottList = Object.keys(recResult[selectedNum].ott);
 
     interface IconMap {
       [key: string]: string;

@@ -26,7 +26,7 @@ export const recResultState = atom<Array<content>>({
       type: "드라마",
       season: 1,
       finalEpisode: 10,
-      ott: ["netflix"],
+      ott: { netflix: "https://www.netflix.com/kr/title/81519223" },
       genres: ["드라마"],
       isWish: false,
 
@@ -40,12 +40,15 @@ export const recResultState = atom<Array<content>>({
       runtime: 60,
       rate: 3.7,
       img_path: "https://images.justwatch.com/poster/129382738/s592/twilight.webp",
-      backdrop_path: "https://images.justwatch.com/poster/302518136/s592/시즌-1",
+      backdrop_path: "https://images.justwatch.com/backdrop/689774/s640/twilight.webp",
       isLike: 1,
       type: "영화",
       season: 0,
       finalEpisode: 0,
-      ott: ["wavve", "watcha"],
+      ott: {
+        wavve: "https://www.wavve.com/player/movie?movieid=MV_LO01_LO0000000038",
+        watcha: "https://watcha.com/contents/myWqyBW",
+      },
       genres: ["야생", "뱀파이어"],
       isWish: true,
 
@@ -59,12 +62,17 @@ export const recResultState = atom<Array<content>>({
       runtime: 88,
       rate: 1.2,
       img_path: "https://images.justwatch.com/poster/8733916/s592/bagmulgwani-salaissda.webp",
-      backdrop_path: "https://images.justwatch.com/poster/302518136/s592/시즌-1",
+      backdrop_path:
+        "https://images.justwatch.com/backdrop/271941308/s640/bagmulgwani-salaissda.webp",
       isLike: 1,
       type: "영화",
       season: 0,
       finalEpisode: 0,
-      ott: ["wavve", "netflix", "disney"],
+      ott: {
+        wavve: "https://www.wavve.com/player/movie?movieid=MV_CH01_FX0000011513",
+        disney:
+          "https://www.disneyplus.com/ko-kr/movies/night-at-the-museum/7CIEBLbWIbTR?irclickid=QtOQ7aX85xyNW8FQSXWPO3CrUkAX00XKjQzmRU0&irgwc=1&cid=DSS-Affiliate-Impact-Content-JustWatch+GmbH-705874&tgclid=0f010036-956b-4d13-8f00-1ef16459f3ec&dclid=CjkKEQjw3ueiBhD6mL2q9ajRr5ABEiQAewM-7icpU5wK0vK8mOV_QSB276CtpQmwQhrtxJqj3PNNgjHw_wcB",
+      },
       genres: ["박물관", "리얼리티"],
       isWish: false,
 
@@ -83,7 +91,11 @@ export const recResultState = atom<Array<content>>({
       type: "영화",
       season: 1,
       finalEpisode: 1,
-      ott: ["wavve"],
+      ott: {
+        wavve: "https://www.wavve.com/player/movie?movieid=MV_CH01_FX0000011513",
+        disney:
+          "https://www.disneyplus.com/ko-kr/movies/night-at-the-museum/7CIEBLbWIbTR?irclickid=QtOQ7aX85xyNW8FQSXWPO3CrUkAX00XKjQzmRU0&irgwc=1&cid=DSS-Affiliate-Impact-Content-JustWatch+GmbH-705874&tgclid=0f010036-956b-4d13-8f00-1ef16459f3ec&dclid=CjkKEQjw3ueiBhD6mL2q9ajRr5ABEiQAewM-7icpU5wK0vK8mOV_QSB276CtpQmwQhrtxJqj3PNNgjHw_wcB",
+      },
       genres: ["박물관", "리얼리티"],
       isWish: false,
 
@@ -102,7 +114,11 @@ export const recResultState = atom<Array<content>>({
       type: "영화",
       season: 1,
       finalEpisode: 1,
-      ott: ["wavve"],
+      ott: {
+        wavve: "https://www.wavve.com/player/movie?movieid=MV_CH01_FX0000011513",
+        disney:
+          "https://www.disneyplus.com/ko-kr/movies/night-at-the-museum/7CIEBLbWIbTR?irclickid=QtOQ7aX85xyNW8FQSXWPO3CrUkAX00XKjQzmRU0&irgwc=1&cid=DSS-Affiliate-Impact-Content-JustWatch+GmbH-705874&tgclid=0f010036-956b-4d13-8f00-1ef16459f3ec&dclid=CjkKEQjw3ueiBhD6mL2q9ajRr5ABEiQAewM-7icpU5wK0vK8mOV_QSB276CtpQmwQhrtxJqj3PNNgjHw_wcB",
+      },
       genres: ["박물관", "리얼리티"],
       isWish: false,
 
@@ -121,7 +137,11 @@ export const recResultState = atom<Array<content>>({
       type: "영화",
       season: 1,
       finalEpisode: 1,
-      ott: ["wavve"],
+      ott: {
+        wavve: "https://www.wavve.com/player/movie?movieid=MV_CH01_FX0000011513",
+        disney:
+          "https://www.disneyplus.com/ko-kr/movies/night-at-the-museum/7CIEBLbWIbTR?irclickid=QtOQ7aX85xyNW8FQSXWPO3CrUkAX00XKjQzmRU0&irgwc=1&cid=DSS-Affiliate-Impact-Content-JustWatch+GmbH-705874&tgclid=0f010036-956b-4d13-8f00-1ef16459f3ec&dclid=CjkKEQjw3ueiBhD6mL2q9ajRr5ABEiQAewM-7icpU5wK0vK8mOV_QSB276CtpQmwQhrtxJqj3PNNgjHw_wcB",
+      },
       genres: ["박물관", "리얼리티"],
       isWish: false,
 
@@ -140,7 +160,11 @@ export const recResultState = atom<Array<content>>({
       type: "영화",
       season: 1,
       finalEpisode: 1,
-      ott: ["wavve"],
+      ott: {
+        wavve: "https://www.wavve.com/player/movie?movieid=MV_CH01_FX0000011513",
+        disney:
+          "https://www.disneyplus.com/ko-kr/movies/night-at-the-museum/7CIEBLbWIbTR?irclickid=QtOQ7aX85xyNW8FQSXWPO3CrUkAX00XKjQzmRU0&irgwc=1&cid=DSS-Affiliate-Impact-Content-JustWatch+GmbH-705874&tgclid=0f010036-956b-4d13-8f00-1ef16459f3ec&dclid=CjkKEQjw3ueiBhD6mL2q9ajRr5ABEiQAewM-7icpU5wK0vK8mOV_QSB276CtpQmwQhrtxJqj3PNNgjHw_wcB",
+      },
       genres: ["박물관", "리얼리티"],
       isWish: false,
 
@@ -159,7 +183,11 @@ export const recResultState = atom<Array<content>>({
       type: "영화",
       season: 1,
       finalEpisode: 1,
-      ott: ["wavve"],
+      ott: {
+        wavve: "https://www.wavve.com/player/movie?movieid=MV_CH01_FX0000011513",
+        disney:
+          "https://www.disneyplus.com/ko-kr/movies/night-at-the-museum/7CIEBLbWIbTR?irclickid=QtOQ7aX85xyNW8FQSXWPO3CrUkAX00XKjQzmRU0&irgwc=1&cid=DSS-Affiliate-Impact-Content-JustWatch+GmbH-705874&tgclid=0f010036-956b-4d13-8f00-1ef16459f3ec&dclid=CjkKEQjw3ueiBhD6mL2q9ajRr5ABEiQAewM-7icpU5wK0vK8mOV_QSB276CtpQmwQhrtxJqj3PNNgjHw_wcB",
+      },
       genres: ["박물관", "리얼리티"],
       isWish: false,
 

@@ -32,7 +32,7 @@ const ContentSwal: React.FC<ContentSwalProps> = ({ content: content }) => {
     wavve: wavve,
   };
 
-  const OTTStaticArray = content.ott; //TODO: 나중에 props 여기 초기화
+  const OTTStaticArray = Object.keys(content.ott); //TODO: 나중에 props 여기 초기화
 
   // const [OTTArray, setOTTArray] = useState(["disney", "netflix", "watcha", "wavve"]); //TODO: 여기서 나중에 초기값 세팅
 
