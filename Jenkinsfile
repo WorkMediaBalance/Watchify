@@ -5,6 +5,8 @@ pipeline {
             steps {
                 echo 'Building'
                 script {
+                     def buildNumber = currentBuild.number
+                     echo "빌드 : buildNumber"
                     // version.txt 파일에서 현재 버전 가져오기
                     def versionFile = readFile('version.txt').trim()
                     def currentVersion = versionFile.toInteger()
