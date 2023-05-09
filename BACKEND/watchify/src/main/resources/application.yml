@@ -6,7 +6,7 @@ spring:
 #    password: '0000'
     url: jdbc:mysql://watchifydb.cph3uafcff1h.ap-northeast-2.rds.amazonaws.com/sins?useUnicode=true&characterEncoding=utf8&s&zeroDateTimeBehavior=convertToNull&rewriteBatchedStatements=true&tinyInt1isBit=false
     username: watchifyadmin
-    password: 'qudwlsgoa!'
+    password: 'qudwlsgoa'
   jpa:
     properties:
       hibernate:

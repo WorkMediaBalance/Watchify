@@ -5,6 +5,7 @@ import com.watchify.watchify.api.service.*;
 import com.watchify.watchify.dto.request.NickNameRequestDTO;
 import com.watchify.watchify.dto.response.DefaultContentDTO;
 import com.watchify.watchify.dto.response.UserAlarmInfoDTO;
+import com.watchify.watchify.dto.response.UserOttDTO;
 import com.watchify.watchify.dto.response.UserPatternDTO;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +26,7 @@ public class MyController {
     private final MyProfileService myProfileService;
     private final MyContentService myContentService;
     private final MyPatternService myPatternService;
+    private final MyOttService myOttService;
 
     @PutMapping("/ottalarm")
     public ResponseEntity<?> UpdateMyOTTAlarm(HttpServletRequest request) throws Exception {
@@ -119,6 +121,31 @@ public class MyController {
         } catch (Exception e) {
             return ResponseEntity.status(404).body("Failed to get my alarm info");
         }
+    }
 
+    @GetMapping("/ott")
+    public ResponseEntity<?> GetMyOtt(HttpServletRequest request) {
+        String accessToken = request.getHeader("access");
+        long userId = userService.findUserIdByAccessToken(accessToken);
+
+        try {
+            UserOttDTO res = myOttService.getMyOttInfo(userId);
+            return ResponseEntity.status(200).body(res);
+        } catch (Exception e) {
+            return ResponseEntity.status(404).body("Failed to get my ott info");
+        }
+    }
+
+    @PutMapping("/ott")
+    public ResponseEntity<?> UpdateMYOtt(HttpServletRequest request, @RequestBody UserOttDTO userOttDTO) {
+        String accessToken = request.getHeader("access");
+        long userId = userService.findUserIdByAccessToken(accessToken);
+
+        try {
+            myOttService.updateMyOttInfo(userId, userOttDTO);
+            return ResponseEntity.status(200).body("My ott updated successfully.");
+        } catch (Exception e) {
+            return ResponseEntity.status(404).body("Failed to get my ott info");
+        }
     }
 }

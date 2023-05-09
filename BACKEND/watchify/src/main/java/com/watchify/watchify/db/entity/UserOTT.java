@@ -29,4 +29,12 @@ public class UserOTT implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ott_id")
     private OTT ott;
+
+    public UserOTT(User user, OTT ott) {
+        this.user =user;
+        this.ott = ott;
+        this.isDeleted = false;
+    }
+
+    public void setDeleted(boolean flag) {this.isDeleted = flag; }
 }
