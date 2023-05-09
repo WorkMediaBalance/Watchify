@@ -20,6 +20,8 @@ export default function useTwoDepthBottomSheet() {
 
   const content = useRef<HTMLDivElement>(null);
 
+  const handle = useRef<HTMLDivElement>(null);
+
   const metrics = useRef<BottomSheetMetrics>({
     touchStart: {
       sheetY: 0,
@@ -53,7 +55,7 @@ export default function useTwoDepthBottomSheet() {
         return true;
       }
 
-      if (sheet.current!.getBoundingClientRect().y !== TWO_MIN_Y) {
+      if (handle.current!.getBoundingClientRect().y !== TWO_MIN_Y) {
         return true;
       }
 
@@ -65,7 +67,7 @@ export default function useTwoDepthBottomSheet() {
 
     const handleTouchStart = (e: TouchEvent) => {
       const { touchStart } = metrics.current;
-      touchStart.sheetY = sheet.current!.getBoundingClientRect().y;
+      touchStart.sheetY = handle.current!.getBoundingClientRect().y;
       touchStart.touchY = e.touches[0].clientY;
     };
 
@@ -145,13 +147,13 @@ export default function useTwoDepthBottomSheet() {
       };
     };
 
-    sheet.current!.addEventListener("touchstart", handleTouchStart);
-    sheet.current!.addEventListener("touchmove", handleTouchMove);
-    sheet.current!.addEventListener("touchend", handleTouchEnd);
+    handle.current!.addEventListener("touchstart", handleTouchStart);
+    handle.current!.addEventListener("touchmove", handleTouchMove);
+    handle.current!.addEventListener("touchend", handleTouchEnd);
     return () => {
-      sheet.current?.removeEventListener("touchstart", handleTouchStart);
-      sheet.current?.removeEventListener("touchmove", handleTouchMove);
-      sheet.current?.removeEventListener("touchend", handleTouchEnd);
+      handle.current?.removeEventListener("touchstart", handleTouchStart);
+      handle.current?.removeEventListener("touchmove", handleTouchMove);
+      handle.current?.removeEventListener("touchend", handleTouchEnd);
     };
   }, [openBottomSheet]);
 
@@ -167,18 +169,12 @@ export default function useTwoDepthBottomSheet() {
       sheet.current!.style.setProperty("transform", "translateY(0)");
     }
     if (sheetDepth === 1) {
-      sheet.current!.style.setProperty(
-        "transform",
-        `translateY(${ONE_MIN_Y - TWO_MAX_Y}px)`
-      );
+      sheet.current!.style.setProperty("transform", `translateY(${ONE_MIN_Y - TWO_MAX_Y}px)`);
     }
     if (sheetDepth === 2) {
-      sheet.current!.style.setProperty(
-        "transform",
-        `translateY(${TWO_MIN_Y - TWO_MAX_Y}px)`
-      );
+      sheet.current!.style.setProperty("transform", `translateY(${TWO_MIN_Y - TWO_MAX_Y}px)`);
     }
   }, [sheetDepth]);
 
-  return { sheet, content, openBottomSheet, sheetDepth, setSheetDepth };
+  return { sheet, content, openBottomSheet, sheetDepth, setSheetDepth, handle };
 }
