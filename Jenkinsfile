@@ -12,6 +12,11 @@ pipeline {
                     VERSION = sh(returnStdout: true, script: 'cat version.txt').trim()
                     echo "현재 버전: $VERSION"
                 }
+                script {
+                    NEW_VERSION = VERSION.toInteger() + 1
+                    sh "echo $NEW_VERSION > version.txt"
+                    echo "새로운 버전: $NEW_VERSION"
+                }
             }
         }
         stage('Test') {
@@ -22,11 +27,7 @@ pipeline {
         stage('Deploy') {
             steps {
                 echo "Deploy"
-                script {
-                        NEW_VERSION = VERSION.toInteger() + 1
-                        sh "echo $NEW_VERSION > version.txt"
-                        echo "새로운 버전: $NEW_VERSION"
-                }
+
             }
         }
     }
