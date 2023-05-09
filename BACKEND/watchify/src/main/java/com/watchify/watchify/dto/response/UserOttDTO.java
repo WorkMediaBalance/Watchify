@@ -6,45 +6,33 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 
 @Getter
-@NoArgsConstructor
 public class UserOttDTO {
     private OttDateDTO netflix;
     private OttDateDTO watcha;
     private OttDateDTO wavve;
     private OttDateDTO disney;
 
-    public OttDateDTO getOf(String ott) {
+    public UserOttDTO() {
+        OttDateDTO defaultDto = new OttDateDTO();
+        this.netflix = defaultDto;
+        this.watcha = defaultDto;
+        this.wavve = defaultDto;
+        this.disney = defaultDto;
+    }
+
+    public void setOf(String ott, OttDateDTO ottDateDTO) {
         switch (ott) {
             case "netflix":
-                return this.netflix;
+                this.netflix = ottDateDTO; break;
             case "watcha":
-                return this.watcha;
+                this.watcha = ottDateDTO; break;
             case "wavve":
-                return this.wavve;
+                this.wavve = ottDateDTO; break;
             case "disney":
-                return this.disney;
+                this.disney = ottDateDTO; break;
             default:
-                return null;
+                break;
         }
     }
 
-    public void setOf(String ott, boolean flag) {
-//        switch (ott) {
-//            case "netflix":
-//                setNetflix(flag); break;
-//            case "watcha":
-//                setWatcha(flag); break;
-//            case "wavve":
-//                setWavve(flag); break;
-//            case "disney":
-//                setDisney(flag); break;
-//            default:
-//                return ;
-//        }
-    }
-
-//    public void setNetflix(boolean flag) { this.netflix = flag; }
-//    public void setWatcha(boolean flag) { this.watcha = flag; }
-//    public void setWavve(boolean flag) { this.wavve = flag; }
-//    public void setDisney(boolean flag) { this.disney = flag; }
 }

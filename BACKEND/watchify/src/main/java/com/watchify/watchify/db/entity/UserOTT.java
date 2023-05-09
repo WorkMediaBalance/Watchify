@@ -38,6 +38,7 @@ public class UserOTT implements Serializable {
         this.user =user;
         this.ott = ott;
         this.isDeleted = false;
+        this.isOvered = false;
     }
 
     public void setDeleted(boolean flag) {this.isDeleted = flag; }

@@ -3,6 +3,7 @@ package com.watchify.watchify.api.controller;
 
 import com.watchify.watchify.api.service.*;
 import com.watchify.watchify.dto.request.NickNameRequestDTO;
+import com.watchify.watchify.dto.request.UserOttRequestDTO;
 import com.watchify.watchify.dto.response.DefaultContentDTO;
 import com.watchify.watchify.dto.response.UserAlarmInfoDTO;
 import com.watchify.watchify.dto.response.UserOttDTO;
@@ -137,10 +138,10 @@ public class MyController {
     }
 
     @PutMapping("/ott")
-    public ResponseEntity<?> UpdateMYOtt(HttpServletRequest request, @RequestBody UserOttDTO userOttDTO) {
+    public ResponseEntity<?> UpdateMYOtt(HttpServletRequest request, @RequestBody UserOttRequestDTO userOttDTO) {
         String accessToken = request.getHeader("access");
         long userId = userService.findUserIdByAccessToken(accessToken);
-
+//        myOttService.updateMyOttInfo(userId, userOttDTO);
         try {
             myOttService.updateMyOttInfo(userId, userOttDTO);
             return ResponseEntity.status(200).body("My ott updated successfully.");
