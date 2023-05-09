@@ -6,11 +6,13 @@ import com.watchify.watchify.db.entity.UserOTT;
 import com.watchify.watchify.db.repository.OTTRepository;
 import com.watchify.watchify.db.repository.UserOTTRepository;
 import com.watchify.watchify.db.repository.UserRepository;
+import com.watchify.watchify.dto.response.OttDateDTO;
 import com.watchify.watchify.dto.response.UserOttDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
@@ -36,22 +38,25 @@ public class MyOttService {
     @Transactional
     public void updateMyOttInfo(Long userId, UserOttDTO userOttDTO) {
         User user = userRepository.findById(userId).get();
-        List<UserOTT> userOtts = userOTTRepository.getALlUserOTTSByUserId(userId);
+        List<UserOTT> userOtts = userOTTRepository.getUserOTTSByUserIdNotOver(userId);
         List<OTT> otts = ottRepository.findAll();
         for (OTT ott : otts) {
-            Boolean isSubscribe = userOttDTO.getOf(ott.getName());
-            boolean flag = true;
-            for (UserOTT userOtt : userOtts) {
-                if (userOtt.getOtt().getName().equals(ott.getName())) {
-                    flag = false;
-                    userOtt.setDeleted(!isSubscribe);
-                    break;
-                }
-            }
+            OttDateDTO ottDateDTO = userOttDTO.getOf(ott.getName());
+            if (ottDateDTO.getStart() == null) {
+                // start가 null 이면 구독 그냥 안한것과 같음
+            } else {
+                for (UserOTT userOtt : userOtts) {
+                    boolean flag = true;
+                    if (userOtt.getOtt().getName().equals(ott.getName())) {
+                        // DB 에 있으면 수정
+                        // 일반적으로 자
+                        LocalDate startDate = LocalDate.parse(userOttDTO.getOf())
+                        userOtt
 
-            if (flag && isSubscribe == true) {
-                UserOTT newUserOtt = new UserOTT(user, ott);
-                userOTTRepository.save(newUserOtt);
+                        flag = false;
+                        break;
+                    }
+                }
             }
         }
     }
