@@ -2,12 +2,18 @@ package com.watchify.watchify.api.controller;
 
 
 import com.watchify.watchify.api.service.MyAlarmService;
+import com.watchify.watchify.api.service.MyContentService;
+import com.watchify.watchify.api.service.MyProfileService;
+import com.watchify.watchify.api.service.UserService;
+import com.watchify.watchify.dto.request.NickNameRequestDTO;
+import com.watchify.watchify.dto.response.DefaultContentDTO;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -16,11 +22,18 @@ import org.springframework.web.bind.annotation.RestController;
 public class MyController {
 
     private final MyAlarmService myAlarmService;
+    private final UserService userService;
+    private final MyProfileService myProfileService;
+    private final MyContentService myContentService;
 
     @PutMapping("/ottalarm")
-    public ResponseEntity<?> UpdateMyOTTAlarm() throws Exception {
+    public ResponseEntity<?> UpdateMyOTTAlarm(HttpServletRequest request) throws Exception {
+
+        String accessToken = request.getHeader("access");
+        long userId = userService.findUserIdByAccessToken(accessToken);
+
         try {
-            myAlarmService.UpdateOttAlarm();
+            myAlarmService.UpdateOttAlarm(userId);
             return ResponseEntity.status(200).body("My OTT alarm updated successfully.");
         } catch (Exception e) {
             return ResponseEntity.status(404).body("My OTT alarm updated fail.");
@@ -28,12 +41,45 @@ public class MyController {
     }
 
     @PutMapping("/contentalarm")
-    public ResponseEntity<?> UpdateMyContentAlarm() throws Exception {
+    public ResponseEntity<?> UpdateMyContentAlarm(HttpServletRequest request) throws Exception {
+
+        String accessToken = request.getHeader("access");
+        long userId = userService.findUserIdByAccessToken(accessToken);
+
         try {
-            myAlarmService.UpdateContentAlarm();
+            myAlarmService.UpdateContentAlarm(userId);
             return ResponseEntity.status(200).body("My Content alarm updated successfully.");
         } catch (Exception e) {
             return ResponseEntity.status(404).body("My Content alarm updated fail.");
         }
+    }
+
+    @PutMapping("/profilename")
+    public ResponseEntity<?> UpdateMyProfileName(HttpServletRequest request, @RequestBody NickNameRequestDTO nickNameReq) throws Exception {
+
+        String accessToken = request.getHeader("access");
+        long userId = userService.findUserIdByAccessToken(accessToken);
+        String nickName = nickNameReq.getNickName();
+
+        try {
+            myProfileService.updateProfileNickName(userId, nickName);
+            return ResponseEntity.status(200).body("My profile nickName updated successfully.");
+        } catch (Exception e) {
+            return ResponseEntity.status(404).body("My profile nickName updated fail.");
+        }
+    }
+
+    @GetMapping("/wishlist")
+    public ResponseEntity<?> GetMyWishList(HttpServletRequest request) {
+        String accessToken = request.getHeader("access");
+        long userId = userService.findUserIdByAccessToken(accessToken);
+        List<DefaultContentDTO> resee = myContentService.getWishList(userId);
+        try {
+            List<DefaultContentDTO> res = myContentService.getWishList(userId);
+            return ResponseEntity.status(200).body(res);
+        } catch (Exception e) {
+            return ResponseEntity.status(404).body("Failed to get wish content");
+        }
+
     }
 }
