@@ -30,9 +30,6 @@ public class MyContentService {
         List<WishContent> wishList = wishContentRepository.getMyWishList(userId);
         List<LikeContent> likeList = likeContentRepository.getLikeContent(userId);
 
-        System.out.println("wishList.size() : " + wishList.size());
-        System.out.println("likeList.size() : " + likeList.size());
-
         Map<Long, Integer> likeMapPk = new HashMap<>(); // 내가 좋거나 싫거나한 컨텐츠
         for (LikeContent lc : likeList) {
             likeMapPk.put(lc.getContent().getId(), lc.isLike() == true ? 1 : -1);

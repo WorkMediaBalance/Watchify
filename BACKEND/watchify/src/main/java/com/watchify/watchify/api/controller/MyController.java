@@ -4,6 +4,7 @@ package com.watchify.watchify.api.controller;
 import com.watchify.watchify.api.service.*;
 import com.watchify.watchify.dto.request.NickNameRequestDTO;
 import com.watchify.watchify.dto.response.DefaultContentDTO;
+import com.watchify.watchify.dto.response.UserAlarmInfoDTO;
 import com.watchify.watchify.dto.response.UserPatternDTO;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -32,7 +33,7 @@ public class MyController {
         long userId = userService.findUserIdByAccessToken(accessToken);
 
         try {
-            myAlarmService.UpdateOttAlarm(userId);
+            myAlarmService.updateOttAlarm(userId);
             return ResponseEntity.status(200).body("My OTT alarm updated successfully.");
         } catch (Exception e) {
             return ResponseEntity.status(404).body("My OTT alarm updated fail.");
@@ -46,7 +47,7 @@ public class MyController {
         long userId = userService.findUserIdByAccessToken(accessToken);
 
         try {
-            myAlarmService.UpdateContentAlarm(userId);
+            myAlarmService.updateContentAlarm(userId);
             return ResponseEntity.status(200).body("My Content alarm updated successfully.");
         } catch (Exception e) {
             return ResponseEntity.status(404).body("My Content alarm updated fail.");
@@ -104,6 +105,19 @@ public class MyController {
             return ResponseEntity.status(200).body("My pattern updated successfully.");
         } catch (Exception e) {
             return ResponseEntity.status(404).body("Failed to update my patterns");
+        }
+    }
+
+    @GetMapping("/alarminfo")
+    public ResponseEntity<?> GetMyAlarmInfo(HttpServletRequest request) {
+        String accessToken = request.getHeader("access");
+        long userId = userService.findUserIdByAccessToken(accessToken);
+
+        try {
+            UserAlarmInfoDTO res = myAlarmService.getMyAlarmInfo(userId);
+            return ResponseEntity.status(200).body(res);
+        } catch (Exception e) {
+            return ResponseEntity.status(404).body("Failed to get my alarm info");
         }
 
     }
