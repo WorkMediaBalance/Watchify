@@ -1,12 +1,10 @@
 package com.watchify.watchify.api.controller;
 
 
-import com.watchify.watchify.api.service.MyAlarmService;
-import com.watchify.watchify.api.service.MyContentService;
-import com.watchify.watchify.api.service.MyProfileService;
-import com.watchify.watchify.api.service.UserService;
+import com.watchify.watchify.api.service.*;
 import com.watchify.watchify.dto.request.NickNameRequestDTO;
 import com.watchify.watchify.dto.response.DefaultContentDTO;
+import com.watchify.watchify.dto.response.UserPatternDTO;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +23,7 @@ public class MyController {
     private final UserService userService;
     private final MyProfileService myProfileService;
     private final MyContentService myContentService;
+    private final MyPatternService myPatternService;
 
     @PutMapping("/ottalarm")
     public ResponseEntity<?> UpdateMyOTTAlarm(HttpServletRequest request) throws Exception {
@@ -73,12 +72,38 @@ public class MyController {
     public ResponseEntity<?> GetMyWishList(HttpServletRequest request) {
         String accessToken = request.getHeader("access");
         long userId = userService.findUserIdByAccessToken(accessToken);
-        List<DefaultContentDTO> resee = myContentService.getWishList(userId);
+
         try {
             List<DefaultContentDTO> res = myContentService.getWishList(userId);
             return ResponseEntity.status(200).body(res);
         } catch (Exception e) {
             return ResponseEntity.status(404).body("Failed to get wish content");
+        }
+    }
+
+    @GetMapping("/pattern")
+    public ResponseEntity<?> GetMyPattern(HttpServletRequest request) {
+        String accessToken = request.getHeader("access");
+        long userId = userService.findUserIdByAccessToken(accessToken);
+
+        try {
+            UserPatternDTO res = myPatternService.getMyPattern(userId);
+            return ResponseEntity.status(200).body(res);
+        } catch (Exception e) {
+            return ResponseEntity.status(404).body("Failed to get my patterns");
+        }
+    }
+
+    @PutMapping("/pattern")
+    public ResponseEntity<?> UpdateMyPattern(HttpServletRequest request, @RequestBody UserPatternDTO userPatternDTO) {
+        String accessToken = request.getHeader("access");
+        long userId = userService.findUserIdByAccessToken(accessToken);
+
+        try {
+            myPatternService.updateMyPattern(userId, userPatternDTO);
+            return ResponseEntity.status(200).body("My pattern updated successfully.");
+        } catch (Exception e) {
+            return ResponseEntity.status(404).body("Failed to update my patterns");
         }
 
     }
