@@ -10,6 +10,7 @@ pipeline {
                 sh 'pwd'
                 script {
                     // counter 변수 생성
+                    @NonCPS
                     def counter = counter('my-counter')
 
                     // 현재 counter값 출력
