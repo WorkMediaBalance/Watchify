@@ -9,4 +9,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     // 이메일과 프로바이더를 이용해 기 가입자인지 확인.
     Optional<User> findByEmailAndProvider(String email, String provider);
+
+    Optional<User> findById(Long userid);
+
 }

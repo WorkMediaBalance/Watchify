@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
 import org.springframework.web.cors.CorsConfiguration;
@@ -50,8 +51,8 @@ public class SecurityConfig {
                         .accessDeniedHandler(jwtAccessDeniedHandler)); // 권한없는 리소스에 접근시
 
 
-        // 세션 생성x
-//        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        // 세션 생성x -> 이걸해줘야 토큰이 잘못됐을 경우 401 을 주는것은 확인함.
+        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
 
         http.oauth2Login(oauth2 ->

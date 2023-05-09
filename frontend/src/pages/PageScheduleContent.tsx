@@ -1,4 +1,4 @@
-import React, { useState, HTMLAttributes } from "react";
+import React, { useState, HTMLAttributes, useEffect } from "react";
 
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
@@ -9,11 +9,16 @@ import { useRecoilState } from "recoil";
 import ScheduleBottomSheet from "components/schedule/ScheduleBottomSheet";
 
 import { AiOutlineMinusCircle } from "react-icons/ai";
+import Lottie from "lottie-react";
+import scheduleGIF from "assets/gif/schedule-calendar-animation.json";
+import BottomDot from "./../layout/BottomDot";
 
 const PageScheduleContent = () => {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [essList, setEssList] = useRecoilState(essListState);
+
+  const [isLoading, setIsLoading] = useState<number>(0);
 
   const onClickDelete = (idx: number) => {
     const index = essList.findIndex((ess, essIdx) => essIdx === idx);
@@ -24,36 +29,90 @@ const PageScheduleContent = () => {
     }
   };
 
-  return (
-    <Container>
-      <SDiv>필수 시청 목록</SDiv>
-      <SDiv2>스케줄 생성시 꼭 보고 싶은 컨텐츠를 담아주세요!</SDiv2>
-      <ContentsContainer>
-        {essList &&
-          essList.map((content, idx) => (
-            <SBoxContainer key={idx}>
-              <SContent imgUrl={essList[idx].img_path}>
-                <SRemoveDiv onClick={() => onClickDelete(idx)}>
-                  <SAiOutlineMinusCircle />
-                </SRemoveDiv>
-              </SContent>
-            </SBoxContainer>
-          ))}
-        <SBoxContainer>
-          <SAddBox onClick={() => setIsOpen(true)}>+</SAddBox>
-        </SBoxContainer>
-      </ContentsContainer>
+  useEffect(() => {
+    let appBar = document.getElementById("app-bar");
+    let appBarMargin = document.getElementById("app-bar-margin");
+    let BottomDot = document.getElementById("bottom-dot");
+    if (isLoading === 1) {
+      if (appBar) {
+        appBar.style.display = "none";
+        appBar.style.position = "absolute";
+        if (appBarMargin) {
+          appBarMargin.style.marginTop = "0";
+        }
+      }
+      if (BottomDot) {
+        BottomDot.style.display = "none";
+        BottomDot.style.position = "absolute";
+      }
+    } else if (isLoading === 2) {
+      if (appBar) {
+        appBar.style.display = "block";
+        appBar.style.position = "sticky";
+        if (appBarMargin) {
+          appBarMargin.style.marginTop = "5vh";
+        }
+      }
+      if (BottomDot) {
+        BottomDot.style.display = "block";
+        BottomDot.style.position = "sticky";
+      }
+    }
+  }, [isLoading]);
 
-      <SBtnContainer>
-        <SNextBtn onClick={() => navigate("/schedule/result")}>다음</SNextBtn>
-      </SBtnContainer>
-      <ScheduleBottomSheet
-        isOpen={isOpen}
-        onClose={() => {
-          setIsOpen(false);
-        }}
-      />
-    </Container>
+  const onClickLoading = () => {
+    setIsLoading(1);
+    setTimeout(() => {
+      setIsLoading(2);
+    }, 2000);
+  };
+
+  useEffect(() => {
+    if (isLoading === 2) {
+      navigate("/schedule/result");
+    }
+  }, [isLoading]);
+
+  return (
+    <>
+      {isLoading ? (
+        <LoadingComponent>
+          <LottieContainer>
+            <Lottie animationData={scheduleGIF} />
+          </LottieContainer>
+        </LoadingComponent>
+      ) : (
+        <Container>
+          <SDiv>필수 시청 목록</SDiv>
+          <SDiv2>스케줄 생성시 꼭 보고 싶은 컨텐츠를 담아주세요!</SDiv2>
+          <ContentsContainer>
+            {essList &&
+              essList.map((content, idx) => (
+                <SBoxContainer key={idx}>
+                  <SContent imgUrl={essList[idx].img_path}>
+                    <SRemoveDiv onClick={() => onClickDelete(idx)}>
+                      <SAiOutlineMinusCircle />
+                    </SRemoveDiv>
+                  </SContent>
+                </SBoxContainer>
+              ))}
+            <SBoxContainer>
+              <SAddBox onClick={() => setIsOpen(true)}>+</SAddBox>
+            </SBoxContainer>
+          </ContentsContainer>
+
+          <SBtnContainer>
+            <SNextBtn onClick={onClickLoading}>다음</SNextBtn>
+          </SBtnContainer>
+          <ScheduleBottomSheet
+            isOpen={isOpen}
+            onClose={() => {
+              setIsOpen(false);
+            }}
+          />
+        </Container>
+      )}
+    </>
   );
 };
 
@@ -154,4 +213,17 @@ const SNextBtn = styled.div`
   background-color: ${({ theme }) => theme.netflix.pointColor};
   font-size: ${({ theme }) => theme.fontSizeType.big.fontSize};
   text-align: center;
+`;
+
+const LoadingComponent = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+`;
+
+const LottieContainer = styled.div`
+  width: 40vw;
+  height: 40vw;
 `;
