@@ -2,18 +2,34 @@ import React from "react";
 import styled from "styled-components";
 
 import CalendarBottomSheetFirst from "./CalendarBottomSheetFirst";
+import CalendarBottomSheetSecond from "./CalendarBottomSheetSecond";
 
-const SDiv = styled.div`
+const SDiv1 = styled.div`
   width: 100vw;
-  height: 30vh;
+
+  color: ${({ theme }) => theme.netflix.fontColor};
+`;
+const SDiv2 = styled.div`
+  width: 100vw;
   color: ${({ theme }) => theme.netflix.fontColor};
 `;
 
-const CalendarBottomSheetContent = (props: { date: number; month: number }) => {
+const CalendarBottomSheetContent = (props: { date: number; month: number; sheetDepth: number }) => {
   return (
-    <SDiv>
-      <CalendarBottomSheetFirst date={props.date} month={props.month}></CalendarBottomSheetFirst>;
-    </SDiv>
+    <div>
+      {props.sheetDepth === 1 ? (
+        <SDiv1>
+          <CalendarBottomSheetFirst
+            date={props.date}
+            month={props.month}
+          ></CalendarBottomSheetFirst>
+        </SDiv1>
+      ) : (
+        <SDiv2>
+          <CalendarBottomSheetSecond date={props.date} month={props.month} />
+        </SDiv2>
+      )}
+    </div>
   );
 };
 

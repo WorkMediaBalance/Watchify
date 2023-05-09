@@ -12,7 +12,7 @@ const CalendarBottomSheet = (props: {
   month: number;
   close: number;
 }) => {
-  const { sheet, content, handle, setSheetDepth } = useRecBottomSheet();
+  const { sheet, content, handle, setSheetDepth, sheetDepth } = useRecBottomSheet();
 
   useEffect(() => {
     if (props.sheet !== 0) {
@@ -32,7 +32,7 @@ const CalendarBottomSheet = (props: {
         <CalendarBottomSheetHeader />
       </div>
       <BottomSheetContent ref={content}>
-        <CalendarBottomSheetContent date={props.date} month={props.month} />
+        <CalendarBottomSheetContent date={props.date} month={props.month} sheetDepth={sheetDepth} />
       </BottomSheetContent>
     </Wrapper>
   );
