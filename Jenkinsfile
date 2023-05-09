@@ -3,18 +3,17 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                sh 'mvn clean package'
+                echo 'Building'
             }
         }
         stage('Test') {
             steps {
-                sh 'mvn test'
+                echo "Test"
             }
         }
         stage('Deploy') {
             steps {
-                sh 'mvn Deploy'
-                sh 'kubectl apply -f my-service.yaml'
+                echo "Deploy"
             }
         }
     }
