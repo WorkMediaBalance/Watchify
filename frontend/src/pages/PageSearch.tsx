@@ -148,6 +148,7 @@ const PageSearch = () => {
                 // onFocus={() => setAutocompleteVisible(true)} 웹에서 사용시 사용할 event
                 // onFocus={() => setAutocompleteVisible(true)}
                 // onTouchStart={() => setAutocompleteVisible(true)}
+                type="search"
                 onKeyPress={(e) => onKeyPress(e)}
                 onClick={(e) => {
                   e.stopPropagation();
@@ -219,6 +220,7 @@ const PageSearch = () => {
               // onFocus={() => setAutocompleteVisible(true)} 웹에서 사용시 사용할 event
               // onFocus={() => setAutocompleteVisible(true)}
               // onTouchStart={() => setAutocompleteVisible(true)}
+              type="search"
               onKeyPress={(e) => onKeyPress(e)}
               onClick={(e) => {
                 e.stopPropagation();
@@ -363,7 +365,7 @@ const SInput = styled.input`
   outline: none;
   box-shadow: none;
   border: none;
-  margin: 0 0.5rem;
+  margin: 0.5rem;
   padding: 0.5rem 0.7rem;
   font-size: ${({ theme }) => theme.fontSizeType.middle.fontSize};
   color: ${({ theme }) => theme.netflix.fontColor};
