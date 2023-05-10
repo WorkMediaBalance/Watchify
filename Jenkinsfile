@@ -12,7 +12,7 @@ pipeline {
                     def BUILD_NUMBER = currentBuild.number
                     sh 'pwd'
                     sh 'docker build -t $repository:frontend$BUILD_NUMBER ./frontend' // frontend 파일 생성
-//                     sh 'chmod +x gradlew'
+                    sh 'chmod +x gradlew'
                     sh './BACKEND/watchify/gradlew clean build'
                     sh 'docker build -t $repository:backend$BUILD_NUMBER ./BACKEND/watchify' // backend 파일 생성
                     echo "docker build finished"
