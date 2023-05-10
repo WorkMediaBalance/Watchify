@@ -2,7 +2,11 @@ package com.watchify.watchify.auth.service;
 
 
 import com.watchify.watchify.auth.Token;
+import com.watchify.watchify.db.entity.Day;
 import com.watchify.watchify.db.entity.User;
+import com.watchify.watchify.db.entity.UserDay;
+import com.watchify.watchify.db.repository.DayRepository;
+import com.watchify.watchify.db.repository.UserDayRepository;
 import com.watchify.watchify.db.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -20,6 +25,8 @@ import java.util.Optional;
 public class UserCheckService {
 
     private final UserRepository userRepository;
+    private final UserDayRepository userDayRepository;
+    private final DayRepository dayRepository;
     private final TokenService tokenService;
     private final RedisTemplate<String, String> redisTemplate;
     private static final String REFRESH_TOKEN_PREFIX = "rft_token:";
@@ -57,6 +64,13 @@ public class UserCheckService {
                 .build();
 
         userRepository.save(user);
+        // 유저 저장후 유저 패턴도 디폴트 1시간으로 저장
+        List<Day> days = dayRepository.findAll();
+        for (Day day : days) {
+            UserDay userDay = new UserDay(user, day);
+            userDayRepository.save(userDay);
+        }
+
         details.setUserId(user.getId());
         log.debug("신규 회원 가입 완료({})", user);
     }
@@ -66,6 +80,11 @@ public class UserCheckService {
 
         user.updateIsDeleted();
         userRepository.save(user);
+        List<UserDay> userDays = userDayRepository.getUserDayByUserId(user.getId());
+        for (UserDay userDay : userDays)  {
+            userDay.setTime(1);
+            userDayRepository.save(userDay);
+        }
     }
 
     // 토큰 발급 후, rft 는 레디스 저장

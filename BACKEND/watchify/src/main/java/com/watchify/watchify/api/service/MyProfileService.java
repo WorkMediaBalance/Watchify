@@ -25,4 +25,5 @@ public class MyProfileService {
             userRepository.save(user);
         }
     }
+
 }
