@@ -6,18 +6,24 @@ from rest_framework.views import APIView
 from rest_framework import status
 
 ######## models & serializers
-from models import *
-from serializers import *
+from .models import *
+from .serializers import *
+
+import sys
+sys.path.append('./ml/recommend_models')
 
 ######## recommend model
 import subprocess
-from recommend_models import recommend_content
-from model.Recommand import Recommands
+from recommend_content import recommend
+# from model.Recommand import Recommands
 
 # Create your views here.
 class RecommendAPIView(APIView):
     def get(self,request):
-        user_id = request.GET.get('user_id')
+        user_id = request.GET.get('id')
+        genres = request.GET.get('genres')
+        genres = genres.split(',')
+        print('장르르으ㅡㄹ응 : ',user_id, genres)
         '''
         <request로 받을 것>
         1. 유저 id
@@ -39,13 +45,15 @@ class RecommendAPIView(APIView):
         # python NeuMF.py --dataset ml-1m --epochs 20 --batch_size 256 --num_factors 8 --layers [64,32,16,8] --reg_mf 0 --reg_layers [0,0,0,0] --num_neg 4 --lr 0.001 --learner adam --verbose 1 --out 1
         args = ["python", "./ml/model/NeuMF.py", "--dataset", "ml-1m", "--epochs", "20", "--batch_size", "256", "--num_factors", "8", "--layers", "[64,32,16,8]", "--reg_mf", "0", "--reg_layers", "[0,0,0,0]", "--num_neg", "4", "--lr", "0.001", "--learner", "adam", "--verbose", "1", "--out", "1"]
 
-        try:
-            subprocess.run(args, check=True)
-        except subprocess.CalledProcessError:
-            print('FAIL')
-        predictions = Recommands(user_id)
+        # try:
+        #     subprocess.run(args, check=True)
+        # except subprocess.CalledProcessError:
+        #     print('FAIL')
+        # predictions = Recommands(user_id)
         
         # Plan B
-        # recommend_content(user_id, 10)
-
-        return
+        result = recommend(user_id, genres, 10)
+        contents = {'content_pk' : result}
+        serializer = RecommendSerializer(contents)
+        print('응답확인 ===== ',serializer)
+        return Response(serializer.data)

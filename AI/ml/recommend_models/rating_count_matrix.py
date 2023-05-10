@@ -8,7 +8,7 @@ class RatingCountMatrix:  # 사용자들 간의 유사도 계산
 
     def __init__(self, user_id_a, user_id_b):
         # num_rating_values = max([x[0] for x in data])  # data에 어떤 값이 들어가야 하는지???????
-        num_rating_values = len(User.objects.values_list('pk')) # 유저 개수?
+        num_rating_values = len(User.objects.values_list('id')) # 유저 개수?
         self.user_id_a = user_id_a
         self.user_id_b = user_id_b
         self.matrix = np.empty((num_rating_values, num_rating_values,))
@@ -23,14 +23,16 @@ class RatingCountMatrix:  # 사용자들 간의 유사도 계산
         return self.matrix
     
     def calculate_matrix(self, user_id_a, user_id_b):
-        items_reviewed_a = LikeContent.objects.filter(user=user_id_a).values_list('content')
-        items_reviewed_b = LikeContent.objects.filter(user=user_id_b).values_list('content')
+        items_reviewed_a = LikeContent.objects.filter(user_id=user_id_a).values_list('content_id')
+        items_reviewed_b = LikeContent.objects.filter(user_id=user_id_b).values_list('content_id')
         for item in items_reviewed_a:
             if item in items_reviewed_b:
                 # i = get_score_item_reviewed(user_id_a, item, userdict) - 1
-                i = LikeContent.objects.filter(user=user_id_a, content=item).values('is_like') - 1
+                i = LikeContent.objects.filter(user_id=user_id_a, content_id=item).values('is_like')
+                i = 5 if i == True else 0
                 # j = get_score_item_reviewed(user_id_b, item, userdict) - 1
-                j = LikeContent.objects.filter(user=user_id_b, content=item).values('is_like') - 1
+                j = LikeContent.objects.filter(user_id=user_id_b, content_id=item).values('is_like')
+                j = 5 if j == True else 0
                 self.matrix[i][j] += 1
     
     def get_total_count(self):

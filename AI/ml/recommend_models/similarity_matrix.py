@@ -5,7 +5,9 @@ from ml.models import User
 class SimilarityMatrix:
 
     similarity_matrix = None
-    userdict = User.objects.values_list('pk')
+    userdict = User.objects.values_list('id')
+    print('semilarity_matrix.py ===== userdict')
+    print(userdict)
 
     def __init__(self):
         self.build()
@@ -23,4 +25,5 @@ class SimilarityMatrix:
                 self.similarity_matrix[u][u] = 1 # 사용자 본인의 유사도는 1
     
     def get_user_similarity(self, user_id1, user_id2):
+        print('get_user_similarity')
         return self.similarity_matrix[min(user_id1, user_id2), max(user_id1, user_id2)]
