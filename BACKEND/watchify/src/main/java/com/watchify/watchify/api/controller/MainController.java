@@ -23,7 +23,6 @@ import java.util.Map;
 public class MainController {
 
     private final MainScheduleService mainScheduleService;
-    private final TokenService tokenService;
     private final UserService userService;
 
     @GetMapping("/schedule")

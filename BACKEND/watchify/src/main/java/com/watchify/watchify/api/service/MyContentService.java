@@ -37,7 +37,8 @@ public class MyContentService {
 
         List<DefaultContentDTO> res = new ArrayList<>();
         for (WishContent wc : wishList) {
-            DefaultContentDTO defaultContentDTO = new DefaultContentDTO(wc);
+            Content content = wc.getContent();
+            DefaultContentDTO defaultContentDTO = new DefaultContentDTO(content);
             defaultContentDTO.setIsWish(true); // 찜목록 조회라서 무조건 true
             if (likeMapPk.containsKey(defaultContentDTO.getPk())) {
                 defaultContentDTO.setIsLike(likeMapPk.get(defaultContentDTO.getPk()));
