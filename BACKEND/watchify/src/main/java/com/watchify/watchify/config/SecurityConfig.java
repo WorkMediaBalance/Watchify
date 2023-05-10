@@ -67,11 +67,11 @@ public class SecurityConfig {
 
 
 
-        http.authorizeRequests(request ->
-                request
-                        .requestMatchers(CorsUtils::isPreFlightRequest).permitAll() // << ??
-                        .antMatchers("/oauth2/**").permitAll()
-                        .anyRequest().authenticated());
+//        http.authorizeRequests(request ->
+//                request
+//                        .requestMatchers(CorsUtils::isPreFlightRequest).permitAll() // << ??
+//                        .antMatchers("/oauth2/**").permitAll()
+//                        .anyRequest().authenticated());
 
 
 
