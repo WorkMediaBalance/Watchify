@@ -8,6 +8,14 @@ import { RxCross2 } from "react-icons/rx";
 
 const Search = () => {
   const [searchWord, setSearchWord] = useState<string>("");
+  const [autocompleteWords, setAutocompleteWords] = useState<string[] | null>([
+    "고병진은 살아있다",
+    "고병진 프리즌 브레이크",
+    "나는 내일 어제의 고병진과 만난다",
+    "고병진스 :: 인피니트 워",
+    "6시 내 고병진",
+    "내 머릿속의 고병진",
+  ]);
 
   // 검색 결과
   const [searchResult, setSearchResult] = useState<content[]>([
@@ -107,11 +115,16 @@ const Search = () => {
   const hideAutocomplete = () => {
     setAutocompleteVisible(false);
   };
+
+  // 탭 써치 작업하면서 넣은 것들 (5.10 ~ )
+  const onClickXIcon = () => {
+    setSearchWord("");
+  };
   return (
     <Layout>
       <InputContainer>
-        <SInput />
-        <SRxCross2 />
+        <SInput onChange={wordChange} value={searchWord} />
+        <SRxCross2 onClick={onClickXIcon} />
       </InputContainer>
     </Layout>
   );

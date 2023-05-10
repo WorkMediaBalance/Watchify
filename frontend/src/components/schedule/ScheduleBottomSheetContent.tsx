@@ -8,8 +8,6 @@ import RecList from "./RecList";
 import Search from "./Search";
 
 const ScheduleBottomSheetContent = () => {
-  const [tab, setTab] = useState(1);
-
   const titleArray = ["찜 목록", "추천 목록", "검색"];
   const componentArray = [WishList, RecList, Search];
 
