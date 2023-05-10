@@ -12,8 +12,12 @@ pipeline {
                     def BUILD_NUMBER = currentBuild.number
                     sh 'pwd'
                     sh 'docker build -t $repository:frontend$BUILD_NUMBER ./frontend' // frontend 파일 생성
-                    sh 'chmod +x ./BACKEND/watchify/gradlew'
-                    sh './BACKEND/watchify/gradlew clean build'
+                    sh 'cd BACKEND'
+                    sh 'cd watchify'
+                    sh 'chmod +x ./gradlew'
+                    sh 'sudo su'
+                    sh './gradlew clean build'
+                    sh 'exit'
                     sh 'docker build -t $repository:backend$BUILD_NUMBER .'
                     sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin' // docker hub 로그인
                     sh 'docker push $repository:frontend$BUILD_NUMBER' //docker push
