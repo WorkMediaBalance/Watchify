@@ -1,7 +1,5 @@
 export const BASE_URL: string = "https://localhost:8080/";
-
-export const myBasicInfo: string = "api/my/basicinfo";
-export const myProfileImg: string = "api/my/profileimg";
+// export const BASE_URL: string = "https://k8a207.p.ssafy.io/"
 
 export const MIN_Y = window.innerHeight * 0.1; // 바텀 시트가 최대로 올라 갔을 때의 Y좌표 값
 export const MAX_Y = window.innerHeight * 0.55; // 바텀 시트가 최대로 내려갔을 때의 Y좌표 값
@@ -50,3 +48,19 @@ export const months = [
   "November",
   "December",
 ];
+
+type OttPeriod = { start: string | null; end: string | null };
+export type OttPeriods = {
+  [key: string]: OttPeriod;
+};
+
+export type Schedule = {
+  startDate: string;
+  contents: number[];
+  parttern: {
+    [key: string]: number;
+  };
+  ott: string[];
+};
+
+export type ContentRecForm = { isAdult: boolean; ott: string[]; genre: string[] };

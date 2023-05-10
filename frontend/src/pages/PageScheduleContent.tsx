@@ -58,6 +58,19 @@ const PageScheduleContent = () => {
         BottomDot.style.position = "sticky";
       }
     }
+    return () => {
+      if (appBar) {
+        appBar.style.display = "block";
+        appBar.style.position = "sticky";
+        if (appBarMargin) {
+          appBarMargin.style.marginTop = "5vh";
+        }
+      }
+      if (BottomDot) {
+        BottomDot.style.display = "block";
+        BottomDot.style.position = "sticky";
+      }
+    };
   }, [isLoading]);
 
   const onClickLoading = () => {
