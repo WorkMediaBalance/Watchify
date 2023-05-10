@@ -26,8 +26,8 @@ public class TokenService {
     private Key key;
 
     // 토큰 10분
-    long tokenPeriod = 1000L * 60L * 10L;
-//    long tokenPeriod = 1000L * 60L * 10L * 100L; // api 테스트 용으로 매우 길게 잡음
+//    long tokenPeriod = 1000L * 60L * 10L;
+    long tokenPeriod = 1000L * 60L * 10L * 100L; // api 테스트 용으로 매우 길게 잡음
     // 리프레시 토큰 21일
     long refreshPeriod = 1000L * 60L * 60L * 24L * 21L;
 
