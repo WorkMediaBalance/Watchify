@@ -1,13 +1,18 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef, useMemo } from "react";
 import styled from "styled-components";
 import { useSwipeable } from "react-swipeable";
 import { motion, AnimatePresence } from "framer-motion";
 import { theme } from "styles/theme";
 import { months } from "constant/constant";
 
+// month 스케줄 state
+import { monthScheduleState } from "recoil/scheduleState";
+import { useRecoilState } from "recoil";
+
 const Calendar = (props: {
   onDateClick: (date: number, month: number) => void;
   onCloseSheet: () => void;
+  bottomSheetState: number;
 }) => {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [clickedDay, setClickedDay] = useState<HTMLElement | null>(null);
@@ -90,7 +95,8 @@ const Calendar = (props: {
     onSwipedRight: prevMonth,
   });
 
-  const handleDateClick = (event: React.MouseEvent<HTMLDivElement>) => {
+  const [currentRowIndex, setCurrentRowIndex] = useState(0);
+  const handleDateClick = (event: React.MouseEvent<HTMLDivElement>, rowIndex: number) => {
     if (event.currentTarget.innerText) {
       if (clickedDay) {
         clickedDay.classList.remove("selected-day");
@@ -101,10 +107,16 @@ const Calendar = (props: {
       const month = Number(event.currentTarget.innerText);
       props.onDateClick(month, date);
     }
+    setCurrentRowIndex(rowIndex);
   };
 
+  // 해당 스케줄 불러오기
+  const [monthSchedule, setMonthSchedule] = useRecoilState(monthScheduleState);
+  useEffect(() => {
+    console.log(monthSchedule[1]);
+  }, []);
   return (
-    <Wrapper>
+    <Wrapper className={"wrapper"}>
       <motion.div>
         <AnimatePresence>
           <SCalendarDiv
@@ -120,7 +132,8 @@ const Calendar = (props: {
               <SToday onClick={thisMonth}>Today</SToday>
               <SMonth>{month}</SMonth>
             </SHeader>
-            <STable>
+
+            <STable bottomSheetState={props.bottomSheetState}>
               <SThead>
                 <tr>
                   {weekdays.map((day) => (
@@ -152,15 +165,53 @@ const Calendar = (props: {
                             className = "active-day";
                           }
                         }
-                        return (
+
+                        return props.bottomSheetState === 2 ? (
+                          currentRowIndex === rowIndex && (
+                            <STd
+                              onClick={(event) => handleDateClick(event, rowIndex)}
+                              key={`${rowIndex}-${dayIndex}`}
+                              data-key={`${rowIndex}-${dayIndex}`}
+                              className={className}
+                            >
+                              <STdDiv>
+                                <SP>{content}</SP>
+                                <InnerConteiner>
+                                  {typeof content === "number"
+                                    ? monthSchedule[content].map((content, index) => {
+                                        return (
+                                          <ContentTag>
+                                            <ContentTagDot />
+                                            <ContentName>{"1화"}</ContentName>
+                                          </ContentTag>
+                                        );
+                                      })
+                                    : null}
+                                </InnerConteiner>
+                              </STdDiv>
+                            </STd>
+                          )
+                        ) : (
                           <STd
-                            onClick={handleDateClick}
+                            onClick={(event) => handleDateClick(event, rowIndex)}
                             key={`${rowIndex}-${dayIndex}`}
                             data-key={`${rowIndex}-${dayIndex}`}
                             className={className}
                           >
                             <STdDiv>
                               <SP>{content}</SP>
+                              <InnerConteiner>
+                                {typeof content === "number"
+                                  ? monthSchedule[content].map((content, index) => {
+                                      return (
+                                        <ContentTag>
+                                          <ContentTagDot />
+                                          <ContentName>{"1화"}</ContentName>
+                                        </ContentTag>
+                                      );
+                                    })
+                                  : null}
+                              </InnerConteiner>
                             </STdDiv>
                           </STd>
                         );
@@ -215,9 +266,9 @@ const SToday = styled.p`
   line-height: 2;
 `;
 
-const STable = styled.table`
+const STable = styled.table<{ bottomSheetState: number }>`
   width: 100vw;
-  height: 75vh;
+  height: ${({ bottomSheetState }) => ["75vh", "45vh", "16vh"][bottomSheetState]};
   border-collapse: collapse;
 `;
 
@@ -255,6 +306,44 @@ const STdDiv = styled.div`
   box-sizing: border-box;
 `;
 
-const SP = styled.p`
+const SP = styled.div`
   margin-top: 1vh;
+`;
+
+const InnerConteiner = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+`;
+
+const ContentTag = styled.div`
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  background-color: white;
+  border-radius: 15px;
+  margin: 1px;
+`;
+
+const ContentTagDot = styled.div`
+  border-radius: 50%;
+  background-color: red;
+  height: 2vw;
+  width: 2vw;
+  margin: 1vw;
+`;
+
+const ContentName = styled.div`
+  color: ${theme.netflix.tabColor};
+  font-size: 0.8rem;
+  margin: 0.4vw;
+  margin-right: 2vw;
+`;
+
+const ContentPlus = styled.div`
+  width: 100%;
+  text-align: end;
 `;

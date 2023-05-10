@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect, useMemo } from "react";
 import styled from "styled-components";
 import { theme } from "styles/theme";
 import Calendar from "components/schedule/calendar/Calendar";
@@ -23,6 +23,11 @@ const PageScheduleResult = () => {
   // month 스케줄
   const [monthSchedule, setMonthSchedule] = useRecoilState(monthScheduleState);
 
+  // 바텀시트 위치 구하기
+  const bottomSheetRef = useRef<HTMLTableElement>(null);
+
+  const [bottomSheetState, setBottomSheetState] = useState(0);
+
   return (
     <Wrapper>
       <Calendar
@@ -34,8 +39,16 @@ const PageScheduleResult = () => {
         onCloseSheet={() => {
           setClose(close + 1);
         }}
+        bottomSheetState={bottomSheetState}
       />
-      <CalendarBottomSheet close={close} date={date} month={month} sheet={sheet} />
+
+      <CalendarBottomSheet
+        close={close}
+        date={date}
+        month={month}
+        sheet={sheet}
+        setBottomSheetState={setBottomSheetState}
+      />
     </Wrapper>
   );
 };
