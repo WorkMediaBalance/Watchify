@@ -18,12 +18,16 @@ const CalendarBottomSheetSecond = (props: { date: number; month: number }) => {
   const dateScheduleList = monthSchedule[props.date];
 
   const nextContent = () => {
-    if (dateScheduleList.length > 1 && index !== dateScheduleList.length - 1) {
+    if (
+      Array.isArray(dateScheduleList) &&
+      dateScheduleList.length > 1 &&
+      index !== dateScheduleList.length - 1
+    ) {
       setIndex(index + 1);
     }
   };
   const prevContent = () => {
-    if (dateScheduleList.length > 1 && index !== 0) {
+    if (Array.isArray(dateScheduleList) && dateScheduleList.length > 1 && index !== 0) {
       setIndex(index - 1);
     }
   };
@@ -35,17 +39,21 @@ const CalendarBottomSheetSecond = (props: { date: number; month: number }) => {
 
   const [index, setIndex] = useState(0);
   const season =
-    dateScheduleList.length > 0 && dateScheduleList[index]["season"] !== 0
+    Array.isArray(dateScheduleList) &&
+    dateScheduleList.length > 0 &&
+    dateScheduleList[index]["season"] !== 0
       ? `시즌 ${dateScheduleList[index]["season"]} `
       : "";
   const episode =
-    dateScheduleList.length > 0 && dateScheduleList[index]["finalEpisode"] !== 0
+    Array.isArray(dateScheduleList) &&
+    dateScheduleList.length > 0 &&
+    dateScheduleList[index]["finalEpisode"] !== 0
       ? `${dateScheduleList[index]["finalEpisode"]} 화`
       : "";
   return (
     <Container {...handlers}>
       <Date>{`${props.month}월 ${props.date}일`}</Date>
-      {dateScheduleList.length === 0 ? (
+      {Array.isArray(dateScheduleList) && dateScheduleList.length === 0 ? (
         <div>일정이 업습</div>
       ) : (
         <ContentContainer>
