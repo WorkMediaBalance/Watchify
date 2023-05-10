@@ -1,5 +1,5 @@
-export const BASE_URL: string = "https://localhost:8080/";
-// export const BASE_URL: string = "https://k8a207.p.ssafy.io/"
+// export const BASE_URL: string = "https://localhost:8080/";
+export const BASE_URL: string = "https://k8a207.p.ssafy.io/";
 
 export const MIN_Y = window.innerHeight * 0.1; // 바텀 시트가 최대로 올라 갔을 때의 Y좌표 값
 export const MAX_Y = window.innerHeight * 0.55; // 바텀 시트가 최대로 내려갔을 때의 Y좌표 값
