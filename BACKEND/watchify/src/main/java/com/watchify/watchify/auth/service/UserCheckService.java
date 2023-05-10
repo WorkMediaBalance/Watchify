@@ -10,6 +10,7 @@ import com.watchify.watchify.db.repository.UserDayRepository;
 import com.watchify.watchify.db.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -30,6 +31,9 @@ public class UserCheckService {
     private final TokenService tokenService;
     private final RedisTemplate<String, String> redisTemplate;
     private static final String REFRESH_TOKEN_PREFIX = "rft_token:";
+
+    @Value("${app.oauth2.frontRedirectUrl}")
+    private String callbackUri;
 
     // PrincipalDetail 로 로그인한 유저가 가입자인지 아닌지 확인
     public void  loadUser(PrincipalDetails details) {
@@ -130,9 +134,9 @@ public class UserCheckService {
     public String loginRedirect(Token token) {
         if (token == null) {
             // 프론트 로그인페이지
-            return "https://k8a207.p.ssafy.io/login";
+            return "http://localhost:3000//login";
         }
-        String callbackUri = "https://k8a207.p.ssafy.io/oauth2/callback";
+//        String callbackUri = "https://k8a207.p.ssafy.io/oauth2/callback";
         return callbackUri +"?access=" + token.getAccessToken() + "&refresh=" + token.getRefreshToken() + "&isNew=" + token.isNew();
     }
 
