@@ -13,11 +13,8 @@ pipeline {
                     sh 'pwd'
                     sh 'docker build -t $repository:frontend$BUILD_NUMBER ./frontend' // frontend 파일 생성
                     sh 'chmod +x ./BACKEND/watchify/gradlew'
-                    sh 'sudo su'
                     sh './BACKEND/watchify/gradlew clean build'
-                    sh 'exit'
-                    sh 'docker build -t $repository:backend$BUILD_NUMBER ./BACKEND/watchify' // backend 파일 생성
-                    echo "docker build finished"
+                    sh 'docker build -t $repository:backend$BUILD_NUMBER .'
                     sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin' // docker hub 로그인
                     sh 'docker push $repository:frontend$BUILD_NUMBER' //docker push
                     sh 'docker push $repository:backend$BUILD_NUMBER'
