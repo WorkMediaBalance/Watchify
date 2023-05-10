@@ -17,7 +17,7 @@ public class CalenderDTO extends DefaultContentDTO{
     @NotNull
     private LocalDate date; // 등록날짜
     private LocalDate viewDate;
-    Private int episode;
+    private int episode;
 
     public CalenderDTO(Content content, LocalDate date, LocalDate viewDate, int episode) {
         super(content);

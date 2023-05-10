@@ -20,6 +20,8 @@ import java.util.stream.Collectors;
 public class MainScheduleService {
 
     private final CalenderRepository calenderRepository;
+    private final WishContentRepository wishContentRepository;
+    private final LikeContentRepository likeContentRepository;
 
     @Transactional
     public Map<Integer, List<CalenderDTO>> getMainSchedule(Long userId) {
@@ -32,6 +34,8 @@ public class MainScheduleService {
         LocalDate endDate = today.plusDays(3);
 
         List<Calender> calenders = calenderRepository.getMainSchedule(userId, startDate, endDate);
+        List<WishContent> wishContents = wishContentRepository.getMyWishList(userId);
+        List<LikeContent> likeContents = likeContentRepository.getLikeContent(userId);
 
         for (int i=0; i < 7; i++) {
             // start 날짜 기준 + i 번째 날짜가 있는 값 찾기
@@ -42,8 +46,30 @@ public class MainScheduleService {
 
             List<CalenderDTO> calenderDTOS = new ArrayList<>();
             for (Calender calender : filterCalenders) {
-                CalenderDTO calenderDTO = new CalenderDTO(calender.getTurnContent().getContent());
+                Content thisContent = calender.getTurnContent().getContent();
+                CalenderDTO calenderDTO = new CalenderDTO(thisContent, calender.getDate(), calender.getViewDate(), calender.getTurnContent().getEpisode());
                 calenderDTOS.add(calenderDTO);
+
+                for (WishContent wishContent : wishContents) {
+                    if (wishContent.getContent().equals(thisContent)) {
+                        if (wishContent.isDeleted() != true) {
+                            calenderDTO.setIsWish(true);
+                        }
+                        break;
+                    }
+                }
+
+//                for (LikeContent likeContent : likeContents) {
+//                    if (likeContent.getContent().equals(thisContent)) {
+//                        if (likeContent.isDeleted() != true) {
+//                            calenderDTO.setIsLike();
+//                        }
+//                    }
+//                }
+
+
+
+
             }
 
             res.put(i, calenderDTOS);
