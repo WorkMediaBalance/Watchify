@@ -11,8 +11,8 @@ pipeline {
                 echo 'Building'
                 script {
                     def BUILD_NUMBER = currentBuild.number
-                    dockerImage = docker.build("runtogether/watchify/$buildNumber", "frontend/")
-                    echo "빌드 : $buildNumber"
+                    dockerImage = docker.build("runtogether/watchify:frontend$BUILD_NUMBER", "frontend/")
+                    echo "빌드 : $BUILD_NUMBER"
                     sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin' // docker hub 로그인
                     sh 'docker push $repository:$BUILD_NUMBER' //docker push
                 }
