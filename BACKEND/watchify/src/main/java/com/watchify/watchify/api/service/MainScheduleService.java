@@ -64,6 +64,7 @@ public class MainScheduleService {
                         if (likeContent.isDeleted() != true) {
                             calenderDTO.setIsLike(likeContent.isLike() ? 1 : -1);
                         }
+                        break;
                     }
                 }
 
