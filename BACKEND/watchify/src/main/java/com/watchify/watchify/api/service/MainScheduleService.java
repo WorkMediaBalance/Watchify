@@ -59,16 +59,13 @@ public class MainScheduleService {
                     }
                 }
 
-//                for (LikeContent likeContent : likeContents) {
-//                    if (likeContent.getContent().equals(thisContent)) {
-//                        if (likeContent.isDeleted() != true) {
-//                            calenderDTO.setIsLike();
-//                        }
-//                    }
-//                }
-
-
-
+                for (LikeContent likeContent : likeContents) {
+                    if (likeContent.getContent().equals(thisContent)) {
+                        if (likeContent.isDeleted() != true) {
+                            calenderDTO.setIsLike(likeContent.isLike() ? 1 : -1);
+                        }
+                    }
+                }
 
             }
 
