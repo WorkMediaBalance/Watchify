@@ -12,7 +12,7 @@ pipeline {
                 script {
                     def BUILD_NUMBER = currentBuild.number
                     sh 'pwd'
-                    sh 'docker build -t $repository:frontend$BUILD_NUMBER frontend/.'
+                    sh 'docker build -t $repository:frontend$BUILD_NUMBER /var/jenkins_home/workspace/watchify/frontend/.'
                     echo "docker build finished"
                     sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin' // docker hub 로그인
                     sh 'docker push $repository:$BUILD_NUMBER' //docker push
