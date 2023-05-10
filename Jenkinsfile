@@ -14,6 +14,7 @@ pipeline {
                     sh 'docker build -t $repository:frontend$BUILD_NUMBER ./frontend' // frontend 파일 생성
 //                     sh 'cd BACKEND'
 //                     sh 'cd watchify'
+                    sh 'cd backend/watchify'
                     sh 'chmod +x ./gradlew'
                     sh 'sudo su'
                     sh './BACKEND/watchify/gradlew clean build'
