@@ -147,8 +147,7 @@ const PageSearch = () => {
     let appBar = document.getElementById("app-bar");
     let appBarMargin = document.getElementById("app-bar-margin");
     let searchLayout = document.getElementById("search-layout");
-
-    if (autocompleteVisible) {
+    if (autocompleteVisible || isResult) {
       if (appBar) {
         appBar.style.display = "none";
         appBar.style.position = "absolute";
@@ -199,9 +198,13 @@ const PageSearch = () => {
           // 검색 결과 창
           <>
             <InputContainer>
-              <SAiOutlineLeft onClick={() => navigate("/search")} />
+              <SAiOutlineLeft
+                onClick={() => {
+                  setAutocompleteVisible(false);
+                  setIsResult(false);
+                }}
+              />
               <SInput
-                id="sibal"
                 // onFocus={() => setAutocompleteVisible(true)} 웹에서 사용시 사용할 event
                 // onFocus={() => setAutocompleteVisible(true)}
                 // onTouchStart={() => setAutocompleteVisible(true)}
@@ -209,14 +212,13 @@ const PageSearch = () => {
                 onClick={(e) => {
                   e.stopPropagation();
                   setAutocompleteVisible(true);
-                  const searchInput = document.getElementById("search-input");
-                  searchInput?.focus();
                 }}
                 onChange={wordChange}
                 // placeholder="찾고자 하는 컨텐츠 제목을 입력하세요."
                 value={searchWord}
               />
               {searchWord ? (
+                // 검색 결과 존재할 경우
                 <SRxCross2
                   onClick={(e) => {
                     e.stopPropagation();
@@ -224,6 +226,7 @@ const PageSearch = () => {
                   }}
                 />
               ) : (
+                // 검색 결과 없을 경우
                 <SBsSearch2
                   onClick={(e) => {
                     e.stopPropagation();
@@ -264,6 +267,10 @@ const PageSearch = () => {
                 onClick={(e) => {
                   e.stopPropagation();
                   setAutocompleteVisible(true);
+                  setTimeout(() => {
+                    const searchInput = document.getElementById("search-input");
+                    searchInput?.focus();
+                  }, 0);
                 }}
               />
               <SBsSearch
@@ -278,7 +285,12 @@ const PageSearch = () => {
       ) : (
         <>
           <InputContainer>
-            <SAiOutlineLeft onClick={() => navigate("/search")} />
+            <SAiOutlineLeft
+              onClick={() => {
+                setAutocompleteVisible(false);
+                setIsResult(false);
+              }}
+            />
             <SInput
               id="search-input"
               // onFocus={() => setAutocompleteVisible(true)} 웹에서 사용시 사용할 event
@@ -322,7 +334,6 @@ const PageSearch = () => {
                 onClick={(e) => {
                   e.stopPropagation();
                   setSearchWord(word);
-
                   onClickSearchAutoComplete(word);
                 }}
               >
