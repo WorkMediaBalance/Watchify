@@ -11,6 +11,7 @@ const CalendarBottomSheet = (props: {
   date: number;
   month: number;
   close: number;
+  setBottomSheetState: React.Dispatch<React.SetStateAction<number>>;
 }) => {
   const { sheet, content, handle, setSheetDepth, sheetDepth } = useRecBottomSheet();
 
@@ -25,6 +26,10 @@ const CalendarBottomSheet = (props: {
       setSheetDepth(0);
     }
   }, [props.close]);
+
+  useEffect(() => {
+    props.setBottomSheetState(sheetDepth);
+  }, [sheetDepth]);
 
   return (
     <Wrapper ref={sheet}>
