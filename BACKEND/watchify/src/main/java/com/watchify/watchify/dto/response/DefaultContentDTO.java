@@ -1,9 +1,6 @@
 package com.watchify.watchify.dto.response;
 
-import com.watchify.watchify.db.entity.ContentGenre;
-import com.watchify.watchify.db.entity.ContentOTT;
-import com.watchify.watchify.db.entity.Genre;
-import com.watchify.watchify.db.entity.WishContent;
+import com.watchify.watchify.db.entity.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -27,23 +24,23 @@ public class DefaultContentDTO {
     private String summarize;
     private int audienceAge;
 
-    public DefaultContentDTO(WishContent wishContent) {
-        this.pk = wishContent.getContent().getId();
-        this.title = wishContent.getContent().getTitle();
-        this.runtime = wishContent.getContent().getRuntime();
-        this.rate = wishContent.getContent().getRate();
-        this.imgPath = wishContent.getContent().getImgPath();
-        this.backdropPath = wishContent.getContent().getBackdropPath();
-        this.season = wishContent.getContent().getSeason();
-        this.finalEpisode = wishContent.getContent().getFinalEpisode();
+    public DefaultContentDTO(Content content) {
+        this.pk = content.getId();
+        this.title = content.getTitle();
+        this.runtime = content.getRuntime();
+        this.rate = content.getRate();
+        this.imgPath = content.getImgPath();
+        this.backdropPath = content.getBackdropPath();
+        this.season = content.getSeason();
+        this.finalEpisode = content.getFinalEpisode();
 
-        List<ContentOTT> contentOTTS = wishContent.getContent().getContentOTTS();
+        List<ContentOTT> contentOTTS = content.getContentOTTS();
         this.ott = new HashMap<>();
         for (ContentOTT cot : contentOTTS) {
             ott.put(cot.getOtt().getName(), cot.getOttUrl() != null ? cot.getOttUrl() : "");
         }
 
-        List<ContentGenre> contentGenres = wishContent.getContent().getContentGenres();
+        List<ContentGenre> contentGenres = content.getContentGenres();
         this.genres = new ArrayList<>();
         for (ContentGenre genreObj : contentGenres) {
             if (genreObj.getGenre().getName() != null) {
@@ -51,8 +48,8 @@ public class DefaultContentDTO {
             }
         }
 
-        this.summarize = wishContent.getContent().getSummarize();
-        this.audienceAge = wishContent.getContent().getAudienceAge();
+        this.summarize = content.getSummarize();
+        this.audienceAge = content.getAudienceAge();
     }
 
     public void setIsWish(boolean flag) { this.isWish = flag;}

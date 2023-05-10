@@ -42,7 +42,7 @@ public class MainScheduleService {
 
             List<CalenderDTO> calenderDTOS = new ArrayList<>();
             for (Calender calender : filterCalenders) {
-                CalenderDTO calenderDTO = new CalenderDTO(calender);
+                CalenderDTO calenderDTO = new CalenderDTO(calender.getTurnContent().getContent());
                 calenderDTOS.add(calenderDTO);
             }
 
