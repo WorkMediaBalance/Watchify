@@ -15,10 +15,10 @@ pipeline {
 //                     sh 'cd BACKEND'
 //                     sh 'cd watchify'
                     sh 'cd BACKEND/watchify'
-                    sh 'chmod +x gradlew'
-                    sh 'sudo su'
+//                     sh 'chmod +x gradlew'
+//                     sh 'sudo su'
                     sh './gradlew clean build'
-                    sh 'exit'
+//                     sh 'exit'
                     sh 'docker build -t $repository:backend$BUILD_NUMBER ./BACKEND/watchify'
                     sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin' // docker hub 로그인
                     sh 'docker push $repository:frontend$BUILD_NUMBER' //docker push
