@@ -15,7 +15,7 @@ pipeline {
 //                     sh 'cd BACKEND'
 //                     sh 'cd watchify'
                     sh 'cd BACKEND/watchify'
-//                     sh 'chmod +x gradlew'
+                    sh 'chmod +x gradlew'
 //                     sh 'sudo su'
                     sh './gradlew clean build'
 //                     sh 'exit'
