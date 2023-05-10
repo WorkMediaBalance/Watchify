@@ -12,7 +12,7 @@ spring:
             scope: profile_nickname, account_email
             client-name: kakao
           google:
-            redirect-uri: https://k8a207.p.ssafy.io/oauth2/login/callback
+            redirect-uri: https://k8a207.p.ssafy.io/oauth2/login/google/callback
             client-secret: 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
             client-id: 68891012374-8ij9t01p6i3ucf9rufg334b2ahb3vhl7.apps.googleusercontent.com
             scope: profile, email
