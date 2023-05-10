@@ -28,23 +28,20 @@ export const ottThemeState = atom<string>({
 
 // 구독한 OTT 목록
 type Subscription = {
-  name: string;
-  subscriptionDate: string;
+  [key: string]: {
+    start: string | null;
+    end: string | null;
+  };
 };
 
-export const ottSubscriptionState = atom<Subscription[]>({
+export const ottSubscriptionState = atom<Subscription>({
   key: "ottSubscriptionState",
-  default: [
-    {
-      name: "netflix",
-      subscriptionDate: "2022-04-28",
-    },
-    {
-      name: "disney",
-      subscriptionDate: "2022-02-19",
-    },
-  ],
-  // effects_UNSTABLE: [persistAtom],
+  default: {
+    netflix: { start: "2023-04-15", end: null },
+    watcha: { start: null, end: null },
+    wavve: { start: "2023-01-17", end: "2023-06-16" },
+    disney: { start: null, end: null },
+  },
 });
 
 // 찜 목록

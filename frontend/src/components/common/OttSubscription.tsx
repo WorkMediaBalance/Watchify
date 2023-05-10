@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 
 import Swal from "sweetalert2";
+import DatePicker, { CalendarContainer } from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import { ottSubscriptionState } from "recoil/userState";
 
 import { AiOutlineClose } from "react-icons/ai";
@@ -13,6 +15,7 @@ import netflixIcon from "assets/img/netflixIcon.png";
 import disneyIcon from "assets/img/disneyIcon.png";
 import watchaIcon from "assets/img/watchaIcon.png";
 import wavveIcon from "assets/img/wavveIcon.png";
+import { theme } from "styles/theme";
 
 // ott 추가 함수 정의를 위한 기초 설정 (왜 global 설정하고 window에서 하는지는 모름..)
 declare global {
@@ -23,33 +26,127 @@ declare global {
 
 const OttSubscription = () => {
   const navigate = useNavigate();
-  const [otts, setOtts] = useRecoilState(ottSubscriptionState);
+
+  const [ott, setOtt] = useRecoilState(ottSubscriptionState);
+  const [isAdded, setIsAdded] = useState<boolean>(false);
+  const [showDatePicker, setShowDatePicker] = useState<{ [key: string]: boolean }>({
+    netflix: false,
+    disney: false,
+    watcha: false,
+    wavve: false,
+  });
+
+  const [today, setToday] = useState(new Date());
+  const [is4, setIs4] = useState<boolean>(false);
 
   // OTT 삭제 함수
-  const onClickDeleteOtt = (idx: number) => {
-    let copy = [...otts];
-    copy = copy.filter((ott, index) => index !== idx);
-    setOtts(copy);
+  const onClickDeleteOtt = (key: string) => {
+    setIsAdded(false);
+    setIs4(false);
+    setOtt((prev) => {
+      const copy = { ...prev }; // 기존 객체 복사
+      copy[key] = { start: null, end: null }; // 새로운 객체 생성 후 업데이트
+      return copy; // 새로운 배열 반환
+    });
   };
 
   // OTT 추가 함수
-  window.addOtt = (name, subscriptionDate) => {
-    let copy = [...otts];
-    copy = [...otts, { name: name, subscriptionDate: subscriptionDate }];
-    setOtts(copy);
+  window.addOtt = (key) => {
+    setIsAdded(true);
+    setOtt((prev) => {
+      const copy = { ...prev }; // 기존 객체 복사
+
+      let date = new Date();
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, "0");
+      const day = String(date.getDate()).padStart(2, "0");
+      const newDate = `${year}-${month}-${day}`;
+
+      copy[key] = { start: newDate, end: null }; // 새로운 객체 생성 후 업데이트
+      return copy; // 새로운 배열 반환
+    });
   };
 
-  // sweetAlert 띄우기 (`` 위치 주의)
+  useEffect(() => {
+    if (!isAdded) return;
+
+    // 달력이 띄워져있는지 check (OTT 모달 띄우지 않기 위해)
+    let hasTrueValue = false;
+    for (const key in showDatePicker) {
+      if (showDatePicker[key]) {
+        hasTrueValue = true;
+        break;
+      }
+    }
+    if (hasTrueValue === true) return;
+
+    // OTT 모두 구독중이면 모달 끄기
+    let cnt = 0;
+    for (const key in ott) {
+      if (ott[key].start !== null) {
+        cnt++;
+      }
+    }
+    if (cnt === 4) {
+      setIs4(true);
+      Swal.close();
+      return;
+    }
+
+    modalHandler();
+  }, [ott]);
+
   const modalHandler = () => {
+    const result: { [key: string]: boolean } = {};
+    if (ott.netflix.start) {
+      result["netflix"] = true;
+    } else {
+      result["netflix"] = false;
+    }
+    if (ott.disney.start) {
+      result["disney"] = true;
+    } else {
+      result["disney"] = false;
+    }
+    if (ott.watcha.start) {
+      result["watcha"] = true;
+    } else {
+      result["watcha"] = false;
+    }
+    if (ott.wavve.start) {
+      result["wavve"] = true;
+    } else {
+      result["wavve"] = false;
+    }
+    console.log(Swal.version);
+
     Swal.fire({
       title: "",
       text: "",
+      background: theme.netflix.backgroundColor,
+      confirmButtonText: "확인",
+      confirmButtonColor: theme.netflix.pointColor,
+
       html: `<div>
-        <img src="${netflixIcon}" onclick="addOtt('netflix', '2023-05-01')" />
-        <img src="${disneyIcon}" onclick="addOtt('disney', '2023-05-01')" />
-        <img src="${watchaIcon}" onclick="addOtt('watcha', '2023-05-01')" />
-        <img src="${wavveIcon}" onclick="addOtt('wavve', '2023-05-01')" />
-      </div>`,
+  ${result.netflix ? "" : `<img src="${netflixIcon}" onclick="addOtt('netflix')" width="60vw" />`}
+  ${result.disney ? "" : `<img src="${disneyIcon}" onclick="addOtt('disney')" width="60vw"/>`}
+  ${result.watcha ? "" : `<img src="${watchaIcon}" onclick="addOtt('watcha')" width="60vw"/>`}
+  ${result.wavve ? "" : `<img src="${wavveIcon}" onclick="addOtt('wavve')" width="60vw"/>`}
+
+</div>`,
+    });
+  };
+
+  const handDateChange = (date: Date, key: string) => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    const newDate = `${year}-${month}-${day}`;
+
+    setOtt((prev) => {
+      const copy = { ...prev };
+      copy[key] = { ...copy[key], start: newDate }; // 해당 객체의 값을 변경하여 복사본에 할당
+      return copy; // 새로운 배열 반환
     });
   };
 
@@ -59,39 +156,75 @@ const OttSubscription = () => {
       <SDiv2>
         구독중인 OTT가 있으시면 알려주세요. <br /> OTT 맞춤으로 스케줄링 할게요!
       </SDiv2>
-      {otts.map((ott, idx) => {
+      {Object.entries(ott).map(([key, value]) => {
         let icon;
-        if (ott.name === "netflix") {
+        if (key === "netflix") {
           icon = netflixIcon;
-        } else if (ott.name === "disney") {
+        } else if (key === "disney") {
           icon = disneyIcon;
-        } else if (ott.name === "watcha") {
+        } else if (key === "watcha") {
           icon = watchaIcon;
-        } else if (ott.name === "wavve") {
+        } else if (key === "wavve") {
           icon = wavveIcon;
         }
         return (
-          <SOttDiv key={idx}>
-            <SImg src={icon} alt={ott.name} />
-            <span>최근 구독일 : {ott.subscriptionDate}</span>
-            <AiOutlineClose
-              onClick={() => onClickDeleteOtt(idx)}
-              style={{
-                fontSize: "5vw",
-                color: "white",
-              }}
-            />
-          </SOttDiv>
+          <>
+            {value.start ? (
+              <SOttDiv key={key}>
+                <SImg src={icon} alt={key} />
+                <span
+                  onClick={() => {
+                    let copy = { ...showDatePicker };
+                    copy[key] = true;
+                    setShowDatePicker(copy);
+                  }}
+                >
+                  최근 구독일 : {value.start}
+                </span>
+                {showDatePicker[key] ? (
+                  <DatePickerWrapper>
+                    <DatePicker
+                      selected={today}
+                      onChange={(date: Date) => {
+                        handDateChange(date, key);
+                        let copy = { ...showDatePicker };
+                        copy[key] = false;
+                        setShowDatePicker(copy);
+                      }}
+                      inline
+                    />
+                  </DatePickerWrapper>
+                ) : null}
+                <AiOutlineClose
+                  onClick={() => onClickDeleteOtt(key)}
+                  style={{
+                    fontSize: "5vw",
+                    color: "white",
+                  }}
+                />
+              </SOttDiv>
+            ) : null}
+          </>
         );
       })}
-      <SBoxContainer>
-        <SAddBox onClick={modalHandler}>+</SAddBox>
-      </SBoxContainer>
+
+      {!is4 ? (
+        <SBoxContainer>
+          <SAddBox onClick={modalHandler}> + </SAddBox>
+        </SBoxContainer>
+      ) : null}
     </SContainer>
   );
 };
 
 export default OttSubscription;
+
+const DatePickerWrapper = styled.div`
+  position: fixed;
+  z-index: 10;
+
+  top: 50%;
+`;
 
 const SContainer = styled.div`
   height: 40vh;
@@ -102,7 +235,7 @@ const Sdiv = styled.div`
   font-size: ${({ theme }) => theme.fontSizeType.big.fontSize};
   font-weight: ${({ theme }) => theme.fontSizeType.big.fontWeight};
   text-align: left;
-  margin: 0.5rem 0;
+  margin: 1vw 0;
   padding-left: 0.5rem;
 `;
 

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ChangeEvent } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
@@ -143,19 +143,71 @@ const PageSearch = () => {
   // onTouchEnd
   // onKeyPress
 
+  useEffect(() => {
+    let appBar = document.getElementById("app-bar");
+    let appBarMargin = document.getElementById("app-bar-margin");
+    let searchLayout = document.getElementById("search-layout");
+    if (autocompleteVisible || isResult) {
+      if (appBar) {
+        appBar.style.display = "none";
+        appBar.style.position = "absolute";
+      }
+      if (appBarMargin) {
+        appBarMargin.style.marginTop = "0";
+      }
+      if (searchLayout) {
+        searchLayout.style.height = "96vh";
+      }
+    } else {
+      if (appBar) {
+        appBar.style.display = "block";
+        appBar.style.position = "sticky";
+      }
+      if (appBarMargin) {
+        appBarMargin.style.marginTop = "5vh";
+      }
+      if (searchLayout) {
+        searchLayout.style.height = "91vh";
+      }
+    }
+    return () => {
+      if (appBar) {
+        appBar.style.display = "block";
+        appBar.style.position = "sticky";
+      }
+      if (appBarMargin) {
+        appBarMargin.style.marginTop = "5vh";
+      }
+      if (searchLayout) {
+        searchLayout.style.height = "91vh";
+      }
+    };
+  }, [autocompleteVisible]);
+
   return (
-    <Slayout onClick={hideAutocomplete}>
+    <Slayout
+      id="search-layout"
+      onClick={hideAutocomplete}
+      onScroll={() => {
+        const searchInput = document.getElementById("search-input");
+        searchInput?.blur();
+      }}
+    >
       {!autocompleteVisible ? (
         isResult ? (
           // 검색 결과 창
           <>
             <InputContainer>
-              <SAiOutlineLeft onClick={() => navigate("/search")} />
+              <SAiOutlineLeft
+                onClick={() => {
+                  setAutocompleteVisible(false);
+                  setIsResult(false);
+                }}
+              />
               <SInput
                 // onFocus={() => setAutocompleteVisible(true)} 웹에서 사용시 사용할 event
                 // onFocus={() => setAutocompleteVisible(true)}
                 // onTouchStart={() => setAutocompleteVisible(true)}
-                type="search"
                 onKeyPress={(e) => onKeyPress(e)}
                 onClick={(e) => {
                   e.stopPropagation();
@@ -166,6 +218,7 @@ const PageSearch = () => {
                 value={searchWord}
               />
               {searchWord ? (
+                // 검색 결과 존재할 경우
                 <SRxCross2
                   onClick={(e) => {
                     e.stopPropagation();
@@ -173,6 +226,7 @@ const PageSearch = () => {
                   }}
                 />
               ) : (
+                // 검색 결과 없을 경우
                 <SBsSearch2
                   onClick={(e) => {
                     e.stopPropagation();
@@ -213,6 +267,10 @@ const PageSearch = () => {
                 onClick={(e) => {
                   e.stopPropagation();
                   setAutocompleteVisible(true);
+                  setTimeout(() => {
+                    const searchInput = document.getElementById("search-input");
+                    searchInput?.focus();
+                  }, 0);
                 }}
               />
               <SBsSearch
@@ -227,12 +285,17 @@ const PageSearch = () => {
       ) : (
         <>
           <InputContainer>
-            <SAiOutlineLeft onClick={() => navigate("/search")} />
+            <SAiOutlineLeft
+              onClick={() => {
+                setAutocompleteVisible(false);
+                setIsResult(false);
+              }}
+            />
             <SInput
+              id="search-input"
               // onFocus={() => setAutocompleteVisible(true)} 웹에서 사용시 사용할 event
               // onFocus={() => setAutocompleteVisible(true)}
               // onTouchStart={() => setAutocompleteVisible(true)}
-              type="search"
               onKeyPress={(e) => onKeyPress(e)}
               onClick={(e) => {
                 e.stopPropagation();
@@ -271,7 +334,6 @@ const PageSearch = () => {
                 onClick={(e) => {
                   e.stopPropagation();
                   setSearchWord(word);
-
                   onClickSearchAutoComplete(word);
                 }}
               >
@@ -291,7 +353,7 @@ const PageSearch = () => {
 export default PageSearch;
 
 const Slayout = styled.div`
-  height: 100vh;
+  height: 91vh;
   display: flex;
   flex-direction: column;
   align-items: center;
