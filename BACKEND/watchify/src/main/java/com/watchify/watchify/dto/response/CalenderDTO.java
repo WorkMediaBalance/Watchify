@@ -1,14 +1,11 @@
 package com.watchify.watchify.dto.response;
 
 import com.sun.istack.NotNull;
-import com.watchify.watchify.db.entity.Calender;
 import com.watchify.watchify.db.entity.Content;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.security.PrivateKey;
 import java.time.LocalDate;
-import java.util.Date;
 
 @Getter
 @NoArgsConstructor

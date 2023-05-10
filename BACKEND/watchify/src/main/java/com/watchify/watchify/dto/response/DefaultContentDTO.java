@@ -52,7 +52,12 @@ public class DefaultContentDTO {
         this.audienceAge = content.getAudienceAge();
     }
 
+    public DefaultContentDTO(Calender calender) {
+
+    }
+
     public void setIsWish(boolean flag) { this.isWish = flag;}
     public void setIsLike(int flag) {this.isLike = flag;}
+
 
 }
