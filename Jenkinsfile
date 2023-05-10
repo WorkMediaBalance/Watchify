@@ -16,6 +16,7 @@ pipeline {
 //                     sh 'cd watchify'
                     sh script:'''
                       #!/bin/bash
+                        sh 'ls -a'
                         sh 'cd BACKEND/watchify'
                         sh 'ls -a'
                         sh 'chmod +x gradlew'
