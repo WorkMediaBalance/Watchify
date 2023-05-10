@@ -15,7 +15,7 @@ pipeline {
                     sh 'docker build -t $repository:frontend$BUILD_NUMBER ./frontend'
                     echo "docker build finished"
                     sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin' // docker hub 로그인
-                    sh 'docker push $repository:$BUILD_NUMBER' //docker push
+                    sh 'docker push $repository:frontend$BUILD_NUMBER' //docker push
                 }
             }
         }
