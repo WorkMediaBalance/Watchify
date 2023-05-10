@@ -31,22 +31,23 @@ const Title = styled.div`
   color: ${({ theme }) => theme.netflix.fontColor};
   font-size: ${({ theme }) => theme.fontSizeType.big.fontSize};
   font-weight: ${({ theme }) => theme.fontSizeType.big.fontWeight};
-  text-align: left;
-  margin: 0.5rem 0;
-  padding-left: 0.5rem;
 `;
 
 const MyWatchingPattern = () => {
   const [genreList, setGenreList] = useState(["임시", "임시2", "임시3"]);
   return (
     <Container>
-      <WatchingPattern />
-      <Title>선호 장르 목록</Title>
-      <FavoriteGenresContainer>
-        {genreList.map((name: string) => {
-          return <FavoriteGenres>{name}</FavoriteGenres>;
-        })}
-      </FavoriteGenresContainer>
+      <div style={{ height: "45vh" }}>
+        <WatchingPattern />
+      </div>
+      <div>
+        <Title>선호 장르 목록</Title>
+        <FavoriteGenresContainer>
+          {genreList.map((name: string) => {
+            return <FavoriteGenres>{name}</FavoriteGenres>;
+          })}
+        </FavoriteGenresContainer>
+      </div>
     </Container>
   );
 };

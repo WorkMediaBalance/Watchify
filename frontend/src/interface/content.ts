@@ -4,12 +4,14 @@ export interface content {
   runtime: number;
   rate: number;
   img_path: string;
+  backdrop_path: string;
   type: string;
   season: number;
   finalEpisode: number;
-  ott: string[];
+  ott: { [key: string]: string };
   genres: string[];
   isWish: boolean;
+  isLike: number;
   summarize: string;
   audienceAge: number;
 }

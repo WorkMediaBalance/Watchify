@@ -6,10 +6,7 @@ import useRecBottomSheet from "../../hooks/useRecBottomSheet";
 import ScheduleBottomSheetHeader from "./ScheduleBottomSheetHeader";
 import ScheduleBottomSheetContent from "./ScheduleBottomSheetContent";
 
-const ScheduleBottomSheet = (props: {
-  isOpen: boolean;
-  onClose: () => void;
-}) => {
+const ScheduleBottomSheet = (props: { isOpen: boolean; onClose: () => void }) => {
   const { sheet, content, openBottomSheet, isOpenSheet } = useRecBottomSheet();
   const isOpen = props.isOpen;
   useEffect(() => {
@@ -39,7 +36,7 @@ const Wrapper = styled(motion.div)`
 
   position: fixed;
   z-index: 50;
-  top: 95%;
+  top: 100%;
   left: 0;
   right: 0;
 

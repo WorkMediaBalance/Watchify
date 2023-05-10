@@ -6,7 +6,7 @@ const Wrapper = styled.div`
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
   position: relative;
-  padding-top: 1rem;
+  padding: 1rem;
 `;
 
 const Handle = styled.div`
@@ -17,7 +17,7 @@ const Handle = styled.div`
   margin: auto;
 `;
 
-const RecBottomSheetHeader: FC = () => {
+const CalendarBottomSheetHeader: FC = () => {
   return (
     <Wrapper>
       <Handle />
@@ -25,4 +25,4 @@ const RecBottomSheetHeader: FC = () => {
   );
 };
 
-export default RecBottomSheetHeader;
+export default CalendarBottomSheetHeader;
