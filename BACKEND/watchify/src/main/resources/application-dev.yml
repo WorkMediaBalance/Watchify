@@ -29,7 +29,8 @@ spring:
 app:
   oauth2:
 #    frontRedirectUrl: "https://k8a207.p.ssafy.io/oauth2/login/callback"
-    frontRedirectUrl: "http://localhost:8000/oauth2/login/callback"
+#    frontRedirectUrl: "http://localhost:8000/oauth2/login/callback"
+    frontRedirectUrl: "http://localhost:3000/oauth2/login/callback"
 
 jwt:
   secret: "token-secret-key-i-am-go-byeong-jin"
