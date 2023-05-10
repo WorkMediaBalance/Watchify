@@ -10,7 +10,7 @@ import google from "assets/img/google.png";
 const PageLogin = () => {
   const onClickHandler = (e: React.MouseEvent<HTMLImageElement>) => {
     const clicked = e.currentTarget.alt;
-    window.location.href = `${BASE_URL}//k8a207.p.ssafy.io/oauth2/authorization/${clicked}`;
+    window.location.href = `${BASE_URL}oauth2/authorization/${clicked}`;
   };
 
   return (
