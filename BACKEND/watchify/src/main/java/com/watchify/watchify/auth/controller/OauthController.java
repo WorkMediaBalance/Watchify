@@ -56,7 +56,7 @@ public class OauthController {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("grant_type", "authorization_code");
         params.add("client_id", "0056cd01e9f9bad8a1c939e485c59147");
-        params.add("redirect_uri", "http://localhost:8080/oauth2/login/kakao/callback");
+        params.add("redirect_uri", "https://k8a207.p.ssafy.io/oauth2/login/kakao/callback");
         params.add("code", code);
 
         // 요청하기 위해 헤더(Header)와 데이터(Body)를 합친다.
@@ -133,7 +133,7 @@ public class OauthController {
         params.add("grant_type", "authorization_code");
         params.add("client_id", "68891012374-8ij9t01p6i3ucf9rufg334b2ahb3vhl7.apps.googleusercontent.com");
         params.add("client_secret", "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");
-        params.add("redirect_uri", "http://localhost:8080/oauth2/login/google/callback");
+        params.add("redirect_uri", "https://k8a207.p.ssafy.io/oauth2/login/google/callback");
         params.add("code", code);
 
         HttpEntity<MultiValueMap<String, String>> accessTokenRequest = new HttpEntity<>(params, headers);
