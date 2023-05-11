@@ -1,6 +1,7 @@
 package com.watchify.watchify.db.entity;
 
 
+import com.watchify.watchify.S3.AwsS3;
 import com.watchify.watchify.S3.Image;
 import com.watchify.watchify.dto.response.UserDTO;
 import lombok.AllArgsConstructor;
@@ -39,9 +40,6 @@ public class User implements Serializable {
     private String nickName;
     private String provider;
 //    private String role = "ROLE_USER";
-
-    @Embedded
-    private Image image;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<WishContent> wishContents = new ArrayList<>();
@@ -84,8 +82,9 @@ public class User implements Serializable {
 
     public void updateNickName(String nickName) {this.nickName = nickName;}
 
-    public void updateImage(Image image) {
-        this.image = image;
+    public void updateImage(AwsS3 awsS3) {
+        this.imgName = awsS3.getKey();
+        this.imgPath = awsS3.getPath();
     }
 
     public void reJoin(String imgPath, String imgName) {

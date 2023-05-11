@@ -9,6 +9,7 @@ import com.watchify.watchify.dto.response.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -158,6 +159,19 @@ public class MyController {
             return ResponseEntity.status(200).body(res);
         } catch (Exception e) {
             return ResponseEntity.status(404).body("Failed to user info");
+        }
+    }
+
+    @PutMapping("/profileimg")
+    public ResponseEntity<?> UpdateUserProfile(HttpServletRequest request, @RequestParam("image") MultipartFile multipartFile) {
+        String accessToken = request.getHeader("access");
+        long userId = userService.findUserIdByAccessToken(accessToken);
+
+        try {
+            userService.updateUserProfileImg(userId, multipartFile);
+            return ResponseEntity.status(200).body("Updated to user profile image.");
+        } catch (Exception e) {
+            return ResponseEntity.status(404).body("Failed to user profile image.");
         }
     }
 }
