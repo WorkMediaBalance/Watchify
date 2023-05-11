@@ -129,3 +129,32 @@ export const myOTTChange = async (data: OttPeriods) => {
     console.log(err);
   }
 };
+
+// 유저 히스토리 목록 조회
+export const myHistory = async () => {
+  try {
+    const res = await api.get("api/my/history");
+    return res.data;
+  } catch (err) {
+    console.log("유저 히스토리 목록 조회 실패");
+    console.log(err);
+  }
+};
+
+// 유저 히스토리 상세 조회
+/* 요청 데이터 샘플
+const data = {
+  pk: 1,
+  yaer: 2021,
+  month: 5,
+}
+*/
+export const myHistoryInfo = async (data: { [key: string]: number }) => {
+  try {
+    const res = await api.get(`api/my/history/${data.pk}/${data.year}/${data.month}`);
+    return res.data;
+  } catch (err) {
+    console.log("유저 히스토리 상세 조회 실패");
+    console.log(err);
+  }
+};
