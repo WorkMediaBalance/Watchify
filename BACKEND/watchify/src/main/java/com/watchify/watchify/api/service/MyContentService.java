@@ -52,10 +52,9 @@ public class MyContentService {
         return res;
     }
 
-
+    @Transactional
     public void switchWishContent(Long userId, Long contentPk) {
         User user = userRepository.findById(userId).get();
-
         Content thisContent = contentRepository.getContentById(contentPk);
         List<WishContent> wishContents = wishContentRepository.getAllMyWishList(userId);
 

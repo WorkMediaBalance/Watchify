@@ -23,7 +23,6 @@ public class MainScheduleService {
     private final WishContentRepository wishContentRepository;
     private final LikeContentRepository likeContentRepository;
 
-    @Transactional
     public Map<Integer, List<CalenderDTO>> getMainSchedule(Long userId) {
 
         Map<Integer, List<CalenderDTO>> res = new HashMap<>();
