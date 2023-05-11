@@ -60,7 +60,7 @@ pipeline {
                         }
 
                         // YAML 파일 쓰기
-                        writeYaml(file: yamlFile, data: yaml)
+                        writeYaml(file: yamlFile, data: yaml, overwrite: true)
                         // gitops에 변경사항은 저장되어야 한다.
                     }
                     sh 'git add .'
