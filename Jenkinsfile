@@ -48,6 +48,7 @@ pipeline {
                         echo 'previous_build_number'
                         yaml['spec']['template']['spec']['containers'].each { container ->
                             if (container['name'] == 'my-service') {
+                                sh 'container["image"]'
                                 container['image'] = container['image'].replace(pattern, ':frontend$BUILD_NUMBER')
                             }
                         }
