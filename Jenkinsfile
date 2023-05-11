@@ -62,7 +62,6 @@ pipeline {
                     sh ' git config --global user.name "sdc00035"'
                     sh 'git add .'
                     sh 'git commit -m ":hammer: Refactor: version-$BUILD_NUMBER로 변경"'
-                    sh 'git remote add origin "https://lab.ssafy.com/s08-final/S08P31A207.git"'
                     sh 'git push -u origin main'
                 }
 
