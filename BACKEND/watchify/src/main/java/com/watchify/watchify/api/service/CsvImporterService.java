@@ -48,13 +48,15 @@ public class CsvImporterService {
         genreMap.put("", 20l);
 
 
+
         String csvFile = "dataInput/db_dataset.csv";
 //        String csvFile = "dataInput/test.csv";
         String databaseUrl = "jdbc:mysql://watchifydb.cph3uafcff1h.ap-northeast-2.rds.amazonaws.com/sins?useUnicode=true&characterEncoding=utf8&s&zeroDateTimeBehavior=convertToNull&rewriteBatchedStatements=true&tinyInt1isBit=false";
         String databaseUser = "watchifyadmin";
-        String databasePassword = "qudwlsgoa!";
+        String databasePassword = "qudwlsgoa";
         String contentTable = "content";
-
+        //   0      1        2          3           4          5         6        7             8              9         10       11       12         13     14
+        //  id    title , season, release_date, rate_imdb, popularity, genres, run_time, content_rating, episode_cnt, Synopsis, images, backdrops, ottlink, ott
         try (Connection connection = DriverManager.getConnection(databaseUrl, databaseUser, databasePassword);
              PreparedStatement statement = connection.prepareStatement("INSERT INTO " + contentTable +
                      " (title, season, release_date, rate, runTime, audience_age, final_episode, summarize, img_path, backdrop_path, id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
@@ -69,17 +71,17 @@ public class CsvImporterService {
                 Long contentID = Long.parseLong(csvRecord.get(0));
                 Integer finalEpisode = Integer.parseInt(csvRecord.get(10));
                 System.out.println("contentID : " + contentID);
-                statement.setString(1, csvRecord.get(1));
-                statement.setInt(2, Integer.parseInt(csvRecord.get(2)));
-                statement.setInt(3, Integer.parseInt(csvRecord.get(3)));
-                statement.setDouble(4, Double.parseDouble(csvRecord.get(5)));
-                statement.setInt(5, Integer.parseInt(csvRecord.get(8)));
-                statement.setInt(6, Integer.parseInt(csvRecord.get(9)));
+                statement.setString(1, csvRecord.get(1)); // title
+                statement.setInt(2, Integer.parseInt(csvRecord.get(2))); // season
+                statement.setInt(3, Integer.parseInt(csvRecord.get(3))); // release_date
+                statement.setDouble(4, Double.parseDouble(csvRecord.get(5))); // rate
+                statement.setInt(5, Integer.parseInt(csvRecord.get(8))); // runTime
+                statement.setInt(6, Integer.parseInt(csvRecord.get(9))); // audience_age
                 statement.setInt(7, finalEpisode); // final_episode
-                statement.setString(8, csvRecord.get(11));
-                statement.setString(9, csvRecord.get(12));
-                statement.setString(10, csvRecord.get(13));
-                statement.setLong(11, contentID);
+                statement.setString(8, csvRecord.get(11)); // summarize
+                statement.setString(9, csvRecord.get(12)); // img_path
+                statement.setString(10, csvRecord.get(13)); // backdrop_path
+                statement.setLong(11, contentID); // id
 
 //                 statement.executeUpdate(); // 쿼리 한문장마다 실행 디버그용
 
@@ -129,5 +131,13 @@ public class CsvImporterService {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public String s3BackdropPath(String id) {
+        return "https://watchify.s3.ap-northeast-2.amazonaws.com/backdrop/" + id + ".jpg";
+    }
+
+    public String s3imgPath(String id) {
+        return "https://watchify.s3.ap-northeast-2.amazonaws.com/poster/" + id + ".jpg";
     }
 }
