@@ -63,6 +63,8 @@ pipeline {
                         writeYaml(file: yamlFile, data: yaml, overwrite: true)
                         // gitops에 변경사항은 저장되어야 한다.
                     }
+                    sh ' git config --global user.email "sdc00035@naver.com"'
+                    sh ' git config --global user.name "sdc00035"'
                     sh 'git add .'
                     sh 'git commit -m ":hammer: Refactor: version-$BUILD_NUMBER로 변경"'
                     sh 'git push origin main'
