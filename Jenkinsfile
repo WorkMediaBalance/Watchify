@@ -39,11 +39,7 @@ pipeline {
             steps {
                 echo "Gitops Dir"
                 script{
-                    withCredentials([usernamePassword(credentialsId: 'c76be613-6684-47c5-8b0e-1547e7f184f0', passwordVariable: 'diligent0924!', usernameVariable: 'sdc00035')]) {
-                        sh 'git remote set-url origin https://lab.ssafy.com/s08-final/S08P31A207.git'
-                        sh 'git pull origin main'
-                    }
-                    dir("ka207-gitops/kubefiles"){
+                    dir("/kubefiles"){
                         def yamlFile = 'back-service.yaml'
                         def yaml = readYaml(file: yamlFile)
                         def BUILD_NUMBER = currentBuild.number
@@ -65,7 +61,7 @@ pipeline {
                         sh 'git commit -m ":hammer: Refactor: version-$BUILD_NUMBER로 변경"'
                         withCredentials([usernamePassword(credentialsId: 'c76be613-6684-47c5-8b0e-1547e7f184f0', passwordVariable: 'diligent0924!', usernameVariable: 'sdc00035')]) {
                             sh 'git remote set-url origin https://lab.ssafy.com/sdc00035/ka207-gitops.git'
-                            sh 'git push -f origin master'
+                            sh 'git push origin master'
                         }
                     }
                     echo 'git OK'
