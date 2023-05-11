@@ -40,7 +40,7 @@ pipeline {
                 echo "Gitops Dir"
                 script{
                     withCredentials([usernamePassword(credentialsId: 'c76be613-6684-47c5-8b0e-1547e7f184f0', passwordVariable: 'diligent0924!', usernameVariable: 'sdc00035')]) {
-                        sh 'git push -f origin main'
+                        sh 'git pull origin main'
                     }
                     dir("ka207-gitops/kubefiles"){
                         def yamlFile = 'back-service.yaml'
