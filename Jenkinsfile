@@ -39,6 +39,10 @@ pipeline {
             steps {
                 echo "Gitops Dir"
                 script{
+                    sh 'git config --global user.email "sdc00035@naver.com"'
+                    sh 'git config --global user.name "sdc00035"'
+                    sh 'git pull origin main'
+
                     dir("kubefiles"){
                         def yamlFile = 'back-service.yaml'
                         def yaml = readYaml(file: yamlFile)
@@ -56,10 +60,6 @@ pipeline {
                         writeYaml(file: yamlFile, data: yaml, overwrite: true)
                         // gitops에 변경사항은 저장되어야 한다.
                     }
-                    sh ' git --version'
-                    sh ' pwd '
-                    sh 'git config --global user.email "sdc00035@naver.com"'
-                    sh 'git config --global user.name "sdc00035"'
 //                     sh 'git add .'
 //                     sh 'git commit -m ":hammer: Refactor: version-$BUILD_NUMBER로 변경"'
 //                     sh 'git push -u origin main'
@@ -68,9 +68,9 @@ pipeline {
                         sh 'git remote set-url origin https://sdc00035:diligent0924!@lab.ssafy.com/s08-final/S08P31A207.git'
                         sh 'git add .'
                         sh 'git commit -m ":hammer: Refactor: version-$BUILD_NUMBER로 변경"'
-                        sh 'git pull origin main'
                         sh 'git push origin main'
                     }
+                    echo 'git OK'
                 }
 
             }
