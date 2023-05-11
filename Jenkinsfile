@@ -16,13 +16,10 @@ pipeline {
 //                         sh 'chmod +x gradlew'
 //                         sh './gradlew clean build -x test'
 //                     }
-
 //                     sh 'docker build -t $repository:backend$BUILD_NUMBER ./BACKEND/watchify'
                     sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin' // docker hub 로그인
                     sh 'docker push $repository:frontend$BUILD_NUMBER' //docker push
 //                     sh 'docker push $repository:backend$BUILD_NUMBER'
-
-
                 }
             }
         }
@@ -48,9 +45,9 @@ pipeline {
         stage('Gitops Dir') {
             steps {
                 echo "Gitops Dir"
-                script{
-                    dir("BACKEN")
-                }
+//                 script{
+//                     dir("BACKEN")
+//                 }
 
                 echo "Gitops push"
 
@@ -60,18 +57,18 @@ pipeline {
         stage('Gitops Change'){
             steps{
                 echo "Gitops Change"
-                script{
-
-                }
+//                 script{
+//
+//                 }
             }
         }
 
         stage('Gitops push'){
             steps{
                 echo "Gitops push"
-                script{
-
-                }
+//                 script{
+//
+//                 }
             }
         }
 
