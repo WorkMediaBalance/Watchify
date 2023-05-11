@@ -43,12 +43,12 @@ pipeline {
                         def yamlFile = 'back-service.yaml'
                         def yaml = readYaml(file: yamlFile)
                         def BUILD_NUMBER = currentBuild.number
-                        def previous_build_number = BUILD_NUMBER - 1
+                        def pattern = /:frontend\d+/
                         echo '$BUILD_NUMBER'
                         echo 'previous_build_number'
                         yaml['spec']['template']['spec']['containers'].each { container ->
                             if (container['name'] == 'm y-service') {
-                                container['image'] = container['image'].replace(':front$previous_build_number', ':front-3$BUILD_NUMBER')
+                                container['image'] = container['image'].replace(pattern, ':frontend$BUILD_NUMBER')
                             }
                         }
 
