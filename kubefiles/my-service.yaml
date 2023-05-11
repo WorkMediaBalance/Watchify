@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: my-service
-          image: docker.io/runtogether/watchify:frontend124
+          image: docker.io/runtogether/watchify:frontend125
           ports:
             - containerPort: 3000
 ---
