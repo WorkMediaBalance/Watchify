@@ -1,9 +1,25 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import HistoryComponent from "./HistoryComponent";
 
+import { content } from "./../../interface/content";
+import { myHistory } from "apis/apiMy";
+
 const HistoryTab = () => {
-  const dummyArray = [0, 0, 0, 0, 0, 0, 0, 0];
+  const dummyData = [0, 0, 0, 0, 0, 0, 0];
+  const [historyArray, setHistoryArray] = useState<content[]>([]);
+
+  // async function MyHistoryAPI() {
+  //   try {
+  //     const newHistoryArray = await myHistory();
+  //     console.log(newHistoryArray);
+  //     setHistoryArray(newHistoryArray);
+  //   } catch {}
+  // }
+  // useEffect(() => {
+  //   MyHistoryAPI();
+  // }, []);
+
   return (
     <div>
       <Title>스케줄 히스토리</Title>
@@ -16,7 +32,7 @@ const HistoryTab = () => {
         }}
       >
         <div style={{ height: "100%", overflowY: "auto" }}>
-          {dummyArray.map((index) => {
+          {dummyData.map((index) => {
             return <HistoryComponent />;
           })}
         </div>
