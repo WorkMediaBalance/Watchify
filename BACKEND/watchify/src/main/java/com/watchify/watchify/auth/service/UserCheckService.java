@@ -35,6 +35,11 @@ public class UserCheckService {
     @Value("${app.oauth2.frontRedirectUrl}")
     private String callbackUri;
 
+    @Value("${app.defaultImagePath}")
+    private String defaultImgPath;
+    @Value("${app.defaultImageName}")
+    private String defaultImgName;
+
     // PrincipalDetail 로 로그인한 유저가 가입자인지 아닌지 확인
     public void  loadUser(PrincipalDetails details) {
         if (details != null) {
@@ -65,6 +70,8 @@ public class UserCheckService {
                 .name(details.getName())
                 .nickName(details.getName())
                 .email(details.getEmail())
+                .imgName(defaultImgName)
+                .imgPath(defaultImgPath)
                 .build();
 
         userRepository.save(user);
@@ -82,7 +89,7 @@ public class UserCheckService {
     public void reJoinProcess(User user) {
         log.debug("과거 회원 재가입 진행");
 
-        user.updateIsDeleted();
+        user.reJoin(defaultImgPath, defaultImgName);
         userRepository.save(user);
         List<UserDay> userDays = userDayRepository.getUserDayByUserId(user.getId());
         for (UserDay userDay : userDays)  {
