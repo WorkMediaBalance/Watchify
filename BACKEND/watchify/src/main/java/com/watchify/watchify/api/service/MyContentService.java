@@ -8,6 +8,7 @@ import com.watchify.watchify.db.repository.ContentRepository;
 import com.watchify.watchify.db.repository.LikeContentRepository;
 import com.watchify.watchify.db.repository.UserRepository;
 import com.watchify.watchify.db.repository.WishContentRepository;
+import com.watchify.watchify.dto.request.ContentLikeRequestDTO;
 import com.watchify.watchify.dto.response.DefaultContentDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -71,6 +72,26 @@ public class MyContentService {
             WishContent wishContent = new WishContent(user, thisContent);
             wishContentRepository.save(wishContent);
         }
+    }
 
+    @Transactional
+    public void updateContentLike(Long userId, ContentLikeRequestDTO contentLikeRequestDTO) {
+        Long contentId = contentLikeRequestDTO.getPk();
+        boolean isLike = contentLikeRequestDTO.getIsLikeAsBoolean();
+        LikeContent likeContent = likeContentRepository.getSpecificLikeContent(userId, contentId);
+
+        System.out.println("isLike : " + isLike);
+        if (likeContent == null) {
+            // DB 에 없는 경우
+            User user = userRepository.findById(userId).get();
+            Content content = contentRepository.findById(contentId).get();
+            LikeContent newLikeContent = new LikeContent(user, content, isLike);
+            likeContentRepository.save(newLikeContent);
+        } else {
+            // DB 에 있는 데
+            // 삭제된 데이터의 경우 or 삭제된 데이터가 아닌경우
+            likeContent.setIsLike(isLike); // 공통으로 처리 가능함.
+            likeContentRepository.save(likeContent);
+        }
     }
 }
