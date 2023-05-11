@@ -1,35 +1,44 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: my-service
+  name: back-service
   labels:
-    app: my-service
+    app: back-service
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: my-service
+      app: back-service
   template:
     metadata:
       labels:
-        app: my-service
+        app: back-service
     spec:
       containers:
-        - name: my-service
-          image: docker.io/runtogether/watchify:front-2  # 이 부분을 수정해야 함
+        - name: back-service
+          image: docker.io/runtogether/watchify:backend-1
           ports:
-            - containerPort: 3000
+            - containerPort: 8000
+          env:
+            - name: DB_HOST
+              value: watchifydb.cph3uafcff1h.ap-northeast-2.rds.amazonaws.com
+            - name: DB_PORT
+              value: "3306"
+            - name: DB_NAME
+              value: sins
+            - name: DB_USER
+              value: watchifyadmin
+            - name: DB_Password
+              value: qudwlsgoa
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: my-service
+  name: back-service
 spec:
   type: ClusterIP
   selector:
-    app: my-service
+    app: back-service
   ports:
     - protocol: TCP
-      port: 3000
-      targetPort: 3000
-
+      port: 8000
