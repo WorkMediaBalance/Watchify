@@ -40,7 +40,7 @@ pipeline {
                 echo "Gitops Dir"
                 script{
                     dir("kubefiles"){
-                        def yamlFile = 'frontend-service.yaml'
+                        def yamlFile = 'my-service.yaml'
                         def yaml = readYaml(file: yamlFile)
                         def BUILD_NUMBER = currentBuild.number
                         def pattern = /:frontend\d+/
