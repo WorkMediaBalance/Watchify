@@ -1,6 +1,6 @@
 import numpy as np
 from rating_count_matrix import RatingCountMatrix
-# from ml.models import User
+from ml.models import User
 
 class SimilarityMatrix:
 
@@ -8,8 +8,9 @@ class SimilarityMatrix:
     # userdict = User.objects.values_list('id')
 
     def __init__(self, userdict):
+        print('semilarity_matrix.py ===== userdict')
         self.build(userdict)
-        print('semilarity_matrix.py ===== userdict :', userdict)
+        print('유저 리스트 : ',userdict)
     
     def build(self, userdict):
         self.similarity_matrix = np.empty((len(userdict), len(userdict),))

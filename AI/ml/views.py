@@ -54,3 +54,18 @@ class RecommendAPIView(APIView):
          serializer = RecommendSerializer(contents)
          # print('응답확인 ===== ',serializer)
          return Response(serializer.data)
+   
+class PotatoAPIView(APIView):
+   #  http://127.0.0.1:8000/api/potato?id=1&genres=액션
+    def get(self,request):
+         user_id = request.GET.get('id')
+         genres = request.GET.get('genres')
+         genres = genres.split(',')
+         print('장르르으ㅡㄹ응 : ',user_id, genres)
+         
+         result = recommend(user_id, genres, 10)
+         contents = {'content_pk' : result}
+         print('포테이토 결과 ======> : ', contents)
+         serializer = RecommendSerializer(contents)
+         # print('응답확인 ===== ',serializer)
+         return Response(serializer.data)
