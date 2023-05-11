@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: my-service
-          image: docker.io/runtogether/watchify:frontend63  # 이 부분을 수정해야 함
+          image: docker.io/runtogether/watchify:frontend65  # 이 부분을 수정해야 함
           ports:
             - containerPort: 3000
 ---
