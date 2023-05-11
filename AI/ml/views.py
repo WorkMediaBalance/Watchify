@@ -20,40 +20,37 @@ from recommend_content import recommend
 # Create your views here.
 class RecommendAPIView(APIView):
     def get(self,request):
-        user_id = request.GET.get('id')
-        genres = request.GET.get('genres')
-        genres = genres.split(',')
-        print('장르르으ㅡㄹ응 : ',user_id, genres)
-        '''
-        <request로 받을 것>
-        1. 유저 id
-        2. 유저의 LikeContent 테이블 
-           1. is_deleted = False 이면 평가한 컨텐츠
-              1. is_like = True : 좋아요
-              2. is_like = False : 싫어요
-           2. is_deleted = True 이면 평가하지 않은 컨텐츠
-        3. 유저의 wishContent 테이블 
-           1. is_deleted = False 이면 찜한 컨텐츠 (컨텐츠에 대한 평가로 간주 - is_like = True)
-        '''
-        # Run GMF
-        # python GMF.py --dataset ml-1m --epochs 20 --batch_size 256 --num_factors 8 --regs [0,0] --num_neg 4 --lr 0.001 --learner adam --verbose 1 --out 1
-        
-        # Run MLP
-        # python MLP.py --dataset ml-1m --epochs 20 --batch_size 256 --layers [64,32,16,8] --reg_layers [0,0,0,0] --num_neg 4 --lr 0.001 --learner adam --verbose 1 --out 1
+         user_id = request.GET.get('id')
+         genres = request.GET.get('genres')
+         genres = genres.split(',')
+         print('장르르으ㅡㄹ응 : ',user_id, genres)
+         '''
+         <request로 받을 것>
+         1. 유저 id
+         2. 유저의 LikeContent 테이블 
+            1. is_deleted = False 이면 평가한 컨텐츠
+               1. is_like = True : 좋아요
+               2. is_like = False : 싫어요
+            2. is_deleted = True 이면 평가하지 않은 컨텐츠
+         3. 유저의 wishContent 테이블 
+            1. is_deleted = False 이면 찜한 컨텐츠 (컨텐츠에 대한 평가로 간주 - is_like = True)
+         '''
+         # args = ["python", "./ml/model/NeuMF.py", "--dataset", "ml-1m", "--epochs", "20", "--batch_size", "256", "--num_factors", "8", "--layers", "[64,32,16,8]", "--reg_mf", "0", "--reg_layers", "[0,0,0,0]", "--num_neg", "4", "--lr", "0.001", "--learner", "adam", "--verbose", "1", "--out", "1"]
 
-        # Run NeuMF (without pre-training): for small predictive factors, running NeuMF without pre-training can achieve better performance than GMF and MLP.
-        # python NeuMF.py --dataset ml-1m --epochs 20 --batch_size 256 --num_factors 8 --layers [64,32,16,8] --reg_mf 0 --reg_layers [0,0,0,0] --num_neg 4 --lr 0.001 --learner adam --verbose 1 --out 1
-        args = ["python", "./ml/model/NeuMF.py", "--dataset", "ml-1m", "--epochs", "20", "--batch_size", "256", "--num_factors", "8", "--layers", "[64,32,16,8]", "--reg_mf", "0", "--reg_layers", "[0,0,0,0]", "--num_neg", "4", "--lr", "0.001", "--learner", "adam", "--verbose", "1", "--out", "1"]
+         # try:
+         #     subprocess.run(args, check=True)
+         # except subprocess.CalledProcessError:
+         #     print('FAIL')
+         # predictions = Recommands(user_id)
 
-        # try:
-        #     subprocess.run(args, check=True)
-        # except subprocess.CalledProcessError:
-        #     print('FAIL')
-        # predictions = Recommands(user_id)
-        
-        # Plan B
-        result = recommend(user_id, genres, 10)
-        contents = {'content_pk' : result}
-        serializer = RecommendSerializer(contents)
-        print('응답확인 ===== ',serializer)
-        return Response(serializer.data)
+         # Plan B
+         # result = recommend(user_id, genres, 10)
+         import random
+
+         result = random.sample(range(30000), 10)
+
+         contents = {'content_pk' : result}
+         print('결과~~~~ : ', contents)
+         serializer = RecommendSerializer(contents)
+         # print('응답확인 ===== ',serializer)
+         return Response(serializer.data)

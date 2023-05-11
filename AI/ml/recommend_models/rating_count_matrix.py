@@ -6,11 +6,12 @@ class RatingCountMatrix:  # 사용자들 간의 유사도 계산
     user_id_b = None
     matrix = None
 
-    def __init__(self, user_id_a, user_id_b):
+    def __init__(self, user_id_a, user_id_b, user_num):
         # num_rating_values = max([x[0] for x in data])  # data에 어떤 값이 들어가야 하는지???????
-        num_rating_values = len(User.objects.values_list('id')) # 유저 개수?
+        num_rating_values = user_num # 유저 개수?
         self.user_id_a = user_id_a
         self.user_id_b = user_id_b
+        # self.items_reviewed_a = items_reviewed_a
         self.matrix = np.empty((num_rating_values, num_rating_values,))
         self.matrix[:] = 0
         self.calculate_matrix(user_id_a, user_id_b)
