@@ -68,6 +68,7 @@ pipeline {
                         sh 'git remote set-url origin https://sdc00035:diligent0924!@lab.ssafy.com/s08-final/S08P31A207.git'
                         sh 'git add .'
                         sh 'git commit -m ":hammer: Refactor: version-$BUILD_NUMBER로 변경"'
+                        sh 'git pull origin main'
                         sh 'git push origin main'
                     }
                 }
