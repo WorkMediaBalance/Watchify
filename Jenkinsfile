@@ -40,26 +40,31 @@ pipeline {
                 echo "Gitops Dir"
                 script{
                     dir("kubefiles"){
-                        def yamlFile = 'my-service.yaml'
-                        def yaml = readYaml(file: yamlFile)
                         def BUILD_NUMBER = currentBuild.number
-                        def pattern = /:frontend\d+/
-                        sh 'yaml["spec"]'
-                        yaml['spec']['template']['spec']['containers'].each { container ->
-                            if (container['name'] == 'my-service') {
-                                sh 'container["image"]'
-                                container['image'] = container['image'].replace(pattern, ':frontend$BUILD_NUMBER')
-                            }
-                        }
+                        sh """
+                            sed -i 's/watchify:frontend\\([^:]*\\)/watchify:frontend${BUILD_NUMBER}/g' my-service.yaml
+                            git add my-service.yaml
+                            git commit -m 'Update my-service tag to ${BUILD_NUMBER}'
+                        """
+//                         def yamlFile = 'my-service.yaml'
+//                         def yaml = readYaml(file: yamlFile)
+//                         def pattern = /:frontend\d+/
+//                         sh 'yaml["spec"]'
+//                         yaml['spec']['template']['spec']['containers'].each { container ->
+//                             if (container['name'] == 'my-service') {
+//                                 sh 'container["image"]'
+//                                 container['image'] = container['image'].replace(pattern, ':frontend$BUILD_NUMBER')
+//                             }
+//                         }
 
                         // YAML 파일 쓰기
-                        writeYaml(file: yamlFile, data: yaml, overwrite: true)
+//                         writeYaml(file: yamlFile, data: yaml, overwrite: true)
 
                         // gitops에 변경사항은 저장되어야 한다.
-                        sh 'git config --global user.email "sdc00035@naver.com"'
-                        sh 'git config --global user.name "sdc00035"'
-                        sh 'git add .'
-                        sh 'git commit -m ":hammer: Refactor: version-$BUILD_NUMBER로 변경"'
+//                         sh 'git config --global user.email "sdc00035@naver.com"'
+//                         sh 'git config --global user.name "sdc00035"'
+//                         sh 'git add .'
+//                         sh 'git commit -m ":hammer: Refactor: version-$BUILD_NUMBER로 변경"'
                         withCredentials([usernamePassword(credentialsId: 'c76be613-6684-47c5-8b0e-1547e7f184f0', passwordVariable: 'diligent0924!', usernameVariable: 'sdc00035')]) {
                             sh 'git remote set-url origin https://sdc00035:diligent0924!@lab.ssafy.com/s08-final/S08P31A207.git'
                             sh 'git switch main'
