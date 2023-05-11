@@ -39,7 +39,7 @@ pipeline {
             steps {
                 echo "Gitops Dir"
                 script{
-                    dir("/kubefiles"){
+                    dir("kubefiles"){
                         def yamlFile = 'back-service.yaml'
                         def yaml = readYaml(file: yamlFile)
                         def BUILD_NUMBER = currentBuild.number
