@@ -1,14 +1,11 @@
 package com.watchify.watchify.api.controller;
 
 
+import com.watchify.watchify.S3.S3Service;
 import com.watchify.watchify.api.service.*;
 import com.watchify.watchify.dto.request.NickNameRequestDTO;
 import com.watchify.watchify.dto.request.UserOttRequestDTO;
-import com.watchify.watchify.dto.response.DefaultContentDTO;
-import com.watchify.watchify.dto.response.UserAlarmInfoDTO;
-import com.watchify.watchify.dto.response.UserOttDTO;
-import com.watchify.watchify.dto.response.UserPatternDTO;
-import lombok.Getter;
+import com.watchify.watchify.dto.response.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,6 +25,7 @@ public class MyController {
     private final MyContentService myContentService;
     private final MyPatternService myPatternService;
     private final MyOttService myOttService;
+    private final S3Service s3Service;
 
     @PutMapping("/ottalarm")
     public ResponseEntity<?> UpdateMyOTTAlarm(HttpServletRequest request) throws Exception {
@@ -147,6 +145,19 @@ public class MyController {
             return ResponseEntity.status(200).body("My ott updated successfully.");
         } catch (Exception e) {
             return ResponseEntity.status(404).body("Failed to get my ott info");
+        }
+    }
+
+    @GetMapping("/basicinfo")
+    public ResponseEntity<?> GetUserInfo(HttpServletRequest request) {
+        String accessToken = request.getHeader("access");
+        long userId = userService.findUserIdByAccessToken(accessToken);
+
+        try {
+            UserBasicInfoDTO res = userService.getUserBasicInfo(userId);
+            return ResponseEntity.status(200).body(res);
+        } catch (Exception e) {
+            return ResponseEntity.status(404).body("Failed to user info");
         }
     }
 }

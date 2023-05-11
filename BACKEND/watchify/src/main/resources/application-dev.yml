@@ -28,9 +28,24 @@ spring:
 
 app:
   oauth2:
-#    frontRedirectUrl: "https://k8a207.p.ssafy.io/oauth2/login/callback"
+  #  frontRedirectUrl: "https://k8a207.p.ssafy.io/oauth2/login/callback"
     frontRedirectUrl: "http://localhost:8000/oauth2/login/callback"
-#    frontRedirectUrl: "http://localhost:3000/oauth2/login/callback"
+  #  frontRedirectUrl: "http://localhost:3000/oauth2/login/callback"
+  defaultImagePath: "https://watchify.s3.ap-northeast-2.amazonaws.com/userimages/d7232718-e900-4425-a8e5-47090b98d1aftestUser.PNG"
+  defaultImageName: "userimages/d7232718-e900-4425-a8e5-47090b98d1aftestUser.PNG"
+
 
 jwt:
   secret: "token-secret-key-i-am-go-byeong-jin"
+
+cloud:
+  aws:
+    stack:
+      auto: false
+    region:
+      static: ap-northeast-2
+    credentials:
+      access-key: AKIARUG4SJJSHO3XLN6C
+      secret-key: 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
+    s3:
+      bucket: watchify
