@@ -45,9 +45,22 @@ pipeline {
         stage('Gitops Dir') {
             steps {
                 echo "Gitops Dir"
-//                 script{
-//                     dir("BACKEN")
-//                 }
+                script{
+                    dir("kubefiles"){
+                        def yamlFile = 'back-service.yaml'
+                        def yaml = readYaml(file: yamlFile)
+                        def BUILD_NUMBER = currentBuild.number
+                        def previous_build_number = BUILD_NUMBER - 1
+                        yaml['spec']['template']['spec']['containers'].each { container ->
+                            if (container['name'] == 'm y-service') {
+                                container['image'] = container['image'].replace(':front$previous_build_number', ':front-3$BUILD_NUMBER')
+                            }
+                        }
+
+                        // YAML 파일 쓰기
+                        writeYaml(file: yamlFile, data: yaml)
+                    }
+                }
 
                 echo "Gitops push"
 
