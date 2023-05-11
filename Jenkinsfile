@@ -51,6 +51,11 @@ pipeline {
                             git add my-service.yaml
                             git commit -m 'Update my-service tag to ${BUILD_NUMBER}'
                         """
+                        sh """
+                            sed -i 's/watchify:backend\\([^:]*\\)/watchify:frontend${BUILD_NUMBER}/g' back-service.yaml
+                            git add back-service.yaml
+                            git commit -m 'Update back-service tag to ${BUILD_NUMBER}'
+                        """
                     }
 
                     withCredentials([usernamePassword(credentialsId: 'c76be613-6684-47c5-8b0e-1547e7f184f0', passwordVariable: 'diligent0924!', usernameVariable: 'sdc00035')]) {
