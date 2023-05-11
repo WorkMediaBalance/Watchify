@@ -52,7 +52,7 @@ pipeline {
                             git commit -m 'Update my-service tag to ${BUILD_NUMBER}'
                         """
                         sh """
-                            sed -i 's/watchify:backend\\([^:]*\\)/watchify:frontend${BUILD_NUMBER}/g' back-service.yaml
+                            sed -i 's/watchify:backend\\([^:]*\\)/watchify:backend${BUILD_NUMBER}/g' back-service.yaml
                             git add back-service.yaml
                             git commit -m 'Update back-service tag to ${BUILD_NUMBER}'
                         """
