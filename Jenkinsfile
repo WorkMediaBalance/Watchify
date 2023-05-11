@@ -60,8 +60,8 @@ pipeline {
                         sh 'git add .'
                         sh 'git commit -m ":hammer: Refactor: version-$BUILD_NUMBER로 변경"'
                         def
-                        withCredentials([usernamePassword(credentialsId: 'c76be613-6684-47c5-8b0e-1547e7f184f0', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
-                            sh 'git remote set-url origin https://$GIT_USERNAME:$GIT_PASSWORD@lab.ssafy.com/s08-final/S08P31A207.git'
+                        withCredentials([usernamePassword(credentialsId: 'c76be613-6684-47c5-8b0e-1547e7f184f0', passwordVariable: 'diligent0924!', usernameVariable: 'sdc00035')]) {
+                            sh 'git remote set-url origin https://sdc00035:diligent0924!@lab.ssafy.com/s08-final/S08P31A207.git'
                             sh 'git push origin main'
                         }
                     }
