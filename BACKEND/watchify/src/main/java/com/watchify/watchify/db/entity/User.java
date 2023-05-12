@@ -39,7 +39,7 @@ public class User implements Serializable {
     private String name;
     private String nickName;
     private String provider;
-//    private String role = "ROLE_USER";
+    private String fcmToken;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<WishContent> wishContents = new ArrayList<>();
@@ -92,5 +92,9 @@ public class User implements Serializable {
         this.nickName = this.name;
         this.imgName = imgName;
         this.imgPath = imgPath;
+    }
+
+    public void updateFcmToken(String token) {
+        this.fcmToken = token;
     }
 }

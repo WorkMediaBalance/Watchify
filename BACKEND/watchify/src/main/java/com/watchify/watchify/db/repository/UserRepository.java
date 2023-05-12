@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Long> {
@@ -17,4 +18,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query(value = " select * from user u where u.id = :userId and is_deleted = false", nativeQuery = true)
     User getUserById(@Param("userId") Long userId);
 
+    @Query(value = "select  * from user u where is_deleted = false and is_content_alarm = ture", nativeQuery = true)
+    List<User> getUsersContentAlarm();
+
+    @Query(value = "select  * from user u where is_deleted = false and is_ott_alarm = ture", nativeQuery = true)
+    List<User> getUsersOttAlarm();
 }
