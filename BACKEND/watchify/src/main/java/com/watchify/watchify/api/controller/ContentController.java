@@ -21,7 +21,7 @@ public class ContentController {
     private final UserService userService;
     private final MyContentService contentService;
 
-    @PostMapping("/wishswitch")
+    @PutMapping("/wishswitch")
     public ResponseEntity<?> SwitchWishContent(HttpServletRequest request, @RequestBody PkRequestDTO pkRequestDTO) {
         String accessToken = request.getHeader("access");
         long userId = userService.findUserIdByAccessToken(accessToken);
