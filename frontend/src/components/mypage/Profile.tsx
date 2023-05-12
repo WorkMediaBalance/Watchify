@@ -1,9 +1,15 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 // import { getBasicInfoApi, putProfileImgApi } from "apis/apiForMyPage";
 import { AiFillCamera, AiOutlineCheckCircle } from "react-icons/ai";
 import { BsPencil } from "react-icons/bs";
 import { RxCrossCircled } from "react-icons/rx";
+
+import { useRecoilState } from "recoil";
+import { userState } from "recoil/userState";
+
+import { myProfileName, myProfileImg } from "apis/apiMy";
+
 const ProfileContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -70,8 +76,14 @@ const UserNameChangeButton = styled.div`
 `;
 
 const Profile = () => {
-  const [inputName, setInputName] = useState(""); //TODO: 기본값을 받아온 UserName으로
+  const imgRef = useRef<HTMLInputElement>(null);
+  const [user, setUser] = useRecoilState(userState);
+  const [inputName, setInputName] = useState<string>(user.name); //TODO: 기본값을 받아온 UserName으로
   const [isNameInput, setIsNameInput] = useState(false);
+
+  useEffect(() => {
+    console.log(user);
+  }, []);
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.value && e.target.value.length > 10) {
@@ -83,7 +95,27 @@ const Profile = () => {
 
   const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
-      // changeName();
+      changeName(inputName);
+    }
+  };
+
+  // 닉네임 수정 API
+  async function changeName(changedName: string) {
+    const data = {
+      nickName: changedName,
+    };
+    console.log(data);
+    myProfileName(data);
+    // 정상작동하나 로직상 완벽하지 않아서 추후 수정 예정
+    let copy = { ...user, name: data.nickName };
+    setUser(copy);
+    setIsNameInput(false);
+  }
+
+  const changePhoto = function (event: React.ChangeEvent<HTMLInputElement>) {
+    if (imgRef.current && imgRef.current.files) {
+      const file = imgRef.current.files[0];
+      myProfileImg(file);
     }
   };
 
@@ -92,26 +124,27 @@ const Profile = () => {
       <ProfileContainer>
         <PhotoAndChange>
           <PhotoContainer>
-            <Photo
-              src={"http://via.placeholder.com/132x84"}
-              alt="profileImage"
-            />
-            <ChangePhotoButton>
-              <AiFillCamera />
-            </ChangePhotoButton>
+            <label htmlFor="photoChange">
+              <Photo src={user.imgPath} alt="profileImage" />
+              <ChangePhotoButton>
+                <AiFillCamera />
+              </ChangePhotoButton>
+            </label>
           </PhotoContainer>
+
           <ChangePhotoInput
-          // type="file"
-          // accept={"image/*"}
-          // onChange={changePhoto}
-          // ref={imgRef}
-          />
+            id="photoChange"
+            type="file"
+            accept={"image/*"}
+            onChange={changePhoto}
+            ref={imgRef}
+          ></ChangePhotoInput>
         </PhotoAndChange>
         <UserNameAndChangeButtonContainer>
           {!isNameInput ? (
-            <UserName>사용자 이름</UserName>
+            <UserName>{user.name}</UserName>
           ) : (
-            <UserNameModiyInput onChange={onChange} onKeyDown={onKeyDown} />
+            <UserNameModiyInput onChange={onChange} onKeyDown={onKeyDown} value={inputName} />
           )}
           {!isNameInput ? (
             <UserNameChangeButton>
@@ -123,15 +156,12 @@ const Profile = () => {
             </UserNameChangeButton>
           ) : (
             <UserNameChangeButton>
-              <AiOutlineCheckCircle
-                size={20}
-                // onClick={() => changeName();}
-              />
+              <AiOutlineCheckCircle size={20} onClick={() => changeName(inputName)} />
               <RxCrossCircled
                 size={20}
                 onClick={() => {
                   setIsNameInput(false);
-                  setInputName(""); //TODO: 여기 나중에 사용자 이름으로 초기화 해주기
+                  setInputName(inputName); //TODO: 여기 나중에 사용자 이름으로 초기화 해주기
                 }}
               />
             </UserNameChangeButton>
@@ -141,5 +171,4 @@ const Profile = () => {
     </div>
   );
 };
-
 export default Profile;
