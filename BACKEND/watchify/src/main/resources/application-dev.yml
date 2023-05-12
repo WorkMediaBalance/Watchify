@@ -6,15 +6,15 @@ spring:
           kakao:
             client-secret: U9VSbwTEVtAbQy1KFSXiMFvNuP4byX87
             client-authentication-method: POST
-            redirect-uri: https://k8a207.p.ssafy.io/oauth2/login/kakao/callback
-#            redirect-uri: http://localhost:8000/oauth2/login/kakao/callback
+#            redirect-uri: https://k8a207.p.ssafy.io/oauth2/login/kakao/callback
+            redirect-uri: http://localhost:8000/oauth2/login/kakao/callback
             authorization-grant-type: authorization_code
             client-id: 0056cd01e9f9bad8a1c939e485c59147
             scope: profile_nickname, account_email
             client-name: kakao
           google:
-            redirect-uri: https://k8a207.p.ssafy.io/oauth2/login/google/callback
-#            redirect-uri: http://localhost:8000/oauth2/login/google/callback
+#            redirect-uri: https://k8a207.p.ssafy.io/oauth2/login/google/callback
+            redirect-uri: http://localhost:8000/oauth2/login/google/callback
             client-secret: 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
             client-id: 68891012374-8ij9t01p6i3ucf9rufg334b2ahb3vhl7.apps.googleusercontent.com
             scope: profile, email
@@ -28,9 +28,24 @@ spring:
 
 app:
   oauth2:
-#    frontRedirectUrl: "https://k8a207.p.ssafy.io/oauth2/login/callback"
-#    frontRedirectUrl: "http://localhost:8000/oauth2/login/callback"
-    frontRedirectUrl: "http://localhost:3000/oauth2/login/callback"
+  #  frontRedirectUrl: "https://k8a207.p.ssafy.io/oauth2/login/callback"
+    frontRedirectUrl: "http://localhost:8000/oauth2/login/callback"
+  #  frontRedirectUrl: "http://localhost:3000/oauth2/login/callback"
+  defaultImagePath: "https://watchify.s3.ap-northeast-2.amazonaws.com/userimages/d7232718-e900-4425-a8e5-47090b98d1aftestUser.PNG"
+  defaultImageName: "userimages/d7232718-e900-4425-a8e5-47090b98d1aftestUser.PNG"
+
 
 jwt:
   secret: "token-secret-key-i-am-go-byeong-jin"
+
+cloud:
+  aws:
+    stack:
+      auto: false
+    region:
+      static: ap-northeast-2
+    credentials:
+      access-key: AKIARUG4SJJSHO3XLN6C
+      secret-key: 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
+    s3:
+      bucket: watchify

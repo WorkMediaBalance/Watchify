@@ -21,7 +21,7 @@ public class WishContent implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private boolean isDeleted;
+    private boolean isDeleted = false;
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedAt;
@@ -39,4 +39,10 @@ public class WishContent implements Serializable {
         this.updatedAt = new Date();
     }
 
+    public WishContent(User user, Content content) {
+        this.user = user;
+        this.content = content;
+    }
+
+    public void switchDeleted() { this.isDeleted = !this.isDeleted; }
 }

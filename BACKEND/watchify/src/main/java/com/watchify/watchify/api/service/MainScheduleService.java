@@ -23,7 +23,6 @@ public class MainScheduleService {
     private final WishContentRepository wishContentRepository;
     private final LikeContentRepository likeContentRepository;
 
-    @Transactional
     public Map<Integer, List<CalenderDTO>> getMainSchedule(Long userId) {
 
         Map<Integer, List<CalenderDTO>> res = new HashMap<>();
@@ -33,7 +32,7 @@ public class MainScheduleService {
         LocalDate startDate = today.minusDays(3);
         LocalDate endDate = today.plusDays(3);
 
-        List<Calender> calenders = calenderRepository.getMainSchedule(userId, startDate, endDate);
+        List<Calender> calenders = calenderRepository.getSchedule(userId, startDate, endDate);
         List<WishContent> wishContents = wishContentRepository.getMyWishList(userId);
         List<LikeContent> likeContents = likeContentRepository.getLikeContent(userId);
 
@@ -64,6 +63,7 @@ public class MainScheduleService {
                         if (likeContent.isDeleted() != true) {
                             calenderDTO.setIsLike(likeContent.isLike() ? 1 : -1);
                         }
+                        break;
                     }
                 }
 
