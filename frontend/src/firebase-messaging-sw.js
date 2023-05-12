@@ -1,6 +1,7 @@
 // firebase-messaging-sw.js
 import { initializeApp } from "firebase/app";
 import { getMessaging, getToken, onMessage } from "firebase/messaging";
+import { fcmSave } from "apis/apiMy";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBJk6Qztl_chNGB1rq0eS8YmaEvYz_qWyQ",
@@ -33,7 +34,7 @@ async function requestPermission() {
 
   if (token) {
     console.log("token: ", token);
-    window.alert(token);
+    fcmSave(token);
   } else console.log("Can not get Token");
 
   onMessage(messaging, (payload) => {
