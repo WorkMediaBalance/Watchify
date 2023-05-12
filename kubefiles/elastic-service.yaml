@@ -18,8 +18,8 @@ spec:
       containers:
       - name: elastic-service
         image: docker.io/runtogether/watchify:elastic
-        imagePullSecrets:
-          - name: dockerhub
+      imagePullSecrets:
+        - name: dockerhub
 
         #  env:
         # - name: discovery.type
