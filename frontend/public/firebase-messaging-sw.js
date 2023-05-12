@@ -8,25 +8,27 @@ self.addEventListener("activate", function (e) {
 });
 
 self.addEventListener("push", function (e) {
-  console.log("push: ", e.data.json());
   if (!e.data.json()) return;
 
   const resultData = e.data.json().notification;
+  const flag = e.data.json().data.flag;
   const notificationTitle = resultData.title;
   const notificationOptions = {
     body: resultData.body,
     icon: resultData.image,
     tag: resultData.tag,
-    ...resultData,
+    // ...resultData,
+    data: { flag: flag },
   };
-  console.log("push: ", { resultData, notificationTitle, notificationOptions });
 
   self.registration.showNotification(notificationTitle, notificationOptions);
 });
 
 self.addEventListener("notificationclick", function (event) {
-  console.log("notification click");
-  const url = "/";
+  let url = "/"; // Set a default value
+  const flag = event.notification.data.flag;
+  // TODO: flag가 content인지 ott인지에 따라 분기해서 이동시키기
   event.notification.close();
-  event.waitUntil(clients.openWindow(url));
+
+  client.openWindow(url);
 });

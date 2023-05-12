@@ -34,6 +34,7 @@ async function requestPermission() {
 
   if (token) {
     console.log("token: ", token);
+    console.log(token);
     fcmSave(token);
   } else console.log("Can not get Token");
 
