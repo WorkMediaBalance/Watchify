@@ -38,6 +38,7 @@ const PageCallback = () => {
 
       localStorage.setItem("accessToken", accessToken);
       localStorage.setItem("refreshToken", refreshToken);
+      console.log(accessToken, "엑세스 토큰 있나?");
     } catch (error) {}
   }
 
