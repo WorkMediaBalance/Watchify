@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: elastic-service
+  labels:
+    app: elastic-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: elastic-service
+  template:
+    metadata:
+      labels:
+        app: elastic-service
+    spec:
+      containers:
+      - name: elastic-service
+        image: elastic/elasticsearch:6.4.0
+        env:
+        - name: discovery.type
+          value: "single-node"
+        ports:
+        - containerPort: 9200
+        - containerPort: 9300
+        
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: elasticsearch-svc
+  namespace: elastic
+spec:
+  ports:
+  - name: elasti-rest
+    port: 9200
+    protocol: TCP
+    targetPort: 9200
+  - name: elastic-nodecom
+    port: 9300
+    protocol: TCP
+    targetPort: 9300
+  selector:
+    app: elastic-service
+  type: ClustetIP
