@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 
 import { BASE_URL } from "constant/constant";
@@ -6,8 +6,18 @@ import { BASE_URL } from "constant/constant";
 import logoImg from "assets/img/logo.png";
 import kakao from "assets/img/kakao.png";
 import google from "assets/img/google.png";
+import { useNavigate } from "react-router-dom";
 
 const PageLogin = () => {
+  const navigate = useNavigate();
+  useEffect(() => {
+    const myToken = localStorage.getItem("accessToken");
+    if (myToken) {
+      console.log("이미 로그인 되어있음!");
+      navigate("/");
+    }
+  }, []);
+
   const onClickHandler = (e: React.MouseEvent<HTMLImageElement>) => {
     const clicked = e.currentTarget.alt;
     window.location.href = `${BASE_URL}oauth2/authorization/${clicked}`;
