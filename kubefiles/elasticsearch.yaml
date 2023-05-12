@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: elasticsearch
+  labels:
+    app: elasticsearch
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: elasticsearch
+  template:
+    metadata:
+      labels:
+        app: elasticsearch
+    spec:
+      containers:
+      - name: elasticsearch
+        image: docker.io/runtogether/watchify:front163
+        env:
+        - name: discovery.type
+          value: "single-node"
+        ports:
+        - containerPort: 9200
+        - containerPort: 9300
+      imagePullSecrets:
+        - name: dockerhub
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: elasticsearch
+  name: elasticsearch-svc
+spec:
+  ports:
+  - name: elasticsearch-rest
+    port: 9200
+    protocol: TCP
+    targetPort: 9200
+  - name: elasticsearch-nodecom
