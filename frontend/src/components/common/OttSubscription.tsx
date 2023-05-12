@@ -67,18 +67,19 @@ const OttSubscription = () => {
     });
   };
 
+  // 모달 이상한 상황에서 뜨는 거 방지 위해 만든 state
+  const [blockModal, setBlockModal] = useState(false);
+  // 달력 닫기 (Modal 활성화 안되게 하기 위해 함수형으로 분리)
+  const closeDatePicker = (key: string) => {
+    let copy = { ...showDatePicker };
+    copy[key] = false;
+    setShowDatePicker(copy);
+    setBlockModal(true);
+  };
+
   useEffect(() => {
     if (!isAdded) return;
-
-    // 달력이 띄워져있는지 check (OTT 모달 띄우지 않기 위해)
-    let hasTrueValue = false;
-    for (const key in showDatePicker) {
-      if (showDatePicker[key]) {
-        hasTrueValue = true;
-        break;
-      }
-    }
-    if (hasTrueValue === true) return;
+    if (blockModal) return;
 
     // OTT 모두 구독중이면 모달 끄기
     let cnt = 0;
@@ -97,6 +98,7 @@ const OttSubscription = () => {
   }, [ott]);
 
   const modalHandler = () => {
+    setBlockModal(false);
     const result: { [key: string]: boolean } = {};
     if (ott.netflix.start) {
       result["netflix"] = true;
@@ -118,7 +120,6 @@ const OttSubscription = () => {
     } else {
       result["wavve"] = false;
     }
-    console.log(Swal.version);
 
     Swal.fire({
       title: "",
@@ -187,9 +188,7 @@ const OttSubscription = () => {
                       selected={today}
                       onChange={(date: Date) => {
                         handDateChange(date, key);
-                        let copy = { ...showDatePicker };
-                        copy[key] = false;
-                        setShowDatePicker(copy);
+                        closeDatePicker(key);
                       }}
                       inline
                     />

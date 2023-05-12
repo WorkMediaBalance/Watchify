@@ -15,7 +15,7 @@ const Wrapper = styled.div`
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
   position: relative;
-  padding: 1rem 0;
+  padding: 2vh 0;
 `;
 
 const Handle = styled.div`

@@ -11,7 +11,6 @@ import ScheduleBottomSheet from "components/schedule/ScheduleBottomSheet";
 import { AiOutlineMinusCircle } from "react-icons/ai";
 import Lottie from "lottie-react";
 import scheduleGIF from "assets/gif/schedule-calendar-animation.json";
-import BottomDot from "./../layout/BottomDot";
 
 const PageScheduleContent = () => {
   const navigate = useNavigate();
