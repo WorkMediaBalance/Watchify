@@ -34,9 +34,7 @@ api.interceptors.response.use(
     if (response.status === 401) {
       const originRequest = config;
       await reissueAccessToken().then(() => {
-        originRequest.headers.Authorization = `Bearer ${localStorage.getItem(
-          "accessToken"
-        )}`;
+        originRequest.headers.Authorization = `Bearer ${localStorage.getItem("accessToken")}`;
       });
 
       return axios(originRequest);
