@@ -141,7 +141,8 @@ public class UserCheckService {
     public String loginRedirect(Token token) {
         if (token == null) {
             // 프론트 로그인페이지
-            return "http://localhost:3000//login";
+//            return "http://localhost:3000/login";
+            return "https://k8a207.p.ssafy.io/login";
         }
 //        String callbackUri = "https://k8a207.p.ssafy.io/oauth2/callback";
         return callbackUri +"?access=" + token.getAccessToken() + "&refresh=" + token.getRefreshToken() + "&isNew=" + token.isNew();

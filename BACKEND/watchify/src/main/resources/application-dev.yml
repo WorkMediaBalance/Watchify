@@ -6,15 +6,15 @@ spring:
           kakao:
             client-secret: U9VSbwTEVtAbQy1KFSXiMFvNuP4byX87
             client-authentication-method: POST
-#            redirect-uri: https://k8a207.p.ssafy.io/oauth2/login/kakao/callback
-            redirect-uri: http://localhost:8000/oauth2/login/kakao/callback
+            redirect-uri: https://k8a207.p.ssafy.io/oauth2/login/kakao/callback
+#            redirect-uri: http://localhost:8000/oauth2/login/kakao/callback
             authorization-grant-type: authorization_code
             client-id: 0056cd01e9f9bad8a1c939e485c59147
             scope: profile_nickname, account_email
             client-name: kakao
           google:
-#            redirect-uri: https://k8a207.p.ssafy.io/oauth2/login/google/callback
-            redirect-uri: http://localhost:8000/oauth2/login/google/callback
+            redirect-uri: https://k8a207.p.ssafy.io/oauth2/login/google/callback
+#            redirect-uri: http://localhost:8000/oauth2/login/google/callback
             client-secret: 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
             client-id: 68891012374-8ij9t01p6i3ucf9rufg334b2ahb3vhl7.apps.googleusercontent.com
             scope: profile, email
