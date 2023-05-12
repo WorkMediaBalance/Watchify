@@ -3,11 +3,8 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 
 import Swal from "sweetalert2";
-import DatePicker, { CalendarContainer } from "react-datepicker";
+import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-
-import { useRecoilState } from "recoil";
-import { ottSubscriptionState } from "recoil/userState";
 
 import { AiOutlineClose } from "react-icons/ai";
 
@@ -16,6 +13,9 @@ import disneyIcon from "assets/img/disneyIcon.png";
 import watchaIcon from "assets/img/watchaIcon.png";
 import wavveIcon from "assets/img/wavveIcon.png";
 import { theme } from "styles/theme";
+
+import { myOTTget, myOTTChange } from "apis/apiMy";
+import { subscription } from "interface/user";
 
 // ott 추가 함수 정의를 위한 기초 설정 (왜 global 설정하고 window에서 하는지는 모름..)
 declare global {
@@ -27,7 +27,12 @@ declare global {
 const OttSubscription = () => {
   const navigate = useNavigate();
 
-  const [ott, setOtt] = useRecoilState(ottSubscriptionState);
+  const [ott, setOtt] = useState<subscription>({
+    netflix: { start: null, end: null },
+    watcha: { start: null, end: null },
+    wavve: { start: null, end: null },
+    disney: { start: null, end: null },
+  });
   const [isAdded, setIsAdded] = useState<boolean>(false);
   const [showDatePicker, setShowDatePicker] = useState<{ [key: string]: boolean }>({
     netflix: false,
@@ -39,32 +44,75 @@ const OttSubscription = () => {
   const [today, setToday] = useState(new Date());
   const [is4, setIs4] = useState<boolean>(false);
 
+  // 추가, 또는 삭제가 발생했는지 알기위해
+  const [sthHappend, setSthHappend] = useState(false);
+
+  // 유저 OTT 구독 정보 불러오기
+  async function myOTTgetAPI() {
+    try {
+      const myOTTInfo = await myOTTget();
+      let copy = { ...ott };
+      copy = myOTTInfo;
+      setOtt(copy);
+    } catch {}
+  }
+
+  useEffect(() => {
+    setTimeout(() => {
+      myOTTgetAPI();
+    }, 50);
+
+    // console.log(ott, "ott 구독 정보");
+  }, [sthHappend]);
+
   // OTT 삭제 함수
   const onClickDeleteOtt = (key: string) => {
-    setIsAdded(false);
-    setIs4(false);
-    setOtt((prev) => {
-      const copy = { ...prev }; // 기존 객체 복사
-      copy[key] = { start: null, end: null }; // 새로운 객체 생성 후 업데이트
-      return copy; // 새로운 배열 반환
+    Swal.fire({
+      title: "",
+      text: "구독해지 or 삭제",
+      background: theme.netflix.backgroundColor,
+      confirmButtonText: "구독해지",
+      confirmButtonColor: theme.netflix.pointColor,
+
+      showCancelButton: true,
+      cancelButtonText: "OTT 삭제",
+      cancelButtonColor: theme.netflix.pointColor,
+
+      //       html: `<div>
+      // </div>`,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        console.log("구독해지");
+        setIsAdded(false);
+        const copy = { ...ott };
+        console.log(copy[key].start);
+        copy[key] = { ...copy[key], end: null };
+        console.log(copy, "ott 구독 정보 삭제");
+        myOTTChange(copy);
+        setSthHappend(!sthHappend);
+      }
+      if (result.dismiss === Swal.DismissReason.cancel) {
+        console.log("OTT 삭제");
+        setIsAdded(false);
+        setIs4(false);
+      }
     });
   };
 
   // OTT 추가 함수
   window.addOtt = (key) => {
     setIsAdded(true);
-    setOtt((prev) => {
-      const copy = { ...prev }; // 기존 객체 복사
+    const copy = { ...ott };
+    let date = new Date();
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    const newDate = `${year}-${month}-${day}`;
+    copy[key] = { start: newDate, end: null }; // 새로운 객체 생성 후 업데이트
 
-      let date = new Date();
-      const year = date.getFullYear();
-      const month = String(date.getMonth() + 1).padStart(2, "0");
-      const day = String(date.getDate()).padStart(2, "0");
-      const newDate = `${year}-${month}-${day}`;
-
-      copy[key] = { start: newDate, end: null }; // 새로운 객체 생성 후 업데이트
-      return copy; // 새로운 배열 반환
-    });
+    console.log(copy, "ott 구독 정보 추가");
+    myOTTChange(copy);
+    setSthHappend(!sthHappend);
   };
 
   // 모달 이상한 상황에서 뜨는 거 방지 위해 만든 state
@@ -144,11 +192,11 @@ const OttSubscription = () => {
     const day = String(date.getDate()).padStart(2, "0");
     const newDate = `${year}-${month}-${day}`;
 
-    setOtt((prev) => {
-      const copy = { ...prev };
-      copy[key] = { ...copy[key], start: newDate }; // 해당 객체의 값을 변경하여 복사본에 할당
-      return copy; // 새로운 배열 반환
-    });
+    const copy = { ...ott };
+    copy[key] = { start: newDate, end: null };
+    console.log(copy, "날짜만 변경해서 ott 구독 정보 수정");
+    myOTTChange(copy);
+    setSthHappend(!sthHappend);
   };
 
   return (
@@ -180,7 +228,7 @@ const OttSubscription = () => {
                     setShowDatePicker(copy);
                   }}
                 >
-                  최근 구독일 : {value.start}
+                  {value.start} ~ {value.end}
                 </span>
                 {showDatePicker[key] ? (
                   <DatePickerWrapper>
