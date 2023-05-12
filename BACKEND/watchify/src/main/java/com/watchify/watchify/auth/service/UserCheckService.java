@@ -144,7 +144,7 @@ public class UserCheckService {
 //            return "http://localhost:3000/login";
             return "https://k8a207.p.ssafy.io/login";
         }
-//        String callbackUri = "https://k8a207.p.ssafy.io/oauth2/callback";
+//        String callbackUri = "https://k8a207.p.ssafy.io/callback";
         return callbackUri +"?access=" + token.getAccessToken() + "&refresh=" + token.getRefreshToken() + "&isNew=" + token.isNew();
     }
 
