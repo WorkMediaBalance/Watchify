@@ -8,7 +8,7 @@ class SimilarityMatrix:
     # userdict = User.objects.values_list('id')
 
     def __init__(self, userdict):
-        print('semilarity_matrix.py ===== userdict')
+        # print('semilarity_matrix.py ===== userdict')
         self.build(userdict)
         # print('유저 리스트 : ',userdict)
     

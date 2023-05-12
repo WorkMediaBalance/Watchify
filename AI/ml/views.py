@@ -71,7 +71,7 @@ class RecommendAPIView(APIView):
          print('소요 시간 : ', end_time - start_time)
          contents = {
               'content_pk' : [x[0] for x in result],
-              'content_rate' : [x[1]*18 for x in result]
+              'content_rate' : [x[1]*10 for x in result]
               }
          print('포테이토 결과 ======> : ', contents)
          serializer = RecommendSerializer(contents)

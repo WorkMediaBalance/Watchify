@@ -17,7 +17,7 @@ class RecommendSerializer(serializers.Serializer):
     content_rate = serializers.ListField(child=serializers.IntegerField())
 
 class mainRecommendSerializer(serializers.Serializer):
-    netflix = serializers.ListField(child=serializers.IntegerField())
-    watcha = serializers.ListField(child=serializers.IntegerField())
-    wavve = serializers.ListField(child=serializers.IntegerField())
-    disney_plus = serializers.ListField(child=serializers.IntegerField())
+    netflix = serializers.ListField(child=serializers.FloatField())
+    watcha = serializers.ListField(child=serializers.FloatField())
+    wavve = serializers.ListField(child=serializers.FloatField())
+    disney_plus = serializers.ListField(child=serializers.FloatField())

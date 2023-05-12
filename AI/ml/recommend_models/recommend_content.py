@@ -5,7 +5,7 @@ from collections import defaultdict
 def recommend(user_id, genres, age, top_n):
     userdict = User.objects.values_list('id', flat=True) # 리스트 반환
     itemdict = Content.objects.filter(audience_age__lte=age).values_list('id', flat=True)
-    # genre_ids = Genre.objects.filter(name__in=genres).values('id')
+    genre_ids = Genre.objects.filter(name__in=genres).values_list('id', flat=True)
     # item_ids = ContentGenre.objects.filter(genre_id__in=genre_ids).values_list('content_id')
     # itemdict = Content.objects.filter(id__in=item_ids, audience_age__lte=age).values_list('id', flat=True)
     print('조회할 컨텐츠 개수 :  ',len(itemdict))
@@ -31,7 +31,7 @@ def recommend(user_id, genres, age, top_n):
     recommendations = []
     for item_id in itemdict:  # itemdict : DB에서 Content 테이블 조회하기
         if item_id not in items_reviewed:
-            recommendations.append((item_id, predict(user_id, item_id, neighbor_user, userdict, neighbor_item_list)))
+            recommendations.append((item_id, predict(user_id, item_id, neighbor_user, userdict, neighbor_item_list, genre_ids)))
     recommendations = list(set(recommendations))
     recommendations.sort(key = lambda x:x[1], reverse=True) # 유사도가 높은 순서대로 정렬
     print('recommendations 리스트 : ', recommendations[:top_n])
