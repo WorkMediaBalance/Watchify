@@ -20,20 +20,25 @@ s3 = boto3.client(
     aws_access_key_id=aws_access_key_id, 
     aws_secret_access_key=aws_secret_access_key
     )
-print(s3)
 bucket_name = os.environ.get('AWS_STORAGE_BUCKET_NAME')
 
 # 로컬 파일 경로
-local_folder = 'C:\\Users\\SSAFY\\Desktop\\Pjt_3\\posters\\'
-for i in range(1):
+poster_folder = 'C:\\Users\\SSAFY\\Desktop\\Pjt_3\\posters\\'
+backdrop_folder = 'C:\\Users\\SSAFY\\Desktop\\Pjt_3\\backdrops\\'
+for i in range(32000):
     print(f'================================= {i} ===============================')
     try:
-        file = local_folder + str(i) +'.jpg'
-        with open(file, 'rb') as f:
+        p = poster_folder + str(i) +'.jpg'
+        with open(p, 'rb') as f:
             # print(f)
-            s3.put_object(Body=f, Bucket=bucket_name, Key=f'poster/test.PNG', ACL='public-read', ContentType='image/png')
+            s3.put_object(Body=f, Bucket=bucket_name, Key=f'poster/{i}.PNG', ACL='public-read', ContentType='image/png')
             # print(file)
             # s3.upload.fileobj(file, bucket_name, f'poster/{i}.jpg')
+        b = backdrop_folder + str(i) + '.jpg'
+        with open(b, 'rb') as f:
+            # print(f)
+            s3.put_object(Body=f, Bucket=bucket_name, Key=f'backdrop/{i}.PNG', ACL='public-read', ContentType='image/png')
+            # print(file)
     except Exception as e:
         print('????',e)
         continue
