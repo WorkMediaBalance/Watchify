@@ -24,6 +24,8 @@ import PageCallback from "pages/PageCallback";
 import MemberRoute from "./components/common/MemberRoute";
 import NonMemberRoute from "./components/common/NonMemberRoute";
 
+import "./firebase-messaging-sw.js";
+
 const App = () => {
   return (
     <div style={{ height: "100%" }}>

@@ -1,6 +1,7 @@
 // firebase-messaging-sw.js
 import { initializeApp } from "firebase/app";
 import { getMessaging, getToken, onMessage } from "firebase/messaging";
+import { fcmSave } from "apis/apiMy";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBJk6Qztl_chNGB1rq0eS8YmaEvYz_qWyQ",
@@ -31,8 +32,11 @@ async function requestPermission() {
       "BO2KgYXXA9rZD6AVijrablXKDM5q5gDRni7ATVjppEO6p1zqrkB9Et9dVJhxeov28-8IanFPB-a5QYdyTHB3FhI",
   });
 
-  if (token) console.log("token: ", token);
-  else console.log("Can not get Token");
+  if (token) {
+    console.log("token: ", token);
+    console.log(token);
+    fcmSave(token);
+  } else console.log("Can not get Token");
 
   onMessage(messaging, (payload) => {
     console.log("메시지가 도착했습니다.", payload);
