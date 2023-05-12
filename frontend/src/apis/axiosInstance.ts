@@ -5,6 +5,7 @@ import { reissueAccessToken } from "./reissueToken";
 
 const api = axios.create({
   baseURL: BASE_URL,
+
   paramsSerializer: (params: any) => {
     return stringify(parse(params));
   },
