@@ -10,6 +10,6 @@ import java.util.List;
 public interface CalenderRepository extends JpaRepository<Calender, Long> {
 
     @Query(value = "select * from calender c where c.user_id = :userId and is_deleted = false and c.date between :startDate and :endDate", nativeQuery = true)
-    List<Calender> getMainSchedule(Long userId, LocalDate startDate, LocalDate endDate);
+    List<Calender> getSchedule(Long userId, LocalDate startDate, LocalDate endDate);
 
 }

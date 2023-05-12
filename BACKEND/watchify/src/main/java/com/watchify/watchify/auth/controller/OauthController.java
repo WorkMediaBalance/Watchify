@@ -3,13 +3,16 @@ package com.watchify.watchify.auth.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.watchify.watchify.api.service.UserService;
 import com.watchify.watchify.auth.*;
 import com.watchify.watchify.auth.repository.CustomAuthorizationRequestRepository;
 import com.watchify.watchify.auth.service.CustomOAuth2UserService;
 import com.watchify.watchify.auth.service.PrincipalDetails;
 import com.watchify.watchify.auth.service.TokenService;
 import com.watchify.watchify.auth.service.UserCheckService;
+import com.watchify.watchify.db.entity.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -31,15 +34,12 @@ import java.util.Map;
 @RestController
 public class OauthController {
 
-    private final TokenService tokenService;
-    private final CustomOAuth2UserService customOAuth2UserService;
-    private final CustomAuthorizationRequestRepository customAuthorizationRequestRepository;
     private final UserCheckService userCheckService;
-
 
     @GetMapping("/login/kakao/callback")
     @ResponseBody
-    public RedirectView KakaoCallback(@RequestParam("code") String code, HttpServletRequest request, HttpServletResponse response) throws IOException{
+    public RedirectView KakaoCallback(@RequestParam("code") String code, HttpServletRequest request, HttpServletResponse response,
+                                      @Value("${spring.security.oauth2.client.registration.kakao.redirect-uri}") String redirectURl) throws IOException{
         String REQUEST_URL = "https://kauth.kakao.com/oauth/token";
 
         RestTemplate restTemplate = new RestTemplate();
@@ -53,7 +53,7 @@ public class OauthController {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("grant_type", "authorization_code");
         params.add("client_id", "0056cd01e9f9bad8a1c939e485c59147");
-        params.add("redirect_uri", "http://localhost:8080/oauth2/login/kakao/callback");
+        params.add("redirect_uri", redirectURl);
         params.add("code", code);
 
         // 요청하기 위해 헤더(Header)와 데이터(Body)를 합친다.
@@ -111,9 +111,6 @@ public class OauthController {
         Token token = userCheckService.tokenGenerate(principalDetails);
 
         // 리다이렉트 수행
-//        String redirectUrl = String.format("http://localhost:8080/oauth2/callback?access=%s&refresh=%s&isNew=%s", token.getAccessToken(), token.getRefreshToken(), token.isNew());
-//        response.sendRedirect(redirectUrl);
-
         String redirectUri = userCheckService.loginRedirect(token);
         return new RedirectView(redirectUri);
 
@@ -121,7 +118,8 @@ public class OauthController {
 
     @GetMapping("/login/google/callback")
     @ResponseBody
-    public void GoogleCallback(HttpServletResponse response, String code) throws IOException {
+    public RedirectView GoogleCallback(@RequestParam("code") String code, HttpServletRequest request, HttpServletResponse response,
+                                       @Value("${spring.security.oauth2.client.registration.google.redirect-uri}") String redirectURl) throws IOException {
         String REQUEST_URL = "https://oauth2.googleapis.com/token";
 
         RestTemplate restTemplate = new RestTemplate();
@@ -133,7 +131,7 @@ public class OauthController {
         params.add("grant_type", "authorization_code");
         params.add("client_id", "68891012374-8ij9t01p6i3ucf9rufg334b2ahb3vhl7.apps.googleusercontent.com");
         params.add("client_secret", "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");
-        params.add("redirect_uri", "http://localhost:8080/oauth2/login/google/callback");
+        params.add("redirect_uri", redirectURl);
         params.add("code", code);
 
         HttpEntity<MultiValueMap<String, String>> accessTokenRequest = new HttpEntity<>(params, headers);
@@ -168,6 +166,17 @@ public class OauthController {
                 googleProfileReq,
                 String.class
         );
+
+        Map<String, Object> attributes = objectMapper.readValue(googleUserInfo.getBody(), Map.class);
+
+        PrincipalDetails principalDetails = PrincipalDetails.of("GOOGLE", attributes);
+
+        userCheckService.loadUser(principalDetails);
+
+        Token token = userCheckService.tokenGenerate(principalDetails);
+
+        String redirectUri = userCheckService.loginRedirect(token);
+        return new RedirectView(redirectUri);
     }
 
     // 토근 만료시  401: Unauthorized 상태코드 발송
@@ -182,6 +191,8 @@ public class OauthController {
     public RedirectView reGnerateToken(@RequestHeader("refresh") String refreshToken) {
         Token token = userCheckService.reGenerateAccess(refreshToken);
         String redirectUri = userCheckService.loginRedirect(token);
+        System.out.println(token.getRefreshToken());
+        System.out.println(token.getAccessToken());
         return new RedirectView(redirectUri);
     }
 
