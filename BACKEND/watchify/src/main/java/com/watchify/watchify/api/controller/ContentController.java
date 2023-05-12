@@ -3,6 +3,7 @@ package com.watchify.watchify.api.controller;
 
 import com.watchify.watchify.api.service.MyContentService;
 import com.watchify.watchify.api.service.UserService;
+import com.watchify.watchify.dto.request.ContentLikeRequestDTO;
 import com.watchify.watchify.dto.request.PkRequestDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.RequestEntity;
@@ -32,6 +33,20 @@ public class ContentController {
             return ResponseEntity.status(404).body("My profile nickName updated fail.");
         }
 
+    }
+
+    @PutMapping("/like")
+    public ResponseEntity<?> UpdateContentLike(HttpServletRequest request, @RequestBody ContentLikeRequestDTO contentLikeRequestDTO) {
+        String accessToken = request.getHeader("access");
+        long userId = userService.findUserIdByAccessToken(accessToken);
+
+
+        try {
+            contentService.updateContentLike(userId, contentLikeRequestDTO);
+            return ResponseEntity.status(200).body("Content Like updated successfully.");
+        } catch (Exception e) {
+            return ResponseEntity.status(404).body("Content Like updated fail.");
+        }
     }
 
 }
