@@ -122,10 +122,10 @@ export const myOTTget = async () => {
 // 유저 ott 구독 정보 수정
 export const myOTTChange = async (data: OttPeriods) => {
   try {
-    const res = await api.post("api/my/ott", data);
+    const res = await api.put("api/my/ott", data);
     return res.data;
   } catch (err) {
-    console.log("ott 구독 정보 조회 실패");
+    console.log("ott 구독 정보 수정 실패");
     console.log(err);
   }
 };

@@ -43,7 +43,7 @@ const App = () => {
             <Route path="/schedule/result" element={<PageScheduleResult />} />
             <Route path="/search" element={<PageSearch />} />
 
-            <Route path="/oauth2/login/callback" element={<PageCallback />} />
+            <Route path="/callback" element={<PageCallback />} />
 
             {/* 회원만 접근 가능 */}
             <Route element={<MemberRoute />}>

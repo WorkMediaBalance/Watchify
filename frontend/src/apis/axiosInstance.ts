@@ -15,7 +15,7 @@ api.interceptors.request.use(
   function (config) {
     const accessToken = localStorage.getItem("accessToken");
     if (accessToken) {
-      config.headers.Authorization = `Bearer ${accessToken}`;
+      config.headers.access = accessToken;
     }
     return config;
   },
@@ -34,7 +34,7 @@ api.interceptors.response.use(
     if (response.status === 401) {
       const originRequest = config;
       await reissueAccessToken().then(() => {
-        originRequest.headers.Authorization = `Bearer ${localStorage.getItem("accessToken")}`;
+        originRequest.headers.access = localStorage.getItem("accessToken");
       });
 
       return axios(originRequest);
