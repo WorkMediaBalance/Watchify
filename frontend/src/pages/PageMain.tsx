@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Carousel from "../components/main/Carousel";
 import TodayWatch from "components/main/TodayWatch";
@@ -7,14 +8,17 @@ import RecommendPerOTT from "../components/main/RecommendPerOTT";
 import RecommendRest from "components/main/RecommendRest";
 
 const PageMain = () => {
+  const navigate = useNavigate();
   const [clickState, setClickState] = useState(0);
   const [prevState, setPrevState] = useState(0);
+
   const handleState = (index: number) => {
     setPrevState(clickState);
     setClickState(index);
   };
   return (
     <div>
+      <button onClick={() => navigate("/login")}>로그인 페이지로</button>
       <Title>오늘의 편성표</Title>
       <TodayWatch
         clickState={clickState}
