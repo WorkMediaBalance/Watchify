@@ -2,11 +2,14 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import HistoryComponent from "./HistoryComponent";
 
+import { monthScheduleState } from "recoil/scheduleState";
+import { useRecoilState } from "recoil";
+
 import { content } from "./../../interface/content";
 import { myHistory } from "apis/apiMy";
 
 const HistoryTab = () => {
-  const dummyData = [0, 0, 0, 0, 0, 0, 0];
+  const dummyArray = [0, 0, 0, 0, 0, 0, 0];
   const [historyArray, setHistoryArray] = useState<content[]>([]);
 
   // async function MyHistoryAPI() {
@@ -20,6 +23,10 @@ const HistoryTab = () => {
   //   MyHistoryAPI();
   // }, []);
 
+  // month 스케줄 state
+
+  const [monthSchedule, setMonthSchedule] = useRecoilState(monthScheduleState);
+
   return (
     <div>
       <Title>스케줄 히스토리</Title>
@@ -32,8 +39,8 @@ const HistoryTab = () => {
         }}
       >
         <div style={{ height: "100%", overflowY: "auto" }}>
-          {dummyData.map((index) => {
-            return <HistoryComponent />;
+          {dummyArray.map((index) => {
+            return <HistoryComponent contentHistory={monthSchedule} />;
           })}
         </div>
       </div>
