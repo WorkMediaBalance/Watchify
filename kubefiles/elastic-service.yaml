@@ -18,14 +18,15 @@ spec:
       containers:
       - name: elastic-service
         image: docker.io/runtogether/watchify:elastic
+        imagePullSecrets:
+          - name: dockerhub
+
         #  env:
         # - name: discovery.type
         #   value: "single-node"
         ports:
         - containerPort: 9200
         - containerPort: 9300
-      imagePullSecrets:
-        - name: dockerhub
 
 ---
 apiVersion: v1
