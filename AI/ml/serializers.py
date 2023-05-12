@@ -14,3 +14,10 @@ from rest_framework import serializers
 class RecommendSerializer(serializers.Serializer):
     # content_pk = serializers.IntegerField()
     content_pk = serializers.ListField(child=serializers.IntegerField())
+    content_rate = serializers.ListField(child=serializers.IntegerField())
+
+class mainRecommendSerializer(serializers.Serializer):
+    netflix = serializers.ListField(child=serializers.FloatField())
+    watcha = serializers.ListField(child=serializers.FloatField())
+    wavve = serializers.ListField(child=serializers.FloatField())
+    disney_plus = serializers.ListField(child=serializers.FloatField())
