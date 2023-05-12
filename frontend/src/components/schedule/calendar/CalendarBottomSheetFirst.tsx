@@ -18,12 +18,16 @@ const CalendarBottomSheetFirst = (props: { date: number; month: number }) => {
   const dateScheduleList = monthSchedule[props.date];
 
   const nextContent = () => {
-    if (dateScheduleList.length > 1 && index !== dateScheduleList.length - 1) {
+    if (
+      Array.isArray(dateScheduleList) &&
+      dateScheduleList.length > 1 &&
+      index !== dateScheduleList.length - 1
+    ) {
       setIndex(index + 1);
     }
   };
   const prevContent = () => {
-    if (dateScheduleList.length > 1 && index !== 0) {
+    if (Array.isArray(dateScheduleList) && dateScheduleList.length > 1 && index !== 0) {
       setIndex(index - 1);
     }
   };
@@ -43,7 +47,7 @@ const CalendarBottomSheetFirst = (props: { date: number; month: number }) => {
             {"컨텐츠 일정 추가"} <AiOutlinePlusCircle />
           </Add>
         </DateAndAdd>
-        {dateScheduleList.length === 0 ? (
+        {Array.isArray(dateScheduleList) && dateScheduleList.length === 0 ? (
           <div>일정이 업습</div>
         ) : (
           <ContentContainer>

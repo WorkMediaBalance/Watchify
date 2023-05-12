@@ -76,6 +76,7 @@ const Calendar = (props: {
   rows.push({ cells });
 
   function thisMonth() {
+    console.log("thismonth");
     setSelectedDate(new Date());
     props.onCloseSheet();
   }
@@ -96,15 +97,20 @@ const Calendar = (props: {
   });
 
   const [currentRowIndex, setCurrentRowIndex] = useState(0);
-  const handleDateClick = (event: React.MouseEvent<HTMLDivElement>, rowIndex: number) => {
-    if (event.currentTarget.innerText) {
+  const handleDateClick = (
+    event: React.MouseEvent<HTMLDivElement>,
+    rowIndex: number,
+    day: string
+  ) => {
+    const YMD = day.split("-");
+    if (YMD.length === 3) {
       if (clickedDay) {
         clickedDay.classList.remove("selected-day");
       }
       event.currentTarget.classList.add("selected-day");
       setClickedDay(event.currentTarget);
       const date = selectedDate.getMonth() + 1;
-      const month = Number(event.currentTarget.innerText);
+      const month = Number(YMD[2]);
       props.onDateClick(month, date);
     }
     setCurrentRowIndex(rowIndex);
@@ -112,9 +118,7 @@ const Calendar = (props: {
 
   // 해당 스케줄 불러오기
   const [monthSchedule, setMonthSchedule] = useRecoilState(monthScheduleState);
-  useEffect(() => {
-    console.log(monthSchedule[1]);
-  }, []);
+
   return (
     <Wrapper className={"wrapper"}>
       <motion.div>
@@ -169,13 +173,14 @@ const Calendar = (props: {
                         return props.bottomSheetState === 2 ? (
                           currentRowIndex === rowIndex && (
                             <STd
-                              onClick={(event) => handleDateClick(event, rowIndex)}
+                              onClick={(event) => handleDateClick(event, rowIndex, day)}
                               key={`${rowIndex}-${dayIndex}`}
                               data-key={`${rowIndex}-${dayIndex}`}
                               className={className}
                             >
                               <STdDiv>
                                 <SP>{content}</SP>
+
                                 <InnerConteiner>
                                   {typeof content === "number"
                                     ? monthSchedule[content].map((content, index) => {
@@ -193,13 +198,14 @@ const Calendar = (props: {
                           )
                         ) : (
                           <STd
-                            onClick={(event) => handleDateClick(event, rowIndex)}
+                            onClick={(event) => handleDateClick(event, rowIndex, day)}
                             key={`${rowIndex}-${dayIndex}`}
                             data-key={`${rowIndex}-${dayIndex}`}
                             className={className}
                           >
                             <STdDiv>
                               <SP>{content}</SP>
+
                               <InnerConteiner>
                                 {typeof content === "number"
                                   ? monthSchedule[content].map((content, index) => {
@@ -313,8 +319,10 @@ const SP = styled.div`
 const InnerConteiner = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: start;
   width: 100%;
+  height: 100%;
+  margin-top: 0.2vh;
 `;
 
 const ContentTag = styled.div`
