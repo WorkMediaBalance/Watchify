@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { theme } from "styles/theme";
 import Calendar from "components/schedule/calendar/Calendar";
 import CalendarBottomSheet from "components/schedule/calendar/CalendarBottomSheet";
-
+import { useNavigate } from "react-router-dom";
 // month 스케줄 state
 import { monthScheduleState } from "recoil/scheduleState";
 import { useRecoilState } from "recoil";
@@ -15,6 +15,7 @@ const Wrapper = styled.div`
 `;
 
 const PageScheduleResult = () => {
+  const navigate = useNavigate();
   const [sheet, setSheet] = useState(0);
   const [month, setMonth] = useState(1);
   const [date, setDate] = useState(1);
@@ -30,6 +31,8 @@ const PageScheduleResult = () => {
 
   return (
     <Wrapper>
+      {/* 스케줄 다시 추천 받기 (5.12 민혁 추가) */}
+      <button onClick={() => navigate("/schedule")}>스케줄 다시 만들기 버튼</button>
       <Calendar
         onDateClick={(date: number, month: number) => {
           setSheet(sheet + 1);
