@@ -4,12 +4,18 @@
   "name": "Watchify | 나만의 OTT 스케줄러",
   "icons": [
     {
-      "src": "logo.png",
+      "src": "/logo.png",
       "type": "image/png",
-      "sizes": "619x395"
+      "sizes": "192x192"
+    },
+    {
+      "src": "/logo.png",
+      "type": "image/png",
+      "sizes": "512x512"
     }
   ],
-  "start_url": ".",
+
+  "start_url": "/",
   "display": "standalone",
   "theme_color": "#000000",
   "background_color": "#ffffff"
