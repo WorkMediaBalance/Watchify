@@ -2,7 +2,14 @@ import React from "react";
 import styled from "styled-components";
 import HistoryComponent from "./HistoryComponent";
 
+// month 스케줄 state
+import { monthScheduleState } from "recoil/scheduleState";
+import { useRecoilState } from "recoil";
+
 const HistoryTab = () => {
+  // month 스케줄
+  const [monthSchedule, setMonthSchedule] = useRecoilState(monthScheduleState);
+
   const dummyArray = [0, 0, 0, 0, 0, 0, 0, 0];
   return (
     <div>
@@ -17,7 +24,7 @@ const HistoryTab = () => {
       >
         <div style={{ height: "100%", overflowY: "auto" }}>
           {dummyArray.map((index) => {
-            return <HistoryComponent />;
+            return <HistoryComponent contentHistory={monthSchedule} />;
           })}
         </div>
       </div>
