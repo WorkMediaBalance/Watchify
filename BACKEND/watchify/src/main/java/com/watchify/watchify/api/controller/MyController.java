@@ -171,7 +171,7 @@ public class MyController {
             userService.updateUserProfileImg(userId, multipartFile);
             return ResponseEntity.status(200).body("Updated to user profile image.");
         } catch (Exception e) {
-            return ResponseEntity.status(404).body("Failed to user profile image.");
+            return ResponseEntity.status(404).body("Failed to user profile image..");
         }
     }
 }
