@@ -5,19 +5,19 @@ from ml.models import User
 class SimilarityMatrix:
 
     similarity_matrix = None
-    userdict = User.objects.values_list('id')
-    print('semilarity_matrix.py ===== userdict')
-    print(userdict)
+    # userdict = User.objects.values_list('id')
 
-    def __init__(self):
-        self.build()
+    def __init__(self, userdict):
+        print('semilarity_matrix.py ===== userdict')
+        self.build(userdict)
+        print('유저 리스트 : ',userdict)
     
-    def build(self):
-        self.similarity_matrix = np.empty((len(self.userdict), len(self.userdict),))
+    def build(self, userdict):
+        self.similarity_matrix = np.empty((len(userdict), len(userdict),))
 
-        for u in range(0, len(self.userdict)):
-            for v in range(u+1, len(self.userdict)):
-                rcm = RatingCountMatrix(u,v)
+        for u in range(0, len(userdict)):
+            for v in range(u+1, len(userdict)):
+                rcm = RatingCountMatrix(u, v, len(userdict))
                 if rcm.get_agreement_count() > 0:
                     self.similarity_matrix[u][v] = rcm.get_agreement_count() / rcm.get_total_count()
                 else:
