@@ -1,16 +1,32 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import HistoryComponent from "./HistoryComponent";
 
-// month 스케줄 state
 import { monthScheduleState } from "recoil/scheduleState";
 import { useRecoilState } from "recoil";
 
+import { content } from "./../../interface/content";
+import { myHistory } from "apis/apiMy";
+
 const HistoryTab = () => {
-  // month 스케줄
+  const dummyArray = [0, 0, 0, 0, 0, 0, 0];
+  const [historyArray, setHistoryArray] = useState<content[]>([]);
+
+  // async function MyHistoryAPI() {
+  //   try {
+  //     const newHistoryArray = await myHistory();
+  //     console.log(newHistoryArray);
+  //     setHistoryArray(newHistoryArray);
+  //   } catch {}
+  // }
+  // useEffect(() => {
+  //   MyHistoryAPI();
+  // }, []);
+
+  // month 스케줄 state
+
   const [monthSchedule, setMonthSchedule] = useRecoilState(monthScheduleState);
 
-  const dummyArray = [0, 0, 0, 0, 0, 0, 0, 0];
   return (
     <div>
       <Title>스케줄 히스토리</Title>
