@@ -14,9 +14,9 @@ import java.util.Map;
 
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("/api/my")
+@RequestMapping("/api/schedule")
 @RequiredArgsConstructor
-public class ScheduleInfoController {
+public class ScheduleController {
 
     private final UserService userService;
     private final ScheduleInfoService scheduleInfoService;
@@ -33,6 +33,7 @@ public class ScheduleInfoController {
         } catch (Exception e) {
             return ResponseEntity.status(404).body("Failed to get schedule info");
         }
-
     }
+
+
 }
