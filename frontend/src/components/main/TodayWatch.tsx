@@ -1,11 +1,17 @@
 import React, { useState } from "react";
 import styled, { keyframes, css } from "styled-components";
+import { content } from "interface/content";
+import { useNavigate } from "react-router-dom";
 
+interface todayWatch extends content {
+  episode: number;
+}
 interface TodayWatchProps {
   clickState: number;
   setClickState: React.Dispatch<React.SetStateAction<number>>;
   prevState: number;
   setPrevState: React.Dispatch<React.SetStateAction<number>>;
+  todayWatch: todayWatch[] | [];
 }
 
 const TodayWatch: React.FC<TodayWatchProps> = ({
@@ -13,15 +19,18 @@ const TodayWatch: React.FC<TodayWatchProps> = ({
   setClickState,
   prevState,
   setPrevState,
+  todayWatch,
 }) => {
   const handleState = async (index: number) => {
     await setPrevState(clickState);
     await setClickState(index);
   };
 
+  const navigate = useNavigate();
   return (
     <Container
       clickState={clickState}
+      backdropPath={todayWatch.length > 0 ? todayWatch[0]["backdropPath"] : "/favicon3.png"}
       onClick={() => {
         console.log(clickState);
 
@@ -31,52 +40,77 @@ const TodayWatch: React.FC<TodayWatchProps> = ({
       {clickState === 1 ? (
         <TopInformation className="top">
           <div>
-            <Title>{"모범택시"}</Title>
-            <Episode>{"1화"}</Episode>
+            <Title>{todayWatch.length > 0 ? todayWatch[0]["title"] : null}</Title>
+            <Episode>
+              {todayWatch !== undefined
+                ? todayWatch[0]["episode"] !== 0
+                  ? todayWatch[0]["episode"] + "화"
+                  : null
+                : null}
+            </Episode>
           </div>
-          <CalendarLink>{"보러가기"}</CalendarLink>
-        </TopInformation>
-      ) : null}
-      <BottomRectangle
-        className="rectangle"
-        onClick={(e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-          e.stopPropagation();
-          console.log(clickState);
-          handleState(2);
-        }}
-        clickState={clickState}
-        prevState={prevState}
-      >
-        {clickState === 2 ? (
-          <BottomInformation className="bottom">
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "end",
+          {todayWatch.length > 0 ? (
+            <CalendarLink
+              onClick={() => {
+                navigate("/schedule/result");
               }}
             >
-              <Title>{"테드 라소"}</Title>
-              <Episode>{"1화"}</Episode>
-            </div>
-            <CalendarLink>{"보러가기"}</CalendarLink>
-          </BottomInformation>
-        ) : null}
-      </BottomRectangle>
+              {"보러가기"}
+            </CalendarLink> // TODO: 라우팅 파라미터로 날짜 보내주면 그 날짜 클릭되는 느낌으로
+          ) : null}
+        </TopInformation>
+      ) : null}
+      {todayWatch.length > 0 && todayWatch.length > 1 && (
+        <BottomRectangle
+          className="rectangle"
+          backdropPath={todayWatch[1]["backdropPath"]}
+          onClick={(e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+            e.stopPropagation();
+            console.log(clickState);
+            handleState(2);
+          }}
+          clickState={clickState}
+          prevState={prevState}
+        >
+          {clickState === 2 ? (
+            <BottomInformation className="bottom">
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "end",
+                }}
+              >
+                <Title>{todayWatch[1]["title"]}</Title>
+                <Episode>
+                  {todayWatch[1]["episode"] !== 0 ? todayWatch[1]["episode"] + "화" : null}
+                </Episode>
+              </div>
+              <CalendarLink
+                onClick={() => {
+                  navigate("/schedule/result");
+                }}
+              >
+                {"보러가기"}
+              </CalendarLink>
+            </BottomInformation>
+          ) : null}
+        </BottomRectangle>
+      )}
     </Container>
   );
 };
 
 export default TodayWatch;
 
-const Container = styled.div<{ clickState: number }>`
+const Container = styled.div<{ clickState: number; backdropPath: string }>`
   position: relative;
   width: 100vw;
   height: 30vh;
-  background-image: ${({ clickState }) =>
+  background-image: ${({ clickState, backdropPath }) =>
     clickState === 1
-      ? `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("https://images.justwatch.com/backdrop/302937718/s1920/mobeomtaegsi.webp")`
-      : `url("https://images.justwatch.com/backdrop/302937718/s1920/mobeomtaegsi.webp")`};
+      ? `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(${backdropPath})`
+      : `url(${backdropPath})`};
   background-size: cover;
   background-position: center;
   overflow: hidden;
@@ -173,16 +207,16 @@ const state2to1 = keyframes`
 `;
 
 // 아랫쪽 사각형
-const BottomRectangle = styled.div<{ clickState: number; prevState: number }>`
+const BottomRectangle = styled.div<{ clickState: number; prevState: number; backdropPath: string }>`
   position: absolute;
   bottom: 0;
   right: 0;
   height: 100%;
   width: 100%;
-  background-image: ${({ clickState }) =>
+  background-image: ${({ clickState, backdropPath }) =>
     clickState === 2
-      ? `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("https://images.justwatch.com/backdrop/246950734/s1920/tedeu-raso.webp")`
-      : `url("https://images.justwatch.com/backdrop/246950734/s1920/tedeu-raso.webp")`};
+      ? `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(${backdropPath})`
+      : `url(${backdropPath})`};
   background-size: cover;
   background-position: center;
   clip-path: ${(props) => {
@@ -268,4 +302,6 @@ const CalendarLink = styled.div`
   border: 1px solid white;
   border-radius: 10px;
   padding: 1vw;
+  padding-left: 2vw;
+  padding-right: 2vw;
 `;

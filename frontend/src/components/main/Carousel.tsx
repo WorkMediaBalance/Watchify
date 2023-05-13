@@ -1,11 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { EffectCoverflow, Navigation, Mousewheel } from "swiper";
 import styled from "styled-components";
 
+import { content } from "interface/content";
+
 import "swiper/css";
 import "swiper/css/effect-coverflow";
 import "swiper/css/pagination";
+import { weekScheduleState } from "./../../recoil/scheduleState";
 
 const Container = styled.div`
   height: auto;
@@ -59,17 +62,17 @@ const DateContainer = styled.div`
   height: 100%;
 `;
 
-const Month = styled.div`
+const MonthDiv = styled.div`
   font-size: 2rem;
   font-weight: 700;
   margin-bottom: -1vh;
 `;
-const Date = styled.div`
+const DateDiv = styled.div`
   font-size: 2rem;
   font-weight: 700;
   margin-bottom: -1vh;
 `;
-const Day = styled.div`
+const DayDiv = styled.div`
   font-size: 2rem;
   font-weight: 700;
   margin-bottom: 1vh;
@@ -99,11 +102,15 @@ const Episode = styled.div`
   margin: 1vw;
 `;
 const EpisodeTitle = styled.div`
-  font-size: 1.2rem;
+  font-size: 1rem;
   font-weight: 700;
+  white-space: nowrap; // 줄바꿈 방지
+  overflow: hidden; // 넘치는 부분 숨김
+  text-overflow: ellipsis; // 넘치는 부분을 ... 으로 표시
+  max-width: 100%; // 여기가 넘어가면 안되는 너비
 `;
 const EpisodeNumber = styled.div`
-  font-size: 1rem;
+  font-size: 0.8rem;
   font-weight: 700;
   margin-left: 1vw;
 `;
@@ -121,9 +128,29 @@ const More = styled.div`
   margin-bottom: 3.5vw;
 `;
 
-function Carousel() {
+interface contentEpisode extends content {
+  episode: number;
+}
+interface CarouselProps {
+  weeklySchedule: contentEpisode[][];
+}
+
+const Carousel: React.FC<CarouselProps> = ({ weeklySchedule }) => {
   const contentArray = [0, 0, 0, 0, 0, 0, 0];
   const [activeIndex, setActiveIndex] = useState(4);
+  let today = new Date();
+  let thisWeek = [
+    new Date().setDate(today.getDate() - 3),
+    new Date().setDate(today.getDate() - 2),
+    new Date().setDate(today.getDate() - 1),
+    today,
+    new Date().setDate(today.getDate() + 1),
+    new Date().setDate(today.getDate() + 2),
+    new Date().setDate(today.getDate() + 3),
+  ];
+
+  let days = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
+
   return (
     <Container className="CarouselContainer">
       <Swiper
@@ -132,7 +159,7 @@ function Carousel() {
         centeredSlides={true}
         slidesPerView={2} // 몇개가 동시에 보이는지 (2면 1개 + 0.5개 * 2)
         spaceBetween={-40} // 겹치는 정도
-        initialSlide={4} // 시작 슬라이드!
+        initialSlide={3} // 시작 슬라이드!
         coverflowEffect={{
           rotate: 20,
           stretch: 0,
@@ -152,28 +179,58 @@ function Carousel() {
         {contentArray.map((content, index) => (
           <SwiperSlide key={index}>
             <SlideContainer>
-              <SlideImage url="https://images.justwatch.com/backdrop/302937718/s1920/mobeomtaegsi.webp">
+              <SlideImage
+                url={
+                  weeklySchedule[index].length === 0
+                    ? "/favicon3.png"
+                    : weeklySchedule[index][0]["backdropPath"]
+                }
+              >
                 <Overlay isActive={activeIndex === index}>
                   <OverlayContainer>
                     <DateContainer>
-                      <Month>{"05"}</Month>
-                      <Date>{"05"}</Date>
-                      <Day>{"FRI"}</Day>
+                      <MonthDiv>
+                        {new Date(thisWeek[index]).getMonth() + 1 < 10
+                          ? "0" + (new Date(thisWeek[index]).getMonth() + 1)
+                          : new Date(thisWeek[index]).getMonth() + 1}
+                      </MonthDiv>
+                      <DateDiv>
+                        {new Date(thisWeek[index]).getDate() < 10
+                          ? "0" + new Date(thisWeek[index]).getDate()
+                          : new Date(thisWeek[index]).getDate()}
+                      </DateDiv>
+                      <DayDiv>{days[new Date(thisWeek[index]).getDay()]}</DayDiv>
                     </DateContainer>
-                    <OverlayEpisodesContainer>
-                      <EpisodeAndMore>
-                        <Episode>
-                          <EpisodeTitle>{"모범택시"}</EpisodeTitle>
-                          <EpisodeNumber>{"1화"}</EpisodeNumber>
-                        </Episode>
-                        <Episode>
-                          <EpisodeTitle>{"모범택시"}</EpisodeTitle>
-                          <EpisodeNumber>{"2화"}</EpisodeNumber>
-                        </Episode>
-                        <Extra>{`외 2편`}</Extra>
-                      </EpisodeAndMore>
-                      <More>{`more >`}</More>
-                    </OverlayEpisodesContainer>
+                    {weeklySchedule[index].length === 0 ? null : weeklySchedule[index].length <=
+                      2 ? (
+                      <OverlayEpisodesContainer>
+                        <EpisodeAndMore>
+                          {weeklySchedule[index].map((episode, index) => (
+                            <Episode>
+                              <EpisodeTitle>{episode["title"]}</EpisodeTitle>
+                              <EpisodeNumber>
+                                {episode["episode"] === 0 ? null : episode["episode"] + "화"}
+                              </EpisodeNumber>
+                            </Episode>
+                          ))}
+                        </EpisodeAndMore>
+                      </OverlayEpisodesContainer>
+                    ) : (
+                      <OverlayEpisodesContainer>
+                        <EpisodeAndMore>
+                          {weeklySchedule[index].slice(0, 2).map((episode, index) => (
+                            <Episode>
+                              <EpisodeTitle>{episode["title"]}</EpisodeTitle>
+                              <EpisodeNumber>
+                                {episode["episode"] === 0 ? null : episode["episode"] + "화"}
+                              </EpisodeNumber>
+                            </Episode>
+                          ))}
+                          <Extra>{`외 ${weeklySchedule[index].length - 2}편`}</Extra>
+                        </EpisodeAndMore>
+                        <More>{`more >`}</More>
+                      </OverlayEpisodesContainer>
+                    )}
                   </OverlayContainer>
                 </Overlay>
               </SlideImage>
@@ -183,6 +240,6 @@ function Carousel() {
       </Swiper>
     </Container>
   );
-}
+};
 
 export default Carousel;
