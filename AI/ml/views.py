@@ -18,7 +18,7 @@ from recommend_content import recommend
 # from model.Recommand import Recommands
 
 # Create your views here.
-class RecommendAPIView(APIView):
+class PotatoAPIView(APIView):
     def get(self,request):
          user_id = request.GET.get('id')
          genres = request.GET.get('genres')
@@ -55,17 +55,38 @@ class RecommendAPIView(APIView):
          # print('응답확인 ===== ',serializer)
          return Response(serializer.data)
    
-class PotatoAPIView(APIView):
-   #  http://127.0.0.1:8000/api/potato?id=1&genres=액션
+class RecommendAPIView(APIView):
+   #  http://127.0.0.1:8000/api/recommend?id=1&genres=액션&rating=1
     def get(self,request):
          user_id = request.GET.get('id')
          genres = request.GET.get('genres')
+         rating = request.GET.get('rating')
          genres = genres.split(',')
-         print('장르르으ㅡㄹ응 : ',user_id, genres)
-         
-         result = recommend(user_id, genres, 10)
-         contents = {'content_pk' : result}
+         audience_age = 19 if rating == 1 else 15
+         print('장르르으ㅡㄹ응 : ',user_id, genres, rating, audience_age)
+         import time
+         start_time = time.time()
+         result = recommend(user_id, genres, audience_age, 10)
+         end_time = time.time()
+         print('소요 시간 : ', end_time - start_time)
+         contents = {
+              'content_pk' : [x[0] for x in result],
+              'content_rate' : [x[1]*10 for x in result]
+              }
          print('포테이토 결과 ======> : ', contents)
          serializer = RecommendSerializer(contents)
          # print('응답확인 ===== ',serializer)
+         return Response(serializer.data)
+
+class mainRecommendAPIView(APIView):
+     # 임시
+     def get(self, request):
+         import random
+         contents = {
+              'netflix' : random.sample(range(6000), 10),
+              'watcha' : random.sample(range(6000,10000), 10),
+              'wavve' : random.sample(range(10000,20000), 10),
+              'disney_plus' : random.sample(range(20000,30000), 10)
+         }
+         serializer = mainRecommendSerializer(contents)
          return Response(serializer.data)
