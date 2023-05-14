@@ -21,3 +21,6 @@ class mainRecommendSerializer(serializers.Serializer):
     watcha = serializers.ListField(child=serializers.FloatField())
     wavve = serializers.ListField(child=serializers.FloatField())
     disney_plus = serializers.ListField(child=serializers.FloatField())
+
+class scheduleSerializer(serializers.Serializer):
+    content_pk = serializers.ListField(child=serializers.IntegerField())
