@@ -49,13 +49,19 @@ pipeline {
                         sh """
                             sed -i 's/watchify:frontend\\([^:]*\\)/watchify:frontend${BUILD_NUMBER}/g' my-service.yaml
                             git add my-service.yaml
-                            git commit -m 'Update my-service tag to ${BUILD_NUMBER}'
+                            git commit -m 'Update my-service tag to frontend${BUILD_NUMBER}'
                         """
                         sh """
                             sed -i 's/watchify:backend\\([^:]*\\)/watchify:backend${BUILD_NUMBER}/g' back-service.yaml
                             git add back-service.yaml
-                            git commit -m 'Update back-service tag to ${BUILD_NUMBER}'
+                            git commit -m 'Update back-service tag to backend${BUILD_NUMBER}'
                         """
+//                         sh """
+//                             sed -i 's/watchify:ai\\([^:]*\\)/watchify:backend${BUILD_NUMBER}/g' back-service.yaml
+//                             git add ai-service.yaml
+//                             git commit -m 'Update back-service tag to ai${BUILD_NUMBER}'
+//                         """
+
                     }
 
                     withCredentials([usernamePassword(credentialsId: 'c76be613-6684-47c5-8b0e-1547e7f184f0', passwordVariable: 'diligent0924!', usernameVariable: 'sdc00035')]) {
