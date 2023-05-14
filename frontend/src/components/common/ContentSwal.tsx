@@ -72,8 +72,10 @@ const ContentSwal: React.FC<ContentSwalProps> = ({ content: content }) => {
         <Header>
           <div>
             <TitleSeasonContainer>
-              <Title>{content.title}</Title>
-              <Season>{content.season > 0 ? `시즌 ${content.season}` : ""}</Season>
+              <Title>
+                {content.title}
+                <Season>{content.season > 0 ? `시즌 ${content.season}` : ""}</Season>
+              </Title>
             </TitleSeasonContainer>
             <RateAndGenresContainer>
               <Rate>{`${content.rate} / 5.0`}</Rate>
@@ -201,7 +203,7 @@ const Title = styled.div`
   font-size: ${({ theme }) => theme.fontSizeType.big.fontSize};
   font-weight: ${({ theme }) => theme.fontSizeType.big.fontWeight};
 `;
-const Season = styled.div`
+const Season = styled.span`
   font-size: ${({ theme }) => theme.fontSizeType.middle.fontSize};
   font-weight: ${({ theme }) => theme.fontSizeType.middle.fontWeight};
   margin-left: 1vw;
