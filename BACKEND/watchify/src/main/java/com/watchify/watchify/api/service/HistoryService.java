@@ -3,11 +3,11 @@ package com.watchify.watchify.api.service;
 import com.watchify.watchify.db.entity.Calender;
 import com.watchify.watchify.db.entity.Content;
 import com.watchify.watchify.db.entity.LikeContent;
-import com.watchify.watchify.db.entity.WishContent;
 import com.watchify.watchify.db.repository.CalenderRepository;
 import com.watchify.watchify.db.repository.LikeContentRepository;
 import com.watchify.watchify.db.repository.WishContentRepository;
 import com.watchify.watchify.dto.response.HistoryDTO;
+import com.watchify.watchify.dto.response.HistoryInfoDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +16,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Transactional(readOnly = true)
@@ -80,6 +81,47 @@ public class HistoryService {
                 }
             }
             res.add(historyDTO);
+        }
+
+        return res;
+    }
+
+    public Map<Integer, List<HistoryInfoDTO>> getUserHistoryInfo(Long userId, Long contentId, int year, int month) {
+        Map<Integer, List<HistoryInfoDTO>> res = new HashMap<>();
+
+        LocalDate startDate = LocalDate.of(year, month, 1);
+        LocalDate endDate = LocalDate.of(year, month, startDate.lengthOfMonth());
+        List<Calender> myCalenderList = calenderRepository.getSpecificContentViewedCalender(userId, startDate, endDate);
+        List<Long> myWishContentList = wishContentRepository.getContentIdInMyWishList(userId);
+        List<LikeContent> myLikeContentList = likeContentRepository.getLikeContent(userId);
+
+        for (Calender calender : myCalenderList) {
+            LocalDate date = calender.getViewDate(); // 본날짜
+            Content content = calender.getTurnContent().getContent();
+            int ep = calender.getTurnContent().getEpisode();
+            int day = date.getDayOfMonth();
+            if (content.getId() != contentId) {
+                continue;
+            }
+
+            HistoryInfoDTO historyInfoDTO = new HistoryInfoDTO(content, date, ep);
+            historyInfoDTO.setIsWish(myWishContentList.contains(content.getId()));
+
+            for (LikeContent lc : myLikeContentList) {
+                if (lc.getContent().equals(content)) {
+                    historyInfoDTO.setIsLike(lc.isLike() ? 1 : -1);
+                    break;
+                }
+            }
+
+            List<HistoryInfoDTO> tmp;
+            if (res.containsKey(day)) {
+                tmp = res.get(day);
+            } else {
+                tmp = new ArrayList<>();
+            }
+            tmp.add(historyInfoDTO);
+            res.put(day, tmp);
         }
 
         return res;

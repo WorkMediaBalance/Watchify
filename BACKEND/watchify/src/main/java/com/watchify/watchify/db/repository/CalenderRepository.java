@@ -21,4 +21,8 @@ public interface CalenderRepository extends JpaRepository<Calender, Long> {
     @Query(value = "select * from calender c where c.user_id = :userId and is_deleted = false and view_date is not null", nativeQuery = true)
     List<Calender> getMyViewedCalender(@Param("userId") Long userId);
 
+    @Query(value = "select * from calender c where c.user_id = :userId and is_deleted = false and view_date is not null and c.date between :startDate and :endDate ", nativeQuery = true)
+    List<Calender> getSpecificContentViewedCalender(Long userId, LocalDate startDate, LocalDate endDate);
+
+
 }
