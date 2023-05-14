@@ -11,7 +11,6 @@ import ScheduleBottomSheet from "components/schedule/ScheduleBottomSheet";
 import { AiOutlineMinusCircle } from "react-icons/ai";
 import Lottie from "lottie-react";
 import scheduleGIF from "assets/gif/schedule-calendar-animation.json";
-import BottomDot from "./../layout/BottomDot";
 
 const PageScheduleContent = () => {
   const navigate = useNavigate();
@@ -58,6 +57,19 @@ const PageScheduleContent = () => {
         BottomDot.style.position = "sticky";
       }
     }
+    return () => {
+      if (appBar) {
+        appBar.style.display = "block";
+        appBar.style.position = "sticky";
+        if (appBarMargin) {
+          appBarMargin.style.marginTop = "5vh";
+        }
+      }
+      if (BottomDot) {
+        BottomDot.style.display = "block";
+        BottomDot.style.position = "sticky";
+      }
+    };
   }, [isLoading]);
 
   const onClickLoading = () => {

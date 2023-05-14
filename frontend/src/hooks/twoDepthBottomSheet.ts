@@ -14,9 +14,13 @@ interface BottomSheetMetrics {
 }
 
 export default function useTwoDepthBottomSheet() {
+  const [bottomSheetY, setBottomSheetY] = useState(0);
+
   const sheet = useRef<HTMLDivElement>(null);
 
   const content = useRef<HTMLDivElement>(null);
+
+  const handle = useRef<HTMLDivElement>(null);
 
   const metrics = useRef<BottomSheetMetrics>({
     touchStart: {
@@ -51,7 +55,7 @@ export default function useTwoDepthBottomSheet() {
         return true;
       }
 
-      if (sheet.current!.getBoundingClientRect().y !== TWO_MIN_Y) {
+      if (handle.current!.getBoundingClientRect().y !== TWO_MIN_Y) {
         return true;
       }
 
@@ -63,7 +67,7 @@ export default function useTwoDepthBottomSheet() {
 
     const handleTouchStart = (e: TouchEvent) => {
       const { touchStart } = metrics.current;
-      touchStart.sheetY = sheet.current!.getBoundingClientRect().y;
+      touchStart.sheetY = handle.current!.getBoundingClientRect().y;
       touchStart.touchY = e.touches[0].clientY;
     };
 
@@ -102,7 +106,16 @@ export default function useTwoDepthBottomSheet() {
           nextSheetY = TWO_MAX_Y;
         }
 
-        sheet.current!.style.setProperty("transform", `translateY(${nextSheetY - TWO_MAX_Y}px)`);
+        const VIEWPORT_HEIGHT = window.innerHeight;
+        // translate가 윗방향이니까 음수임을 기억해
+        sheet.current!.style.setProperty(
+          "transform",
+          `translateY(${
+            currentTouch.clientY - VIEWPORT_HEIGHT < TWO_MIN_Y - TWO_MAX_Y
+              ? TWO_MIN_Y - TWO_MAX_Y
+              : currentTouch.clientY - VIEWPORT_HEIGHT
+          }px)`
+        );
       } else {
         document.body.style.overflowY = "hidden";
       }
@@ -139,13 +152,13 @@ export default function useTwoDepthBottomSheet() {
       };
     };
 
-    sheet.current!.addEventListener("touchstart", handleTouchStart);
-    sheet.current!.addEventListener("touchmove", handleTouchMove);
-    sheet.current!.addEventListener("touchend", handleTouchEnd);
+    handle.current!.addEventListener("touchstart", handleTouchStart);
+    handle.current!.addEventListener("touchmove", handleTouchMove);
+    handle.current!.addEventListener("touchend", handleTouchEnd);
     return () => {
-      sheet.current?.removeEventListener("touchstart", handleTouchStart);
-      sheet.current?.removeEventListener("touchmove", handleTouchMove);
-      sheet.current?.removeEventListener("touchend", handleTouchEnd);
+      handle.current?.removeEventListener("touchstart", handleTouchStart);
+      handle.current?.removeEventListener("touchmove", handleTouchMove);
+      handle.current?.removeEventListener("touchend", handleTouchEnd);
     };
   }, [openBottomSheet]);
 
@@ -168,5 +181,5 @@ export default function useTwoDepthBottomSheet() {
     }
   }, [sheetDepth]);
 
-  return { sheet, content, openBottomSheet, sheetDepth, setSheetDepth };
+  return { sheet, content, openBottomSheet, sheetDepth, setSheetDepth, handle };
 }

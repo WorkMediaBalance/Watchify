@@ -5,14 +5,24 @@ import { useRecoilState } from "recoil";
 import { USER_NAME } from "constant/constant";
 import { theme } from "styles/theme";
 import NameTicker from "components/recommend/NameTicker";
+
 import disney from "assets/img/disneyIcon.png";
 import netflix from "assets/img/netflixIcon.png";
 import watcha from "assets/img/watchaIcon.png";
 import wavve from "assets/img/wavveIcon.png";
 
+import { Swiper, SwiperSlide } from "swiper/react";
+import { EffectCoverflow, Navigation, Mousewheel } from "swiper";
+
+import "swiper/css";
+import "swiper/css/effect-coverflow";
+import "swiper/css/pagination";
+
+import ContentPoster from "components/common/ContentPoster";
+
 const Wrapper = styled.div`
   width: 100vw;
-  min-height: 92vh;
+  min-height: 100%;
   margin-top: 0;
   background-color: ${theme.netflix.backgroundColor};
   display: flex;
@@ -48,17 +58,27 @@ const STitleP = styled.p`
   font-size: ${theme.fontSizeType.big.fontSize};
   font-weight: ${theme.fontSizeType.big.fontWeight};
   color: ${theme.netflix.fontColor};
-  margin-top: 2.5vh;
+`;
+
+const SMiniTitle = styled.div`
+  font-size: ${theme.fontSizeType.middle.fontSize};
+  font-weight: ${theme.fontSizeType.middle.fontWeight};
+  color: ${theme.netflix.fontColor};
+  margin: 1vh;
+  margin-left: 5vw;
+  width: 100vw;
+  text-align: left;
 `;
 
 const SMainDiv = styled.div`
   display: flex;
   width: 100vw;
-  height: 60vh;
+  height: 55vh;
   border: 1px solid ${theme.netflix.fontColor};
   border-radius: 12px;
   background-color: ${theme.netflix.tabColor};
   flex-direction: column;
+  margin-bottom: 1vh;
 `;
 
 const SContentDiv = styled.div`
@@ -92,6 +112,13 @@ const SSummaryP = styled.p`
   margin-top: 3vh;
 `;
 
+const Container = styled.div`
+  height: auto;
+  z-index: 0;
+  position: relative;
+  margin: 1vw;
+`;
+
 const PageRecommendResult = () => {
   const [recResult, SetRecResult] = useRecoilState(recResultState);
   const [selectedNum, SetSelectedNum] = useState<number>(0);
@@ -102,7 +129,7 @@ const PageRecommendResult = () => {
   };
 
   const renderOTTIcons = () => {
-    const ottList = recResult[selectedNum].ott;
+    const ottList = Object.keys(recResult[selectedNum].ott);
 
     interface IconMap {
       [key: string]: string;
@@ -144,7 +171,7 @@ const PageRecommendResult = () => {
   return (
     <Wrapper>
       <STitleP>{USER_NAME}님을 위한 추천 컨텐츠</STitleP>
-      <SMainDiv>
+      <SMainDiv className={"mainDiv"}>
         <div style={{ display: "flex", marginLeft: "5vw", position: "absolute" }}>
           <SRibbonDiv id="0" onClick={onClickHandler} selected={selectedNum === 0}>
             <SRibbonP selected={selectedNum === 0}>1</SRibbonP>
@@ -175,6 +202,45 @@ const PageRecommendResult = () => {
           <SSummaryP>{recResult[selectedNum].summarize}</SSummaryP>
         </SContentDiv>
       </SMainDiv>
+      <SMiniTitle>이런 컨텐츠는 어때요?</SMiniTitle>
+      <Container>
+        <Swiper
+          style={{ width: "100vw" }}
+          effect={"coverflow"}
+          grabCursor={true}
+          centeredSlides={true}
+          slidesPerView={4} // 몇개가 동시에 보이는지 (2면 1개 + 0.5개 * 2)
+          spaceBetween={-40} // 겹치는 정도
+          initialSlide={2} // 시작 슬라이드!
+          coverflowEffect={{
+            rotate: 20,
+            stretch: 0,
+            depth: 100,
+            modifier: 2,
+            slideShadows: true,
+          }}
+          // onSlideChange={(swiper) => {
+          //   setActiveIndex(swiper.activeIndex);
+          // }}
+          navigation={true} // 네비게이션 버튼
+          mousewheel={true} // 마우스 휠
+          pagination={true}
+          modules={[EffectCoverflow, Navigation, Mousewheel]}
+          className="mySwiper"
+        >
+          {recResult.map((content, index) => (
+            <SwiperSlide key={index}>
+              <div style={{ width: "33vw" }}>
+                <ContentPoster
+                  imageUrl={content["img_path"]}
+                  title={content["title"]}
+                  content={content}
+                />
+              </div>
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      </Container>
     </Wrapper>
   );
 };

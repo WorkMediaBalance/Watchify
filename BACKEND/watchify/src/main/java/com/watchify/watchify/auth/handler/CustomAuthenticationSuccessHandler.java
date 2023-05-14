@@ -28,7 +28,7 @@ public class CustomAuthenticationSuccessHandler extends SimpleUrlAuthenticationS
     private final String redirectUrl;
 
     protected CustomAuthenticationSuccessHandler(RedisTemplate<String, String> redisTemplate, TokenService tokenService,
-                                                 @Value("${app.oauth2.authorizedRedirectUrl}") String redirectURl) {
+                                                 @Value("${app.oauth2.frontRedirectUrl}") String redirectURl) {
         System.out.println("CustomAuthenticationSuccessHandler 생성자 발동");
         this.redisTemplate = redisTemplate;
         this.tokenService = tokenService;

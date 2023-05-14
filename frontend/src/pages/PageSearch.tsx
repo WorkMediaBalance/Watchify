@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ChangeEvent } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
@@ -38,7 +38,7 @@ const PageSearch = () => {
       type: "드라마",
       season: 1, // 없을 시 0
       finalEpisode: 10, // 없을 시 0
-      ott: ["netflix"], // 없을 시 빈 array
+      ott: { netflix: "https://www.netflix.com/kr/title/81519223" }, // 없을 시 빈 array
       genres: ["드라마"], // 없을 시 빈 array
       isWish: false, // 비로그인시 무조건 false
       isLike: 1, // 좋아요=1 / 없음=0 / 싫어요=-1
@@ -58,7 +58,10 @@ const PageSearch = () => {
       type: "영화",
       season: 0,
       finalEpisode: 0,
-      ott: ["wavve", "watcha"],
+      ott: {
+        wavve: "https://www.wavve.com/player/movie?movieid=MV_LO01_LO0000000038",
+        watcha: "https://watcha.com/contents/myWqyBW",
+      },
       genres: ["야생", "뱀파이어"],
       isWish: true,
       summarize: "뱀파이어가 울부지저따. 뱀파이어는 짱 쎄따. 크와아앙",
@@ -75,7 +78,11 @@ const PageSearch = () => {
       type: "영화",
       season: 0,
       finalEpisode: 0,
-      ott: ["wavve", "netflix", "disney"],
+      ott: {
+        wavve: "https://www.wavve.com/player/movie?movieid=MV_CH01_FX0000011513",
+        disney:
+          "https://www.disneyplus.com/ko-kr/movies/night-at-the-museum/7CIEBLbWIbTR?irclickid=QtOQ7aX85xyNW8FQSXWPO3CrUkAX00XKjQzmRU0&irgwc=1&cid=DSS-Affiliate-Impact-Content-JustWatch+GmbH-705874&tgclid=0f010036-956b-4d13-8f00-1ef16459f3ec&dclid=CjkKEQjw3ueiBhD6mL2q9ajRr5ABEiQAewM-7icpU5wK0vK8mOV_QSB276CtpQmwQhrtxJqj3PNNgjHw_wcB",
+      },
       genres: ["박물관", "리얼리티"],
       isWish: false,
       summarize:
@@ -136,14 +143,67 @@ const PageSearch = () => {
   // onTouchEnd
   // onKeyPress
 
+  useEffect(() => {
+    let appBar = document.getElementById("app-bar");
+    let appBarMargin = document.getElementById("app-bar-margin");
+    let searchLayout = document.getElementById("search-layout");
+    if (autocompleteVisible || isResult) {
+      if (appBar) {
+        appBar.style.display = "none";
+        appBar.style.position = "absolute";
+      }
+      if (appBarMargin) {
+        appBarMargin.style.marginTop = "0";
+      }
+      if (searchLayout) {
+        searchLayout.style.height = "96vh";
+      }
+    } else {
+      if (appBar) {
+        appBar.style.display = "block";
+        appBar.style.position = "sticky";
+      }
+      if (appBarMargin) {
+        appBarMargin.style.marginTop = "5vh";
+      }
+      if (searchLayout) {
+        searchLayout.style.height = "91vh";
+      }
+    }
+    return () => {
+      if (appBar) {
+        appBar.style.display = "block";
+        appBar.style.position = "sticky";
+      }
+      if (appBarMargin) {
+        appBarMargin.style.marginTop = "5vh";
+      }
+      if (searchLayout) {
+        searchLayout.style.height = "91vh";
+      }
+    };
+  }, [autocompleteVisible]);
+
   return (
-    <Slayout onClick={hideAutocomplete}>
+    <Slayout
+      id="search-layout"
+      onClick={hideAutocomplete}
+      onScroll={() => {
+        const searchInput = document.getElementById("search-input");
+        searchInput?.blur();
+      }}
+    >
       {!autocompleteVisible ? (
         isResult ? (
           // 검색 결과 창
           <>
             <InputContainer>
-              <SAiOutlineLeft onClick={() => navigate("/search")} />
+              <SAiOutlineLeft
+                onClick={() => {
+                  setAutocompleteVisible(false);
+                  setIsResult(false);
+                }}
+              />
               <SInput
                 // onFocus={() => setAutocompleteVisible(true)} 웹에서 사용시 사용할 event
                 // onFocus={() => setAutocompleteVisible(true)}
@@ -158,6 +218,7 @@ const PageSearch = () => {
                 value={searchWord}
               />
               {searchWord ? (
+                // 검색 결과 존재할 경우
                 <SRxCross2
                   onClick={(e) => {
                     e.stopPropagation();
@@ -165,6 +226,7 @@ const PageSearch = () => {
                   }}
                 />
               ) : (
+                // 검색 결과 없을 경우
                 <SBsSearch2
                   onClick={(e) => {
                     e.stopPropagation();
@@ -180,7 +242,12 @@ const PageSearch = () => {
                 <ContentsContainer>
                   {searchResult.map((content, idx) => (
                     <ContentContainer>
-                      <ContentPoster key={idx} title={content.title} imageUrl={content.img_path} />
+                      <ContentPoster
+                        content={searchResult[idx]}
+                        key={idx}
+                        title={content.title}
+                        imageUrl={content.img_path}
+                      />
                     </ContentContainer>
                   ))}
                 </ContentsContainer>
@@ -200,6 +267,10 @@ const PageSearch = () => {
                 onClick={(e) => {
                   e.stopPropagation();
                   setAutocompleteVisible(true);
+                  setTimeout(() => {
+                    const searchInput = document.getElementById("search-input");
+                    searchInput?.focus();
+                  }, 0);
                 }}
               />
               <SBsSearch
@@ -214,8 +285,14 @@ const PageSearch = () => {
       ) : (
         <>
           <InputContainer>
-            <SAiOutlineLeft onClick={() => navigate("/search")} />
+            <SAiOutlineLeft
+              onClick={() => {
+                setAutocompleteVisible(false);
+                setIsResult(false);
+              }}
+            />
             <SInput
+              id="search-input"
               // onFocus={() => setAutocompleteVisible(true)} 웹에서 사용시 사용할 event
               // onFocus={() => setAutocompleteVisible(true)}
               // onTouchStart={() => setAutocompleteVisible(true)}
@@ -257,7 +334,6 @@ const PageSearch = () => {
                 onClick={(e) => {
                   e.stopPropagation();
                   setSearchWord(word);
-
                   onClickSearchAutoComplete(word);
                 }}
               >
@@ -277,7 +353,7 @@ const PageSearch = () => {
 export default PageSearch;
 
 const Slayout = styled.div`
-  height: 100vh;
+  height: 91vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -363,7 +439,7 @@ const SInput = styled.input`
   outline: none;
   box-shadow: none;
   border: none;
-  margin: 0 0.5rem;
+  margin: 0.5rem;
   padding: 0.5rem 0.7rem;
   font-size: ${({ theme }) => theme.fontSizeType.middle.fontSize};
   color: ${({ theme }) => theme.netflix.fontColor};

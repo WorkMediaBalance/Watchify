@@ -11,15 +11,8 @@ pipeline {
                 script {
                     def BUILD_NUMBER = currentBuild.number
                     sh 'docker build -t $repository:frontend$BUILD_NUMBER ./frontend' // frontend 파일 생성
-
-//                     dir('BACKEND/watchify') {
-//                         sh 'chmod +x gradlew'
-//                         sh './gradlew clean build -x test'
-//                     }
-//                     sh 'docker build -t $repository:backend$BUILD_NUMBER ./BACKEND/watchify'
                     sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin' // docker hub 로그인
                     sh 'docker push $repository:frontend$BUILD_NUMBER' //docker push
-//                     sh 'docker push $repository:backend$BUILD_NUMBER'
                 }
             }
         }
@@ -45,11 +38,34 @@ pipeline {
         stage('Gitops Dir') {
             steps {
                 echo "Gitops Dir"
-//                 script{
-//                     dir("BACKEN")
-//                 }
+                script{
+                    withCredentials([usernamePassword(credentialsId: 'c76be613-6684-47c5-8b0e-1547e7f184f0', passwordVariable: 'diligent0924!', usernameVariable: 'sdc00035')]) {
+                        sh 'git remote set-url origin https://sdc00035:diligent0924!@lab.ssafy.com/s08-final/S08P31A207.git'
+                        sh 'git switch main'
+                        sh 'git pull origin main'
+                    }
+                    dir("kubefiles"){
+                        def BUILD_NUMBER = currentBuild.number
+                        sh """
+                            sed -i 's/watchify:frontend\\([^:]*\\)/watchify:frontend${BUILD_NUMBER}/g' my-service.yaml
+                            git add my-service.yaml
+                            git commit -m 'Update my-service tag to ${BUILD_NUMBER}'
+                        """
+                        sh """
+                            sed -i 's/watchify:backend\\([^:]*\\)/watchify:backend${BUILD_NUMBER}/g' back-service.yaml
+                            git add back-service.yaml
+                            git commit -m 'Update back-service tag to ${BUILD_NUMBER}'
+                        """
+                    }
 
-                echo "Gitops push"
+                    withCredentials([usernamePassword(credentialsId: 'c76be613-6684-47c5-8b0e-1547e7f184f0', passwordVariable: 'diligent0924!', usernameVariable: 'sdc00035')]) {
+                        sh 'git remote set-url origin https://sdc00035:diligent0924!@lab.ssafy.com/s08-final/S08P31A207.git'
+                        sh 'git switch main'
+                        sh 'git pull origin main'
+                        sh 'git push origin main'
+                    }
+                    echo 'git OK'
+                }
 
             }
         }
