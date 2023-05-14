@@ -10,5 +10,4 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/recommend")
 @RequiredArgsConstructor
 public class RecommendController {
-
 }
