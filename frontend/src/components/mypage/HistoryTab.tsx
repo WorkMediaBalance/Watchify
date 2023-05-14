@@ -6,11 +6,12 @@ import { monthScheduleState } from "recoil/scheduleState";
 import { useRecoilState } from "recoil";
 
 import { content } from "./../../interface/content";
+import { historyState, historyContent } from "recoil/history";
 import { myHistory } from "apis/apiMy";
 
 const HistoryTab = () => {
   const dummyArray = [0, 0, 0, 0, 0, 0, 0];
-  const [historyArray, setHistoryArray] = useState<content[]>([]);
+  const [historyArray, setHistoryArray] = useRecoilState<historyContent[]>(historyState);
 
   // async function MyHistoryAPI() {
   //   try {
@@ -40,8 +41,8 @@ const HistoryTab = () => {
           }}
         >
           <div style={{ height: "100%", overflowY: "auto" }}>
-            {dummyArray.map((index) => {
-              return <HistoryComponent contentHistory={monthSchedule} />;
+            {historyArray.map((history, index) => {
+              return <HistoryComponent contentHistory={history} />;
             })}
           </div>
         </div>

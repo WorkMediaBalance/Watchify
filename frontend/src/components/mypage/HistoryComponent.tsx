@@ -1,8 +1,10 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { schedule } from "interface/schedule";
 import Modal from "react-modal";
 import Calendar from "components/schedule/calendar/Calendar";
+import { historyContent } from "recoil/history";
 
 interface BackgroundImageProps {
   imageUrl: string;
@@ -76,11 +78,12 @@ const Title = styled.div`
 `;
 
 interface HistoryComponentProps {
-  contentHistory: schedule;
+  contentHistory: historyContent;
 }
 
 const HistoryComponent: React.FC<HistoryComponentProps> = ({ contentHistory }) => {
   const imageUrl = "https://t1.daumcdn.net/cfile/tistory/997F7A385E4A920F28";
+  const navigate = useNavigate();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const modalStyle = {
@@ -112,7 +115,13 @@ const HistoryComponent: React.FC<HistoryComponentProps> = ({ contentHistory }) =
   };
 
   const handleHistoryClick = () => {
-    setIsModalOpen(true);
+    const params = {
+      year: contentHistory.firstYear,
+      month: contentHistory.firstMonth,
+      day: contentHistory.firstDay,
+    };
+    navigate(`/my/history/${contentHistory.pk}`, { state: params });
+    // setIsModalOpen(true);
   };
 
   return (
