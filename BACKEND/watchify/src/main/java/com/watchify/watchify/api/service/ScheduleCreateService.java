@@ -1,10 +1,7 @@
 package com.watchify.watchify.api.service;
 
-import com.watchify.watchify.db.entity.Calender;
-import com.watchify.watchify.db.entity.TurnContent;
-import com.watchify.watchify.db.entity.User;
-import com.watchify.watchify.db.repository.CalenderRepository;
-import com.watchify.watchify.db.repository.UserRepository;
+import com.watchify.watchify.db.entity.*;
+import com.watchify.watchify.db.repository.*;
 import com.watchify.watchify.dto.request.ScheduleCreateRequestDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,6 +17,10 @@ public class ScheduleCreateService {
 
     private final UserRepository userRepository;
     private final CalenderRepository calenderRepository;
+    private final ContentRepository contentRepository;
+    private final TurnContentRepository turnContentRepository;
+    private final ContentOTTRepository contentOTTRepository;
+    private final OTTRepository ottRepository;
 
     public void createSchedule(Long userId, ScheduleCreateRequestDTO req) {
 
@@ -40,6 +41,7 @@ public class ScheduleCreateService {
 
         // 기존 스케줄 부터 처리
         int myTime = 0; // now 요일에서 시청 가능한 시간
+        int breakFlag  = 0; // 영화가 2시간인데 시청패턴이 최대 1시간인경우 를 위해
         while (!existingContent.isEmpty()) {
             myTime = weekOfDayTime.get(nowDate.getDayOfWeek().getValue()-1) * 60 + 20; // 분으로 계산 (20분 여유분)
 
@@ -56,6 +58,7 @@ public class ScheduleCreateService {
                 }
 
                 ob = existingContent.pollFirst();
+                breakFlag = 0;
                 Calender newCalender = new Calender(user, ob.getTurnContent(), ob.getOtt(), nowDate);
                 myTime -= ob.getTurnContent().getContent().getRuntime();
                 calenderRepository.save(newCalender);
@@ -65,24 +68,72 @@ public class ScheduleCreateService {
             if (!existingContent.isEmpty()) {
                 // existingContent 가 있으면 myTime이 작은거라서 다음날로 ㄱㄱ
                 nowDate = nowDate.plusDays(1);
+                breakFlag += 1;
+            }
+
+            if (!existingContent.isEmpty() && breakFlag >= 10) {
+                existingContent.pollFirst(); // 현재 패턴으로 볼 수 없어서 버림
             }
 
         }
 
-        // 기존의 스케줄은 마무리 혰고 이제 작업대 컨텐츠 기준으로 채우기.
+        // 기존의 스케줄은 마무리 했고 이제 작업대 컨텐츠 기준으로 채우기.
         // myTime 이 남아있을 수 있음.
-        ArrayDeque newContent = new ArrayDeque<>(); // 컨텐츠
+        ArrayDeque newContents = new ArrayDeque<TurnContent>(); // 컨텐츠 (타입 TurnContent)
+        for (Long contentPK : req.getContents()) {
+            Content newContent = contentRepository.getContentById(contentPK);
+
+            if (newContent.getFinalEpisode() == 0) {
+                TurnContent newTurnContent = turnContentRepository.getSoloTurnContentById(newContent.getId());
+                newContents.add(newTurnContent);
+            } else {
+                List<TurnContent> newTurnContents = turnContentRepository.getAllTurnContent(contentPK);
+                for (TurnContent t : newTurnContents) {
+                    newContents.add(t);
+                }
+            }
+        }
+        // -- 여기 까지 pk(작업대에 있는 컨텐츠들)값들 에피소드별로 newContents 에 담음
 
 
+        // 이제 newContents 을 가지고 calender 에 등록
+        breakFlag = 0;
+        while (!newContents.isEmpty()) { // newContents 가 빌때까지
+            if (breakFlag >= 10) {
+                newContents.pollFirst();
+            }
+            // 처음에 myTime 의 여유분이 있는 상태로 넘어올 수 있어서 myTime 갱신은 마지막에
+            TurnContent thisTurnContent = (TurnContent) newContents.peekFirst();
+            int runTime = thisTurnContent.getContent().getRuntime();
 
+            if (myTime < runTime) {
+                // 지금(nowDate 에서) 남아 있는 시간이 없다면...
+                nowDate = nowDate.plusDays(1); // 하루 지나서
+                breakFlag += 1;
+                myTime = weekOfDayTime.get(nowDate.getDayOfWeek().getValue()-1) * 60 + 20; // 지금 남은 시간 갱신
+                continue;
+            }
 
+            // myTime 에 여유가 있다면 캘린더 등록!
+            breakFlag = 0;
+            thisTurnContent = (TurnContent) newContents.pollFirst(); // 등록할 컨텐츠.
+            Content thisContent = thisTurnContent.getContent();
+            List<ContentOTT> contentOtts = contentOTTRepository.getContentOTTByContentId(thisContent.getId()); // 해당 컨텐츠를 볼 수 있는 OTT
+            OTT thisOTT = null; // 켈린더에 넣을 ott
+            for (ContentOTT contentOTT : contentOtts) {
+                String ottName = contentOTT.getOtt().getName();
+                if (req.getOtt().contains(ottName)) {
+                    thisOTT = ottRepository.getOTTByName(ottName);
+                    break;
+                }
+            }
+            if (thisOTT != null) { // 의도한대로라면 thisOTT 는 null 이 될 수 없음..!
+                Calender thisCalender = new Calender(user, thisTurnContent, thisOTT, nowDate);
+                calenderRepository.save(thisCalender);
+                myTime -= thisContent.getRuntime(); // 남은 시간 뺴주고
+            }
+        }
 
-
-
-
-
-
-
+        // 켈린더 끝날짜가 다 끝나면 추천받아서 추가할거 더 추가.
     }
-
 }

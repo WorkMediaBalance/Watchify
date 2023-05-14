@@ -12,7 +12,7 @@ import java.util.Map;
 public class ScheduleCreateRequestDTO {
 
     private LocalDate startDate;
-    private List<Integer> contents;
+    private List<Long> contents;
     private List<Integer> patterns;
     private List<String> ott;
 
