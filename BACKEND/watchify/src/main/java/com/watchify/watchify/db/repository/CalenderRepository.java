@@ -3,6 +3,7 @@ package com.watchify.watchify.db.repository;
 import com.watchify.watchify.db.entity.Calender;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDate;
 import java.util.ArrayDeque;
@@ -16,5 +17,8 @@ public interface CalenderRepository extends JpaRepository<Calender, Long> {
 
     @Query(value = "select * from calender c where c.user_id = :userId and is_deleted = false and c.date >= :startDate ORDER BY c.date ASC", nativeQuery = true)
     List<Calender> getScheduleAfterStartDate(Long userId, LocalDate startDate);
+
+    @Query(value = "select * from calender c where c.user_id = :userId and is_deleted = false and view_date is not null", nativeQuery = true)
+    List<Calender> getMyViewedCalender(@Param("userId") Long userId);
 
 }

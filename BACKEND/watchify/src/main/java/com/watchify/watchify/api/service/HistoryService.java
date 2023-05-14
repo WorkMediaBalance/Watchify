@@ -1,0 +1,87 @@
+package com.watchify.watchify.api.service;
+
+import com.watchify.watchify.db.entity.Calender;
+import com.watchify.watchify.db.entity.Content;
+import com.watchify.watchify.db.entity.LikeContent;
+import com.watchify.watchify.db.entity.WishContent;
+import com.watchify.watchify.db.repository.CalenderRepository;
+import com.watchify.watchify.db.repository.LikeContentRepository;
+import com.watchify.watchify.db.repository.WishContentRepository;
+import com.watchify.watchify.dto.response.HistoryDTO;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+@Service
+@Transactional(readOnly = true)
+@RequiredArgsConstructor
+public class HistoryService {
+
+    private final CalenderRepository calenderRepository;
+    private final WishContentRepository wishContentRepository;
+    private final LikeContentRepository likeContentRepository;
+
+    public List<HistoryDTO> getUserHistory(Long userId) {
+        List<HistoryDTO> res = new ArrayList<>();
+
+        List<Calender> myCalenderList = calenderRepository.getMyViewedCalender(userId);
+        List<Long> myWishContentList = wishContentRepository.getContentIdInMyWishList(userId);
+        List<LikeContent> myLikeContentList = likeContentRepository.getLikeContent(userId);
+        HashMap<Content, Integer> checkMap = new HashMap<>();
+        HashMap<Content, LocalDate> firstDateMap = new HashMap<>();
+
+        for (Calender calender : myCalenderList) {
+            Content content = calender.getTurnContent().getContent();
+            int contentEp = calender.getTurnContent().getEpisode();
+            if (checkMap.containsKey(content)) {
+                int cnt = checkMap.get(content);
+                checkMap.put(content, cnt + 1);
+            } else {
+                checkMap.put(content, 1);
+            }
+
+            if (contentEp <= 1) {
+                LocalDate bDate = calender.getViewDate();
+                if (firstDateMap.containsKey(content)) {
+                    LocalDate aDate = firstDateMap.get(content);
+                    if (aDate.isBefore(bDate)) {
+                        firstDateMap.put(content, aDate);
+                    } else {
+                        firstDateMap.put(content, bDate);
+                    }
+                } else {
+                    firstDateMap.put(content, bDate);
+                }
+            }
+        }
+
+        for (Content content : checkMap.keySet()) {
+            int finalEp = content.getFinalEpisode();
+            int viewCnt = checkMap.get(content);
+            LocalDate firstDate = firstDateMap.get(content);
+            boolean isComplete;
+            if (finalEp <= viewCnt) {
+                isComplete = true;
+            } else {
+                isComplete = false;
+            }
+            HistoryDTO historyDTO = new HistoryDTO(content, firstDate, isComplete);
+            historyDTO.setIsWish(myWishContentList.contains(content.getId()));
+
+            for (LikeContent lc : myLikeContentList) {
+                if (lc.getContent().equals(content)) {
+                    historyDTO.setIsLike(lc.isLike() ? 1 : -1);
+                    break;
+                }
+            }
+            res.add(historyDTO);
+        }
+
+        return res;
+    }
+}
