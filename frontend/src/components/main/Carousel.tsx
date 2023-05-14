@@ -182,7 +182,7 @@ const Carousel: React.FC<CarouselProps> = ({ weeklySchedule }) => {
               <SlideImage
                 url={
                   weeklySchedule[index].length === 0
-                    ? "/favicon3.png"
+                    ? "/WatchifyLogo2.png"
                     : weeklySchedule[index][0]["backdropPath"]
                 }
               >

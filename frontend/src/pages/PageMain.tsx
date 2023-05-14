@@ -22,7 +22,9 @@ const PageMain = () => {
 
   const getWeeklySchedule = async () => {
     const res = await mainSchedule();
-    setWeeklySchedule(res);
+    if (res !== undefined) {
+      setWeeklySchedule(res);
+    }
   };
 
   useEffect(() => {

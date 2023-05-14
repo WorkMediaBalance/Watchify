@@ -76,17 +76,19 @@ const WishTab = () => {
   ]);
 
   return (
-    <div>
-      <Title>나의 찜 목록</Title>
-      <GridContainer>
-        {wishList.map((content, index) => (
-          <ContentPoster
-            imageUrl={wishList[index]["img_path"]}
-            title={wishList[index]["title"]}
-            content={wishList[index]}
-          />
-        ))}
-      </GridContainer>
+    <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+      <div style={{ width: "90%" }}>
+        <Title>나의 찜 목록</Title>
+        <GridContainer>
+          {wishList.map((content, index) => (
+            <ContentPoster
+              imageUrl={wishList[index]["img_path"]}
+              title={wishList[index]["title"]}
+              content={wishList[index]}
+            />
+          ))}
+        </GridContainer>
+      </div>
     </div>
   );
 };
@@ -96,7 +98,7 @@ const Title = styled.div`
   font-size: ${({ theme }) => theme.fontSizeType.big.fontSize};
   font-weight: ${({ theme }) => theme.fontSizeType.big.fontWeight};
   text-align: left;
-  margin: 0.5rem 0;
+  margin: 2vh 0.5rem 0;
   padding-left: 0.5rem;
 `;
 export default WishTab;

@@ -51,12 +51,12 @@ const DateIndicator = styled.div`
 const Date = styled.div`
   color: black;
   font-size: ${({ theme }) => theme.fontSizeType.big.fontSize};
-  font-weight: 700;
+  font-weight: 900;
 `;
 const Month = styled.div`
   color: grey;
   font-size: ${({ theme }) => theme.fontSizeType.small.fontSize};
-  font-weight: ${({ theme }) => theme.fontSizeType.small.fontWeight};
+  font-weight: 700;
   margin-bottom: 2px;
 `;
 
@@ -72,7 +72,7 @@ const TitleHolder = styled.div`
 const Title = styled.div`
   color: white;
   font-size: ${({ theme }) => theme.fontSizeType.big.fontSize};
-  font-weight: ${({ theme }) => theme.fontSizeType.big.fontWeight};
+  font-weight: 900;
 `;
 
 interface HistoryComponentProps {

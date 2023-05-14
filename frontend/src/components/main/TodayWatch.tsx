@@ -30,7 +30,7 @@ const TodayWatch: React.FC<TodayWatchProps> = ({
   return (
     <Container
       clickState={clickState}
-      backdropPath={todayWatch.length > 0 ? todayWatch[0]["backdropPath"] : "/favicon3.png"}
+      backdropPath={todayWatch.length > 0 ? todayWatch[0]["backdropPath"] : "/WatchifyLogo2.png"}
       onClick={() => {
         console.log(clickState);
 
@@ -42,11 +42,13 @@ const TodayWatch: React.FC<TodayWatchProps> = ({
           <div>
             <Title>{todayWatch.length > 0 ? todayWatch[0]["title"] : null}</Title>
             <Episode>
-              {todayWatch !== undefined
-                ? todayWatch[0]["episode"] !== 0
-                  ? todayWatch[0]["episode"] + "화"
-                  : null
-                : null}
+              {todayWatch.length > 0 ? (
+                todayWatch[0]["episode"] !== 0 ? (
+                  todayWatch[0]["episode"] + "화"
+                ) : null
+              ) : (
+                <NoContentDiv>스케줄이 없습니다.</NoContentDiv>
+              )}
             </Episode>
           </div>
           {todayWatch.length > 0 ? (
@@ -111,9 +113,11 @@ const Container = styled.div<{ clickState: number; backdropPath: string }>`
     clickState === 1
       ? `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(${backdropPath})`
       : `url(${backdropPath})`};
-  background-size: cover;
   background-position: center;
   overflow: hidden;
+  background-size: ${({ backdropPath }) =>
+    backdropPath === "/WatchifyLogo2.png" ? "contain" : "cover"};
+  background-repeat: no-repeat;
 `;
 
 // 애니메이션용 키프레임
@@ -304,4 +308,13 @@ const CalendarLink = styled.div`
   padding: 1vw;
   padding-left: 2vw;
   padding-right: 2vw;
+`;
+
+const NoContentDiv = styled.div`
+  font-size: ${({ theme }) => theme.fontSizeType.big.fontSize};
+  font-weight: ${({ theme }) => theme.fontSizeType.big.fontWeight};
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: start;
 `;

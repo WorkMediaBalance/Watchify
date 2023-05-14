@@ -4,11 +4,7 @@ import { theme } from "styles/theme";
 import { ResponsiveBar, BarItemProps } from "@nivo/bar";
 import Graph from "./graph/Graph";
 
-import {
-  patternData0,
-  patternData1,
-  patternData2,
-} from "constant/preset/watchingPatternPreset";
+import { patternData0, patternData1, patternData2 } from "constant/preset/watchingPatternPreset";
 
 const WatchingPattern = () => {
   const [activeIndex, setActiveIndex] = useState(3);
@@ -18,28 +14,31 @@ const WatchingPattern = () => {
     <SContainer>
       <div style={{ height: "auto" }}>
         <SDiv>나의 시청 패턴</SDiv>
-        <SDiv2>출퇴근 하면서 조금씩, 주말에 몰아서!</SDiv2>
+        <SDiv2>그래프를 움직여서 시청패턴을 설정하세요</SDiv2>
 
         <SBtnDiv>
           <Sbtn
+            style={{ fontSize: "2.5vw" }}
             isActive={activeIndex === 0}
             onClick={() => {
               setActiveIndex(0);
               setData(patternData0);
             }}
           >
-            밥 먹을 때 한 편씩!
+            밥 먹을 때만!
           </Sbtn>
           <Sbtn
+            style={{ fontSize: "2.5vw" }}
             isActive={activeIndex === 1}
             onClick={() => {
               setActiveIndex(1);
               setData(patternData1);
             }}
           >
-            주말에 정주행!
+            주말 정주행!
           </Sbtn>
           <Sbtn
+            style={{ fontSize: "3vw" }}
             isActive={activeIndex === 2}
             onClick={() => {
               setActiveIndex(2);
@@ -48,17 +47,17 @@ const WatchingPattern = () => {
           >
             밸런스 형
           </Sbtn>
-          <Sbtn isActive={activeIndex === 3} onClick={() => setActiveIndex(3)}>
+          <Sbtn
+            style={{ fontSize: "3vw" }}
+            isActive={activeIndex === 3}
+            onClick={() => setActiveIndex(3)}
+          >
             커스텀
           </Sbtn>
         </SBtnDiv>
       </div>
       <div style={{ height: "30vh" }}>
-        <Graph
-          data={data}
-          setActiveIndex={setActiveIndex}
-          activeIndex={activeIndex}
-        />
+        <Graph data={data} setActiveIndex={setActiveIndex} activeIndex={activeIndex} />
       </div>
     </SContainer>
   );
@@ -67,6 +66,8 @@ const WatchingPattern = () => {
 export default WatchingPattern;
 const SContainer = styled.div`
   height: 100%;
+  width: 90%;
+  margin-top: 1vh;
 `;
 
 const SDiv = styled.div`
@@ -74,6 +75,7 @@ const SDiv = styled.div`
   font-weight: ${({ theme }) => theme.fontSizeType.big.fontWeight};
   text-align: left;
   margin: 0.5rem 0;
+
   padding-left: 0.5rem;
 `;
 
@@ -86,18 +88,26 @@ const SDiv2 = styled.div`
 `;
 
 const Sbtn = styled.div<{ isActive?: boolean; color?: string }>`
-  background-color: ${(props) =>
-    props.isActive ? props.theme.netflix.pointColor : "white"};
-  color: ${(props) => (props.isActive ? "white" : "black")};
-  font-size: ${({ theme }) => theme.fontSizeType.small.fontSize};
-  margin: 0rem 0.2rem;
-  padding: 0.7rem 0.6rem;
-  border: none;
+  background-color: ${(props) => (props.isActive ? props.theme.netflix.pointColor : "transparent")};
+  // color: ${(props) => (props.isActive ? "white" : `${props.theme.netflix.lightColor}`)};
+  color: white;
+  font-weight: 500;
+  margin: 1vw 2vw;
+  padding: 1vw;
+  border: ${(props) =>
+    props.isActive
+      ? `2px solid ${props.theme.netflix.pointColor}`
+      : `2px solid ${props.theme.netflix.lightColor}`};
   border-radius: 10px;
   cursor: pointer;
+  width: 20vw;
+  height: 7vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const SBtnDiv = styled.div`
   display: flex;
-  justify-content: center;
+  justify-content: space-evenly;
 `;

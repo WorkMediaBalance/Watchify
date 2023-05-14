@@ -28,20 +28,22 @@ const HistoryTab = () => {
   const [monthSchedule, setMonthSchedule] = useRecoilState(monthScheduleState);
 
   return (
-    <div>
-      <Title>스케줄 히스토리</Title>
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          height: "100%",
-        }}
-      >
-        <div style={{ height: "100%", overflowY: "auto" }}>
-          {dummyArray.map((index) => {
-            return <HistoryComponent contentHistory={monthSchedule} />;
-          })}
+    <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+      <div style={{ width: "90%" }}>
+        <Title>스케줄 히스토리</Title>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            height: "100%",
+          }}
+        >
+          <div style={{ height: "100%", overflowY: "auto" }}>
+            {dummyArray.map((index) => {
+              return <HistoryComponent contentHistory={monthSchedule} />;
+            })}
+          </div>
         </div>
       </div>
     </div>
@@ -54,6 +56,7 @@ const Title = styled.div`
   font-weight: ${({ theme }) => theme.fontSizeType.big.fontWeight};
   text-align: left;
   margin: 0.5rem 0;
+  margin-top: 2vh;
   padding-left: 0.5rem;
 `;
 
