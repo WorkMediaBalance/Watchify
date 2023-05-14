@@ -1,6 +1,8 @@
 import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 
+import { myPatternChange } from "apis/apiMy";
+
 const Wrapper = styled.div`
   height: 100%;
 `;
@@ -57,6 +59,8 @@ const Graph: React.FC<graphProps> = ({ data, setActiveIndex, activeIndex }) => {
   useEffect(() => {
     setPattern(data);
     // TODO: 여기서도 axios 보내기
+    // 수정 요청은 잘 가나 문제가 탭 이동하면서 문제가 있어보임(기존 프리셋 이동 때는 Axios 요청 막아야함)
+    myPatternChange({ pattern: data });
   }, [data]);
 
   // 드래그 로직
