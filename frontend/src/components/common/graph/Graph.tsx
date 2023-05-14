@@ -32,7 +32,9 @@ const Bar = styled.div<{ time: number }>`
   border-radius: 10px 10px 0 0;
 `;
 
-const Name = styled.div``;
+const Name = styled.div`
+  margin-top: 0.8vh;
+`;
 
 interface graphProps {
   data: number[];
@@ -64,27 +66,15 @@ const Graph: React.FC<graphProps> = ({ data, setActiveIndex, activeIndex }) => {
     let initialY = event.touches[0].clientY;
     const handleTouchMove = (event: TouchEvent) => {
       const movementY = event.touches[0].clientY - initialY;
-      console.log(
-        "Y-axis movement:",
-        movementY,
-        "containerHeight:",
-        containerHeight
-      );
+      console.log("Y-axis movement:", movementY, "containerHeight:", containerHeight);
 
       let newPattern = [...pattern];
-      if (
-        newPattern[index] - Math.floor(movementY / (containerHeight / 8)) <
-        0
-      ) {
+      if (newPattern[index] - Math.floor(movementY / (containerHeight / 8)) < 0) {
         newPattern[index] = 0;
-      } else if (
-        newPattern[index] - Math.floor(movementY / (containerHeight / 8)) >
-        8
-      ) {
+      } else if (newPattern[index] - Math.floor(movementY / (containerHeight / 8)) > 8) {
         newPattern[index] = 8;
       } else {
-        newPattern[index] =
-          newPattern[index] - Math.floor(movementY / (containerHeight / 8));
+        newPattern[index] = newPattern[index] - Math.floor(movementY / (containerHeight / 8));
       }
       setPattern(newPattern);
     };

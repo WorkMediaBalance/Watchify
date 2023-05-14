@@ -36,9 +36,12 @@ const SRibbonDiv = styled.div<{ selected: boolean }>`
   margin-right: 2.5vw;
   border-bottom: ${(props) =>
     props.selected ? "2.1vh solid transparent" : "1.6vh solid transparent"};
-  border-top: ${(props) => (props.selected ? "5vh solid #ff0000" : "4vh solid #ccc")};
-  border-left: ${(props) => (props.selected ? "2.1vh solid #ff0000" : "1.6vh solid #ccc")};
-  border-right: ${(props) => (props.selected ? "2.1vh solid #ff0000" : "1.6vh solid #ccc")};
+  border-top: ${(props) =>
+    props.selected ? `5vh solid ${props.theme.netflix.pointColor}` : "4vh solid #ffffff"};
+  border-left: ${(props) =>
+    props.selected ? `2.1vh solid ${props.theme.netflix.pointColor}` : "1.6vh solid #ffffff"};
+  border-right: ${(props) =>
+    props.selected ? `2.1vh solid ${props.theme.netflix.pointColor}` : "1.6vh solid #ffffff"};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -50,7 +53,8 @@ const SRibbonP = styled.p<{ selected: boolean }>`
   font-size: ${(props) => (props.selected ? "1.5rem" : "1.3rem")};
   font-weight: 600;
   margin-bottom: ${(props) => (props.selected ? "8.5vh" : "6.5vh")};
-  color: #ffffff;
+  color: ${(props) =>
+    props.selected ? `${props.theme.netflix.fontColor}` : `${props.theme.netflix.pointColor}`};
   transition: all 0.2s ease-in-out;
 `;
 
@@ -74,7 +78,7 @@ const SMainDiv = styled.div`
   display: flex;
   width: 100vw;
   height: 55vh;
-  border: 1px solid ${theme.netflix.fontColor};
+  // border: 1px solid ${theme.netflix.fontColor}; TODO: 여기 보더 별로라고 하심...
   border-radius: 12px;
   background-color: ${theme.netflix.tabColor};
   flex-direction: column;
@@ -117,6 +121,10 @@ const Container = styled.div`
   z-index: 0;
   position: relative;
   margin: 1vw;
+`;
+
+const UserSpan = styled.span`
+  color: ${theme.netflix.lightColor};
 `;
 
 const PageRecommendResult = () => {
@@ -170,7 +178,9 @@ const PageRecommendResult = () => {
 
   return (
     <Wrapper>
-      <STitleP>{USER_NAME}님을 위한 추천 컨텐츠</STitleP>
+      <STitleP>
+        <UserSpan>{USER_NAME}</UserSpan>님을 위한 추천 컨텐츠
+      </STitleP>
       <SMainDiv className={"mainDiv"}>
         <div style={{ display: "flex", marginLeft: "5vw", position: "absolute" }}>
           <SRibbonDiv id="0" onClick={onClickHandler} selected={selectedNum === 0}>

@@ -33,7 +33,7 @@ const CustomTabComponent: React.FC<CustomTabComponentProps> = ({
 
   const arrayLength = titleArray.length;
   return (
-    <div style={{ width: width }}>
+    <div>
       <TabListItemContainerWrapper marginTop={marginTop}>
         <TabListItemContainer
           titleArray={titleArray}
