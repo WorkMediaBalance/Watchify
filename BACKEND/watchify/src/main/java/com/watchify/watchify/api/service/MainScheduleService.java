@@ -3,6 +3,7 @@ package com.watchify.watchify.api.service;
 import com.watchify.watchify.db.entity.*;
 import com.watchify.watchify.db.repository.*;
 import com.watchify.watchify.dto.response.CalenderDTO;
+import com.watchify.watchify.dto.response.DefaultContentDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +23,7 @@ public class MainScheduleService {
     private final CalenderRepository calenderRepository;
     private final WishContentRepository wishContentRepository;
     private final LikeContentRepository likeContentRepository;
+    private final ContentRepository contentRepository;
 
     public Map<Integer, List<CalenderDTO>> getMainSchedule(Long userId) {
 
@@ -73,5 +75,21 @@ public class MainScheduleService {
         }
 
         return res;
+    }
+
+    @Transactional
+    public DefaultContentDTO mainRecommend(Long userId) {
+        // Service 추가하기
+
+        Content content = contentRepository.getContentById(1L); // List 형태로 변환
+        DefaultContentDTO defaultContentDTO = new DefaultContentDTO(content); // List 형태로 변환
+        return defaultContentDTO;
+    }
+
+    @Transactional
+    public DefaultContentDTO updateOttAlarm(Long userId) {
+        Content content = contentRepository.getContentById(1L); // List 형태로 변환
+        DefaultContentDTO defaultContentDTO = new DefaultContentDTO(content); // List 형태로 변환
+        return defaultContentDTO;
     }
 }

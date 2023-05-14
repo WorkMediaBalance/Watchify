@@ -4,13 +4,11 @@ import com.watchify.watchify.api.service.MainScheduleService;
 import com.watchify.watchify.api.service.UserService;
 import com.watchify.watchify.auth.service.PrincipalDetails;
 import com.watchify.watchify.auth.service.TokenService;
+import com.watchify.watchify.dto.request.MainRecommendNonDTO;
 import com.watchify.watchify.dto.response.CalenderDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -38,4 +36,31 @@ public class MainController {
             return ResponseEntity.status(404).body("Failed to get main schedule.");
         }
     }
+
+    // 로직 처리 필요
+    @GetMapping("/recommend")
+    public ResponseEntity<?> GetRecommendMovie(HttpServletRequest request) throws Exception{
+        String accessToken = request.getHeader("access");
+        long userId = userService.findUserIdByAccessToken(accessToken);
+
+        try {
+            // Service 단으로 넘기기
+            return ResponseEntity.status(200).body("ok");
+        } catch (Exception e) {
+            return ResponseEntity.status(404).body("Failed to get main schedule.");
+        }
+    }
+
+    // 로직 처리 필요
+    @GetMapping("/recommendnon")
+    public ResponseEntity<?> GetRecommendNon(@RequestBody MainRecommendNonDTO mainRecommendNonDTO) throws Exception{
+
+        try {
+            // Service 단으로 넘기기
+            return ResponseEntity.status(200).body("OK");
+        } catch (Exception e) {
+            return ResponseEntity.status(404).body("Failed to get main schedule.");
+        }
+    }
+
 }
