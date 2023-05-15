@@ -10,13 +10,13 @@ import java.util.List;
 @NoArgsConstructor
 public class ContentRecommendDTO {
     private boolean isAdult;
-    private List<Integer> contentPk;
-    private List<Integer> contentRate;
+    private List<String> ottList;
+    private List<String> genres;
 
     @Builder
-    public ContentRecommendDTO(boolean isAdult ,List<Integer> contentPk, List<Integer> contentRate){
+    public ContentRecommendDTO(boolean isAdult ,List<String> ottList, List<String> genres){
         this.isAdult = isAdult;
-        this.contentPk = contentPk;
-        this.contentRate = contentRate;
+        this.ottList = ottList;
+        this.genres = genres;
     }
 }

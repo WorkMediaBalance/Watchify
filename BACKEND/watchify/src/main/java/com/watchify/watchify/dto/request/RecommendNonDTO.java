@@ -8,11 +8,10 @@ import java.util.List;
 
 @Getter
 @NoArgsConstructor
-public class MainRecommendNonDTO {
-    private List<String> OttList;
+public class RecommendNonDTO {
+    private List<Long> netflix;
+    private List<Long> watcha;
+    private List<Long> wavve;
+    private List<Long> disney_plus;
 
-    @Builder
-    public MainRecommendNonDTO(List<String> OttList){
-        this.OttList = OttList;
-    }
 }

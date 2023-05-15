@@ -10,11 +10,11 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 public class RecommendDTO {
-    private List<Integer> contentPk;
-    private List<Integer> contentRate;
+    private List<Long> contentPk;
+    private List<Float> contentRate;
 
     @Builder
-    public RecommendDTO(List<Integer> contentPk, List<Integer> contentRate){
+    public RecommendDTO(List<Long> contentPk, List<Float> contentRate){
         this.contentPk = contentPk;
         this.contentRate = contentRate;
     }

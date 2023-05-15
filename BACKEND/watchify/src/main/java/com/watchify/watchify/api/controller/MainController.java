@@ -2,10 +2,8 @@ package com.watchify.watchify.api.controller;
 
 import com.watchify.watchify.api.service.MainScheduleService;
 import com.watchify.watchify.api.service.UserService;
-import com.watchify.watchify.auth.service.PrincipalDetails;
-import com.watchify.watchify.auth.service.TokenService;
-import com.watchify.watchify.dto.request.MainRecommendNonDTO;
 import com.watchify.watchify.dto.response.CalenderDTO;
+import com.watchify.watchify.dto.response.DefaultContentDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -45,6 +43,7 @@ public class MainController {
 
         try {
             // Service 단으로 넘기기
+            List<DefaultContentDTO> defaultContentDTOS = mainScheduleService.getmainRecommend(userId);
             return ResponseEntity.status(200).body("ok");
         } catch (Exception e) {
             return ResponseEntity.status(404).body("Failed to get main schedule.");
@@ -53,7 +52,7 @@ public class MainController {
 
     // 로직 처리 필요
     @GetMapping("/recommendnon")
-    public ResponseEntity<?> GetRecommendNon(@RequestBody MainRecommendNonDTO mainRecommendNonDTO) throws Exception{
+    public ResponseEntity<?> GetRecommendNon() throws Exception{
 
         try {
             // Service 단으로 넘기기

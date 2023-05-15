@@ -2,17 +2,21 @@ package com.watchify.watchify.api.service;
 
 import com.watchify.watchify.db.entity.*;
 import com.watchify.watchify.db.repository.*;
+import com.watchify.watchify.dto.request.RecommendNonDTO;
 import com.watchify.watchify.dto.response.CalenderDTO;
 import com.watchify.watchify.dto.response.DefaultContentDTO;
+import com.watchify.watchify.dto.response.RecommendDTO;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.client.RestTemplate;
+import reactor.core.publisher.Mono;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -78,18 +82,26 @@ public class MainScheduleService {
     }
 
     @Transactional
-    public DefaultContentDTO mainRecommend(Long userId) {
+    public List<DefaultContentDTO> getmainRecommend(Long userId) {
+        List<DefaultContentDTO> defaultContentDTOS = new ArrayList<>(); // 추가하기
         // Service 추가하기
+        String API_URL = "https://k8a207/ai/recommend?id={id}&genres={genres}";
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<RecommendDTO> response = restTemplate.getForEntity(API_URL, RecommendDTO.class);
+        RecommendDTO recommendDTO = response.getBody();
 
-        Content content = contentRepository.getContentById(1L); // List 형태로 변환
-        DefaultContentDTO defaultContentDTO = new DefaultContentDTO(content); // List 형태로 변환
-        return defaultContentDTO;
+        // 하나씩 들고오기
+        for (Long p: recommendDTO.getContentPk()){
+            Content content = contentRepository.getContentById(p); // 값을 가져온다.
+            DefaultContentDTO defaultContentDTO = new DefaultContentDTO(content);
+            defaultContentDTOS.add(defaultContentDTO); // List 형태 추가
+        }
+
+        return defaultContentDTOS;
     }
 
-    @Transactional
-    public DefaultContentDTO updateOttAlarm(Long userId) {
-        Content content = contentRepository.getContentById(1L); // List 형태로 변환
-        DefaultContentDTO defaultContentDTO = new DefaultContentDTO(content); // List 형태로 변환
-        return defaultContentDTO;
-    }
+//    @Transactional
+//    public List<DefaultContentDTO> getrecommendnon() {
+//
+//    }
 }
