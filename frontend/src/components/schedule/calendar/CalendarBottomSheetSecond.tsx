@@ -61,7 +61,7 @@ const CalendarBottomSheetSecond = (props: { date: number; month: number }) => {
         <ContentContainer>
           <PosterContainer>
             <ContentPoster
-              imageUrl={dateScheduleList[index]["img_path"]}
+              imageUrl={dateScheduleList[index]["imgPath"]}
               title={dateScheduleList[index]["title"]}
               content={dateScheduleList[index]}
             ></ContentPoster>
