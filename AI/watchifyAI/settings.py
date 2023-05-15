@@ -158,7 +158,8 @@ AWS_S3_OBJECT_PARAMETERS = {
 # MEDIA_ROOT = os.path.join(BASE_DIR, 'path/to/store/my/files/')
 
 ## CORS
-CORS_ORIGIN_WHITELIST = ['https://k8a207.p.ssafy.io', 'http://localhost:8000', 'http://127.0.0.1:3000']
+# CORS_ORIGIN_WHITELIST = ['https://k8a207.p.ssafy.io', 'http://localhost:8000', 'http://127.0.0.1:3000']
+CORS_ORIGIN_WHITELIST = ['*']
 CORS_ALLOW_CREDENTIALS = True
 
 CORS_ALLOW_METHODS = (
