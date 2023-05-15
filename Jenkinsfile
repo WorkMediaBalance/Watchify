@@ -40,6 +40,7 @@ pipeline {
                 echo 'AI Building'
                 script {
                     def BUILD_NUMBER = currentBuild.number
+                    sh 'git switch '
                     dir('AI/watchifyAI'){
                         sh """
                             sed -i 's/DB_NAME/$DB_NAME/g' settings.py
@@ -52,6 +53,15 @@ pipeline {
                     sh 'docker build -t $repository:ai$BUILD_NUMBER ./AI' // frontend 파일 생성
                     sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin' // docker hub 로그인
                     sh 'docker push $repository:ai$BUILD_NUMBER' //docker push
+                    dir('AI/watchifyAI'){
+                        sh """
+                            sed -i 's/$DB_NAME/DB_NAME/g' settings.py
+                            sed -i 's/$DB_USER/DB_USER/g' settings.py
+                            sed -i 's/$DB_PW/DB_PW/g' settings.py
+                            sed -i 's/$DB_HOST/DB_HOST/g' settings.py
+                            sed -i 's/$DB_PORT/DB_PORT/g' settings.py
+                        """
+                    }
                 }
             }
         }
