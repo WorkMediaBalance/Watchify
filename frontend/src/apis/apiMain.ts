@@ -19,9 +19,9 @@ const sample = {
   ott: ["netflix", "disney"]
 }
 */
-export const mainRecommend = async (data: { [key: string]: string[] }) => {
+export const mainRecommend = async () => {
   try {
-    const res = await api.get("api/main/recommend", { params: data });
+    const res = await api.get("api/main/recommend");
     return res.data;
   } catch (err) {
     console.log("로그인 유저 추천 메인페이지 추천 컨텐츠 조회 실패");
@@ -35,9 +35,9 @@ const sample = {
   ott: ["netflix", "disney"]
 }
 */
-export const mainRecommendNon = async (data: { [key: string]: string[] }) => {
+export const mainRecommendNon = async () => {
   try {
-    const res = await api.get("api/main/recommendnon", { params: data });
+    const res = await api.get("api/main/recommendnon");
     return res.data;
   } catch (err) {
     console.log("비로그인 유저 추천 메인페이지 추천 컨텐츠 조회 실패");

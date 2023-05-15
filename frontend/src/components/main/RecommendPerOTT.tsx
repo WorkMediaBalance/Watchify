@@ -5,6 +5,8 @@ import netflix from "../../assets/img/netflixIcon.png";
 import wavve from "../../assets/img/wavveIcon.png";
 import watcha from "../../assets/img/watchaIcon.png";
 
+import { mainRecommend, mainRecommendNon } from "apis/apiMain";
+
 import { recResultState } from "recoil/recommendState";
 import { useRecoilState } from "recoil";
 
@@ -43,9 +45,24 @@ const RecommendPerOTT = () => {
     setIndex((index + add + 10) % 10);
   };
 
+  const getOttRecommend = async () => {
+    const data = await mainRecommend();
+    setResult(data);
+  };
+
+  const getOttRecommendNon = async () => {
+    const data = await mainRecommendNon();
+    setResult(data);
+  };
+
   useEffect(() => {
-    console.log(ott, index);
-  }, [index]);
+    const Token = localStorage.getItem("accessToken");
+    if (Token !== null) {
+      getOttRecommend();
+    } else {
+      getOttRecommendNon();
+    }
+  }, []);
 
   return (
     <Container>
