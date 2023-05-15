@@ -94,35 +94,37 @@ const PageScheduleContent = () => {
           </LottieContainer>
         </LoadingComponent>
       ) : (
-        <Container>
-          <SDiv>필수 시청 목록</SDiv>
-          <SDiv2>스케줄 생성시 꼭 보고 싶은 컨텐츠를 담아주세요!</SDiv2>
-          <ContentsContainer>
-            {essList &&
-              essList.map((content, idx) => (
-                <SBoxContainer key={idx}>
-                  <SContent imgUrl={essList[idx].imgPath}>
-                    <SRemoveDiv onClick={() => onClickDelete(idx)}>
-                      <SAiOutlineMinusCircle />
-                    </SRemoveDiv>
-                  </SContent>
-                </SBoxContainer>
-              ))}
-            <SBoxContainer>
-              <SAddBox onClick={() => setIsOpen(true)}>+</SAddBox>
-            </SBoxContainer>
-          </ContentsContainer>
+        <Wrapper>
+          <Container>
+            <SDiv>필수 시청 목록</SDiv>
+            <SDiv2>스케줄 생성시 꼭 보고 싶은 컨텐츠를 담아주세요!</SDiv2>
+            <ContentsContainer>
+              {essList &&
+                essList.map((content, idx) => (
+                  <SBoxContainer key={idx}>
+                    <SContent imgUrl={essList[idx].imgPath}>
+                      <SRemoveDiv onClick={() => onClickDelete(idx)}>
+                        <SAiOutlineMinusCircle />
+                      </SRemoveDiv>
+                    </SContent>
+                  </SBoxContainer>
+                ))}
+              <SBoxContainer>
+                <SAddBox onClick={() => setIsOpen(true)}>+</SAddBox>
+              </SBoxContainer>
+            </ContentsContainer>
 
-          <SBtnContainer>
-            <SNextBtn onClick={onClickLoading}>다음</SNextBtn>
-          </SBtnContainer>
-          <ScheduleBottomSheet
-            isOpen={isOpen}
-            onClose={() => {
-              setIsOpen(false);
-            }}
-          />
-        </Container>
+            <SBtnContainer>
+              <SNextBtn onClick={onClickLoading}>다음</SNextBtn>
+            </SBtnContainer>
+            <ScheduleBottomSheet
+              isOpen={isOpen}
+              onClose={() => {
+                setIsOpen(false);
+              }}
+            />
+          </Container>
+        </Wrapper>
       )}
     </>
   );
@@ -131,27 +133,34 @@ const PageScheduleContent = () => {
 export default PageScheduleContent;
 
 const Container = styled.div`
-  height: 95%;
+  height: 100%;
+  width: 90%;
   display: flex;
   flex-direction: column;
   color: white;
   overflow: auto;
 `;
 
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
 const SDiv = styled.div`
   font-size: ${({ theme }) => theme.fontSizeType.big.fontSize};
   font-weight: ${({ theme }) => theme.fontSizeType.big.fontWeight};
   text-align: left;
-  margin: 0.5rem 0;
-  padding-left: 0.5rem;
+  margin-top: 2vh;
+  padding-left: 2vw;
 `;
 
 const SDiv2 = styled.div`
-  font-size: ${({ theme }) => theme.fontSizeType.small.fontSize};
+  font-size: ${({ theme }) => theme.fontSizeType.middle.fontSize};
   font-weight: ${({ theme }) => theme.fontSizeType.middle.fontWeight};
   text-align: left;
-  margin: 0.2rem 0;
-  padding-left: 0.5rem;
+  margin: 1vh 0;
+  padding-left: 2vw;
 `;
 
 const ContentsContainer = styled.div`

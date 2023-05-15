@@ -7,7 +7,7 @@ import ScheduleBottomSheetHeader from "./ScheduleBottomSheetHeader";
 import ScheduleBottomSheetContent from "./ScheduleBottomSheetContent";
 
 const ScheduleBottomSheet = (props: { isOpen: boolean; onClose: () => void }) => {
-  const { sheet, content, openBottomSheet, isOpenSheet } = useScheduleBottomSheet();
+  const { sheet, content, openBottomSheet, isOpenSheet, handle } = useScheduleBottomSheet();
   const isOpen = props.isOpen;
   useEffect(() => {
     if (isOpen) {
@@ -20,7 +20,9 @@ const ScheduleBottomSheet = (props: { isOpen: boolean; onClose: () => void }) =>
   }, [isOpen, isOpenSheet]);
   return (
     <Wrapper ref={sheet}>
-      <ScheduleBottomSheetHeader />
+      <div ref={handle} style={{ marginBottom: "2vh", zIndex: "100" }}>
+        <ScheduleBottomSheetHeader />
+      </div>
       <BottomSheetContent ref={content} className="BottomSheetContent">
         <ScheduleBottomSheetContent />
       </BottomSheetContent>

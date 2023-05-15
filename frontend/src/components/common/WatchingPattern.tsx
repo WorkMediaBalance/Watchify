@@ -86,17 +86,17 @@ const SDiv = styled.div`
   font-size: ${({ theme }) => theme.fontSizeType.big.fontSize};
   font-weight: ${({ theme }) => theme.fontSizeType.big.fontWeight};
   text-align: left;
-  margin: 0.5rem 0;
+  margin: 1vh 0;
 
-  padding-left: 0.5rem;
+  padding-left: 2vw;
 `;
 
 const SDiv2 = styled.div`
   font-size: ${({ theme }) => theme.fontSizeType.middle.fontSize};
   font-weight: ${({ theme }) => theme.fontSizeType.middle.fontWeight};
   text-align: left;
-  margin: 0.5rem 0;
-  padding-left: 0.5rem;
+  margin: 1vh 0;
+  padding-left: 2vw;
 `;
 
 const Sbtn = styled.div<{ isActive?: boolean; color?: string }>`
