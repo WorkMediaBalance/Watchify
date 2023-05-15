@@ -62,11 +62,9 @@ def ottRecommend(user_id):
     for r in range(4):
         try:
             content = recommendations[r][:10]
-            print('content : ', content)
             result[r+1] = [x[0] for x in content]
         except:
             pass
-    print('result : ', result)
     return result
 
 def scheduleRecommend(user_id, content_ids, ott_ids):
