@@ -199,7 +199,7 @@ const PageRecommendResult = () => {
             episode={recResult[selectedNum].finalEpisode}
           />
           <div style={{ display: "flex", width: "100vw" }}>
-            <SImg src={recResult[selectedNum].img_path} alt="#" />
+            <SImg src={recResult[selectedNum].imgPath} alt="#" />
             <div style={{ marginRight: "1vw" }}>
               <STextP>추천도 : 93%</STextP>
               <STextP>장르 : {recResult[selectedNum].genres.join(", ")}</STextP>
@@ -242,7 +242,7 @@ const PageRecommendResult = () => {
             <SwiperSlide key={index}>
               <div style={{ width: "33vw" }}>
                 <ContentPoster
-                  imageUrl={content["img_path"]}
+                  imageUrl={content["imgPath"]}
                   title={content["title"]}
                   content={content}
                 />

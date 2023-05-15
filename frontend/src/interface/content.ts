@@ -3,7 +3,7 @@ export interface content {
   title: string;
   runtime: number;
   rate: number;
-  img_path: string;
+  imgPath: string;
   backdropPath: string;
   type: string;
   season: number;

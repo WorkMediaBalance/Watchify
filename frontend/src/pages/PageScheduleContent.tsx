@@ -101,7 +101,7 @@ const PageScheduleContent = () => {
             {essList &&
               essList.map((content, idx) => (
                 <SBoxContainer key={idx}>
-                  <SContent imgUrl={essList[idx].img_path}>
+                  <SContent imgUrl={essList[idx].imgPath}>
                     <SRemoveDiv onClick={() => onClickDelete(idx)}>
                       <SAiOutlineMinusCircle />
                     </SRemoveDiv>

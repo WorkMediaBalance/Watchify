@@ -28,7 +28,7 @@ const WatchingPattern = () => {
         <SDiv>나의 시청 패턴</SDiv>
         <SDiv2>그래프를 움직여서 시청패턴을 설정하세요</SDiv2>
 
-        <SBtnDiv>
+        {/* <SBtnDiv>
           <Sbtn
             style={{ fontSize: "2.5vw" }}
             isActive={activeIndex === 0}
@@ -66,7 +66,7 @@ const WatchingPattern = () => {
           >
             커스텀
           </Sbtn>
-        </SBtnDiv>
+        </SBtnDiv> */}
       </div>
       <div style={{ height: "30vh" }}>
         <Graph data={data} setActiveIndex={setActiveIndex} activeIndex={activeIndex} />

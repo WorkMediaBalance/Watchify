@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 
-import { myPatternChange } from "apis/apiMy";
+import { myPatternChange, myPatternGet } from "apis/apiMy";
 
 const Wrapper = styled.div`
   height: 100%;
@@ -50,18 +50,17 @@ const Graph: React.FC<graphProps> = ({ data, setActiveIndex, activeIndex }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [containerHeight, setContainerHeight] = useState<number>(1);
 
+  const getMypattern = async () => {
+    const data = await myPatternGet();
+    setPattern(data.pattern);
+  };
+
   useEffect(() => {
     if (containerRef.current) {
       setContainerHeight(containerRef.current.clientHeight);
     }
+    getMypattern();
   }, []);
-
-  useEffect(() => {
-    setPattern(data);
-    // TODO: 여기서도 axios 보내기
-    // 수정 요청은 잘 가나 문제가 탭 이동하면서 문제가 있어보임(기존 프리셋 이동 때는 Axios 요청 막아야함)
-    myPatternChange({ pattern: data });
-  }, [data]);
 
   // 드래그 로직
   const handleTouchStart = (event: React.TouchEvent, index: number) => {
@@ -81,15 +80,13 @@ const Graph: React.FC<graphProps> = ({ data, setActiveIndex, activeIndex }) => {
         newPattern[index] = newPattern[index] - Math.floor(movementY / (containerHeight / 8));
       }
       setPattern(newPattern);
+      myPatternChange({ pattern: newPattern });
     };
 
-    const handleTouchEnd = () => {
+    const handleTouchEnd = async () => {
       document.removeEventListener("touchmove", handleTouchMove);
       document.removeEventListener("touchend", handleTouchEnd);
       console.log("finished"); //TODO: 이 자리에서 axios
-      if (initialValue === pattern) {
-        setActiveIndex(3);
-      }
     };
 
     document.addEventListener("touchmove", handleTouchMove);

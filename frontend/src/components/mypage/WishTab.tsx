@@ -32,7 +32,7 @@ const WishTab = () => {
         <GridContainer>
           {wishList.map((content, index) => (
             <ContentPoster
-              imageUrl={wishList[index]["img_path"]}
+              imageUrl={wishList[index]["imgPath"]}
               title={wishList[index]["title"]}
               content={wishList[index]}
             />
