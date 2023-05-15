@@ -8,10 +8,10 @@ import "react-datepicker/dist/react-datepicker.css";
 
 import { AiOutlineClose } from "react-icons/ai";
 
-import netflixIcon from "assets/img/netflixIcon.png";
-import disneyIcon from "assets/img/disneyIcon.png";
-import watchaIcon from "assets/img/watchaIcon.png";
-import wavveIcon from "assets/img/wavveIcon.png";
+import disneyIcon from "../assets/img/otticons/DisneyIcon.png";
+import netflixIcon from "../assets/img/otticons/NetflixIcon.png";
+import watchaIcon from "../assets/img/otticons/WatchaIcon.png";
+import wavveIcon from "../assets/img/otticons/WavveIcon.png";
 import { theme } from "styles/theme";
 
 import { myOTTget, myOTTChange } from "apis/apiMy";

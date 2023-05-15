@@ -1,11 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import RecBottomSheet from "../components/recommend/RecBottomSheet";
-import disney from "../assets/img/disneyIcon.png";
-import netflix from "../assets/img/netflixIcon.png";
-import wavve from "../assets/img/wavveIcon.png";
-import watcha from "../assets/img/watchaIcon.png";
+import disney from "../assets/img/otticons/DisneyIcon.png";
+import netflix from "../assets/img/otticons/NetflixIcon.png";
+import watcha from "../assets/img/otticons/WatchaIcon.png";
+import wavve from "../assets/img/otticons/WavveIcon.png";
+import disneySelected from "../assets/img/otticons/DisneyIconSelected.png";
+import netflixSelected from "../assets/img/otticons/NetflixIconSelected.png";
+import watchaSelected from "../assets/img/otticons/WatchaIconSelected.png";
+import wavveSelected from "../assets/img/otticons/WavveIconSelected.png";
+
 import { recGenreState } from "../recoil/recommendState";
 import { useRecoilState } from "recoil";
 
@@ -121,6 +126,9 @@ const PageRecommend = () => {
     }
   };
 
+  useEffect(() => {
+    console.log(ott);
+  }, [ott]);
   return (
     <BaseDiv>
       <SheetDiv>
@@ -155,10 +163,26 @@ const PageRecommend = () => {
 
         <STitleP>대상 OTT</STitleP>
         <div style={{ display: "flex" }}>
-          <SImg onClick={ottChange} src={netflix} alt="netflix" />
-          <SImg onClick={ottChange} src={wavve} alt="wavve" />
-          <SImg onClick={ottChange} src={disney} alt="disney" />
-          <SImg onClick={ottChange} src={watcha} alt="watcha" />
+          <SImg
+            onClick={ottChange}
+            src={ott.includes("netflix") ? netflixSelected : netflix}
+            alt="netflix"
+          />
+          <SImg
+            onClick={ottChange}
+            src={ott.includes("wavve") ? wavveSelected : wavve}
+            alt="wavve"
+          />
+          <SImg
+            onClick={ottChange}
+            src={ott.includes("disney") ? disneySelected : disney}
+            alt="disney"
+          />
+          <SImg
+            onClick={ottChange}
+            src={ott.includes("watcha") ? watchaSelected : watcha}
+            alt="watcha"
+          />
         </div>
         <SLabel>
           민감 정보 포함 &nbsp;

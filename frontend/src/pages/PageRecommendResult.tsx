@@ -6,10 +6,10 @@ import { USER_NAME } from "constant/constant";
 import { theme } from "styles/theme";
 import NameTicker from "components/recommend/NameTicker";
 
-import disney from "assets/img/disneyIcon.png";
-import netflix from "assets/img/netflixIcon.png";
-import watcha from "assets/img/watchaIcon.png";
-import wavve from "assets/img/wavveIcon.png";
+import disney from "../assets/img/otticons/DisneyIcon.png";
+import netflix from "../assets/img/otticons/NetflixIcon.png";
+import watcha from "../assets/img/otticons/WatchaIcon.png";
+import wavve from "../assets/img/otticons/WavveIcon.png";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import { EffectCoverflow, Navigation, Mousewheel } from "swiper";
