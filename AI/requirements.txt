@@ -57,7 +57,6 @@ pyasn1-modules==0.3.0
 Pygments==2.15.1
 python-dateutil==2.8.2
 pytz==2023.3
-pywin32==306
 PyYAML==6.0
 pyzmq==25.0.2
 requests==2.29.0
