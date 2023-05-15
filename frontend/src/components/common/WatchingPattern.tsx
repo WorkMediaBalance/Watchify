@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { theme } from "styles/theme";
 import { ResponsiveBar, BarItemProps } from "@nivo/bar";
@@ -6,9 +6,21 @@ import Graph from "./graph/Graph";
 
 import { patternData0, patternData1, patternData2 } from "constant/preset/watchingPatternPreset";
 
+import { myPatternGet } from "apis/apiMy";
+
 const WatchingPattern = () => {
   const [activeIndex, setActiveIndex] = useState(3);
-  const [data, setData] = useState(patternData0); // TODO: 유저 패턴 받아와서 넣어주기
+  const [data, setData] = useState<number[]>(patternData0); // TODO: 유저 패턴 받아와서 넣어주기
+
+  async function myPatternGetAPI() {
+    const myPattern = await myPatternGet();
+    const myPatternData = myPattern.pattern;
+    console.log(myPatternData, "받아온 커스텀 데이터");
+    setData(myPatternData);
+  }
+  useEffect(() => {
+    myPatternGetAPI();
+  }, []);
 
   return (
     <SContainer>
@@ -16,7 +28,7 @@ const WatchingPattern = () => {
         <SDiv>나의 시청 패턴</SDiv>
         <SDiv2>그래프를 움직여서 시청패턴을 설정하세요</SDiv2>
 
-        <SBtnDiv>
+        {/* <SBtnDiv>
           <Sbtn
             style={{ fontSize: "2.5vw" }}
             isActive={activeIndex === 0}
@@ -54,7 +66,7 @@ const WatchingPattern = () => {
           >
             커스텀
           </Sbtn>
-        </SBtnDiv>
+        </SBtnDiv> */}
       </div>
       <div style={{ height: "30vh" }}>
         <Graph data={data} setActiveIndex={setActiveIndex} activeIndex={activeIndex} />
