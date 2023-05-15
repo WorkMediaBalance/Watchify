@@ -18,7 +18,7 @@ const WishTab = () => {
       runtime: 50, // 분 단위로 해서 보내주세요 (1시간 20분 -> 80)
       rate: 4.5, // 없을시 0
       img_path: "https://images.justwatch.com/poster/302518136/s592/시즌-1",
-      backdrop_path: "https://images.justwatch.com/poster/302518136/s592/시즌-1", // 없을 시 빈 string ''
+      backdropPath: "https://images.justwatch.com/poster/302518136/s592/시즌-1", // 없을 시 빈 string ''
       type: "드라마",
       season: 1, // 없을 시 0
       finalEpisode: 10, // 없을 시 0
@@ -37,7 +37,7 @@ const WishTab = () => {
       runtime: 60,
       rate: 3.7,
       img_path: "https://images.justwatch.com/poster/129382738/s592/twilight.webp",
-      backdrop_path: "https://images.justwatch.com/poster/302518136/s592/시즌-1",
+      backdropPath: "https://images.justwatch.com/poster/302518136/s592/시즌-1",
       isLike: 1,
       type: "영화",
       season: 0,
@@ -57,7 +57,7 @@ const WishTab = () => {
       runtime: 88,
       rate: 1.2,
       img_path: "https://images.justwatch.com/poster/8733916/s592/bagmulgwani-salaissda.webp",
-      backdrop_path: "https://images.justwatch.com/poster/302518136/s592/시즌-1",
+      backdropPath: "https://images.justwatch.com/poster/302518136/s592/시즌-1",
       isLike: 1,
       type: "영화",
       season: 0,
@@ -76,17 +76,19 @@ const WishTab = () => {
   ]);
 
   return (
-    <div>
-      <Title>나의 찜 목록</Title>
-      <GridContainer>
-        {wishList.map((content, index) => (
-          <ContentPoster
-            imageUrl={wishList[index]["img_path"]}
-            title={wishList[index]["title"]}
-            content={wishList[index]}
-          />
-        ))}
-      </GridContainer>
+    <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+      <div style={{ width: "90%" }}>
+        <Title>나의 찜 목록</Title>
+        <GridContainer>
+          {wishList.map((content, index) => (
+            <ContentPoster
+              imageUrl={wishList[index]["img_path"]}
+              title={wishList[index]["title"]}
+              content={wishList[index]}
+            />
+          ))}
+        </GridContainer>
+      </div>
     </div>
   );
 };
@@ -96,7 +98,7 @@ const Title = styled.div`
   font-size: ${({ theme }) => theme.fontSizeType.big.fontSize};
   font-weight: ${({ theme }) => theme.fontSizeType.big.fontWeight};
   text-align: left;
-  margin: 0.5rem 0;
+  margin: 2vh 0.5rem 0;
   padding-left: 0.5rem;
 `;
 export default WishTab;

@@ -11,14 +11,18 @@ import { useRecoilState } from "recoil";
 
 const BaseDiv = styled.div`
   width: 100vw;
-  background-color: #232323;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
 const SheetDiv = styled.div`
   padding-top: 8vh;
-  padding-left: 5vw;
+  // padding-left: 5vw;
+  width: 90%;
   display: flex;
   flex-direction: column;
+  background-color: ${({ theme }) => theme.netflix.backgroundColor};
 `;
 
 const SheetBtn = styled.button`
@@ -63,7 +67,7 @@ const SRecBtn = styled.button`
   margin-top: 2vh;
   border-radius: 12px;
   font-size: 1rem;
-  background-color: #e50914;
+  background-color: ${({ theme }) => theme.netflix.pointColor};
   font-weight: 600;
   color: #ffffff;
   border: transparent;
@@ -79,7 +83,7 @@ const SGridDiv = styled.div`
 const SGenreBtn = styled.button`
   height: 4.5vh;
   color: #ffffff;
-  background-color: #e50914;
+  background-color: ${({ theme }) => theme.netflix.pointColor};
   border: transparent;
   border-radius: 12px;
   min-width: 15.5vw;

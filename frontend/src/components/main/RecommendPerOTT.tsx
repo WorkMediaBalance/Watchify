@@ -1,25 +1,111 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import disney from "../../assets/img/disneyIcon.png";
 import netflix from "../../assets/img/netflixIcon.png";
 import wavve from "../../assets/img/wavveIcon.png";
 import watcha from "../../assets/img/watchaIcon.png";
 
+import { mainRecommend, mainRecommendNon } from "apis/apiMain";
+
+import { recResultState } from "recoil/recommendState";
+import { useRecoilState } from "recoil";
+
+import ContentPoster from "components/common/ContentPoster";
+
+import { content } from "interface/content";
+
+type recommendPerOtt = {
+  netflix: content[];
+  wavve: content[];
+  watcha: content[];
+  disney: content[];
+};
+
 const RecommendPerOTT = () => {
+  const [recResult, SetRecResult] = useRecoilState(recResultState); //TODO: recResult[0] 을 컨텐츠 result[ott][index]으로 치환하면 됨
+
+  const [result, setResult] = useState<recommendPerOtt>({
+    netflix: [],
+    wavve: [],
+    watcha: [],
+    disney: [],
+  });
+
+  const [ott, setOtt] = useState("netflix");
+  const [index, setIndex] = useState(0);
+
+  const handleIconClick = (icon: string) => {
+    setOtt(icon);
+    setIndex(0);
+  };
+
+  const handleNext = (add: number) => {
+    console.log((index + add + 10) % 10);
+
+    setIndex((index + add + 10) % 10);
+  };
+
+  const getOttRecommend = async () => {
+    const data = await mainRecommend();
+    setResult(data);
+  };
+
+  const getOttRecommendNon = async () => {
+    const data = await mainRecommendNon();
+    setResult(data);
+  };
+
+  useEffect(() => {
+    const Token = localStorage.getItem("accessToken");
+    if (Token !== null) {
+      getOttRecommend();
+    } else {
+      getOttRecommendNon();
+    }
+  }, []);
+
   return (
     <Container>
       <HeaderContainer>
-        <Header>OTT별 추천</Header>
+        <Header>
+          OTT별<TitleSpan> 추천</TitleSpan>
+        </Header>
       </HeaderContainer>
 
       <ContentContainer>
-        <Poster className="poster"></Poster>
+        <Poster className="poster">
+          <ContentPoster
+            title={recResult[0].title}
+            imageUrl={recResult[0].img_path}
+            content={recResult[0]}
+          />
+        </Poster>
         <Content>
           <OTTIcons>
-            <OTTIcon src={netflix}></OTTIcon>
-            <OTTIcon src={disney}></OTTIcon>
-            <OTTIcon src={wavve}></OTTIcon>
-            <OTTIcon src={watcha}></OTTIcon>
+            <OTTIcon
+              src={netflix}
+              onClick={() => {
+                handleIconClick("netflix");
+              }}
+            ></OTTIcon>
+            <OTTIcon
+              src={disney}
+              onClick={() => {
+                handleIconClick("disney");
+              }}
+            ></OTTIcon>
+            <OTTIcon
+              src={wavve}
+              onClick={() => {
+                handleIconClick("wavve");
+              }}
+            ></OTTIcon>
+            <OTTIcon
+              src={watcha}
+              onClick={() => {
+                handleIconClick("watcha");
+              }}
+            ></OTTIcon>
           </OTTIcons>
           <div
             style={{
@@ -31,15 +117,39 @@ const RecommendPerOTT = () => {
             }}
           >
             <div>
-              <Title>{"낭만닥터 김사부"}</Title>
-              <Rating>5.0 / 5.0</Rating>
+              <Title>{recResult[0].title}</Title>
+              <Rating>{recResult[0].rate} / 5.0</Rating>
             </div>
-            <Story>
-              {
-                "지방의 초라한 돌담 병원, 한때 신의 손으로 불리었지만 이제는 스스로를 낭만닥터라 칭하며 은둔생활을 즐기고 있는 괴짜 천재 의사 김사부. 그런 그의 앞에 열정 넘치는 젊은 의사가 찾아온다."
-              }
-            </Story>
-            <Watch>자세히</Watch>
+            <Story>{recResult[0].summarize}</Story>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+                margin: "1vw",
+              }}
+            >
+              <Watch
+                onClick={() => {
+                  handleNext(-1);
+                }}
+              >
+                {"<<"}
+              </Watch>
+              <DotContaier>
+                {[0, 0, 0, 0, 0, 0, 0, 0, 0, 0].map((no, i) => {
+                  return <Dot isOn={index === i} />;
+                })}
+              </DotContaier>
+              <Watch
+                onClick={() => {
+                  handleNext(1);
+                }}
+              >
+                {">>"}
+              </Watch>
+            </div>
           </div>
         </Content>
       </ContentContainer>
@@ -107,10 +217,7 @@ const Poster = styled.div`
   height: 34vh;
   width: 50vw;
   left: 0;
-  background-image: url("https://images.justwatch.com/poster/172352479/s592/romantic-doctor-teacher-kim.webp");
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
+
   overflow: visible;
 `;
 
@@ -138,10 +245,32 @@ const Story = styled.div`
   overflow: hidden;
   display: -webkit-box;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 4;
+  -webkit-line-clamp: 6;
 `;
 
 const Watch = styled.div`
   text-align: end;
   padding-right: 1vw;
+`;
+
+const TitleSpan = styled.span`
+  color: ${({ theme }) => theme.netflix.lightColor};
+  font-size: 5.5vw;
+`;
+
+const Dot = styled.div<{ isOn: boolean }>`
+  background-color: ${({ theme, isOn }) =>
+    isOn ? theme.netflix.pointColor : theme.netflix.fontColor};
+  border-radius: 50%;
+  width: 1.2vw;
+  height: 1.2vw;
+  margin: 0.2vw;
+`;
+
+const DotContaier = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  width: 50%;
+  margin-top: 0.2vh;
 `;

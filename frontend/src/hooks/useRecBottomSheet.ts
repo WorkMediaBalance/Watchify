@@ -32,7 +32,7 @@ export default function useRecBottomSheet() {
     isOpen: false,
   });
 
-  const [isOpenSheet, setIsOpenSheet] = useState<boolean>(false);
+  const [isOpenSheet, setIsOpenSheet] = useState<boolean>(true);
   const openBottomSheet = () => {
     metrics.current.isOpen = true;
     setIsOpenSheet(true);
@@ -42,6 +42,7 @@ export default function useRecBottomSheet() {
   const closeBottomSheet = () => {
     metrics.current.isOpen = false;
     setIsOpenSheet(false);
+    sheet.current!.style.setProperty("transform", "translateY(0)");
   };
 
   useEffect(() => {
@@ -154,5 +155,5 @@ export default function useRecBottomSheet() {
     content.current!.addEventListener("touchstart", handleTouchStart);
   }, []);
 
-  return { sheet, content, openBottomSheet, isOpenSheet };
+  return { sheet, content, openBottomSheet, closeBottomSheet, isOpenSheet };
 }

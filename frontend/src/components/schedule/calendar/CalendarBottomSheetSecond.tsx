@@ -54,7 +54,9 @@ const CalendarBottomSheetSecond = (props: { date: number; month: number }) => {
     <Container {...handlers}>
       <Date>{`${props.month}월 ${props.date}일`}</Date>
       {Array.isArray(dateScheduleList) && dateScheduleList.length === 0 ? (
-        <div>일정이 업습</div>
+        <NoContentDiv>
+          <div>일정이 없습니다.</div>
+        </NoContentDiv>
       ) : (
         <ContentContainer>
           <PosterContainer>
@@ -83,7 +85,7 @@ const CalendarBottomSheetSecond = (props: { date: number; month: number }) => {
 export default CalendarBottomSheetSecond;
 
 const Container = styled.div`
-  width: 100%;
+  width: auto;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
@@ -92,7 +94,7 @@ const Container = styled.div`
 const Date = styled.div`
   font-size: ${({ theme }) => theme.fontSizeType.big.fontSize};
   font-weight: ${({ theme }) => theme.fontSizeType.big.fontWeight};
-  margin-left: 5vw;
+  margin-left: 10vw;
 `;
 
 const ContentContainer = styled.div`
@@ -134,4 +136,14 @@ const PageDot = styled.div<{ status: boolean }>`
   height: 2vw;
   border-radius: 50%;
   margin: 1vw;
+`;
+
+const NoContentDiv = styled.div`
+  width: 100%;
+  height: 20vh;
+  font-size: ${({ theme }) => theme.fontSizeType.big.fontSize};
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `;

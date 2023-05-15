@@ -34,24 +34,28 @@ const MyInfoTab = () => {
   }, []);
 
   return (
-    <Container>
-      <OttSubscription />
-      <Title>알림 설정</Title>
-      <RadioConatainerContainer>
-        <RadioConatainer>
-          <NotificationSettingComponent
-            title={"OTT 구독 알림"}
-            apiLink={"ottalarm"}
-            isOn={ottInfo} // TODO: 여기 axios 받아온 값을 문자로 바꿔서 내려주기
-          />
-          <NotificationSettingComponent
-            title={"컨텐츠 시청 알림"}
-            apiLink={"contentalarm"}
-            isOn={contentInfo} // TODO: 여기 axios 받아온 값을 문자로 바꿔서 내려주기
-          />
-        </RadioConatainer>
-      </RadioConatainerContainer>
-    </Container>
+    <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+      <div style={{ width: "90%" }}>
+        <Container>
+          {/* <OttSubscription /> */}
+          <Title>알림 설정</Title>
+          <RadioConatainerContainer>
+            <RadioConatainer>
+              <NotificationSettingComponent
+                title={"OTT 구독 알림"}
+                apiLink={"ottalarm"}
+                isOn={ottInfo} // TODO: 여기 axios 받아온 값을 문자로 바꿔서 내려주기
+              />
+              <NotificationSettingComponent
+                title={"컨텐츠 시청 알림"}
+                apiLink={"contentalarm"}
+                isOn={contentInfo} // TODO: 여기 axios 받아온 값을 문자로 바꿔서 내려주기
+              />
+            </RadioConatainer>
+          </RadioConatainerContainer>
+        </Container>
+      </div>
+    </div>
   );
 };
 

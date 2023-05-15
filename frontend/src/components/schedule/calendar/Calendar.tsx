@@ -177,31 +177,51 @@ const Calendar = (props: {
                               key={`${rowIndex}-${dayIndex}`}
                               data-key={`${rowIndex}-${dayIndex}`}
                               className={className}
+                              rowsLength={rows.length}
+                              bottomSheetState={props.bottomSheetState}
                             >
                               <STdDiv>
-                                <SP>{content}</SP>
+                                <SP className="SP">{content}</SP>
 
                                 <InnerConteiner>
                                   {typeof content === "number"
                                     ? monthSchedule[content].map((content, index) => {
-                                        return (
-                                          <ContentTag>
-                                            <ContentTagDot />
-                                            <ContentName>{"1화"}</ContentName>
-                                          </ContentTag>
-                                        );
+                                        return <IndicationBar />;
                                       })
                                     : null}
                                 </InnerConteiner>
                               </STdDiv>
                             </STd>
                           )
+                        ) : props.bottomSheetState === 1 ? (
+                          <STd
+                            onClick={(event) => handleDateClick(event, rowIndex, day)}
+                            key={`${rowIndex}-${dayIndex}`}
+                            data-key={`${rowIndex}-${dayIndex}`}
+                            className={className}
+                            rowsLength={rows.length}
+                            bottomSheetState={props.bottomSheetState}
+                          >
+                            <STdDiv>
+                              <SP>{content}</SP>
+
+                              <InnerConteiner>
+                                {typeof content === "number"
+                                  ? monthSchedule[content].map((content, index) => {
+                                      return <IndicationBar />;
+                                    })
+                                  : null}
+                              </InnerConteiner>
+                            </STdDiv>
+                          </STd>
                         ) : (
                           <STd
                             onClick={(event) => handleDateClick(event, rowIndex, day)}
                             key={`${rowIndex}-${dayIndex}`}
                             data-key={`${rowIndex}-${dayIndex}`}
                             className={className}
+                            rowsLength={rows.length}
+                            bottomSheetState={props.bottomSheetState}
                           >
                             <STdDiv>
                               <SP>{content}</SP>
@@ -278,9 +298,11 @@ const STable = styled.table<{ bottomSheetState: number }>`
   border-collapse: collapse;
 `;
 
-const STd = styled.td`
+const STd = styled.td<{ rowsLength: number; bottomSheetState: number }>`
   text-align: center;
   width: calc(100vw / 7);
+  height: ${({ rowsLength, bottomSheetState }) =>
+    bottomSheetState === 2 ? "100%" : `calc(100% / ${rowsLength})`}};
 `;
 
 const SThead = styled.thead`
@@ -294,7 +316,8 @@ const STbody = styled.tbody`
   .selected-day div {
     border-radius: 8px;
     // border: 1px solid ${theme.netflix.pointColor};
-    background-color: rgba(255, 0, 0, 0.2);
+    background-color: ${theme.netflix.pointColor};
+    color: ${theme.netflix.pointColor};
   }
   .today p {
     background-color: rgba(209, 209, 209, 0.2);
@@ -314,12 +337,14 @@ const STdDiv = styled.div`
 
 const SP = styled.div`
   margin-top: 1vh;
+  color: white !important;
 `;
 
 const InnerConteiner = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: start;
+  align-items: center;
   width: 100%;
   height: 100%;
   margin-top: 0.2vh;
@@ -328,7 +353,7 @@ const InnerConteiner = styled.div`
 const ContentTag = styled.div`
   display: flex;
   flex-direction: row;
-  width: 100%;
+  width: 90%;
   justify-content: space-between;
   align-items: center;
   background-color: white;
@@ -338,7 +363,7 @@ const ContentTag = styled.div`
 
 const ContentTagDot = styled.div`
   border-radius: 50%;
-  background-color: red;
+  background-color: ${theme.netflix.pointColor};
   height: 2vw;
   width: 2vw;
   margin: 1vw;
@@ -349,6 +374,13 @@ const ContentName = styled.div`
   font-size: 0.8rem;
   margin: 0.4vw;
   margin-right: 2vw;
+`;
+
+const IndicationBar = styled.div`
+  background-color: ${theme.netflix.pointColor};
+  height: 0.3vh;
+  width: 90%;
+  margin-bottom: 0.2vh;
 `;
 
 const ContentPlus = styled.div`
