@@ -17,8 +17,6 @@ spec:
       containers:
         - name: back-service
           image: docker.io/runtogether/watchify:backend188
-      imagePullSecrets:
-        - name: dockerhub
           ports:
             - containerPort: 8000
           env:
@@ -47,6 +45,9 @@ spec:
                 secretKeyRef:
                   name: db-secret
                   key: DB_PASSWORD
+      imagePullSecrets:
+        - name: dockerhub
+
 ---
 apiVersion: v1
 kind: Service
