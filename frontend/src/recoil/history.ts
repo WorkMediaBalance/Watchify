@@ -1,14 +1,19 @@
 import { atom } from "recoil";
 import { content } from "interface/content";
 
-export interface historyContent extends content {
+export interface HistoryContent extends content {
   firstYear: number;
   firstMonth: number;
   firstDay: number;
   isComplete: boolean;
 }
 
-export const historyState = atom<Array<historyContent>>({
+export interface HistoryDetailContent extends content {
+  date: string;
+  episode: number;
+}
+
+export const historyState = atom<Array<HistoryContent>>({
   key: "historyState",
   default: [
     {
@@ -59,4 +64,120 @@ export const historyState = atom<Array<historyContent>>({
       isComplete: true,
     },
   ],
+});
+
+export const historyDetailState = atom<{ [key: number]: HistoryDetailContent[] }>({
+  key: "historyDetailState",
+  default: {
+    1: [
+      {
+        pk: 1,
+        title: "더 글로리",
+        date: "2023-05-01",
+        runtime: 50,
+        rate: 4.5,
+        img_path: "https://images.justwatch.com/poster/302518136/s592/시즌-1",
+        backdropPath: "https://images.justwatch.com/poster/302518136/s592/시즌-1",
+        isLike: 1,
+        type: "드라마",
+        season: 1,
+        finalEpisode: 10,
+        ott: { netflix: "https://www.netflix.com/kr/title/81519223" },
+        genres: ["드라마"],
+        isWish: false,
+        summarize:
+          "어느 날 길을 걷던 걸무고는 우연히 알 수 없는 동전을 줍게 되고, 이 동전의 충격적인 정체가 알려지며 사건에 휩싸이게 되는데... 과연 걸무고는 무사할 수 있을까?",
+        audienceAge: 15,
+        episode: 1,
+      },
+    ],
+    2: [
+      {
+        pk: 1,
+        title: "더 글로리",
+        date: "2023-05-02",
+        runtime: 50,
+        rate: 4.5,
+        img_path: "https://images.justwatch.com/poster/302518136/s592/시즌-1",
+        backdropPath: "https://images.justwatch.com/poster/302518136/s592/시즌-1",
+        isLike: 1,
+        type: "드라마",
+        season: 1,
+        finalEpisode: 10,
+        ott: { netflix: "https://www.netflix.com/kr/title/81519223" },
+        genres: ["드라마"],
+        isWish: false,
+        summarize:
+          "어느 날 길을 걷던 걸무고는 우연히 알 수 없는 동전을 줍게 되고, 이 동전의 충격적인 정체가 알려지며 사건에 휩싸이게 되는데... 과연 걸무고는 무사할 수 있을까?",
+        audienceAge: 15,
+        episode: 2,
+      },
+    ],
+    11: [
+      {
+        pk: 1,
+        title: "더 글로리",
+        date: "2023-05-11",
+        runtime: 50,
+        rate: 4.5,
+        img_path: "https://images.justwatch.com/poster/302518136/s592/시즌-1",
+        backdropPath: "https://images.justwatch.com/poster/302518136/s592/시즌-1",
+        isLike: 1,
+        type: "드라마",
+        season: 1,
+        finalEpisode: 10,
+        ott: { netflix: "https://www.netflix.com/kr/title/81519223" },
+        genres: ["드라마"],
+        isWish: false,
+        summarize:
+          "어느 날 길을 걷던 걸무고는 우연히 알 수 없는 동전을 줍게 되고, 이 동전의 충격적인 정체가 알려지며 사건에 휩싸이게 되는데... 과연 걸무고는 무사할 수 있을까?",
+        audienceAge: 15,
+        episode: 3,
+      },
+    ],
+    17: [
+      {
+        pk: 1,
+        title: "더 글로리",
+        date: "2023-05-17",
+        runtime: 50,
+        rate: 4.5,
+        img_path: "https://images.justwatch.com/poster/302518136/s592/시즌-1",
+        backdropPath: "https://images.justwatch.com/poster/302518136/s592/시즌-1",
+        isLike: 1,
+        type: "드라마",
+        season: 1,
+        finalEpisode: 10,
+        ott: { netflix: "https://www.netflix.com/kr/title/81519223" },
+        genres: ["드라마"],
+        isWish: false,
+        summarize:
+          "어느 날 길을 걷던 걸무고는 우연히 알 수 없는 동전을 줍게 되고, 이 동전의 충격적인 정체가 알려지며 사건에 휩싸이게 되는데... 과연 걸무고는 무사할 수 있을까?",
+        audienceAge: 15,
+        episode: 4,
+      },
+    ],
+    23: [
+      {
+        pk: 1,
+        title: "더 글로리",
+        date: "2023-05-23",
+        runtime: 50,
+        rate: 4.5,
+        img_path: "https://images.justwatch.com/poster/302518136/s592/시즌-1",
+        backdropPath: "https://images.justwatch.com/poster/302518136/s592/시즌-1",
+        isLike: 1,
+        type: "드라마",
+        season: 1,
+        finalEpisode: 10,
+        ott: { netflix: "https://www.netflix.com/kr/title/81519223" },
+        genres: ["드라마"],
+        isWish: false,
+        summarize:
+          "어느 날 길을 걷던 걸무고는 우연히 알 수 없는 동전을 줍게 되고, 이 동전의 충격적인 정체가 알려지며 사건에 휩싸이게 되는데... 과연 걸무고는 무사할 수 있을까?",
+        audienceAge: 15,
+        episode: 5,
+      },
+    ],
+  },
 });

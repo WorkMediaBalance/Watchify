@@ -4,15 +4,13 @@ import { useSwipeable } from "react-swipeable";
 import { motion, AnimatePresence } from "framer-motion";
 import { theme } from "styles/theme";
 import { months } from "constant/constant";
-
-// month 스케줄 state
-import { monthScheduleState } from "recoil/scheduleState";
-import { useRecoilState } from "recoil";
+import { HistoryDetailContent } from "recoil/history";
 
 const HistoryCalendar = (props: {
   onDateClick: (date: number, month: number) => void;
   onCloseSheet: () => void;
   bottomSheetState: number;
+  historyDetail: { [key: number]: HistoryDetailContent[] };
 }) => {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [clickedDay, setClickedDay] = useState<HTMLElement | null>(null);
@@ -111,13 +109,14 @@ const HistoryCalendar = (props: {
       setClickedDay(event.currentTarget);
       const date = selectedDate.getMonth() + 1;
       const month = Number(YMD[2]);
-      props.onDateClick(month, date);
+      if (props.historyDetail[parseInt(YMD[2])]) {
+        props.onDateClick(month, date);
+      }
     }
     setCurrentRowIndex(rowIndex);
   };
 
   // 해당 스케줄 불러오기
-  const [monthSchedule, setMonthSchedule] = useRecoilState(monthScheduleState);
 
   return (
     <Wrapper className={"wrapper"}>
@@ -170,30 +169,7 @@ const HistoryCalendar = (props: {
                           }
                         }
 
-                        return props.bottomSheetState === 2 ? (
-                          currentRowIndex === rowIndex && (
-                            <STd
-                              onClick={(event) => handleDateClick(event, rowIndex, day)}
-                              key={`${rowIndex}-${dayIndex}`}
-                              data-key={`${rowIndex}-${dayIndex}`}
-                              className={className}
-                              rowsLength={rows.length}
-                              bottomSheetState={props.bottomSheetState}
-                            >
-                              <STdDiv>
-                                <SP className="SP">{content}</SP>
-
-                                <InnerConteiner>
-                                  {typeof content === "number"
-                                    ? monthSchedule[content].map((content, index) => {
-                                        return <IndicationBar />;
-                                      })
-                                    : null}
-                                </InnerConteiner>
-                              </STdDiv>
-                            </STd>
-                          )
-                        ) : props.bottomSheetState === 1 ? (
+                        return props.bottomSheetState === 1 ? (
                           <STd
                             onClick={(event) => handleDateClick(event, rowIndex, day)}
                             key={`${rowIndex}-${dayIndex}`}
@@ -206,8 +182,8 @@ const HistoryCalendar = (props: {
                               <SP>{content}</SP>
 
                               <InnerConteiner>
-                                {typeof content === "number"
-                                  ? monthSchedule[content].map((content, index) => {
+                                {typeof content === "number" && props.historyDetail[content]
+                                  ? props.historyDetail[content].map((content, index) => {
                                       return <IndicationBar />;
                                     })
                                   : null}
@@ -227,12 +203,14 @@ const HistoryCalendar = (props: {
                               <SP>{content}</SP>
 
                               <InnerConteiner>
-                                {typeof content === "number"
-                                  ? monthSchedule[content].map((content, index) => {
+                                {typeof content === "number" && props.historyDetail[content]
+                                  ? props.historyDetail[content].map((content, index) => {
                                       return (
                                         <ContentTag>
                                           <ContentTagDot />
-                                          <ContentName>{"1화"}</ContentName>
+                                          <ContentName>
+                                            {content.episode !== 0 ? `${content.episode}화` : null}
+                                          </ContentName>
                                         </ContentTag>
                                       );
                                     })

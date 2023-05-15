@@ -3,6 +3,8 @@ import { useParams, useLocation } from "react-router-dom";
 import { myHistoryInfo } from "apis/apiMy";
 import HistoryCalendar from "components/mypage/history/HistoryCalendar";
 import HistoryBottomSheet from "components/mypage/history/HistoryBottomSheet";
+import { useRecoilState } from "recoil";
+import { historyDetailState } from "recoil/history";
 
 interface HistoryData {
   [key: string]: number;
@@ -18,7 +20,8 @@ const PageMyHistory = () => {
   const [month, setMonth] = useState(startMonth);
   const [date, setDate] = useState(startDay);
 
-  const [historyDetail, setHistoryDetail] = useState();
+  const [historyDetail, setHistoryDetail] = useRecoilState(historyDetailState);
+
   // 히스토리 상세 정보 받아오기
   async function MyHistoryInfoAPI() {
     try {
@@ -28,30 +31,40 @@ const PageMyHistory = () => {
         month: Number(startMonth),
       };
       const newHistoryDetail = await myHistoryInfo(data);
-      console.log(newHistoryDetail);
-      setHistoryDetail(newHistoryDetail);
+      if (newHistoryDetail !== undefined) {
+        setHistoryDetail(newHistoryDetail);
+      }
     } catch {}
   }
   useEffect(() => {
     MyHistoryInfoAPI();
   }, []);
 
+  // bottomsheet open 변수
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [sheetLevel, setSheetLevel] = useState<number>(0);
+
   return (
     <div>
       <HistoryCalendar
+        historyDetail={historyDetail}
         onDateClick={(date: number, month: number) => {
           setMonth(month);
           setDate(date);
+          setIsOpen(true);
+          setSheetLevel(1);
         }}
-        bottomSheetState={1}
+        bottomSheetState={sheetLevel}
         onCloseSheet={() => {
-          console.log("1");
+          setIsOpen(false);
+          setSheetLevel(0);
         }}
       />
       <HistoryBottomSheet
-        isOpen={true}
+        isOpen={isOpen}
         onClose={() => {
-          console.log("1");
+          setIsOpen(false);
+          setSheetLevel(0);
         }}
       />
     </div>

@@ -6,12 +6,12 @@ import { monthScheduleState } from "recoil/scheduleState";
 import { useRecoilState } from "recoil";
 
 import { content } from "./../../interface/content";
-import { historyState, historyContent } from "recoil/history";
+import { historyState, HistoryContent } from "recoil/history";
 import { myHistory } from "apis/apiMy";
 
 const HistoryTab = () => {
   const dummyArray = [0, 0, 0, 0, 0, 0, 0];
-  const [historyArray, setHistoryArray] = useRecoilState<historyContent[]>(historyState);
+  const [historyArray, setHistoryArray] = useRecoilState<HistoryContent[]>(historyState);
 
   // async function MyHistoryAPI() {
   //   try {

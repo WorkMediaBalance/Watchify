@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { schedule } from "interface/schedule";
 import Modal from "react-modal";
 import Calendar from "components/schedule/calendar/Calendar";
-import { historyContent } from "recoil/history";
+import { HistoryContent } from "recoil/history";
 
 interface BackgroundImageProps {
   imageUrl: string;
@@ -78,7 +78,7 @@ const Title = styled.div`
 `;
 
 interface HistoryComponentProps {
-  contentHistory: historyContent;
+  contentHistory: HistoryContent;
 }
 
 const HistoryComponent: React.FC<HistoryComponentProps> = ({ contentHistory }) => {
