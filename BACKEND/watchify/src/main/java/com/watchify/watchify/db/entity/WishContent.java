@@ -34,6 +34,11 @@ public class WishContent implements Serializable {
     @JoinColumn(name = "content_id")
     private Content content;
 
+    @PrePersist
+    public void onCreate() {
+        this.updatedAt = new Date();
+    }
+
     @PreUpdate
     public void onUpdate() {
         this.updatedAt = new Date();
