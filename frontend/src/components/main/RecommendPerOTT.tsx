@@ -76,7 +76,7 @@ const RecommendPerOTT = () => {
         <Poster className="poster">
           <ContentPoster
             title={recResult[0].title}
-            imageUrl={recResult[0].img_path}
+            imageUrl={recResult[0].imgPath}
             content={recResult[0]}
           />
         </Poster>

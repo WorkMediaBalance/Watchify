@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled, { keyframes, css } from "styled-components";
 
 import disney from "assets/img/disneyIcon.png";
@@ -12,34 +12,51 @@ import { contentLike, contentWishSwitch } from "apis/apiContent";
 
 import { AiOutlineLike, AiOutlineDislike, AiFillLike, AiFillDislike } from "react-icons/ai";
 
+import { contentInfo } from "apis/apiContent";
+
 interface ContentSwalProps {
   content: content;
 }
 
 const ContentSwal: React.FC<ContentSwalProps> = ({ content: content }) => {
-  const [isWish, setIsWish] = useState(content.isWish); //TODO: props받아서 찜여부 초기값 설정 해주기
-  const [isLike, setIsLike] = useState(0); // TODO: 여기 초기화
+  const [isWish, setIsWish] = useState<boolean | null>(null); //TODO: props받아서 찜여부 초기값 설정 해주기
+  const [isLike, setIsLike] = useState<number | null>(null); // TODO: 여기 초기화
+  const [newContentInfo, setNewContentInfo] = useState<content | null>(null);
+
+  // 단일 컨텐츠 정보 조회 API - 찜 최신화용
+  async function contentInfoAPI(pk: number) {
+    let newData = await contentInfo({ pk: pk });
+    console.log(newData, "뉴데이터");
+    setNewContentInfo(newData);
+    setIsLike(newData.isLike);
+    setIsWish(newData.wish);
+  }
+  useEffect(() => {
+    if (!content) return;
+    console.log(content, "컨텐츠");
+    contentInfoAPI(content.pk);
+  }, []);
 
   // 좋아요 조건부
   const handleLike = () => {
-    contentLike({ pk: 1, isLike: true });
+    contentLike({ pk: content.pk, isLike: true });
     setIsLike(1);
   };
   const handleLikeCancel = () => {
-    contentLike({ pk: 1, isLike: false });
+    contentLike({ pk: content.pk, isLike: false });
     setIsLike(0);
   };
   const handleDislike = () => {
-    contentLike({ pk: 1, isLike: false });
+    contentLike({ pk: content.pk, isLike: false });
     setIsLike(-1);
   };
   const handleDislikeCancel = () => {
-    contentLike({ pk: 1, isLike: true });
+    contentLike({ pk: content.pk, isLike: true });
     setIsLike(0);
   };
 
   const handleWishClick = () => {
-    contentWishSwitch({ key: 1 });
+    contentWishSwitch({ pk: content.pk });
     setIsWish(!isWish);
   };
 
@@ -233,6 +250,11 @@ const FinalEpisode = styled.div`
 
 const Summarize = styled.div`
   margin: 4vw;
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 const Footer = styled.div`

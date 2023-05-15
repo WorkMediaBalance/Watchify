@@ -10,6 +10,8 @@ import { BsPlusCircle } from "react-icons/bs";
 import { content } from "interface/content";
 import ContentPoster from "components/common/ContentPoster";
 
+import { myWishList } from "apis/apiMy";
+
 const WishList = () => {
   const [wishList, setWishList] = useRecoilState(wishListState);
   const [essList, setEssList] = useRecoilState(essListState);
@@ -19,6 +21,17 @@ const WishList = () => {
     copy = [...copy, content];
     setEssList(copy);
   };
+
+  // 찜 목록 불러오기 API 함수
+  async function myWishListAPI() {
+    let newData = await myWishList();
+    setWishList(newData);
+  }
+
+  // 찜 목록 불러오기 API
+  useEffect(() => {
+    myWishListAPI();
+  }, []);
   return (
     <Layout>
       {wishList &&
