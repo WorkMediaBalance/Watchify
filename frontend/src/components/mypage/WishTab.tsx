@@ -18,11 +18,11 @@ const WishTab = () => {
   // 나의 찜 목록 API 불러오기
   async function myWishListAPI() {
     const newWishList = await myWishList();
+    console.log(newWishList);
     setWishList(newWishList);
   }
   useEffect(() => {
     myWishListAPI();
-    console.log(wishList, "나의 찜목록 불러오기 성공 ");
   }, []);
 
   return (
@@ -30,13 +30,14 @@ const WishTab = () => {
       <div style={{ width: "90%" }}>
         <Title>나의 찜 목록</Title>
         <GridContainer>
-          {wishList.map((content, index) => (
-            <ContentPoster
-              imageUrl={wishList[index]["imgPath"]}
-              title={wishList[index]["title"]}
-              content={wishList[index]}
-            />
-          ))}
+          {wishList &&
+            wishList.map((content, index) => (
+              <ContentPoster
+                imageUrl={wishList[index]["imgPath"]}
+                title={wishList[index]["title"]}
+                content={wishList[index]}
+              />
+            ))}
         </GridContainer>
       </div>
     </div>
