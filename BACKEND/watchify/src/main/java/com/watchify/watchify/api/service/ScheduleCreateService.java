@@ -43,7 +43,7 @@ public class ScheduleCreateService {
         }
 
         //수정안, 캘린더에 기존 데이터는 삭제
-        List<Calender> existingSch = calenderRepository.getScheduleAfterStartDate(userId, nowDate);
+        List<Calender> existingSch = calenderRepository.getMyCalenderList(userId);
         for (Calender calender : existingSch) {
             calender.updateDelete(true);
             calenderRepository.save(calender);
@@ -123,6 +123,7 @@ public class ScheduleCreateService {
                     break;
                 }
             }
+
             historyInfoDTOList.add(historyInfoDTO);
 
             myTime -= thisContent.getRuntime(); // 남은 시간 뺴주고
@@ -164,8 +165,6 @@ public class ScheduleCreateService {
             }
             res.put(key, tmp);
         }
-
-
 
         return res;
     }
