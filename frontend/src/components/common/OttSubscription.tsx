@@ -55,6 +55,7 @@ const OttSubscription = () => {
   async function myOTTgetAPI() {
     try {
       const myOTTInfo = await myOTTget();
+      console.log(myOTTInfo, "현재 구독중인 OTT");
       let copy = { ...ott };
       copy = myOTTInfo;
       setOtt(copy);

@@ -25,7 +25,7 @@ export const contentRecommend = async (data: ContentRecForm) => {
   pk: 234,
 }
 */
-export const contentWishSwitch = async (data: { [key: string]: number }) => {
+export const contentWishSwitch = async (data: { [pk: string]: number }) => {
   try {
     await api.put("api/content/wishswitch", data);
     return true;
@@ -48,6 +48,18 @@ export const contentLike = async (data: { pk: number; isLike: boolean }) => {
     return true;
   } catch (err) {
     console.log("컨텐츠 좋아요/싫어요 실패");
+    console.log(err);
+  }
+};
+
+// 단일 컨텐츠 정보 조회 (5.15 민혁 추가)
+export const contentInfo = async (data: { [pk: string]: number }) => {
+  try {
+    console.log(data.pk);
+    const res = await api.get(`api/content/nonauth/info/${data.pk}`);
+    return res.data;
+  } catch (err) {
+    console.log("단일 컨텐츠 정보 조회 실패");
     console.log(err);
   }
 };
