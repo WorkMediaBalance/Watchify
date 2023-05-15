@@ -56,6 +56,7 @@ export const myProfileName = async (data: { [key: string]: string }) => {
 // 찜 리스트 가져오기
 export const myWishList = async () => {
   try {
+    console.log("성공?");
     const res = await api.get("api/my/wishlist");
     return res.data;
   } catch (err) {
@@ -123,6 +124,7 @@ export const myOTTget = async () => {
 
 // 유저 ott 구독 정보 수정
 export const myOTTChange = async (data: OttPeriods) => {
+  console.log(data, "고뱀이 신청한 데이터다!");
   try {
     const res = await api.put("api/my/ott", data);
     return res.data;

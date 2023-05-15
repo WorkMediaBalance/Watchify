@@ -3,10 +3,10 @@ import styled, { keyframes, css } from "styled-components";
 import ReactDOM from "react-dom";
 import Modal from "react-modal";
 import { AiFillPlusCircle, AiFillCheckCircle } from "react-icons/ai";
-import disney from "assets/img/disneyIcon.png";
-import netflix from "assets/img/netflixIcon.png";
-import watcha from "assets/img/watchaIcon.png";
-import wavve from "assets/img/wavveIcon.png";
+import disney from "../assets/img/otticons/DisneyIcon.png";
+import netflix from "../assets/img/otticons/NetflixIcon.png";
+import watcha from "../assets/img/otticons/WatchaIcon.png";
+import wavve from "../assets/img/otticons/WavveIcon.png";
 import ContentSwal from "./ContentSwal";
 import { content } from "interface/content";
 

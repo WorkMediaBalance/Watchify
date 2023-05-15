@@ -10,7 +10,7 @@ export interface content {
   finalEpisode: number;
   ott: { [key: string]: string };
   genres: string[];
-  isWish: boolean;
+  wish: boolean;
   isLike: number;
   summarize: string;
   audienceAge: number;
