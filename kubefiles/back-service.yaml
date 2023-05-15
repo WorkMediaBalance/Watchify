@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: back-service
-          image: docker.io/runtogether/watchify:backend175
+          image: docker.io/runtogether/watchify:backend176
       imagePullSecrets:
         - name: dockerhub
           ports:
