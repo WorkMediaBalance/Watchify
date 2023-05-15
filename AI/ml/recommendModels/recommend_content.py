@@ -32,7 +32,7 @@ def recommend(user_id, genres, age, top_n):
 
 def ottRecommend(user_id):
     userdict = User.objects.values_list('id', flat=True)
-    itemdict = Content.objects.values_list('id','ott')  # 현재 ott에 해당하는 컨텐츠만 가져오기
+    itemdict = Contentott.objects.values_list('content_id','ott_id')  # 현재 ott에 해당하는 컨텐츠만 가져오기
 
     items_reviewed = LikeContent.objects.filter(user_id=user_id, is_deleted=False).values_list('content_id', flat=True) # user_id가 같고 is_deleted 값이 False인 데이터만 가져오기
 
@@ -61,11 +61,12 @@ def ottRecommend(user_id):
     result = dict()
     for r in range(4):
         try:
-            result[r+1] = recommendations[r][:10]
+            content = recommendations[r][:10]
+            print('content : ', content)
+            result[r+1] = [x[0] for x in content]
         except:
             pass
-    print('result :', result)
-    result = recommendations
+    print('result : ', result)
     return result
 
 def scheduleRecommend(user_id, content_ids, ott_ids):
@@ -91,7 +92,6 @@ def scheduleRecommend(user_id, content_ids, ott_ids):
             recommendations.append((item_id[0], ott_predict(user_id, item_id, neighbor_user, userdict, neighbor_item_list)))
     recommendations = list(set(recommendations))
     recommendations.sort(key = lambda x:x[1], reverse=True) # 유사도(x[1])가 높은 순서대로 정렬
-    print(recommendations[:10])
+
     result = [x[0] for x in recommendations[:10]]
-    print('result : ', result)
     return result

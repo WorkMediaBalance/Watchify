@@ -60,10 +60,10 @@ class ottRecommendAPIView(APIView):
 
          result = ottRecommend(user_id)
          contents = {
-              'netflix' : result[0],
-              'watcha' : result[1],
-              'wavve' : result[2],
-              'disney_plus' : result[3]
+              'netflix' : result[1],
+              'watcha' : result[2],
+              'wavve' : result[3],
+              'disney_plus' : result[4]
          }
          serializer = mainRecommendSerializer(contents)
          return Response(serializer.data)

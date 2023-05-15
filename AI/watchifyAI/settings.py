@@ -37,6 +37,9 @@ INSTALLED_APPS = [
     # rest API
     'rest_framework',
 
+    # CORS
+    'corsheaders',
+
     # basis
     'django.contrib.admin',
     'django.contrib.auth',
@@ -49,6 +52,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -154,7 +158,7 @@ AWS_S3_OBJECT_PARAMETERS = {
 # MEDIA_ROOT = os.path.join(BASE_DIR, 'path/to/store/my/files/')
 
 ## CORS
-CORS_ORIGIN_ALLOW_ALL = True
+CORS_ORIGIN_WHITELIST = ['https://k8a207.p.ssafy.io', 'http://localhost:8000', 'http://127.0.0.1:3000']
 CORS_ALLOW_CREDENTIALS = True
 
 CORS_ALLOW_METHODS = (
