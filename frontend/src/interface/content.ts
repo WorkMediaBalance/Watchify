@@ -8,7 +8,7 @@ export interface content {
   type: string;
   season: number;
   finalEpisode: number;
-  ott: string[];
+  ott: { [key: string]: string };
   genres: string[];
   isWish: boolean;
   isLike: number;

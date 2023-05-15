@@ -32,7 +32,7 @@ const PageSchedule = () => {
 export default PageSchedule;
 
 const Container = styled.div`
-  height: 95vh;
+  height: 91vh;
   display: flex;
   flex-direction: column;
   color: white;

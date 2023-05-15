@@ -3,6 +3,7 @@ package com.watchify.watchify.api.service;
 import com.watchify.watchify.db.entity.*;
 import com.watchify.watchify.db.repository.*;
 import com.watchify.watchify.dto.response.CalenderDTO;
+import com.watchify.watchify.dto.response.DefaultContentDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,8 +21,10 @@ import java.util.stream.Collectors;
 public class MainScheduleService {
 
     private final CalenderRepository calenderRepository;
+    private final WishContentRepository wishContentRepository;
+    private final LikeContentRepository likeContentRepository;
+    private final ContentRepository contentRepository;
 
-    @Transactional
     public Map<Integer, List<CalenderDTO>> getMainSchedule(Long userId) {
 
         Map<Integer, List<CalenderDTO>> res = new HashMap<>();
@@ -31,7 +34,9 @@ public class MainScheduleService {
         LocalDate startDate = today.minusDays(3);
         LocalDate endDate = today.plusDays(3);
 
-        List<Calender> calenders = calenderRepository.getMainSchedule(userId, startDate, endDate);
+        List<Calender> calenders = calenderRepository.getSchedule(userId, startDate, endDate);
+        List<WishContent> wishContents = wishContentRepository.getMyWishList(userId);
+        List<LikeContent> likeContents = likeContentRepository.getLikeContent(userId);
 
         for (int i=0; i < 7; i++) {
             // start 날짜 기준 + i 번째 날짜가 있는 값 찾기
@@ -42,13 +47,49 @@ public class MainScheduleService {
 
             List<CalenderDTO> calenderDTOS = new ArrayList<>();
             for (Calender calender : filterCalenders) {
-                CalenderDTO calenderDTO = new CalenderDTO(calender);
+                Content thisContent = calender.getTurnContent().getContent();
+                CalenderDTO calenderDTO = new CalenderDTO(thisContent, calender.getDate(), calender.getViewDate(), calender.getTurnContent().getEpisode());
                 calenderDTOS.add(calenderDTO);
+
+                for (WishContent wishContent : wishContents) {
+                    if (wishContent.getContent().equals(thisContent)) {
+                        if (wishContent.isDeleted() != true) {
+                            calenderDTO.setIsWish(true);
+                        }
+                        break;
+                    }
+                }
+
+                for (LikeContent likeContent : likeContents) {
+                    if (likeContent.getContent().equals(thisContent)) {
+                        if (likeContent.isDeleted() != true) {
+                            calenderDTO.setIsLike(likeContent.isLike() ? 1 : -1);
+                        }
+                        break;
+                    }
+                }
+
             }
 
             res.put(i, calenderDTOS);
         }
 
         return res;
+    }
+
+    @Transactional
+    public DefaultContentDTO mainRecommend(Long userId) {
+        // Service 추가하기
+
+        Content content = contentRepository.getContentById(1L); // List 형태로 변환
+        DefaultContentDTO defaultContentDTO = new DefaultContentDTO(content); // List 형태로 변환
+        return defaultContentDTO;
+    }
+
+    @Transactional
+    public DefaultContentDTO updateOttAlarm(Long userId) {
+        Content content = contentRepository.getContentById(1L); // List 형태로 변환
+        DefaultContentDTO defaultContentDTO = new DefaultContentDTO(content); // List 형태로 변환
+        return defaultContentDTO;
     }
 }

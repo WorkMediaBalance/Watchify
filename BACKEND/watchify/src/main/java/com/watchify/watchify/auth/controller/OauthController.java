@@ -12,6 +12,7 @@ import com.watchify.watchify.auth.service.TokenService;
 import com.watchify.watchify.auth.service.UserCheckService;
 import com.watchify.watchify.db.entity.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -33,16 +34,12 @@ import java.util.Map;
 @RestController
 public class OauthController {
 
-    private final TokenService tokenService;
-    private final CustomOAuth2UserService customOAuth2UserService;
-    private final CustomAuthorizationRequestRepository customAuthorizationRequestRepository;
     private final UserCheckService userCheckService;
-    private final UserService userService;
-
 
     @GetMapping("/login/kakao/callback")
     @ResponseBody
-    public RedirectView KakaoCallback(@RequestParam("code") String code, HttpServletRequest request, HttpServletResponse response) throws IOException{
+    public RedirectView KakaoCallback(@RequestParam("code") String code, HttpServletRequest request, HttpServletResponse response,
+                                      @Value("${spring.security.oauth2.client.registration.kakao.redirect-uri}") String redirectURl) throws IOException{
         String REQUEST_URL = "https://kauth.kakao.com/oauth/token";
 
         RestTemplate restTemplate = new RestTemplate();
@@ -56,7 +53,7 @@ public class OauthController {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("grant_type", "authorization_code");
         params.add("client_id", "0056cd01e9f9bad8a1c939e485c59147");
-        params.add("redirect_uri", "http://localhost:8080/oauth2/login/kakao/callback");
+        params.add("redirect_uri", redirectURl);
         params.add("code", code);
 
         // 요청하기 위해 헤더(Header)와 데이터(Body)를 합친다.
@@ -121,7 +118,8 @@ public class OauthController {
 
     @GetMapping("/login/google/callback")
     @ResponseBody
-    public RedirectView GoogleCallback(@RequestParam("code") String code, HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public RedirectView GoogleCallback(@RequestParam("code") String code, HttpServletRequest request, HttpServletResponse response,
+                                       @Value("${spring.security.oauth2.client.registration.google.redirect-uri}") String redirectURl) throws IOException {
         String REQUEST_URL = "https://oauth2.googleapis.com/token";
 
         RestTemplate restTemplate = new RestTemplate();
@@ -133,7 +131,7 @@ public class OauthController {
         params.add("grant_type", "authorization_code");
         params.add("client_id", "68891012374-8ij9t01p6i3ucf9rufg334b2ahb3vhl7.apps.googleusercontent.com");
         params.add("client_secret", "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");
-        params.add("redirect_uri", "http://localhost:8080/oauth2/login/google/callback");
+        params.add("redirect_uri", redirectURl);
         params.add("code", code);
 
         HttpEntity<MultiValueMap<String, String>> accessTokenRequest = new HttpEntity<>(params, headers);

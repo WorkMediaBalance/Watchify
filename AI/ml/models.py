@@ -82,8 +82,8 @@ class Genre(models.Model):
 
 class LikeContent(models.Model):
     id = models.BigAutoField(primary_key=True)
-    is_deleted = models.TextField()  # This field type is a guess.
-    is_like = models.TextField()  # This field type is a guess.
+    is_deleted = models.BooleanField()  # This field type is a guess.
+    is_like = models.BooleanField()  # This field type is a guess.
     content = models.ForeignKey(Content, models.DO_NOTHING, blank=True, null=True)
     user = models.ForeignKey('User', models.DO_NOTHING, blank=True, null=True)
 
