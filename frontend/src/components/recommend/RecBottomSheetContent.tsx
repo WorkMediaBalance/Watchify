@@ -14,8 +14,8 @@ const SGridDiv = styled.div`
 
 const SGenreBtn = styled.button<{ active: boolean }>`
   height: 4.5vh;
-  color: #ffffff;
-  background-color: ${({ active }) => (active ? "#E50914" : "#000000")};
+  color: ${({ theme }) => theme.netflix.fontColor};
+  background-color: ${({ active, theme }) => (active ? theme.netflix.pointColor : "transparent")};
   border: ${({ active }) => (active ? "transparent" : "1px solid #ffffff")};
   border-radius: 12px;
   min-width: 15.5vw;

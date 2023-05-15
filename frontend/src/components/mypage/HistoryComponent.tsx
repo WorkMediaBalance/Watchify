@@ -1,8 +1,10 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { schedule } from "interface/schedule";
 import Modal from "react-modal";
 import Calendar from "components/schedule/calendar/Calendar";
+import { HistoryContent } from "recoil/history";
 
 interface BackgroundImageProps {
   imageUrl: string;
@@ -51,12 +53,12 @@ const DateIndicator = styled.div`
 const Date = styled.div`
   color: black;
   font-size: ${({ theme }) => theme.fontSizeType.big.fontSize};
-  font-weight: 700;
+  font-weight: 900;
 `;
 const Month = styled.div`
   color: grey;
   font-size: ${({ theme }) => theme.fontSizeType.small.fontSize};
-  font-weight: ${({ theme }) => theme.fontSizeType.small.fontWeight};
+  font-weight: 700;
   margin-bottom: 2px;
 `;
 
@@ -72,15 +74,16 @@ const TitleHolder = styled.div`
 const Title = styled.div`
   color: white;
   font-size: ${({ theme }) => theme.fontSizeType.big.fontSize};
-  font-weight: ${({ theme }) => theme.fontSizeType.big.fontWeight};
+  font-weight: 900;
 `;
 
 interface HistoryComponentProps {
-  contentHistory: schedule;
+  contentHistory: HistoryContent;
 }
 
 const HistoryComponent: React.FC<HistoryComponentProps> = ({ contentHistory }) => {
   const imageUrl = "https://t1.daumcdn.net/cfile/tistory/997F7A385E4A920F28";
+  const navigate = useNavigate();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const modalStyle = {
@@ -112,7 +115,13 @@ const HistoryComponent: React.FC<HistoryComponentProps> = ({ contentHistory }) =
   };
 
   const handleHistoryClick = () => {
-    setIsModalOpen(true);
+    const params = {
+      year: contentHistory.firstYear,
+      month: contentHistory.firstMonth,
+      day: contentHistory.firstDay,
+    };
+    navigate(`/my/history/${contentHistory.pk}`, { state: params });
+    // setIsModalOpen(true);
   };
 
   return (

@@ -107,7 +107,7 @@ const Layout = () => {
           setIsSemiCircleRotated(true);
         }}
         style={{
-          position: "relative",
+          position: "relative", // TODO: 이거 relative로 바꾼 이유?
           marginTop: isAppBarRequired ? "5vh" : "0",
         }}
         id="app-bar-margin"

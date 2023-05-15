@@ -11,6 +11,7 @@ import PageError from "./pages/PageError";
 import PageLogin from "./pages/PageLogin";
 import PageMain from "./pages/PageMain";
 import PageMy from "./pages/PageMy";
+import PageMyHistory from "pages/PageMyHistory";
 import PageRecommend from "./pages/PageRecommend";
 import PageRecommendResult from "pages/PageRecommendResult";
 import PageSchedule from "./pages/PageSchedule";
@@ -48,6 +49,7 @@ const App = () => {
             {/* 회원만 접근 가능 */}
             <Route element={<MemberRoute />}>
               <Route path="/my" element={<PageMy />} />
+              <Route path="/my/history/:pk" element={<PageMyHistory />} />
             </Route>
 
             {/* 비회원만 접근 가능 */}

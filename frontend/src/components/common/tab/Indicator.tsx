@@ -29,10 +29,9 @@ const ColoredSection = styled.div<{
 }>`
   position: absolute;
   top: 0;
-  left: ${({ currentIndex, arrayLength }) =>
-    currentIndex * (100 / arrayLength)}%;
+  left: ${({ currentIndex, arrayLength }) => currentIndex * (100 / arrayLength)}%;
   width: ${({ arrayLength }) => 100 / arrayLength}%;
   height:100%;
-  background-color:red;
+  background-color: ${({ theme }) => theme.netflix.pointColor};
   transition left 0.5s;
 `;
