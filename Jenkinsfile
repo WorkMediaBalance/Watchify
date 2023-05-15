@@ -40,7 +40,6 @@ pipeline {
                 echo 'AI Building'
                 script {
                     def BUILD_NUMBER = currentBuild.number
-                    sh 'git switch '
                     dir('AI/watchifyAI'){
                         sh """
                             sed -i 's/DB_NAME/$DB_NAME/g' settings.py
