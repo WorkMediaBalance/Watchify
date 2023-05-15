@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Map;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -26,7 +27,7 @@ public class MyController {
     private final MyContentService myContentService;
     private final MyPatternService myPatternService;
     private final MyOttService myOttService;
-    private final S3Service s3Service;
+    private final HistoryService historyService;
 
     @PutMapping("/ottalarm")
     public ResponseEntity<?> UpdateMyOTTAlarm(HttpServletRequest request) throws Exception {
@@ -172,6 +173,35 @@ public class MyController {
             return ResponseEntity.status(200).body("Updated to user profile image.");
         } catch (Exception e) {
             return ResponseEntity.status(404).body("Failed to user profile image..");
+        }
+    }
+
+    @GetMapping("/history")
+    public ResponseEntity<?> GetMyHistory(HttpServletRequest request) {
+        String accessToken = request.getHeader("access");
+        long userId = userService.findUserIdByAccessToken(accessToken);
+
+        try {
+            List<HistoryDTO> res = historyService.getUserHistory(userId);
+            return ResponseEntity.status(200).body(res);
+        } catch (Exception e) {
+            return ResponseEntity.status(404).body("Failed to check history.");
+        }
+    }
+
+    @GetMapping("/history/{contentId}/{year}/{month}")
+    public ResponseEntity<?> GetMyHistoryInfo(HttpServletRequest request,
+                                              @PathVariable("contentId") Long contentId,
+                                              @PathVariable("year") int year,
+                                              @PathVariable("month") int month) {
+        String accessToken = request.getHeader("access");
+        long userId = userService.findUserIdByAccessToken(accessToken);
+        historyService.getUserHistoryInfo(userId, contentId, year, month);
+        try {
+            Map<Integer, List<HistoryInfoDTO>> res = historyService.getUserHistoryInfo(userId, contentId, year, month);
+            return ResponseEntity.status(200).body(res);
+        } catch (Exception e) {
+            return ResponseEntity.status(404).body("Failed to check history Info.");
         }
     }
 }
