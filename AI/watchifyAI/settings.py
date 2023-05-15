@@ -86,12 +86,12 @@ WSGI_APPLICATION = 'watchifyAI.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': os.environ.get('DB_ENGINE'),
-        'NAME': os.environ.get('DB_NAME'),
-        'USER': os.environ.get('DB_USER'),
-        'PASSWORD': os.environ.get('DB_PW'),
-        'HOST': os.environ.get('DB_HOST'),
-        'PORT': os.environ.get('DB_PORT'),
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': base64.b64decode(os.environ.get('DB_SECRET_DB_NAME')).decode('utf-8'),
+        'USER': base64.b64decode(os.environ.get('DB_SECRET_DB_USER')).decode('utf-8'),
+        'PASSWORD': base64.b64decode(os.environ.get('DB_SECRET_DB_PASSWORD')).decode('utf-8'),
+        'HOST': base64.b64decode(os.environ.get('DB_SECRET_DB_HOST')).decode('utf-8'),
+        'PORT': base64.b64decode(os.environ.get('DB_SECRET_DB_PORT')).decode('utf-8'),
     }
 }
 
