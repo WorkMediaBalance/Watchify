@@ -1,5 +1,5 @@
 from predict_rating import predict, ott_predict
-from ml.models import User, Content, LikeContent, Genre, ContentGenre
+from ml.models import User, Content, LikeContent, Genre, ContentGenre, Contentott
 from collections import defaultdict
 
 def recommend(user_id, genres, age, top_n):
@@ -63,7 +63,7 @@ def ottRecommend(user_id):
 
 def scheduleRecommend(user_id, content_ids, ott_ids):
     userdict = User.objects.values_list('id', flat=True)
-    itemdict = Content.objects.filter(ott__in=ott_ids).values_list('id','ott', flat=True)  # 현재 ott에 해당하는 컨텐츠만 가져오기
+    itemdict = Contentott.objects.filter(ott_id__in=ott_ids).values_list('id','ott', flat=True)  # 현재 ott에 해당하는 컨텐츠만 가져오기
 
     items_reviewed = content_ids # 작업대에 올라가있는 컨텐츠 id를 사용
     neighbor_user = LikeContent.objects.filter(content_id__in=items_reviewed, is_deleted=False).values_list('user_id', flat=True)

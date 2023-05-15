@@ -10,7 +10,7 @@ from .models import *
 from .serializers import *
 
 import sys
-sys.path.append('./ml/recommend_models')
+sys.path.append('./ml/recommendModels')
 
 ######## recommend model
 import subprocess
