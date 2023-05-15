@@ -2,7 +2,6 @@ pipeline {
     environment{
         repository = "runtogether/watchify"
         DOCKERHUB_CREDENTIALS = credentials('Dockerhub-jenkins') // jenkins에 등록해 놓은 docker hub credentials 이름
-        BUILD_NUMBER = currentBuild.number
     }
     agent any
     stages {
@@ -10,6 +9,7 @@ pipeline {
             steps {
                 echo 'Frontend Building'
                 script {
+                    def BUILD_NUMBER = currentBuild.number
                     sh 'docker build -t $repository:frontend$BUILD_NUMBER ./frontend' // frontend 파일 생성
                     sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin' // docker hub 로그인
                     sh 'docker push $repository:frontend$BUILD_NUMBER' //docker push
@@ -21,7 +21,7 @@ pipeline {
             steps{
                 echo 'BACKEND Building'
                 script {
-
+                    def BUILD_NUMBER = currentBuild.number
                     dir('BACKEND/watchify') {
                         sh 'chmod +x gradlew'
                         sh './gradlew clean build -x test'
@@ -39,6 +39,7 @@ pipeline {
             steps {
                 echo 'AI Building'
                 script {
+                    def BUILD_NUMBER = currentBuild.number
                     sh 'docker build -t $repository:ai$BUILD_NUMBER ./AI' // frontend 파일 생성
                     sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin' // docker hub 로그인
                     sh 'docker push $repository:ai$BUILD_NUMBER' //docker push
@@ -50,6 +51,7 @@ pipeline {
             steps {
                 echo "Gitops Dir"
                 script{
+                    def BUILD_NUMBER = currentBuild.number
                     // git pull을 미리 받음
                     withCredentials([usernamePassword(credentialsId: 'c76be613-6684-47c5-8b0e-1547e7f184f0', passwordVariable: 'diligent0924!', usernameVariable: 'sdc00035')]) {
                         sh 'git remote set-url origin https://sdc00035:diligent0924!@lab.ssafy.com/s08-final/S08P31A207.git'
