@@ -14,7 +14,7 @@ from rest_framework import serializers
 class RecommendSerializer(serializers.Serializer):
     # content_pk = serializers.IntegerField()
     content_pk = serializers.ListField(child=serializers.IntegerField())
-    content_rate = serializers.ListField(child=serializers.IntegerField())
+    content_rate = serializers.ListField(child=serializers.FloatField())
 
 class mainRecommendSerializer(serializers.Serializer):
     content_pk = serializers.ListField(child=serializers.ListField())
