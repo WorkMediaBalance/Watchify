@@ -28,9 +28,9 @@ public class ContentController {
 
         try {
             contentService.switchWishContent(userId, pkRequestDTO.getPk());
-            return ResponseEntity.status(200).body("My profile nickName updated successfully.");
+            return ResponseEntity.status(200).body("Wish Content updated successfully.");
         } catch (Exception e) {
-            return ResponseEntity.status(404).body("My profile nickName updated fail.");
+            return ResponseEntity.status(404).body("Wish Content updated fail.");
         }
 
     }
