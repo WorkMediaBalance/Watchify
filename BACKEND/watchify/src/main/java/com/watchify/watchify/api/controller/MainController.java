@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -43,8 +44,8 @@ public class MainController {
 
         try {
             // Service 단으로 넘기기
-            List<DefaultContentDTO> defaultContentDTOS = mainScheduleService.getmainRecommend(userId);
-            return ResponseEntity.status(200).body("ok");
+            HashMap<String, List<DefaultContentDTO>> defaultContentDTOS = mainScheduleService.getmainRecommend(userId);
+            return ResponseEntity.status(200).body(defaultContentDTOS);
         } catch (Exception e) {
             return ResponseEntity.status(404).body("Failed to get main schedule.");
         }

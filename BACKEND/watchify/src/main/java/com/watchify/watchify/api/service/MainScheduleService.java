@@ -2,6 +2,7 @@ package com.watchify.watchify.api.service;
 
 import com.watchify.watchify.db.entity.*;
 import com.watchify.watchify.db.repository.*;
+import com.watchify.watchify.dto.request.MainRecommendDTO;
 import com.watchify.watchify.dto.request.RecommendNonDTO;
 import com.watchify.watchify.dto.response.CalenderDTO;
 import com.watchify.watchify.dto.response.DefaultContentDTO;
@@ -82,22 +83,35 @@ public class MainScheduleService {
     }
 
     @Transactional
-    public List<DefaultContentDTO> getmainRecommend(Long userId) {
-        List<DefaultContentDTO> defaultContentDTOS = new ArrayList<>(); // 추가하기
+    public HashMap<String, List<DefaultContentDTO>> getmainRecommend(Long userId) {
+        HashMap<String, List<DefaultContentDTO>> hash = new HashMap<>();// 추가하기
         // Service 추가하기
-        String API_URL = "https://k8a207/ai/recommend?id={id}&genres={genres}";
+        String API_URL = "https://k8a207.p.ssafy.io/v1/recommend/main?id=" + userId;
+        System.out.println(API_URL);
         RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<RecommendDTO> response = restTemplate.getForEntity(API_URL, RecommendDTO.class);
-        RecommendDTO recommendDTO = response.getBody();
+        ResponseEntity<MainRecommendDTO> response = restTemplate.getForEntity(API_URL, MainRecommendDTO.class);
+        MainRecommendDTO mainRecommendDTO = response.getBody();
 
-        // 하나씩 들고오기
-        for (Long p: recommendDTO.getContentPk()){
-            Content content = contentRepository.getContentById(p); // 값을 가져온다.
-            DefaultContentDTO defaultContentDTO = new DefaultContentDTO(content);
-            defaultContentDTOS.add(defaultContentDTO); // List 형태 추가
+        int count = 0;
+        for (List<Long> value : mainRecommendDTO.getContentPk()){
+            count ++;
+            List<DefaultContentDTO> l = new ArrayList<>();
+            for (Long i : value){
+                Content content = contentRepository.getContentById(i);
+                DefaultContentDTO defaultContentDTO = new DefaultContentDTO(content);
+                l.add(defaultContentDTO);
+            }
+            if (count == 1){
+                hash.put("Netflix", l);
+            }else if(count == 2){
+                hash.put("Wavve", l);
+            }else if(count == 3){
+                hash.put("watcha", l);
+            }else{
+                hash.put("disney", l);
+            }
         }
-
-        return defaultContentDTOS;
+        return hash;
     }
 
 //    @Transactional

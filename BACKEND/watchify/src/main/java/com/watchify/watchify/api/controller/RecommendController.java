@@ -23,7 +23,7 @@ public class RecommendController {
     public ResponseEntity<?> GetRecommendContent(HttpServletRequest request, @RequestBody ContentRecommendDTO contentRecommendDTO) throws Exception{
         String accessToken = request.getHeader("access");
         long userId = userService.findUserIdByAccessToken(accessToken);
-
+        System.out.println(userId);
         try {
             // Service 단으로 넘기기
             List<DefaultContentDTO> defaultContentDTOS = recommendService.getContentRecommend(userId, contentRecommendDTO);

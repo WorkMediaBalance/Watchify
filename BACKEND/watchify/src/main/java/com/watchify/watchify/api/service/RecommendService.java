@@ -23,10 +23,16 @@ public class RecommendService {
     public List<DefaultContentDTO> getContentRecommend(Long userId, ContentRecommendDTO contentRecommendDTO) {
         List<DefaultContentDTO> defaultContentDTOS = new ArrayList<>(); // 추가하기
         String s = String.join(", ", contentRecommendDTO.getGenres());
-        String API_URL = "https://k8a207/recommend?id=" + userId + "&genres=" + s + "&rating=" + contentRecommendDTO.isAdult();
+        int rating = 0;
+        if (contentRecommendDTO.isAdult()){
+            rating = 1;
+        }
+        String API_URL = "https://k8a207.p.ssafy.io/v1/recommend?id=" + userId + "&genres=" + s + "&rating=" + rating;
+        System.out.println(API_URL);
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<RecommendDTO> response = restTemplate.getForEntity(API_URL, RecommendDTO.class);
-        RecommendDTO recommendDTO = response.getBody();
+        RecommendDTO recommendDTO = response.getBody(); // 여기까지 데이터는 잘 받아와짐 But 변수명 변경 필요
+        System.out.println(recommendDTO.getContentPk());
 
         // 하나씩 들고오기
         for (Long p: recommendDTO.getContentPk()){
