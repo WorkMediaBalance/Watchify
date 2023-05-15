@@ -8,6 +8,7 @@ import { FiCheckCircle } from "react-icons/fi";
 import { BsPlusCircle } from "react-icons/bs";
 
 import { content } from "interface/content";
+import ContentPoster from "components/common/ContentPoster";
 
 const WishList = () => {
   const [wishList, setWishList] = useRecoilState(wishListState);
@@ -26,15 +27,19 @@ const WishList = () => {
           return (
             <SContentsContainer key={idx}>
               <SBoxContainer>
-                <SContent imgUrl={wishList[idx].img_path} />
+                <SContent>
+                  <ContentPoster
+                    content={content}
+                    title={content.title}
+                    imageUrl={content.imgPath}
+                  />
+                </SContent>
               </SBoxContainer>
               <S1DepthContainer>
                 <S2DepthContainer>
                   <S3DepthContainer>
                     <STitleDiv>{content.title}</STitleDiv>
-                    {content.finalEpisode > 0 ? (
-                      <div>{content.finalEpisode}부작</div>
-                    ) : null}
+                    {content.finalEpisode > 0 ? <div>{content.finalEpisode}부작</div> : null}
                   </S3DepthContainer>
                   {isAlready ? (
                     <SFiCheckCircle />

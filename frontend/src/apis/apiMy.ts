@@ -78,7 +78,9 @@ export const myPatternGet = async () => {
 // 시청 패턴 수정
 export const myPatternChange = async (data: { [key: string]: number[] }) => {
   try {
+    console.log(data, "데이터!!!!");
     await api.put("api/my/pattern", data);
+    console.log("here");
     return true;
   } catch (err) {
     console.log("시청 패턴 변경 실패");
