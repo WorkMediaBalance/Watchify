@@ -1,5 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+
+import { myOttAlarm, myContentAlarm } from "apis/apiMy";
 
 interface NotificationSettingComponentProps {
   title: string;
@@ -7,13 +9,26 @@ interface NotificationSettingComponentProps {
   isOn: string;
 }
 
-const NotificationSettingComponent: React.FC<
-  NotificationSettingComponentProps
-> = ({ title, apiLink, isOn }) => {
-  const [selected, setSelected] = useState(isOn); //TODO: axios 받아와서 초기값 세팅, 라디오 버튼은 문자열 밸류라 axios 전송시 조건문으로 bool로 바꿔줄것
+const NotificationSettingComponent: React.FC<NotificationSettingComponentProps> = ({
+  title,
+  apiLink,
+  isOn,
+}) => {
+  const [selected, setSelected] = useState<string | null>(null); //TODO: axios 받아와서 초기값 세팅, 라디오 버튼은 문자열 밸류라 axios 전송시 조건문으로 bool로 바꿔줄것
+
   const handleRadiSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSelected(e.target.value);
+    // OTT, 알람 변경 API 요청
+    if (title === "OTT 구독 알림") {
+      myOttAlarm();
+    } else if (title === "컨텐츠 시청 알림") {
+      myContentAlarm();
+    }
   };
+
+  useEffect(() => {
+    setSelected(isOn);
+  }, [isOn]);
 
   return (
     <Container>

@@ -3,6 +3,7 @@ import { ContentRecForm } from "constant/constant";
 
 // 일주일 스케줄 조회
 export const mainSchedule = async () => {
+  console.log("실행중");
   try {
     const res = await api.get("api/main/schedule");
     return res.data;

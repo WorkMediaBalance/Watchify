@@ -43,7 +43,7 @@ const ContentSwal: React.FC<ContentSwalProps> = ({ content: content }) => {
       ) : (
         <RibonFalse onClick={() => handleWishClick()} />
       )}
-      <BackdropContainer className="backdropContainer" backdrop={content.backdrop_path}>
+      <BackdropContainer className="backdropContainer" backdrop={content.backdropPath}>
         <TitleSeasonContainer>
           <Title>{content.title}</Title>
           <Season>{content.season > 0 ? `시즌 ${content.season}` : ""}</Season>
@@ -194,8 +194,8 @@ const RibonTrue = styled.div`
   position: absolute;
   right: 3%;
 
-  width: 10%;
-  height: 15%;
+  width: 8%;
+  height: 12%;
   clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 50% 67%, 0% 100%);
 
   background-color: ${({ theme }) => theme.netflix.pointColor};
@@ -205,8 +205,8 @@ const RibonFalse = styled.div`
   position: absolute;
   right: 3%;
 
-  width: 10%;
-  height: 15%;
+  width: 8%;
+  height: 12%;
   clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 50% 67%, 0% 100%);
 
   background-color: white;

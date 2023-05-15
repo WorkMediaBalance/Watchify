@@ -78,7 +78,7 @@ export const myPatternGet = async () => {
 // 시청 패턴 수정
 export const myPatternChange = async (data: { [key: string]: number[] }) => {
   try {
-    await api.post("api/my/pattern", data);
+    await api.put("api/my/pattern", data);
     return true;
   } catch (err) {
     console.log("시청 패턴 변경 실패");
@@ -122,10 +122,10 @@ export const myOTTget = async () => {
 // 유저 ott 구독 정보 수정
 export const myOTTChange = async (data: OttPeriods) => {
   try {
-    const res = await api.post("api/my/ott", data);
+    const res = await api.put("api/my/ott", data);
     return res.data;
   } catch (err) {
-    console.log("ott 구독 정보 조회 실패");
+    console.log("ott 구독 정보 수정 실패");
     console.log(err);
   }
 };
@@ -155,6 +155,17 @@ export const myHistoryInfo = async (data: { [key: string]: number }) => {
     return res.data;
   } catch (err) {
     console.log("유저 히스토리 상세 조회 실패");
+    console.log(err);
+  }
+};
+
+// FCM TOKEN 전송
+export const fcmSave = async (data: { fcmToken: string }) => {
+  try {
+    await api.put("api/my/save", data);
+    return true;
+  } catch (err) {
+    console.log("fcm 토큰 전송 실패");
     console.log(err);
   }
 };

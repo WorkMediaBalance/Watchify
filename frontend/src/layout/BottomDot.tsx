@@ -27,11 +27,13 @@ const DotContainer = styled.span`
 
 const OuterDot = styled.span`
   position: absolute;
-  bottom: 0;
+  bottom: 1vh;
   display: inline-block;
   width: 15vw;
   height: 15vw;
-  background-color: ${({ theme }) => theme.netflix.pointColor};
+
+  background-image: ${({ theme }) =>
+    `linear-gradient(30deg,  #CB4400, #E94E00, ${theme.netflix.pointColor}, #FF6517, #FF742F , ${theme.netflix.lightColor}, #FFA273)`};
   border-radius: 50%;
   left: 50%;
   transform: translate(-50%);

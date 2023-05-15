@@ -27,22 +27,22 @@ export const ottThemeState = atom<string>({
 });
 
 // 구독한 OTT 목록
-type Subscription = {
-  [key: string]: {
-    start: string | null;
-    end: string | null;
-  };
-};
+// type Subscription = {
+//   [key: string]: {
+//     start: string | null;
+//     end: string | null;
+//   };
+// };
 
-export const ottSubscriptionState = atom<Subscription>({
-  key: "ottSubscriptionState",
-  default: {
-    netflix: { start: "2023-04-15", end: null },
-    watcha: { start: null, end: null },
-    wavve: { start: "2023-01-17", end: "2023-06-16" },
-    disney: { start: null, end: null },
-  },
-});
+// export const ottSubscriptionState = atom<Subscription>({
+//   key: "ottSubscriptionState",
+//   default: {
+//     netflix: { start: "2023-04-15", end: null },
+//     watcha: { start: null, end: null },
+//     wavve: { start: "2023-01-17", end: "2023-06-16" },
+//     disney: { start: null, end: null },
+//   },
+// });
 
 // 찜 목록
 export const essListState = atom<content[]>({
@@ -54,7 +54,7 @@ export const essListState = atom<content[]>({
       runtime: 8,
       rate: 1.2,
       img_path: "https://images.justwatch.com/poster/302518136/s592/시즌-1",
-      backdrop_path: "https://images.justwatch.com/poster/302518136/s592/시즌-1",
+      backdropPath: "https://images.justwatch.com/poster/302518136/s592/시즌-1",
       isLike: 1,
       type: "드라마",
       season: 1,
@@ -77,7 +77,7 @@ export const essListState = atom<content[]>({
       runtime: 60,
       rate: 3.7,
       img_path: "https://images.justwatch.com/poster/129382738/s592/twilight.webp",
-      backdrop_path: "https://images.justwatch.com/poster/302518136/s592/시즌-1",
+      backdropPath: "https://images.justwatch.com/poster/302518136/s592/시즌-1",
       isLike: 1,
       type: "영화",
       season: 1,
@@ -105,7 +105,7 @@ export const wishListState = atom<content[]>({
       runtime: 8,
       rate: 1.2,
       img_path: "https://images.justwatch.com/poster/302518136/s592/시즌-1",
-      backdrop_path: "https://images.justwatch.com/poster/302518136/s592/시즌-1",
+      backdropPath: "https://images.justwatch.com/poster/302518136/s592/시즌-1",
       isLike: 1,
       type: "드라마",
       season: 1,
@@ -128,7 +128,7 @@ export const wishListState = atom<content[]>({
       runtime: 60,
       rate: 3.7,
       img_path: "https://images.justwatch.com/poster/129382738/s592/twilight.webp",
-      backdrop_path: "https://images.justwatch.com/poster/302518136/s592/시즌-1",
+      backdropPath: "https://images.justwatch.com/poster/302518136/s592/시즌-1",
       isLike: 1,
       type: "영화",
       season: 1,
@@ -150,7 +150,7 @@ export const wishListState = atom<content[]>({
       runtime: 8,
       rate: 1.2,
       img_path: "https://images.justwatch.com/poster/8733916/s592/bagmulgwani-salaissda.webp",
-      backdrop_path: "https://images.justwatch.com/poster/302518136/s592/시즌-1",
+      backdropPath: "https://images.justwatch.com/poster/302518136/s592/시즌-1",
       isLike: 1,
       type: "영화",
       season: 1,
@@ -173,7 +173,7 @@ export const wishListState = atom<content[]>({
       runtime: 8,
       rate: 1.2,
       img_path: "https://images.justwatch.com/poster/302518136/s592/시즌-1",
-      backdrop_path: "https://images.justwatch.com/poster/302518136/s592/시즌-1",
+      backdropPath: "https://images.justwatch.com/poster/302518136/s592/시즌-1",
       isLike: 1,
       type: "영화",
       season: 1,
@@ -196,7 +196,7 @@ export const wishListState = atom<content[]>({
       runtime: 8,
       rate: 1.2,
       img_path: "https://images.justwatch.com/poster/302518136/s592/시즌-1",
-      backdrop_path: "https://images.justwatch.com/poster/302518136/s592/시즌-1",
+      backdropPath: "https://images.justwatch.com/poster/302518136/s592/시즌-1",
       isLike: 1,
       type: "영화",
       season: 1,
@@ -219,7 +219,7 @@ export const wishListState = atom<content[]>({
       runtime: 8,
       rate: 1.2,
       img_path: "https://images.justwatch.com/poster/302518136/s592/시즌-1",
-      backdrop_path: "https://images.justwatch.com/poster/302518136/s592/시즌-1",
+      backdropPath: "https://images.justwatch.com/poster/302518136/s592/시즌-1",
       isLike: 1,
       type: "영화",
       season: 1,
@@ -242,7 +242,7 @@ export const wishListState = atom<content[]>({
       runtime: 8,
       rate: 1.2,
       img_path: "https://images.justwatch.com/poster/302518136/s592/시즌-1",
-      backdrop_path: "https://images.justwatch.com/poster/302518136/s592/시즌-1",
+      backdropPath: "https://images.justwatch.com/poster/302518136/s592/시즌-1",
       isLike: 1,
       type: "영화",
       season: 1,
@@ -265,7 +265,7 @@ export const wishListState = atom<content[]>({
       runtime: 8,
       rate: 1.2,
       img_path: "https://images.justwatch.com/poster/302518136/s592/시즌-1",
-      backdrop_path: "https://images.justwatch.com/poster/302518136/s592/시즌-1",
+      backdropPath: "https://images.justwatch.com/poster/302518136/s592/시즌-1",
       isLike: 1,
       type: "영화",
       season: 1,

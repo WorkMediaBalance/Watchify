@@ -9,7 +9,9 @@ const RecommendPerOTT = () => {
   return (
     <Container>
       <HeaderContainer>
-        <Header>OTT별 추천</Header>
+        <Header>
+          OTT별<TitleSpan> 추천</TitleSpan>
+        </Header>
       </HeaderContainer>
 
       <ContentContainer>
@@ -144,4 +146,9 @@ const Story = styled.div`
 const Watch = styled.div`
   text-align: end;
   padding-right: 1vw;
+`;
+
+const TitleSpan = styled.span`
+  color: ${({ theme }) => theme.netflix.lightColor};
+  font-size: 5.5vw;
 `;

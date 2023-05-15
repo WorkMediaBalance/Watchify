@@ -24,6 +24,8 @@ import PageCallback from "pages/PageCallback";
 import MemberRoute from "./components/common/MemberRoute";
 import NonMemberRoute from "./components/common/NonMemberRoute";
 
+import "./firebase-messaging-sw.js";
+
 const App = () => {
   return (
     <div style={{ height: "100%" }}>
@@ -41,7 +43,7 @@ const App = () => {
             <Route path="/schedule/result" element={<PageScheduleResult />} />
             <Route path="/search" element={<PageSearch />} />
 
-            <Route path="/oauth2/login/callback" element={<PageCallback />} />
+            <Route path="/callback" element={<PageCallback />} />
 
             {/* 회원만 접근 가능 */}
             <Route element={<MemberRoute />}>
