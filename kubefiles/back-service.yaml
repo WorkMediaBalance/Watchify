@@ -23,15 +23,30 @@ spec:
             - containerPort: 8000
           env:
             - name: DB_HOST
-              value: watchifydb.cph3uafcff1h.ap-northeast-2.rds.amazonaws.com
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret
+                  key: DB_HOST
             - name: DB_PORT
-              value: "3306"
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret
+                  key: DB_PORT
             - name: DB_NAME
-              value: sins
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret
+                  key: DB_NAME
             - name: DB_USER
-              value: watchifyadmin
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret
+                  key: DB_USER
             - name: DB_Password
-              value: qudwlsgoa
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret
+                  key: DB_PASSWORD
 ---
 apiVersion: v1
 kind: Service
