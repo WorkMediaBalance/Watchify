@@ -31,8 +31,8 @@ class RecommendAPIView(APIView):
           end_time = time.time()
           print('recommend 소요 시간 : ', end_time - start_time)
           contents = {
-               'content_pk' : [x[0] for x in result],
-               'content_rate' : [x[1]*10 for x in result]
+               'contentPk' : [x[0] for x in result],
+               'contentRate' : [x[1]*10 for x in result]
                }
 
           serializer = RecommendSerializer(contents)
@@ -48,7 +48,7 @@ class mainRecommendAPIView(APIView):
           print('ott recommend 소요 시간 : ', end_time - start_time)
 
           contents = {
-               'content_pk': [
+               'contentPk': [
                     result[1],
                     result[2],
                     result[3],
@@ -72,7 +72,7 @@ class scheduleRecommendAPIView(APIView):
           print('schedule recommend 소요 시간 : ', end_time - start_time)
 
           contents = {
-               'content_pk' : result
+               'contentPk' : result
               }
           print('contents : ', contents)
           serializer = scheduleSerializer(contents)
