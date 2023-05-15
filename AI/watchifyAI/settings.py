@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 import os
+import base64
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 
@@ -143,18 +144,19 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # MODELS = os.path.join(BASE_DIR, 'ml/models')
 
 
-#### AWS
-AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
-AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
-AWS_REGION = os.environ.get('AWS_REGION')
+# #### AWS
+# AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
+# AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
+# AWS_REGION = os.environ.get('AWS_REGION')
+#
+# ## S3 Storages
+# AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
+# DEFAULT_FILE_STORAGE = os.environ.get('DEFAULT_FILE_STORAGE')
+# AWS_S3_CUSTOM_DOMAIN = ''
+# AWS_S3_OBJECT_PARAMETERS = {
+#     # 'ContentType' : 'image/jepg'
+# }
 
-## S3 Storages
-AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
-DEFAULT_FILE_STORAGE = os.environ.get('DEFAULT_FILE_STORAGE')
-AWS_S3_CUSTOM_DOMAIN = ''
-AWS_S3_OBJECT_PARAMETERS = {
-    # 'ContentType' : 'image/jepg'
-}
 # MEDIA_ROOT = os.path.join(BASE_DIR, 'path/to/store/my/files/')
 
 ## CORS
