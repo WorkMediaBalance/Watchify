@@ -12,6 +12,7 @@ const PageMain = () => {
   const navigate = useNavigate();
   const [clickState, setClickState] = useState(0);
   const [prevState, setPrevState] = useState(0);
+  const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
 
   const handleState = (index: number) => {
     setPrevState(clickState);
@@ -29,6 +30,11 @@ const PageMain = () => {
 
   useEffect(() => {
     getWeeklySchedule();
+    if (localStorage.getItem("accessToken") !== null) {
+      setIsUserLoggedIn(true);
+    } else {
+      setIsUserLoggedIn(false);
+    }
   }, []);
 
   return (
@@ -45,6 +51,7 @@ const PageMain = () => {
         setClickState={setClickState}
         prevState={prevState}
         setPrevState={setPrevState}
+        isUserLoggedIn={isUserLoggedIn}
       ></TodayWatch>
       <PlaceHolders className="placeholder" />
       <div onClick={() => handleState(0)}>
@@ -55,11 +62,11 @@ const PageMain = () => {
         <PlaceHolders />
         <RecommendPerOTT />
         <PlaceHolders />
-        <Title>
+        {/* <Title>
           <TitleSpan>추천</TitleSpan> 컨텐츠!
         </Title>
         <RecommendRest />
-        <PlaceHolders />
+        <PlaceHolders /> */}
       </div>
       <button onClick={() => navigate("/login")}>로그인 페이지로</button>
     </div>

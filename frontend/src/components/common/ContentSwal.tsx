@@ -8,16 +8,38 @@ import wavve from "assets/img/wavveIcon.png";
 
 import { content } from "interface/content";
 
+import { contentLike, contentWishSwitch } from "apis/apiContent";
+
+import { AiOutlineLike, AiOutlineDislike, AiFillLike, AiFillDislike } from "react-icons/ai";
+
 interface ContentSwalProps {
   content: content;
 }
 
 const ContentSwal: React.FC<ContentSwalProps> = ({ content: content }) => {
   const [isWish, setIsWish] = useState(content.isWish); //TODO: props받아서 찜여부 초기값 설정 해주기
+  const [isLike, setIsLike] = useState(0); // TODO: 여기 초기화
+
+  // 좋아요 조건부
+  const handleLike = () => {
+    contentLike({ pk: 1, isLike: true });
+    setIsLike(1);
+  };
+  const handleLikeCancel = () => {
+    contentLike({ pk: 1, isLike: false });
+    setIsLike(0);
+  };
+  const handleDislike = () => {
+    contentLike({ pk: 1, isLike: false });
+    setIsLike(-1);
+  };
+  const handleDislikeCancel = () => {
+    contentLike({ pk: 1, isLike: true });
+    setIsLike(0);
+  };
 
   const handleWishClick = () => {
-    //TODO: axios 요청보내서 찜 설정/ 해제
-    // 그 후 동작
+    contentWishSwitch({ key: 1 });
     setIsWish(!isWish);
   };
 
@@ -35,7 +57,10 @@ const ContentSwal: React.FC<ContentSwalProps> = ({ content: content }) => {
   const OTTStaticArray = Object.keys(content.ott); //TODO: 나중에 props 여기 초기화
 
   // const [OTTArray, setOTTArray] = useState(["disney", "netflix", "watcha", "wavve"]); //TODO: 여기서 나중에 초기값 세팅
-
+  // 다른 탭 열기
+  const openNewTab = (url: string) => {
+    window.open(url, "_blank", "noopener,noreferrer");
+  };
   return (
     <Container className="myModal">
       {isWish ? (
@@ -44,23 +69,69 @@ const ContentSwal: React.FC<ContentSwalProps> = ({ content: content }) => {
         <RibonFalse onClick={() => handleWishClick()} />
       )}
       <BackdropContainer className="backdropContainer" backdrop={content.backdropPath}>
-        <TitleSeasonContainer>
-          <Title>{content.title}</Title>
-          <Season>{content.season > 0 ? `시즌 ${content.season}` : ""}</Season>
-        </TitleSeasonContainer>
-        <RateAndGenresContainer>
-          <Rate>{`${content.rate} / 5.0`}</Rate>
-          <Genres>
-            {content.genres.length > 1
-              ? `${content.genres.join(", ")}`
-              : content.genres.length === 1
-              ? content.genres[0]
-              : ""}
-          </Genres>
-          <FinalEpisode>
-            {content.finalEpisode > 0 ? `${content.finalEpisode}부작` : ""}
-          </FinalEpisode>
-        </RateAndGenresContainer>
+        <Header>
+          <div>
+            <TitleSeasonContainer>
+              <Title>
+                {content.title}
+                <Season>{content.season > 0 ? `시즌 ${content.season}` : ""}</Season>
+              </Title>
+            </TitleSeasonContainer>
+            <RateAndGenresContainer>
+              <Rate>{`${content.rate} / 5.0`}</Rate>
+              <Genres>
+                {content.genres.length > 1
+                  ? `${content.genres.join(", ")}`
+                  : content.genres.length === 1
+                  ? content.genres[0]
+                  : ""}
+              </Genres>
+              <FinalEpisode>
+                {content.finalEpisode > 0 ? `${content.finalEpisode}부작` : ""}
+              </FinalEpisode>
+            </RateAndGenresContainer>
+          </div>
+          <LikeDislike>
+            <Like>
+              {isLike === 1 ? (
+                <StyledAiFillLike
+                  size={20}
+                  color="#FF5500"
+                  onClick={() => {
+                    handleLikeCancel();
+                  }}
+                />
+              ) : (
+                <StyledAiOutlineLike
+                  size={20}
+                  color="white"
+                  onClick={() => {
+                    handleLike();
+                  }}
+                />
+              )}
+            </Like>
+            <Dislike>
+              {isLike === -1 ? (
+                <StyledAiFillDislike
+                  size={20}
+                  color="#FF5500"
+                  onClick={() => {
+                    handleDislikeCancel();
+                  }}
+                />
+              ) : (
+                <StyledAiOutlineDislike
+                  size={20}
+                  color="white"
+                  onClick={() => {
+                    handleDislike();
+                  }}
+                />
+              )}
+            </Dislike>
+          </LikeDislike>
+        </Header>
       </BackdropContainer>
 
       <ContentContainer>
@@ -69,7 +140,14 @@ const ContentSwal: React.FC<ContentSwalProps> = ({ content: content }) => {
           <LinkDescriptions>보러가기</LinkDescriptions>
           <OTTContainer>
             {OTTStaticArray.map((OTT: string, index) => {
-              return <OTTIcon src={OTTIcons[OTT]}></OTTIcon>;
+              return (
+                <OTTIcon
+                  src={OTTIcons[OTT]}
+                  onClick={() => {
+                    openNewTab(content.ott[OTT]);
+                  }}
+                ></OTTIcon>
+              );
             })}
           </OTTContainer>
         </Footer>
@@ -119,13 +197,13 @@ const TitleSeasonContainer = styled.div`
   display: flex;
   flex-direction: row;
   align-items: baseline;
-  margin-left: 2vw;
+  margin-left: 4vw;
 `;
 const Title = styled.div`
   font-size: ${({ theme }) => theme.fontSizeType.big.fontSize};
   font-weight: ${({ theme }) => theme.fontSizeType.big.fontWeight};
 `;
-const Season = styled.div`
+const Season = styled.span`
   font-size: ${({ theme }) => theme.fontSizeType.middle.fontSize};
   font-weight: ${({ theme }) => theme.fontSizeType.middle.fontWeight};
   margin-left: 1vw;
@@ -135,8 +213,8 @@ const RateAndGenresContainer = styled.div`
   display: flex;
   flex-direction: row;
   align-items: baseline;
-  margin-left: 3vw;
-  margin-bottom: 1vw;
+  margin-left: 5vw;
+  margin-bottom: 2vw;
 `;
 const Rate = styled.div`
   font-size: ${({ theme }) => theme.fontSizeType.small.fontSize};
@@ -154,14 +232,14 @@ const FinalEpisode = styled.div`
 `;
 
 const Summarize = styled.div`
-  margin: 3vw;
+  margin: 4vw;
 `;
 
 const Footer = styled.div`
   width: 100%;
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: end;
   align-items: center;
 `;
 const LinkDescriptions = styled.div`
@@ -210,5 +288,47 @@ const RibonFalse = styled.div`
   clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 50% 67%, 0% 100%);
 
   background-color: white;
+  animation: ${growShrink} 0.6s ease-in-out forwards;
+`;
+
+const Header = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+`;
+
+const LikeDislike = styled.div`
+  display: flex;
+  flex-direction: row;
+  margin-right: 2vw;
+  height: 100%;
+  align-items: end;
+`;
+
+const Like = styled.div`
+  margin: 1vw;
+  animation: ${growShrink} 0.6s ease-in-out forwards;
+`;
+
+const Dislike = styled.div`
+  margin: 1vw;
+  animation: ${growShrink} 0.6s ease-in-out forwards;
+`;
+
+const StyledAiFillLike = styled(AiFillLike)`
+  margin: 1vw;
+  animation: ${growShrink} 0.6s ease-in-out forwards;
+`;
+const StyledAiOutlineLike = styled(AiOutlineLike)`
+  margin: 1vw;
+  animation: ${growShrink} 0.6s ease-in-out forwards;
+`;
+const StyledAiFillDislike = styled(AiFillDislike)`
+  margin: 1vw;
+  animation: ${growShrink} 0.6s ease-in-out forwards;
+`;
+const StyledAiOutlineDislike = styled(AiOutlineDislike)`
+  margin: 1vw;
   animation: ${growShrink} 0.6s ease-in-out forwards;
 `;

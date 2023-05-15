@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled, { keyframes, css } from "styled-components";
 import { content } from "interface/content";
 import { useNavigate } from "react-router-dom";
@@ -12,6 +12,7 @@ interface TodayWatchProps {
   prevState: number;
   setPrevState: React.Dispatch<React.SetStateAction<number>>;
   todayWatch: todayWatch[] | [];
+  isUserLoggedIn: boolean;
 }
 
 const TodayWatch: React.FC<TodayWatchProps> = ({
@@ -20,6 +21,7 @@ const TodayWatch: React.FC<TodayWatchProps> = ({
   prevState,
   setPrevState,
   todayWatch,
+  isUserLoggedIn,
 }) => {
   const handleState = async (index: number) => {
     await setPrevState(clickState);
@@ -27,6 +29,7 @@ const TodayWatch: React.FC<TodayWatchProps> = ({
   };
 
   const navigate = useNavigate();
+
   return (
     <Container
       clickState={clickState}
@@ -46,8 +49,13 @@ const TodayWatch: React.FC<TodayWatchProps> = ({
                 todayWatch[0]["episode"] !== 0 ? (
                   todayWatch[0]["episode"] + "화"
                 ) : null
-              ) : (
+              ) : isUserLoggedIn ? (
                 <NoContentDiv>스케줄이 없습니다.</NoContentDiv>
+              ) : (
+                <NoContentDiv>
+                  <div>시청 스케줄을 만들고 싶다면 로그인하세요!</div>
+                  <div>로그인 하러 가기</div>
+                </NoContentDiv>
               )}
             </Episode>
           </div>
