@@ -58,7 +58,6 @@ public class ScheduleUpdateService {
                     // calender 에 들어갈 ott 가 크게 의미가 없어졌음.. ott 가 없는것도 있고 ott 를 구독하고 있지 않은 유저도 스케줄을 짤순있으니
                     Calender calender = new Calender(user, turnContent, null, date);
                     calenderRepository.save(calender);
-
                 }
             }
         }

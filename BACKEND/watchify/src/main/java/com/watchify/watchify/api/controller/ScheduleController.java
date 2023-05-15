@@ -100,7 +100,17 @@ public class ScheduleController {
         } catch (Exception e) {
             return ResponseEntity.status(404).body("Failed to save scheduleShare");
         }
+    }
 
+    @GetMapping("/nonauth/share/{pk}")
+    public ResponseEntity<?> getScheduleShare(@PathVariable("pk") Long pk) {
 
+        Map<String, Map<Integer, List<HistoryInfoDTO>>> res = scheduleShareService.getShareSchedule(pk);
+        try {
+
+            return ResponseEntity.status(200).body(res);
+        } catch (Exception e) {
+            return ResponseEntity.status(404).body("Failed to save scheduleShare");
+        }
     }
 }

@@ -19,7 +19,6 @@ public class ScheduleShare implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(columnDefinition = "MEDIUMTEXT")
     private String schedule;
 
     public ScheduleShare(String schedule) {
