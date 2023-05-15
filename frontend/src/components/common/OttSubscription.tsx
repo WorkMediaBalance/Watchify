@@ -234,90 +234,92 @@ const OttSubscription = () => {
   };
 
   return (
-    <SContainer>
-      <Sdiv>보유 OTT</Sdiv>
-      <SDiv2>
-        구독중인 OTT가 있으시면 알려주세요. <br /> OTT 맞춤으로 스케줄링 할게요!
-      </SDiv2>
-      {Object.entries(ott).map(([key, value]) => {
-        let icon;
-        if (key === "netflix") {
-          icon = netflixIcon;
-        } else if (key === "disney") {
-          icon = disneyIcon;
-        } else if (key === "watcha") {
-          icon = watchaIcon;
-        } else if (key === "wavve") {
-          icon = wavveIcon;
-        }
-        return (
-          <>
-            {value.start ? (
-              <SOttDiv key={key}>
-                <SImg src={icon} alt={key} />
-                <span
-                  onClick={() => {
-                    let copy = { ...showDatePicker };
-                    copy[key][0] = true;
-                    setShowDatePicker(copy);
-                  }}
-                >
-                  {value.start}
-                </span>
-                <span>~</span>
-                <span
-                  onClick={() => {
-                    let copy = { ...showDatePicker };
-                    copy[key][1] = true;
-                    setShowDatePicker(copy);
-                  }}
-                >
-                  {/* 해지일이 존재하면 띄워주고 아니면 제한없음으로 표시 */}
-                  {value.end ? <>{value.end}</> : <>∞</>}
-                </span>
-                {showDatePicker[key][0] ? (
-                  <DatePickerWrapper>
-                    <DatePicker
-                      selected={today}
-                      onChange={(date: Date) => {
-                        handDateChange(date, key);
-                        closeDatePicker(key);
-                      }}
-                      inline
-                    />
-                  </DatePickerWrapper>
-                ) : null}
-                {showDatePicker[key][1] ? (
-                  <DatePickerWrapper>
-                    <DatePicker
-                      selected={today}
-                      onChange={(date: Date) => {
-                        handDateChange2(date, key);
-                        closeDatePicker2(key);
-                      }}
-                      inline
-                    />
-                  </DatePickerWrapper>
-                ) : null}
-                <AiOutlineClose
-                  onClick={() => onClickDeleteOtt(key)}
-                  style={{
-                    fontSize: "5vw",
-                    color: "white",
-                  }}
-                />
-              </SOttDiv>
-            ) : null}
-          </>
-        );
-      })}
+    <Wrapper>
+      <SContainer>
+        <Sdiv>보유 OTT</Sdiv>
+        <SDiv2>
+          구독중인 OTT가 있으시면 알려주세요. <br /> OTT 맞춤으로 스케줄링 할게요!
+        </SDiv2>
+        {Object.entries(ott).map(([key, value]) => {
+          let icon;
+          if (key === "netflix") {
+            icon = netflixIcon;
+          } else if (key === "disney") {
+            icon = disneyIcon;
+          } else if (key === "watcha") {
+            icon = watchaIcon;
+          } else if (key === "wavve") {
+            icon = wavveIcon;
+          }
+          return (
+            <>
+              {value.start ? (
+                <SOttDiv key={key}>
+                  <SImg src={icon} alt={key} />
+                  <span
+                    onClick={() => {
+                      let copy = { ...showDatePicker };
+                      copy[key][0] = true;
+                      setShowDatePicker(copy);
+                    }}
+                  >
+                    {value.start}
+                  </span>
+                  <span>~</span>
+                  <span
+                    onClick={() => {
+                      let copy = { ...showDatePicker };
+                      copy[key][1] = true;
+                      setShowDatePicker(copy);
+                    }}
+                  >
+                    {/* 해지일이 존재하면 띄워주고 아니면 제한없음으로 표시 */}
+                    {value.end ? <>{value.end}</> : <>∞</>}
+                  </span>
+                  {showDatePicker[key][0] ? (
+                    <DatePickerWrapper>
+                      <DatePicker
+                        selected={today}
+                        onChange={(date: Date) => {
+                          handDateChange(date, key);
+                          closeDatePicker(key);
+                        }}
+                        inline
+                      />
+                    </DatePickerWrapper>
+                  ) : null}
+                  {showDatePicker[key][1] ? (
+                    <DatePickerWrapper>
+                      <DatePicker
+                        selected={today}
+                        onChange={(date: Date) => {
+                          handDateChange2(date, key);
+                          closeDatePicker2(key);
+                        }}
+                        inline
+                      />
+                    </DatePickerWrapper>
+                  ) : null}
+                  <AiOutlineClose
+                    onClick={() => onClickDeleteOtt(key)}
+                    style={{
+                      fontSize: "5vw",
+                      color: "white",
+                    }}
+                  />
+                </SOttDiv>
+              ) : null}
+            </>
+          );
+        })}
 
-      {!is4 ? (
-        <SBoxContainer>
-          <SAddBox onClick={modalHandler}> + </SAddBox>
-        </SBoxContainer>
-      ) : null}
-    </SContainer>
+        {!is4 ? (
+          <SBoxContainer>
+            <SAddBox onClick={modalHandler}> + </SAddBox>
+          </SBoxContainer>
+        ) : null}
+      </SContainer>
+    </Wrapper>
   );
 };
 
@@ -330,16 +332,23 @@ const DatePickerWrapper = styled.div`
   top: 50%;
 `;
 
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
 const SContainer = styled.div`
   height: 40vh;
   overflow: auto;
+  width: 90%;
 `;
 
 const Sdiv = styled.div`
   font-size: ${({ theme }) => theme.fontSizeType.big.fontSize};
   font-weight: ${({ theme }) => theme.fontSizeType.big.fontWeight};
   text-align: left;
-  margin: 1vw 0;
+  margin: 1vh 0;
   padding-left: 0.5rem;
 `;
 
@@ -347,8 +356,9 @@ const SDiv2 = styled.div`
   font-size: ${({ theme }) => theme.fontSizeType.middle.fontSize};
   font-weight: ${({ theme }) => theme.fontSizeType.middle.fontWeight};
   text-align: left;
-  margin: 0.2rem 0;
-  padding-left: 0.5rem;
+  margin: 1vh 0;
+  padding-left: 2vw;
+  margin-bottom: 1vh;
 `;
 
 const SOttDiv = styled.div`
