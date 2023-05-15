@@ -1,35 +1,35 @@
-#apiVersion: apps/v1
-#kind: Deployment
-#metadata:
-#  name: ai-service
-#  labels:
-#    app: ai-service
-#spec:
-#  replicas: 2
-#  selector:
-#    matchLabels:
-#      app: ai-service
-#  template:
-#    metadata:
-#      labels:
-#        app: ai-service
-#    spec:
-#      containers:
-#        - name: ai-service
-#          image: docker.io/runtogether/watchify:ai168
-#      imagePullSecrets:
-#        - name: dockerhub
-#          ports:
-#            - containerPort: 8100
-#---
-#apiVersion: v1
-#kind: Service
-#metadata:
-#  name: ai-service
-#spec:
-#  type: ClusterIP
-#  selector:
-#    app: ai-service
-#  ports:
-#    - protocol: TCP
-#      port: 8100
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+ name: ai-service
+ labels:
+   app: ai-service
+spec:
+ replicas: 2
+ selector:
+   matchLabels:
+     app: ai-service
+ template:
+   metadata:
+     labels:
+       app: ai-service
+   spec:
+     containers:
+       - name: ai-service
+         image: docker.io/runtogether/watchify:ai168
+     imagePullSecrets:
+       - name: dockerhub
+         ports:
+           - containerPort: 8100
+---
+apiVersion: v1
+kind: Service
+metadata:
+ name: ai-service
+spec:
+ type: ClusterIP
+ selector:
+   app: ai-service
+ ports:
+   - protocol: TCP
+     port: 8100
