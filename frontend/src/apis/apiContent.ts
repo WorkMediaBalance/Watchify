@@ -63,3 +63,14 @@ export const contentInfo = async (data: { [pk: string]: number }) => {
     console.log(err);
   }
 };
+
+// 컨텐츠 평점 수정 (5.15 민혁 추가)
+export const contentRating = async (data: { pk: number; rating: number }) => {
+  try {
+    await api.put("api/content/rating", data);
+    return true;
+  } catch (err) {
+    console.log("컨텐츠 평점 변경 실패");
+    console.log(err);
+  }
+};
