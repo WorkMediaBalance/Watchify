@@ -16,5 +16,11 @@ public interface TurnContentRepository extends JpaRepository<TurnContent, Long> 
     List<TurnContent> getAllTurnContent(@Param("contentId") Long contentId);
 
 
+    // 마지막 에피소드 이후의 컨텐츠만 불러옴
+    @Query(value = "select * from turn_content t where t.content_id = :contentId and episode > :lastEp order by t.episode", nativeQuery = true)
+    List<TurnContent> getTurnContentAtLastEp(@Param("contentId") Long contentId, @Param("lastEp") int lastEp);
+
+
+
 
 }

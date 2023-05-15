@@ -6,6 +6,7 @@ import com.watchify.watchify.api.service.UserService;
 import com.watchify.watchify.dto.request.ScheduleCreateRequestDTO;
 import com.watchify.watchify.dto.response.CalenderDTO;
 import com.watchify.watchify.dto.response.DefaultContentDTO;
+import com.watchify.watchify.dto.response.HistoryInfoDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -45,8 +46,8 @@ public class ScheduleController {
         long userId = userService.findUserIdByAccessToken(accessToken);
 
         try {
-            scheduleCreateService.createSchedule(userId, req);
-            return ResponseEntity.status(200).body("Scheduled successfully.");
+            Map<String, Map<Integer, List<HistoryInfoDTO>>> res = scheduleCreateService.createSchedule(userId, req);
+            return ResponseEntity.status(200).body(res);
         } catch (Exception e) {
             return ResponseEntity.status(404).body("Failed to create schedule");
         }
