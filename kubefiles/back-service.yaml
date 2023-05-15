@@ -23,26 +23,31 @@ spec:
             - name: DB_HOST
               valueFrom:
                 secretKeyRef:
+                  namespace: my-namespace
                   name: db-secret
                   key: DB_HOST
             - name: DB_PORT
               valueFrom:
                 secretKeyRef:
+                  namespace: my-namespace
                   name: db-secret
                   key: DB_PORT
             - name: DB_NAME
               valueFrom:
                 secretKeyRef:
+                  namespace: my-namespace
                   name: db-secret
                   key: DB_NAME
             - name: DB_USER
               valueFrom:
                 secretKeyRef:
+                  namespace: my-namespace
                   name: db-secret
                   key: DB_USER
             - name: DB_Password
               valueFrom:
                 secretKeyRef:
+                  namespace: my-namespace
                   name: db-secret
                   key: DB_PASSWORD
       imagePullSecrets:
