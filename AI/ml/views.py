@@ -70,13 +70,15 @@ class ottRecommendAPIView(APIView):
 
 class scheduleRecommendAPIView(APIView):
    def get(self, request):
-      user_id = request.GET.get('id')
-      content_ids = request.GET.get('content_id')
-      ott_ids = request.GET.get('ott_id')
-
-      result = scheduleRecommend(user_id, content_ids, ott_ids)
-      contents = {
-         'content_pk': result
-      }
-      serializer = scheduleSerializer(contents)
-      return Response(serializer.data)
+     user_id = request.GET.get('id')
+     content_ids = request.GET.get('content_id')
+     ott_ids = request.GET.get('ott_id')
+     content_ids = list(map(int, content_ids.split(',')))
+     ott_ids = list(map(int, ott_ids.split(',')))
+     result = scheduleRecommend(user_id, content_ids, ott_ids)
+     contents = {
+          'content_pk' : result
+         }
+     print('contents : ', contents)
+     serializer = scheduleSerializer(contents)
+     return Response(serializer.data)
