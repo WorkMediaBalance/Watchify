@@ -10,6 +10,13 @@ pipeline {
                 echo 'Frontend Building'
                 script {
                     def BUILD_NUMBER = currentBuild.number
+                    dir('frontend'){
+                        sed -i 's/DB_NAME/$DB_NAME/g' settings.py
+                        sed -i 's/DB_USER/$DB_USER/g' settings.py
+                        sed -i 's/DB_PW/$DB_PW/g' settings.py
+                        sed -i 's/DB_HOST/$DB_HOST/g' settings.py
+                        sed -i 's/DB_PORT/$DB_PORT/g' settings.py
+                    }
                     sh 'docker build -t $repository:frontend$BUILD_NUMBER ./frontend' // frontend 파일 생성
                     sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin' // docker hub 로그인
                     sh 'docker push $repository:frontend$BUILD_NUMBER' //docker push
