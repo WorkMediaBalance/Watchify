@@ -36,7 +36,8 @@ public class ScheduleShareService {
         Gson gson = new Gson();
         String stringData = gson.toJson(data);
 
-        ScheduleShare scheduleShare = new ScheduleShare(json);
+        System.out.println(stringData.length());
+        ScheduleShare scheduleShare = new ScheduleShare(stringData);
         res.put("pk", scheduleShare.getId());
         scheduleShareRepository.save(scheduleShare);
 
