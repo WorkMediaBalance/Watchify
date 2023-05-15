@@ -1,5 +1,5 @@
 from predict_rating import predict, ott_predict
-from ml.models import User, Content, LikeContent, Genre, ContentGenre, Contentott
+from ml.models import User, Content, LikeContent, Genre, ContentGenre, Contentott, WishContent
 from collections import defaultdict
 
 def recommend(user_id, genres, age, top_n):
@@ -15,15 +15,18 @@ def recommend(user_id, genres, age, top_n):
     except:
         pass
 
-    neighbor_item = LikeContent.objects.filter(user_id__in=neighbor_user, is_deleted=False).values_list('user_id', 'content_id', 'is_like')
-    neighbor_item_list = defaultdict(list)
-    for id, content_id, is_like in neighbor_item:
-        neighbor_item_list[id].append((content_id, is_like))
+    neighbor_item_like = LikeContent.objects.filter(user_id__in=neighbor_user, is_deleted=False).values_list('user_id', 'content_id', 'is_like')
+    neighbor_item_wish = WishContent.objects.filter(user_id__in=neighbor_user, is_deleted=False).values_list('user_id', 'content_id')
+    neighbor_like_list, neighbor_wish_list = defaultdict(list), defaultdict(list)
+    for id, content_id, is_like in neighbor_item_like:
+        neighbor_like_list[id].append((content_id, is_like))
+    for id, content_id in neighbor_item_wish:
+        neighbor_wish_list[id].append((content_id))
 
     recommendations = []
     for item_id in itemdict:  # itemdict를 순회하면서 사용자가 보지 않은 컨텐츠에 대해서 점수 예측하기
         if item_id not in items_reviewed:
-            recommendations.append((item_id, predict(user_id, item_id, neighbor_user, userdict, neighbor_item_list, genre_ids)))
+            recommendations.append((item_id, predict(user_id, item_id, neighbor_user, userdict, neighbor_like_list, neighbor_wish_list, genre_ids)))
     recommendations = list(set(recommendations))
     recommendations.sort(key = lambda x:x[1], reverse=True) # 유사도(x[1])가 높은 순서대로 정렬
     
