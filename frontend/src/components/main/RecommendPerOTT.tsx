@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import disney from "../../assets/img/disneyIcon.png";
-import netflix from "../../assets/img/netflixIcon.png";
-import wavve from "../../assets/img/wavveIcon.png";
-import watcha from "../../assets/img/watchaIcon.png";
+import disney from "../../assets/img/otticons/DisneyIcon.png";
+import netflix from "../../assets/img/otticons/NetflixIcon.png";
+import watcha from "../../assets/img/otticons/WatchaIcon.png";
+import wavve from "../../assets/img/otticons/WavveIcon.png";
 
 import { mainRecommend, mainRecommendNon } from "apis/apiMain";
 
@@ -76,7 +76,7 @@ const RecommendPerOTT = () => {
         <Poster className="poster">
           <ContentPoster
             title={recResult[0].title}
-            imageUrl={recResult[0].img_path}
+            imageUrl={recResult[0].imgPath}
             content={recResult[0]}
           />
         </Poster>
