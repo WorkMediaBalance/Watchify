@@ -86,7 +86,7 @@ WSGI_APPLICATION = 'watchifyAI.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': django.db.backends.mysql,
+        'ENGINE': "django.db.backends.mysql",
         'NAME': DB_NAME,
         'USER': DB_USER,
         'PASSWORD': DB_PW,
