@@ -21,7 +21,7 @@ public class ScheduleRequestDTO {
     private Map<String, String> ott;
     private ArrayList<String> genres;
     private boolean isWish;
-    private int isLike;
+    private Double like;
     private String summarize;
     private int audienceAge;
     private int episode;

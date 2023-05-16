@@ -44,7 +44,7 @@ public class ScheduleGetService {
             historyInfoDTO.setIsWish(myWishContentList.contains(content.getId()));
             for (LikeContent lc : myLikeContentList) {
                 if (lc.getContent().equals(content)) {
-                    historyInfoDTO.setIsLike(lc.isLike() ? 1 : -1);
+                    historyInfoDTO.setLike(lc.getLike());
                     break;
                 }
             }
