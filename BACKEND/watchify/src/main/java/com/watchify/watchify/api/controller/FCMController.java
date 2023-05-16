@@ -20,10 +20,16 @@ public class FCMController {
     private final FCMService fcmService;
 
 
-    @PutMapping("/save")
+    @PutMapping("/save/nonauth")
     public ResponseEntity<?> SaveFCMtoken(HttpServletRequest request, @RequestBody FcmTokenRequestDTO fcmTokenRequestDTO) {
+
         String accessToken = request.getHeader("access");
-        long userId = userService.findUserIdByAccessToken(accessToken);
+        Long userId = null;
+        try {
+            userId = userService.findUserIdByAccessToken(accessToken);
+        } catch (Exception e) {
+            System.out.println("잘못된 토큰~");
+        }
 
         try {
             fcmService.saveFcmToken(userId, fcmTokenRequestDTO.getFcmToken());
