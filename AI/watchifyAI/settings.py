@@ -14,7 +14,6 @@ from pathlib import Path
 import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 # Quick-start development settings - unsuitable for production
@@ -26,7 +25,7 @@ SECRET_KEY = 'django-insecure-wh@evx76il%y^4cti2_^**&d=u()p8jc)5e=&i0i+!xcka_@e=
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -37,6 +36,9 @@ INSTALLED_APPS = [
 
     # rest API
     'rest_framework',
+
+    # CORS
+    'corsheaders',
 
     # basis
     'django.contrib.admin',
@@ -50,6 +52,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -83,12 +86,17 @@ WSGI_APPLICATION = 'watchifyAI.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'sins',
-        'USER': 'watchifyadmin',
-        'PASSWORD': 'qudwlsgoa!',  # git에 올리지 않기
-        'HOST': 'watchifydb.cph3uafcff1h.ap-northeast-2.rds.amazonaws.com',
-        'PORT': '3306',
+        'ENGINE': "django.db.backends.mysql",
+        # 'NAME': os.environ.get('DB_NAME'),
+        # 'USER': os.environ.get('DB_USER'),
+        # 'PASSWORD': os.environ.get('DB_PW'),
+        # 'HOST': os.environ.get('DB_HOST'),
+        # 'PORT': os.environ.get('DB_PORT'),
+        'NAME': DB_NAME,
+        'USER': DB_USER,
+        'PASSWORD': DB_PW,
+        'HOST': DB_HOST,
+        'PORT': DB_PORT,
     }
 }
 
@@ -137,7 +145,44 @@ STATIC_URL = '/static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 ############################ modifid ##################################
-MODELS = os.path.join(BASE_DIR, 'ml/models')
-
-
 #### AWS
+AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
+AWS_REGION = os.environ.get('AWS_REGION')
+
+## S3 Storages
+AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
+DEFAULT_FILE_STORAGE = os.environ.get('DEFAULT_FILE_STORAGE')
+AWS_S3_CUSTOM_DOMAIN = ''
+AWS_S3_OBJECT_PARAMETERS = {
+    # 'ContentType' : 'image/jepg'
+}
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'path/to/store/my/files/')
+
+## CORS
+# CORS_ORIGIN_WHITELIST = ['https://k8a207.p.ssafy.io', 'http://localhost:8000', 'http://127.0.0.1:3000']
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = True
+
+CORS_ALLOW_METHODS = (
+    'DELETE', 
+    'GET', 
+    'OPTIONS', 
+    'PATCH', 
+    'POST', 
+    'PUT',
+)
+
+CORS_ALLOW_HEADERS = (
+    'accept', 
+    'accept-encoding', 
+    'authorization', 
+    'content-type', 
+    'dnt', 
+    'origin', 
+    'user-agent', 
+    'x-csrftoken', 
+    'x-requested-with',
+)
+
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')

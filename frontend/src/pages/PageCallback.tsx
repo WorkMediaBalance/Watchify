@@ -6,7 +6,7 @@ import { userState } from "recoil/userState";
 
 // import jwtDecode from "jwt-decode";
 
-import { mybasicInfo } from "apis/apiLoginPage";
+import { mybasicInfo } from "apis/apiMy";
 
 const PageCallback = () => {
   // url에서 주소 따오는 hook

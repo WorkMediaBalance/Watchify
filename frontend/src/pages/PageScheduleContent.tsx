@@ -4,20 +4,45 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 
 import { essListState } from "recoil/userState";
+import { schedulePreInfoState } from "recoil/schedulePreInfoState";
 import { useRecoilState } from "recoil";
+import { scheduleAllState } from "recoil/scheduleState";
 
 import ScheduleBottomSheet from "components/schedule/ScheduleBottomSheet";
 
 import { AiOutlineMinusCircle } from "react-icons/ai";
 import Lottie from "lottie-react";
 import scheduleGIF from "assets/gif/schedule-calendar-animation.json";
-import BottomDot from "./../layout/BottomDot";
+
+import { scheduleCreate } from "apis/apiSchedule";
 
 const PageScheduleContent = () => {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  // 필수시청목록 (API 요청시에는 사용 X)
   const [essList, setEssList] = useRecoilState(essListState);
 
+  // 스케줄 생성 preData recoil
+  const [preData, setPreData] = useRecoilState(schedulePreInfoState);
+  const [scheduleResult, setScheduleResult] = useRecoilState(scheduleAllState);
+
+  // 필수 시청 목록 recoil 반영
+  useEffect(() => {
+    let pks: number[] = [];
+    essList.forEach((content) => {
+      pks.push(content.pk);
+    });
+    let copy = { ...preData };
+    copy = { ...copy, contents: pks };
+    setPreData(copy);
+  }, [essList]);
+
+  const scheduleCreateAPI = async () => {
+    const scheduleResultData = await scheduleCreate(preData);
+    setScheduleResult(scheduleResultData);
+  };
+
+  // 로딩 관련 state (0: 첫화면, 1: 다음 클릭 0~2초, 2: 다음 클릭 2초 후)
   const [isLoading, setIsLoading] = useState<number>(0);
 
   const onClickDelete = (idx: number) => {
@@ -58,12 +83,33 @@ const PageScheduleContent = () => {
         BottomDot.style.position = "sticky";
       }
     }
+    return () => {
+      if (appBar) {
+        appBar.style.display = "block";
+        appBar.style.position = "sticky";
+        if (appBarMargin) {
+          appBarMargin.style.marginTop = "5vh";
+        }
+      }
+      if (BottomDot) {
+        BottomDot.style.display = "block";
+        BottomDot.style.position = "sticky";
+      }
+    };
   }, [isLoading]);
 
   const onClickLoading = () => {
     setIsLoading(1);
+    // 스케줄 생성 API 요청
+    scheduleCreateAPI();
     setTimeout(() => {
       setIsLoading(2);
+      setPreData({
+        startDate: "",
+        contents: [],
+        patterns: [],
+        ott: [],
+      });
     }, 2000);
   };
 
@@ -82,35 +128,37 @@ const PageScheduleContent = () => {
           </LottieContainer>
         </LoadingComponent>
       ) : (
-        <Container>
-          <SDiv>필수 시청 목록</SDiv>
-          <SDiv2>스케줄 생성시 꼭 보고 싶은 컨텐츠를 담아주세요!</SDiv2>
-          <ContentsContainer>
-            {essList &&
-              essList.map((content, idx) => (
-                <SBoxContainer key={idx}>
-                  <SContent imgUrl={essList[idx].img_path}>
-                    <SRemoveDiv onClick={() => onClickDelete(idx)}>
-                      <SAiOutlineMinusCircle />
-                    </SRemoveDiv>
-                  </SContent>
-                </SBoxContainer>
-              ))}
-            <SBoxContainer>
-              <SAddBox onClick={() => setIsOpen(true)}>+</SAddBox>
-            </SBoxContainer>
-          </ContentsContainer>
+        <Wrapper>
+          <Container>
+            <SDiv>필수 시청 목록</SDiv>
+            <SDiv2>스케줄 생성시 꼭 보고 싶은 컨텐츠를 담아주세요!</SDiv2>
+            <ContentsContainer>
+              {essList &&
+                essList.map((content, idx) => (
+                  <SBoxContainer key={idx}>
+                    <SContent imgUrl={essList[idx].imgPath}>
+                      <SRemoveDiv onClick={() => onClickDelete(idx)}>
+                        <SAiOutlineMinusCircle />
+                      </SRemoveDiv>
+                    </SContent>
+                  </SBoxContainer>
+                ))}
+              <SBoxContainer>
+                <SAddBox onClick={() => setIsOpen(true)}>+</SAddBox>
+              </SBoxContainer>
+            </ContentsContainer>
 
-          <SBtnContainer>
-            <SNextBtn onClick={onClickLoading}>다음</SNextBtn>
-          </SBtnContainer>
-          <ScheduleBottomSheet
-            isOpen={isOpen}
-            onClose={() => {
-              setIsOpen(false);
-            }}
-          />
-        </Container>
+            <SBtnContainer>
+              <SNextBtn onClick={onClickLoading}>다음</SNextBtn>
+            </SBtnContainer>
+            <ScheduleBottomSheet
+              isOpen={isOpen}
+              onClose={() => {
+                setIsOpen(false);
+              }}
+            />
+          </Container>
+        </Wrapper>
       )}
     </>
   );
@@ -119,27 +167,34 @@ const PageScheduleContent = () => {
 export default PageScheduleContent;
 
 const Container = styled.div`
-  height: 95%;
+  height: 100%;
+  width: 90%;
   display: flex;
   flex-direction: column;
   color: white;
   overflow: auto;
 `;
 
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
 const SDiv = styled.div`
   font-size: ${({ theme }) => theme.fontSizeType.big.fontSize};
   font-weight: ${({ theme }) => theme.fontSizeType.big.fontWeight};
   text-align: left;
-  margin: 0.5rem 0;
-  padding-left: 0.5rem;
+  margin-top: 2vh;
+  padding-left: 2vw;
 `;
 
 const SDiv2 = styled.div`
-  font-size: ${({ theme }) => theme.fontSizeType.small.fontSize};
+  font-size: ${({ theme }) => theme.fontSizeType.middle.fontSize};
   font-weight: ${({ theme }) => theme.fontSizeType.middle.fontWeight};
   text-align: left;
-  margin: 0.2rem 0;
-  padding-left: 0.5rem;
+  margin: 1vh 0;
+  padding-left: 2vw;
 `;
 
 const ContentsContainer = styled.div`

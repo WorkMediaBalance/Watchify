@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect, useMemo } from "react";
 import styled from "styled-components";
 import { theme } from "styles/theme";
 import Calendar from "components/schedule/calendar/Calendar";
 import CalendarBottomSheet from "components/schedule/calendar/CalendarBottomSheet";
-
+import { useNavigate, useLocation } from "react-router-dom";
 // month 스케줄 state
 import { monthScheduleState } from "recoil/scheduleState";
 import { useRecoilState } from "recoil";
@@ -15,6 +15,7 @@ const Wrapper = styled.div`
 `;
 
 const PageScheduleResult = () => {
+  const navigate = useNavigate();
   const [sheet, setSheet] = useState(0);
   const [month, setMonth] = useState(1);
   const [date, setDate] = useState(1);
@@ -22,6 +23,23 @@ const PageScheduleResult = () => {
 
   // month 스케줄
   const [monthSchedule, setMonthSchedule] = useRecoilState(monthScheduleState);
+
+  // 바텀시트 위치 구하기
+  const bottomSheetRef = useRef<HTMLTableElement>(null);
+
+  const [bottomSheetState, setBottomSheetState] = useState(0);
+
+  const location = useLocation();
+
+  useEffect(() => {
+    const routerMonth = location.state?.month;
+    const routerDate = location.state?.date;
+    if (routerMonth !== undefined && routerDate !== undefined) {
+      setMonth(routerMonth);
+      setDate(routerDate);
+      setSheet(1);
+    }
+  }, []);
 
   return (
     <Wrapper>
@@ -34,8 +52,16 @@ const PageScheduleResult = () => {
         onCloseSheet={() => {
           setClose(close + 1);
         }}
+        bottomSheetState={bottomSheetState}
       />
-      <CalendarBottomSheet close={close} date={date} month={month} sheet={sheet} />
+
+      <CalendarBottomSheet
+        close={close}
+        date={date}
+        month={month}
+        sheet={sheet}
+        setBottomSheetState={setBottomSheetState}
+      />
     </Wrapper>
   );
 };

@@ -11,6 +11,7 @@ import PageError from "./pages/PageError";
 import PageLogin from "./pages/PageLogin";
 import PageMain from "./pages/PageMain";
 import PageMy from "./pages/PageMy";
+import PageMyHistory from "pages/PageMyHistory";
 import PageRecommend from "./pages/PageRecommend";
 import PageRecommendResult from "pages/PageRecommendResult";
 import PageSchedule from "./pages/PageSchedule";
@@ -23,6 +24,8 @@ import PageCallback from "pages/PageCallback";
 
 import MemberRoute from "./components/common/MemberRoute";
 import NonMemberRoute from "./components/common/NonMemberRoute";
+
+import "./firebase-messaging-sw.js";
 
 const App = () => {
   return (
@@ -41,11 +44,12 @@ const App = () => {
             <Route path="/schedule/result" element={<PageScheduleResult />} />
             <Route path="/search" element={<PageSearch />} />
 
-            <Route path="/oauth2/callback" element={<PageCallback />} />
+            <Route path="/callback" element={<PageCallback />} />
 
             {/* 회원만 접근 가능 */}
             <Route element={<MemberRoute />}>
               <Route path="/my" element={<PageMy />} />
+              <Route path="/my/history/:pk" element={<PageMyHistory />} />
             </Route>
 
             {/* 비회원만 접근 가능 */}

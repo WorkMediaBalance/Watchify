@@ -1,5 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { schedule } from "interface/schedule";
+import Modal from "react-modal";
+import Calendar from "components/schedule/calendar/Calendar";
+import { HistoryContent } from "recoil/history";
 
 interface BackgroundImageProps {
   imageUrl: string;
@@ -15,9 +20,8 @@ const Container = styled.div<BackgroundImageProps>`
   align-items: center;
   margin-top: 1vh;
   // 여기부터 백그라운드 이미지
-  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(${(
-    props
-  ) => props.imageUrl});
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(${(props) =>
+    props.imageUrl});
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
@@ -49,12 +53,12 @@ const DateIndicator = styled.div`
 const Date = styled.div`
   color: black;
   font-size: ${({ theme }) => theme.fontSizeType.big.fontSize};
-  font-weight: 700;
+  font-weight: 900;
 `;
 const Month = styled.div`
   color: grey;
   font-size: ${({ theme }) => theme.fontSizeType.small.fontSize};
-  font-weight: ${({ theme }) => theme.fontSizeType.small.fontWeight};
+  font-weight: 700;
   margin-bottom: 2px;
 `;
 
@@ -63,34 +67,94 @@ const TitleHolder = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  flex-grow: 1;
+  width: 60%;
   margin-right: 5vw;
 `;
 
 const Title = styled.div`
   color: white;
   font-size: ${({ theme }) => theme.fontSizeType.big.fontSize};
-  font-weight: ${({ theme }) => theme.fontSizeType.big.fontWeight};
+  font-weight: 900;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
-const HistoryComponent = () => {
-  const imageUrl = "https://t1.daumcdn.net/cfile/tistory/997F7A385E4A920F28";
+interface HistoryComponentProps {
+  contentHistory: HistoryContent;
+}
+
+const HistoryComponent: React.FC<HistoryComponentProps> = ({ contentHistory }) => {
+  const navigate = useNavigate();
+  const months = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const modalStyle = {
+    content: {
+      postion: "fixed",
+      top: "50%",
+      left: "50%",
+      right: "auto",
+      bottom: "auto",
+      marginRight: "-50%",
+      transform: "translate(-50%, -50%)",
+
+      padding: "0",
+      borderRadius: "15px",
+      border: "0",
+    },
+    overlay: {
+      backgroundColor: "rgba(0,0,0,0.75)",
+      zIndex: "1000",
+    },
+  };
+
+  const disableScroll = () => {
+    document.body.style.overflow = "hidden";
+  };
+
+  const enableScroll = () => {
+    document.body.style.overflow = "auto";
+  };
+
+  const handleHistoryClick = () => {
+    const params = {
+      year: contentHistory.firstYear,
+      month: contentHistory.firstMonth,
+      day: contentHistory.firstDay,
+      pk: contentHistory.pk,
+    };
+    navigate(`/my/history/${contentHistory.pk}`, { state: params });
+  };
 
   return (
     <div>
       <Container
-        imageUrl={imageUrl}
+        imageUrl={contentHistory && contentHistory.imgPath}
         onClick={() => {
-          console.log("ㅗㄷㄱㄷ");
+          handleHistoryClick();
         }}
       >
         <DecorationBar />
         <DateIndicator>
-          <Date>{"18"}</Date>
-          <Month>{"Apr"}</Month>
+          <Date>{contentHistory && contentHistory.firstDay}</Date>
+          <Month>{contentHistory && months[contentHistory.firstMonth - 1]}</Month>
         </DateIndicator>
         <TitleHolder>
-          <Title>{"1945"}</Title>
+          <Title>{contentHistory && contentHistory.title}</Title>
         </TitleHolder>
       </Container>
     </div>

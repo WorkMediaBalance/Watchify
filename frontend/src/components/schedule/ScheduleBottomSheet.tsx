@@ -2,12 +2,12 @@ import React, { useEffect } from "react";
 import styled from "styled-components";
 import { motion } from "framer-motion";
 import { BOTTOM_SHEET_HEIGHT } from "../../constant/constant";
-import useRecBottomSheet from "../../hooks/useRecBottomSheet";
+import useScheduleBottomSheet from "../../hooks/useScheduleBottomSheet";
 import ScheduleBottomSheetHeader from "./ScheduleBottomSheetHeader";
 import ScheduleBottomSheetContent from "./ScheduleBottomSheetContent";
 
 const ScheduleBottomSheet = (props: { isOpen: boolean; onClose: () => void }) => {
-  const { sheet, content, openBottomSheet, isOpenSheet } = useRecBottomSheet();
+  const { sheet, content, openBottomSheet, isOpenSheet, handle } = useScheduleBottomSheet();
   const isOpen = props.isOpen;
   useEffect(() => {
     if (isOpen) {
@@ -20,7 +20,9 @@ const ScheduleBottomSheet = (props: { isOpen: boolean; onClose: () => void }) =>
   }, [isOpen, isOpenSheet]);
   return (
     <Wrapper ref={sheet}>
-      <ScheduleBottomSheetHeader />
+      <div ref={handle} style={{ marginBottom: "2vh", zIndex: "100" }}>
+        <ScheduleBottomSheetHeader />
+      </div>
       <BottomSheetContent ref={content} className="BottomSheetContent">
         <ScheduleBottomSheetContent />
       </BottomSheetContent>

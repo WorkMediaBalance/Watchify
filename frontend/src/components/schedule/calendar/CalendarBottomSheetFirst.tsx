@@ -18,12 +18,16 @@ const CalendarBottomSheetFirst = (props: { date: number; month: number }) => {
   const dateScheduleList = monthSchedule[props.date];
 
   const nextContent = () => {
-    if (dateScheduleList.length > 1 && index !== dateScheduleList.length - 1) {
+    if (
+      Array.isArray(dateScheduleList) &&
+      dateScheduleList.length > 1 &&
+      index !== dateScheduleList.length - 1
+    ) {
       setIndex(index + 1);
     }
   };
   const prevContent = () => {
-    if (dateScheduleList.length > 1 && index !== 0) {
+    if (Array.isArray(dateScheduleList) && dateScheduleList.length > 1 && index !== 0) {
       setIndex(index - 1);
     }
   };
@@ -40,16 +44,19 @@ const CalendarBottomSheetFirst = (props: { date: number; month: number }) => {
         <DateAndAdd>
           <Date>{`${props.month}월 ${props.date}일`}</Date>
           <Add>
-            {"컨텐츠 일정 추가"} <AiOutlinePlusCircle />
+            {"일정 추가"}
+            {/* <AiOutlinePlusCircle /> */}
           </Add>
         </DateAndAdd>
-        {dateScheduleList.length === 0 ? (
-          <div>일정이 업습</div>
+        {Array.isArray(dateScheduleList) && dateScheduleList.length === 0 ? (
+          <NoContentDiv>
+            <div>일정이 없습니다.</div>
+          </NoContentDiv>
         ) : (
           <ContentContainer>
             <PosterContainer>
               <ContentPoster
-                imageUrl={dateScheduleList[index]["img_path"]}
+                imageUrl={dateScheduleList[index]["imgPath"]}
                 title={dateScheduleList[index]["title"]}
                 content={dateScheduleList[index]}
               ></ContentPoster>
@@ -57,7 +64,7 @@ const CalendarBottomSheetFirst = (props: { date: number; month: number }) => {
             <TextContainer>
               <TitleAndDot>
                 <Title>{dateScheduleList[index]["title"]}</Title>
-                <Dot></Dot>
+                {/* <Dot></Dot> */}
               </TitleAndDot>
               <ButtonContainer>
                 <SeenButton>{"시청함"}</SeenButton>
@@ -82,7 +89,7 @@ export default CalendarBottomSheetFirst;
 
 const Container = styled.div`
   height: 30vh;
-  width: 100%;
+  width: auto;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -98,12 +105,12 @@ const DateAndAdd = styled.div`
 const Date = styled.div`
   font-size: ${({ theme }) => theme.fontSizeType.big.fontSize};
   font-weight: ${({ theme }) => theme.fontSizeType.big.fontWeight};
-  margin-left: 5vw;
+  margin-left: 10vw;
 `;
 
 const Add = styled.div`
   font-weight: ${({ theme }) => theme.fontSizeType.big.fontWeight};
-  margin-right: 5vw;
+  margin-right: 10vw;
 `;
 
 const ContentContainer = styled.div`
@@ -126,7 +133,7 @@ const TextContainer = styled.div`
 const TitleAndDot = styled.div`
   display: flex;
   flex-direction: row;
-  width: 30vw;
+  // width: 30vw;
   justify-content: center;
 `;
 
@@ -146,19 +153,19 @@ const ButtonContainer = styled.div`
 const SeenButton = styled.div`
   font-size: ${({ theme }) => theme.fontSizeType.middle.fontSize};
   font-weight: ${({ theme }) => theme.fontSizeType.middle.fontWeight};
-  border: ${({ theme }) => `1px solid ${theme.netflix.fontColor}`};
-  border-radius: 5px;
+  border: ${({ theme }) => `2px solid ${theme.netflix.fontColor}`};
+  border-radius: 10px;
   margin: 2vw;
-  padding: 1vw;
+  padding: 2vw;
 `;
 
 const PostponeButton = styled.div`
   font-size: ${({ theme }) => theme.fontSizeType.middle.fontSize};
   font-weight: ${({ theme }) => theme.fontSizeType.middle.fontWeight};
-  border: ${({ theme }) => `1px solid ${theme.netflix.fontColor}`};
-  border-radius: 5px;
+  border: ${({ theme }) => `2px solid ${theme.netflix.fontColor}`};
+  border-radius: 10px;
   margin: 2vw;
-  padding: 1vw;
+  padding: 2vw;
 `;
 
 const Footer = styled.div`
@@ -181,4 +188,13 @@ const PageDot = styled.div<{ status: boolean }>`
   height: 2vw;
   border-radius: 50%;
   margin: 1vw;
+`;
+
+const NoContentDiv = styled.div`
+  width: 100%;
+  font-size: ${({ theme }) => theme.fontSizeType.big.fontSize};
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
 `;

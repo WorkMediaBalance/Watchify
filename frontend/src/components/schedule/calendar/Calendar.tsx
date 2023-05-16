@@ -1,13 +1,19 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef, useMemo } from "react";
 import styled from "styled-components";
 import { useSwipeable } from "react-swipeable";
 import { motion, AnimatePresence } from "framer-motion";
 import { theme } from "styles/theme";
 import { months } from "constant/constant";
+import { useNavigate } from "react-router-dom";
+
+// month 스케줄 state
+import { monthScheduleState } from "recoil/scheduleState";
+import { useRecoilState } from "recoil";
 
 const Calendar = (props: {
   onDateClick: (date: number, month: number) => void;
   onCloseSheet: () => void;
+  bottomSheetState: number;
 }) => {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [clickedDay, setClickedDay] = useState<HTMLElement | null>(null);
@@ -71,6 +77,7 @@ const Calendar = (props: {
   rows.push({ cells });
 
   function thisMonth() {
+    console.log("thismonth");
     setSelectedDate(new Date());
     props.onCloseSheet();
   }
@@ -90,21 +97,31 @@ const Calendar = (props: {
     onSwipedRight: prevMonth,
   });
 
-  const handleDateClick = (event: React.MouseEvent<HTMLDivElement>) => {
-    if (event.currentTarget.innerText) {
+  const [currentRowIndex, setCurrentRowIndex] = useState(0);
+  const handleDateClick = (
+    event: React.MouseEvent<HTMLDivElement>,
+    rowIndex: number,
+    day: string
+  ) => {
+    const YMD = day.split("-");
+    if (YMD.length === 3) {
       if (clickedDay) {
         clickedDay.classList.remove("selected-day");
       }
       event.currentTarget.classList.add("selected-day");
       setClickedDay(event.currentTarget);
       const date = selectedDate.getMonth() + 1;
-      const month = Number(event.currentTarget.innerText);
+      const month = Number(YMD[2]);
       props.onDateClick(month, date);
     }
+    setCurrentRowIndex(rowIndex);
   };
 
+  // 해당 스케줄 불러오기
+  const [monthSchedule, setMonthSchedule] = useRecoilState(monthScheduleState);
+  const navigate = useNavigate();
   return (
-    <Wrapper>
+    <Wrapper className={"wrapper"}>
       <motion.div>
         <AnimatePresence>
           <SCalendarDiv
@@ -117,10 +134,16 @@ const Calendar = (props: {
             {...handlers}
           >
             <SHeader>
-              <SToday onClick={thisMonth}>Today</SToday>
+              <RescheduleButton
+                onClick={() => navigate("/schedule", { state: { isMakeNew: true } })}
+              >
+                New Schedule
+              </RescheduleButton>
               <SMonth>{month}</SMonth>
+              <SToday onClick={thisMonth}>Today</SToday>
             </SHeader>
-            <STable>
+
+            <STable bottomSheetState={props.bottomSheetState}>
               <SThead>
                 <tr>
                   {weekdays.map((day) => (
@@ -152,15 +175,75 @@ const Calendar = (props: {
                             className = "active-day";
                           }
                         }
-                        return (
+
+                        return props.bottomSheetState === 2 ? (
+                          currentRowIndex === rowIndex && (
+                            <STd
+                              onClick={(event) => handleDateClick(event, rowIndex, day)}
+                              key={`${rowIndex}-${dayIndex}`}
+                              data-key={`${rowIndex}-${dayIndex}`}
+                              className={className}
+                              rowsLength={rows.length}
+                              bottomSheetState={props.bottomSheetState}
+                            >
+                              <STdDiv>
+                                <SP className="SP">{content}</SP>
+
+                                <InnerConteiner>
+                                  {typeof content === "number"
+                                    ? monthSchedule[content].map((content, index) => {
+                                        return <IndicationBar />;
+                                      })
+                                    : null}
+                                </InnerConteiner>
+                              </STdDiv>
+                            </STd>
+                          )
+                        ) : props.bottomSheetState === 1 ? (
                           <STd
-                            onClick={handleDateClick}
+                            onClick={(event) => handleDateClick(event, rowIndex, day)}
                             key={`${rowIndex}-${dayIndex}`}
                             data-key={`${rowIndex}-${dayIndex}`}
                             className={className}
+                            rowsLength={rows.length}
+                            bottomSheetState={props.bottomSheetState}
                           >
                             <STdDiv>
                               <SP>{content}</SP>
+
+                              <InnerConteiner>
+                                {typeof content === "number"
+                                  ? monthSchedule[content].map((content, index) => {
+                                      return <IndicationBar />;
+                                    })
+                                  : null}
+                              </InnerConteiner>
+                            </STdDiv>
+                          </STd>
+                        ) : (
+                          <STd
+                            onClick={(event) => handleDateClick(event, rowIndex, day)}
+                            key={`${rowIndex}-${dayIndex}`}
+                            data-key={`${rowIndex}-${dayIndex}`}
+                            className={className}
+                            rowsLength={rows.length}
+                            bottomSheetState={props.bottomSheetState}
+                          >
+                            <STdDiv>
+                              <SP>{content}</SP>
+
+                              <InnerConteiner>
+                                {typeof content === "number"
+                                  ? monthSchedule[content].map((content, index) => {
+                                      return (
+                                        <ContentTag>
+                                          <ContentTagDot />
+                                          <ContentName>{"1화"}</ContentName>
+                                        </ContentTag>
+                                      );
+                                    })
+                                  : null}
+                              </InnerConteiner>
                             </STdDiv>
                           </STd>
                         );
@@ -197,33 +280,40 @@ const SHeader = styled.div`
   margin-bottom: 1vh;
   width: 100vw;
   color: ${theme.netflix.fontColor};
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
 `;
 
-const SMonth = styled.p`
+const SMonth = styled.div`
   font-size: ${theme.fontSizeType.big.fontSize};
   font-weight: ${theme.fontSizeType.big.fontWeight};
   margin-bottom: 1vh;
   margin-top: 0;
   text-align: center;
+  width: calc(100% / 3);
 `;
 
-const SToday = styled.p`
-  position: absolute;
+const SToday = styled.div`
   right: 2vw;
-  margin-bottom: 0;
-  margin-top: 0;
   line-height: 2;
+  width: calc(100% / 3);
+  text-align: end;
+  margin-right: 3vw;
 `;
 
-const STable = styled.table`
+const STable = styled.table<{ bottomSheetState: number }>`
   width: 100vw;
-  height: 75vh;
+  height: ${({ bottomSheetState }) => ["75vh", "45vh", "16vh"][bottomSheetState]};
   border-collapse: collapse;
 `;
 
-const STd = styled.td`
+const STd = styled.td<{ rowsLength: number; bottomSheetState: number }>`
   text-align: center;
   width: calc(100vw / 7);
+  height: ${({ rowsLength, bottomSheetState }) =>
+    bottomSheetState === 2 ? "100%" : `calc(100% / ${rowsLength})`}};
 `;
 
 const SThead = styled.thead`
@@ -237,7 +327,8 @@ const STbody = styled.tbody`
   .selected-day div {
     border-radius: 8px;
     // border: 1px solid ${theme.netflix.pointColor};
-    background-color: rgba(255, 0, 0, 0.2);
+    background-color: ${theme.netflix.pointColor};
+    color: ${theme.netflix.pointColor};
   }
   .today p {
     background-color: rgba(209, 209, 209, 0.2);
@@ -255,6 +346,60 @@ const STdDiv = styled.div`
   box-sizing: border-box;
 `;
 
-const SP = styled.p`
+const SP = styled.div`
   margin-top: 1vh;
+  color: white !important;
+`;
+
+const InnerConteiner = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  margin-top: 0.2vh;
+`;
+
+const ContentTag = styled.div`
+  display: flex;
+  flex-direction: row;
+  width: 90%;
+  justify-content: space-between;
+  align-items: center;
+  background-color: white;
+  border-radius: 15px;
+  margin: 1px;
+`;
+
+const ContentTagDot = styled.div`
+  border-radius: 50%;
+  background-color: ${theme.netflix.pointColor};
+  height: 2vw;
+  width: 2vw;
+  margin: 1vw;
+`;
+
+const ContentName = styled.div`
+  color: ${theme.netflix.tabColor};
+  font-size: 0.8rem;
+  margin: 0.4vw;
+  margin-right: 2vw;
+`;
+
+const IndicationBar = styled.div`
+  background-color: ${theme.netflix.pointColor};
+  height: 0.3vh;
+  width: 90%;
+  margin-bottom: 0.2vh;
+`;
+
+const ContentPlus = styled.div`
+  width: 100%;
+  text-align: end;
+`;
+
+const RescheduleButton = styled.div`
+  width: calc(100% / 3);
+  margin-left: 3vw;
 `;

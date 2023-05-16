@@ -1,12 +1,58 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 import WatchingPattern from "components/common/WatchingPattern";
-import OttSubscription from "components/common/OttSubscription";
+import ScheduleOttDate from "components/common/ScheduleOttDate";
+
+import { scheduleInfoAll } from "apis/apiSchedule";
+
+import { scheduleAllState } from "recoil/scheduleState";
+import { useRecoilState } from "recoil";
 
 const PageSchedule = () => {
+  const [scheduleAll, setScheduleAll] = useState({});
+  const [recoilScheduleAll, setRecoilScheduleAll] = useRecoilState(scheduleAllState);
+  const getScheduleAll = async () => {
+    const data = await scheduleInfoAll();
+    console.log(data);
+    if (data !== false) {
+      setScheduleAll(data);
+      setRecoilScheduleAll(data);
+    }
+    return data;
+  };
+
+  const location = useLocation();
+
+  const setNavigation = async () => {
+    if (!location.state?.isMakeNew) {
+      if (localStorage.getItem("accessToken") !== null) {
+        const data = await getScheduleAll();
+        console.log(data, "이프문");
+        if (Object.keys(data).length !== 0) {
+          console.log("회원 예스 스케줄");
+          navigate("/schedule/result");
+        } else {
+          console.log("회원 노스케줄");
+        }
+      } else {
+        if (recoilScheduleAll !== null) {
+          console.log("비회원 예스 스케줄");
+          navigate("/schedule/result");
+        } else {
+          console.log("비회원 노 스케줄");
+        }
+      }
+    }
+  };
+
   const navigate = useNavigate();
+
+  useEffect(() => {
+    setNavigation();
+  }, []);
+
   return (
     <Container className={"container"}>
       <div
@@ -20,7 +66,7 @@ const PageSchedule = () => {
       >
         <WatchingPattern />
       </div>
-      <OttSubscription />
+      <ScheduleOttDate />
       <SBtnContainer>
         <SNextBtn onClick={() => navigate("/schedule/content")}>다음</SNextBtn>
       </SBtnContainer>
@@ -32,11 +78,11 @@ const PageSchedule = () => {
 export default PageSchedule;
 
 const Container = styled.div`
-  height: 95vh;
+  height: 91vh;
   display: flex;
   flex-direction: column;
   color: white;
-  margin-top: 10vw;
+  width: 100vw;
 `;
 
 const SBtnContainer = styled.div`

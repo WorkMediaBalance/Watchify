@@ -8,6 +8,9 @@ import { FiCheckCircle } from "react-icons/fi";
 import { BsPlusCircle } from "react-icons/bs";
 
 import { content } from "interface/content";
+import ContentPoster from "components/common/ContentPoster";
+
+import { myWishList } from "apis/apiMy";
 
 const WishList = () => {
   const [wishList, setWishList] = useRecoilState(wishListState);
@@ -18,6 +21,17 @@ const WishList = () => {
     copy = [...copy, content];
     setEssList(copy);
   };
+
+  // 찜 목록 불러오기 API 함수
+  async function myWishListAPI() {
+    let newData = await myWishList();
+    setWishList(newData);
+  }
+
+  // 찜 목록 불러오기 API
+  useEffect(() => {
+    myWishListAPI();
+  }, []);
   return (
     <Layout>
       {wishList &&
@@ -26,15 +40,19 @@ const WishList = () => {
           return (
             <SContentsContainer key={idx}>
               <SBoxContainer>
-                <SContent imgUrl={wishList[idx].img_path} />
+                <SContent>
+                  <ContentPoster
+                    content={content}
+                    title={content.title}
+                    imageUrl={content.imgPath}
+                  />
+                </SContent>
               </SBoxContainer>
               <S1DepthContainer>
                 <S2DepthContainer>
                   <S3DepthContainer>
                     <STitleDiv>{content.title}</STitleDiv>
-                    {content.finalEpisode > 0 ? (
-                      <div>{content.finalEpisode}부작</div>
-                    ) : null}
+                    {content.finalEpisode > 0 ? <div>{content.finalEpisode}부작</div> : null}
                   </S3DepthContainer>
                   {isAlready ? (
                     <SFiCheckCircle />

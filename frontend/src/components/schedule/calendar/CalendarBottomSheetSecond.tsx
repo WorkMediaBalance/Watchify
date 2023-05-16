@@ -18,12 +18,16 @@ const CalendarBottomSheetSecond = (props: { date: number; month: number }) => {
   const dateScheduleList = monthSchedule[props.date];
 
   const nextContent = () => {
-    if (dateScheduleList.length > 1 && index !== dateScheduleList.length - 1) {
+    if (
+      Array.isArray(dateScheduleList) &&
+      dateScheduleList.length > 1 &&
+      index !== dateScheduleList.length - 1
+    ) {
       setIndex(index + 1);
     }
   };
   const prevContent = () => {
-    if (dateScheduleList.length > 1 && index !== 0) {
+    if (Array.isArray(dateScheduleList) && dateScheduleList.length > 1 && index !== 0) {
       setIndex(index - 1);
     }
   };
@@ -35,23 +39,29 @@ const CalendarBottomSheetSecond = (props: { date: number; month: number }) => {
 
   const [index, setIndex] = useState(0);
   const season =
-    dateScheduleList.length > 0 && dateScheduleList[index]["season"] !== 0
+    Array.isArray(dateScheduleList) &&
+    dateScheduleList.length > 0 &&
+    dateScheduleList[index]["season"] !== 0
       ? `시즌 ${dateScheduleList[index]["season"]} `
       : "";
   const episode =
-    dateScheduleList.length > 0 && dateScheduleList[index]["finalEpisode"] !== 0
+    Array.isArray(dateScheduleList) &&
+    dateScheduleList.length > 0 &&
+    dateScheduleList[index]["finalEpisode"] !== 0
       ? `${dateScheduleList[index]["finalEpisode"]} 화`
       : "";
   return (
     <Container {...handlers}>
       <Date>{`${props.month}월 ${props.date}일`}</Date>
-      {dateScheduleList.length === 0 ? (
-        <div>일정이 업습</div>
+      {Array.isArray(dateScheduleList) && dateScheduleList.length === 0 ? (
+        <NoContentDiv>
+          <div>일정이 없습니다.</div>
+        </NoContentDiv>
       ) : (
         <ContentContainer>
           <PosterContainer>
             <ContentPoster
-              imageUrl={dateScheduleList[index]["img_path"]}
+              imageUrl={dateScheduleList[index]["imgPath"]}
               title={dateScheduleList[index]["title"]}
               content={dateScheduleList[index]}
             ></ContentPoster>
@@ -75,7 +85,7 @@ const CalendarBottomSheetSecond = (props: { date: number; month: number }) => {
 export default CalendarBottomSheetSecond;
 
 const Container = styled.div`
-  width: 100%;
+  width: auto;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
@@ -84,7 +94,7 @@ const Container = styled.div`
 const Date = styled.div`
   font-size: ${({ theme }) => theme.fontSizeType.big.fontSize};
   font-weight: ${({ theme }) => theme.fontSizeType.big.fontWeight};
-  margin-left: 5vw;
+  margin-left: 10vw;
 `;
 
 const ContentContainer = styled.div`
@@ -126,4 +136,14 @@ const PageDot = styled.div<{ status: boolean }>`
   height: 2vw;
   border-radius: 50%;
   margin: 1vw;
+`;
+
+const NoContentDiv = styled.div`
+  width: 100%;
+  height: 20vh;
+  font-size: ${({ theme }) => theme.fontSizeType.big.fontSize};
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `;

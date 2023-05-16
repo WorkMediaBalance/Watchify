@@ -3,16 +3,20 @@ export interface content {
   title: string;
   runtime: number;
   rate: number;
-  img_path: string;
-  backdrop_path: string;
+  imgPath: string;
+  backdropPath: string;
   type: string;
   season: number;
   finalEpisode: number;
   ott: { [key: string]: string };
   genres: string[];
-  isWish: boolean;
-  isLike: number;
+  wish: boolean;
+  like: number;
   summarize: string;
   audienceAge: number;
 }
-// TODO: 가로 포스터 이미지도 필요!
+
+export interface HistoryDetailContent extends content {
+  date: string;
+  episode: number;
+}

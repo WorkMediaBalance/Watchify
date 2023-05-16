@@ -14,8 +14,8 @@ const SGridDiv = styled.div`
 
 const SGenreBtn = styled.button<{ active: boolean }>`
   height: 4.5vh;
-  color: #ffffff;
-  background-color: ${({ active }) => (active ? "#E50914" : "#000000")};
+  color: ${({ theme }) => theme.netflix.fontColor};
+  background-color: ${({ active, theme }) => (active ? theme.netflix.pointColor : "transparent")};
   border: ${({ active }) => (active ? "transparent" : "1px solid #ffffff")};
   border-radius: 12px;
   min-width: 15.5vw;
@@ -27,7 +27,7 @@ const SGenreBtn = styled.button<{ active: boolean }>`
 const SP = styled.p`
   font-size: 1.5rem;
   color: #ffffff;
-  margin-left: 3vw;
+  margin-left: 5vw;
   margin-top: 0;
 `;
 
@@ -45,16 +45,18 @@ const RecBottomSheetContent = () => {
 
   return (
     <>
-      <SP>장르 목록</SP>
-      <SGridDiv>
-        {genres.map((genre, idx) => {
-          return (
-            <SGenreBtn active={genreSet.has(genre)} onClick={() => genreHandler(genre)} key={idx}>
-              {genre}
-            </SGenreBtn>
-          );
-        })}
-      </SGridDiv>
+      <div>
+        <SP>장르 목록</SP>
+        <SGridDiv>
+          {genres.map((genre, idx) => {
+            return (
+              <SGenreBtn active={genreSet.has(genre)} onClick={() => genreHandler(genre)} key={idx}>
+                {genre}
+              </SGenreBtn>
+            );
+          })}
+        </SGridDiv>
+      </div>
     </>
   );
 };

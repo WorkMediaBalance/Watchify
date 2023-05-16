@@ -1,0 +1,96 @@
+@font-face {
+  font-family: "Jalnan";
+  font-style: normal;
+  font-weight: 100;
+  src: url("./JalnanOTF.woff") format("woff");
+}
+@font-face {
+  font-family: "SCDream1";
+  font-style: normal;
+  font-weight: 100;
+  src: url("./SCDream1.woff") format("woff");
+}
+@font-face {
+  font-family: "SCDream2";
+  font-style: normal;
+  font-weight: 100;
+  src: url("./SCDream2.woff") format("woff");
+}
+@font-face {
+  font-family: "SCDream3";
+  font-style: normal;
+  font-weight: 100;
+  src: url("./SCDream3.woff") format("woff");
+}
+@font-face {
+  font-family: "SCDream4";
+  font-style: normal;
+  font-weight: 100;
+  src: url("./SCDream4.woff") format("woff");
+}
+@font-face {
+  font-family: "SCDream5";
+  font-style: normal;
+  font-weight: 100;
+  src: url("./SCDream5.woff") format("woff");
+}
+@font-face {
+  font-family: "SCDream6";
+  font-style: normal;
+  font-weight: 100;
+  src: url("./SCDream6.woff") format("woff");
+}
+@font-face {
+  font-family: "SCDream7";
+  font-style: normal;
+  font-weight: 100;
+  src: url("./SCDream7.woff") format("woff");
+}
+@font-face {
+  font-family: "SCDream8";
+  font-style: normal;
+  font-weight: 100;
+  src: url("./SCDream8.woff") format("woff");
+}
+@font-face {
+  font-family: "SCDream9";
+  font-style: normal;
+  font-weight: 100;
+  src: url("./SCDream9.woff") format("woff");
+}
+@font-face {
+  font-family: "Line seed Bold";
+  font-style: normal;
+  font-weight: 100;
+  src: url("./LINESeedKR-Bd.woff") format("woff");
+}
+@font-face {
+  font-family: "Line seed Regular";
+  font-style: normal;
+  font-weight: 100;
+  src: url("./LINESeedKR-Rg.woff") format("woff");
+}
+@font-face {
+  font-family: "Line seed Thin";
+  font-style: normal;
+  font-weight: 100;
+  src: url("./LINESeedKR-Th.woff") format("woff");
+}
+@font-face {
+  font-family: "Nanum square";
+  font-style: normal;
+  font-weight: 600;
+  src: url("./NanumSquareNeo-Variable.woff") format("woff");
+}
+@font-face {
+  font-family: "Cafe24 surround";
+  font-style: normal;
+  font-weight: 600;
+  src: url("./Cafe24Ssurround.woff") format("woff");
+}
+@font-face {
+  font-family: "Pretendard";
+  font-style: normal;
+  font-weight: 200;
+  src: url("./PretendardVariable.woff2") format("woff2");
+}

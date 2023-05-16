@@ -15,10 +15,10 @@ const refreshAxios = axios.create({
 });
 
 export const reissueAccessToken = async () => {
-  refreshAxios.defaults.headers["Authorization"] =
-    "Bearer " + localStorage.getItem("refreshToken");
+  // authorization -> access로 바꿨음. + bears인가 뭔가도 지웠음
+  refreshAxios.defaults.headers.access = localStorage.getItem("refreshToken");
   await refreshAxios
-    .get("/api/auth/refresh")
+    .get("api/auth/refresh")
     .then((response) => {
       localStorage.setItem("accessToken", response.data);
     })
@@ -36,7 +36,7 @@ export const reissueAccessToken = async () => {
           icon: "my-swal-icon",
         },
       }).then((result) => {
-        window.location.href = `${BASE_URL}/signin`;
+        window.location.href = `${BASE_URL}login`;
       });
     });
 };

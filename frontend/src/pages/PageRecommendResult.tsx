@@ -1,18 +1,30 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import styled from "styled-components";
 import { recResultState } from "recoil/recommendState";
+import { userState } from "recoil/userState";
 import { useRecoilState } from "recoil";
-import { USER_NAME } from "constant/constant";
+// import { USER_NAME } from "constant/constant";
 import { theme } from "styles/theme";
 import NameTicker from "components/recommend/NameTicker";
-import disney from "assets/img/disneyIcon.png";
-import netflix from "assets/img/netflixIcon.png";
-import watcha from "assets/img/watchaIcon.png";
-import wavve from "assets/img/wavveIcon.png";
+
+import disney from "../assets/img/otticons/DisneyIcon.png";
+import netflix from "../assets/img/otticons/NetflixIcon.png";
+import watcha from "../assets/img/otticons/WatchaIcon.png";
+import wavve from "../assets/img/otticons/WavveIcon.png";
+
+import { Swiper, SwiperSlide } from "swiper/react";
+import { EffectCoverflow, Navigation, Mousewheel } from "swiper";
+
+import "swiper/css";
+import "swiper/css/effect-coverflow";
+import "swiper/css/pagination";
+
+import ContentPoster from "components/common/ContentPoster";
 
 const Wrapper = styled.div`
   width: 100vw;
-  min-height: 92vh;
+  min-height: 100%;
   margin-top: 0;
   background-color: ${theme.netflix.backgroundColor};
   display: flex;
@@ -26,9 +38,12 @@ const SRibbonDiv = styled.div<{ selected: boolean }>`
   margin-right: 2.5vw;
   border-bottom: ${(props) =>
     props.selected ? "2.1vh solid transparent" : "1.6vh solid transparent"};
-  border-top: ${(props) => (props.selected ? "5vh solid #ff0000" : "4vh solid #ccc")};
-  border-left: ${(props) => (props.selected ? "2.1vh solid #ff0000" : "1.6vh solid #ccc")};
-  border-right: ${(props) => (props.selected ? "2.1vh solid #ff0000" : "1.6vh solid #ccc")};
+  border-top: ${(props) =>
+    props.selected ? `5vh solid ${props.theme.netflix.pointColor}` : "4vh solid #ffffff"};
+  border-left: ${(props) =>
+    props.selected ? `2.1vh solid ${props.theme.netflix.pointColor}` : "1.6vh solid #ffffff"};
+  border-right: ${(props) =>
+    props.selected ? `2.1vh solid ${props.theme.netflix.pointColor}` : "1.6vh solid #ffffff"};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -40,7 +55,8 @@ const SRibbonP = styled.p<{ selected: boolean }>`
   font-size: ${(props) => (props.selected ? "1.5rem" : "1.3rem")};
   font-weight: 600;
   margin-bottom: ${(props) => (props.selected ? "8.5vh" : "6.5vh")};
-  color: #ffffff;
+  color: ${(props) =>
+    props.selected ? `${props.theme.netflix.fontColor}` : `${props.theme.netflix.pointColor}`};
   transition: all 0.2s ease-in-out;
 `;
 
@@ -48,17 +64,27 @@ const STitleP = styled.p`
   font-size: ${theme.fontSizeType.big.fontSize};
   font-weight: ${theme.fontSizeType.big.fontWeight};
   color: ${theme.netflix.fontColor};
-  margin-top: 2.5vh;
+`;
+
+const SMiniTitle = styled.div`
+  font-size: ${theme.fontSizeType.middle.fontSize};
+  font-weight: ${theme.fontSizeType.middle.fontWeight};
+  color: ${theme.netflix.fontColor};
+  margin: 1vh;
+  margin-left: 5vw;
+  width: 100vw;
+  text-align: left;
 `;
 
 const SMainDiv = styled.div`
   display: flex;
   width: 100vw;
-  height: 60vh;
-  border: 1px solid ${theme.netflix.fontColor};
+  height: 55vh;
+  // border: 1px solid grey; TODO: 여기 보더 별로라고 하심...
   border-radius: 12px;
   background-color: ${theme.netflix.tabColor};
   flex-direction: column;
+  margin-bottom: 1vh;
 `;
 
 const SContentDiv = styled.div`
@@ -92,9 +118,21 @@ const SSummaryP = styled.p`
   margin-top: 3vh;
 `;
 
+const Container = styled.div`
+  height: auto;
+  z-index: 0;
+  position: relative;
+  margin: 1vw;
+`;
+
+const UserSpan = styled.span`
+  color: ${theme.netflix.lightColor};
+`;
+
 const PageRecommendResult = () => {
   const [recResult, SetRecResult] = useRecoilState(recResultState);
   const [selectedNum, SetSelectedNum] = useState<number>(0);
+  const [user, SetUser] = useRecoilState(userState);
 
   const onClickHandler = (event: React.MouseEvent<HTMLDivElement>) => {
     const selectedId = event.currentTarget.id;
@@ -141,10 +179,19 @@ const PageRecommendResult = () => {
       ? `${minute}분`
       : `${hour}시간 ${minute}분`;
 
+  const location = useLocation();
+
+  useEffect(() => {
+    const data = location.state?.data;
+    SetRecResult(data);
+  }, []);
+
   return (
     <Wrapper>
-      <STitleP>{USER_NAME}님을 위한 추천 컨텐츠</STitleP>
-      <SMainDiv>
+      <STitleP>
+        <UserSpan>{user["name"] ? user["name"] : "guest"}</UserSpan>님을 위한 추천 컨텐츠
+      </STitleP>
+      <SMainDiv className={"mainDiv"}>
         <div style={{ display: "flex", marginLeft: "5vw", position: "absolute" }}>
           <SRibbonDiv id="0" onClick={onClickHandler} selected={selectedNum === 0}>
             <SRibbonP selected={selectedNum === 0}>1</SRibbonP>
@@ -162,9 +209,9 @@ const PageRecommendResult = () => {
             episode={recResult[selectedNum].finalEpisode}
           />
           <div style={{ display: "flex", width: "100vw" }}>
-            <SImg src={recResult[selectedNum].img_path} alt="#" />
+            <SImg src={recResult[selectedNum].imgPath} alt="#" />
             <div style={{ marginRight: "1vw" }}>
-              <STextP>추천도 : 93%</STextP>
+              <STextP>추천도 : {recResult[selectedNum].score}</STextP>
               <STextP>장르 : {recResult[selectedNum].genres.join(", ")}</STextP>
               <STextP>재생 시간 : {run}</STextP>
               <STextP>등급 : {recResult[selectedNum].audienceAge}</STextP>
@@ -175,6 +222,45 @@ const PageRecommendResult = () => {
           <SSummaryP>{recResult[selectedNum].summarize}</SSummaryP>
         </SContentDiv>
       </SMainDiv>
+      <SMiniTitle>이런 컨텐츠는 어때요?</SMiniTitle>
+      <Container>
+        <Swiper
+          style={{ width: "100vw" }}
+          effect={"coverflow"}
+          grabCursor={true}
+          centeredSlides={true}
+          slidesPerView={4} // 몇개가 동시에 보이는지 (2면 1개 + 0.5개 * 2)
+          spaceBetween={-40} // 겹치는 정도
+          initialSlide={2} // 시작 슬라이드!
+          coverflowEffect={{
+            rotate: 20,
+            stretch: 0,
+            depth: 100,
+            modifier: 2,
+            slideShadows: true,
+          }}
+          // onSlideChange={(swiper) => {
+          //   setActiveIndex(swiper.activeIndex);
+          // }}
+          navigation={true} // 네비게이션 버튼
+          mousewheel={true} // 마우스 휠
+          pagination={true}
+          modules={[EffectCoverflow, Navigation, Mousewheel]}
+          className="mySwiper"
+        >
+          {recResult.slice(3, 10).map((content, index) => (
+            <SwiperSlide key={index}>
+              <div style={{ width: "33vw" }}>
+                <ContentPoster
+                  imageUrl={content["imgPath"]}
+                  title={content["title"]}
+                  content={content}
+                />
+              </div>
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      </Container>
     </Wrapper>
   );
 };

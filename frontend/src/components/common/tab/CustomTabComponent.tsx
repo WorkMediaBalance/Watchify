@@ -1,5 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+
+import { useRecoilState } from "recoil";
+import { tabState } from "recoil/tabState";
 
 import TabListItemContainer from "./TabListItemContainer";
 import DisplayContainer from "./DisplayContainer";
@@ -22,9 +25,15 @@ const CustomTabComponent: React.FC<CustomTabComponentProps> = ({
   top,
 }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [tab, setTab] = useRecoilState(tabState);
+
+  useEffect(() => {
+    setTab(currentIndex);
+  }, [currentIndex]);
+
   const arrayLength = titleArray.length;
   return (
-    <div style={{ width: width }}>
+    <div>
       <TabListItemContainerWrapper marginTop={marginTop}>
         <TabListItemContainer
           titleArray={titleArray}

@@ -1,6 +1,11 @@
 import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 
+import { myPatternChange, myPatternGet } from "apis/apiMy";
+
+import { useRecoilState } from "recoil";
+import { schedulePreInfoState } from "recoil/schedulePreInfoState";
+
 const Wrapper = styled.div`
   height: 100%;
 `;
@@ -32,7 +37,9 @@ const Bar = styled.div<{ time: number }>`
   border-radius: 10px 10px 0 0;
 `;
 
-const Name = styled.div``;
+const Name = styled.div`
+  margin-top: 0.8vh;
+`;
 
 interface graphProps {
   data: number[];
@@ -46,16 +53,27 @@ const Graph: React.FC<graphProps> = ({ data, setActiveIndex, activeIndex }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [containerHeight, setContainerHeight] = useState<number>(1);
 
+  // 스케줄 생성 preData recoil
+  const [preData, setPreData] = useRecoilState(schedulePreInfoState);
+
+  // 시청패턴 recoil 변경 로직
+  useEffect(() => {
+    let copy = { ...preData };
+    copy = { ...copy, patterns: pattern };
+    setPreData(copy);
+  }, [pattern]);
+
+  const getMypattern = async () => {
+    const data = await myPatternGet();
+    setPattern(data.pattern);
+  };
+
   useEffect(() => {
     if (containerRef.current) {
       setContainerHeight(containerRef.current.clientHeight);
     }
+    getMypattern();
   }, []);
-
-  useEffect(() => {
-    setPattern(data);
-    // TODO: 여기서도 axios 보내기
-  }, [data]);
 
   // 드래그 로직
   const handleTouchStart = (event: React.TouchEvent, index: number) => {
@@ -64,38 +82,25 @@ const Graph: React.FC<graphProps> = ({ data, setActiveIndex, activeIndex }) => {
     let initialY = event.touches[0].clientY;
     const handleTouchMove = (event: TouchEvent) => {
       const movementY = event.touches[0].clientY - initialY;
-      console.log(
-        "Y-axis movement:",
-        movementY,
-        "containerHeight:",
-        containerHeight
-      );
+      console.log("Y-axis movement:", movementY, "containerHeight:", containerHeight);
 
       let newPattern = [...pattern];
-      if (
-        newPattern[index] - Math.floor(movementY / (containerHeight / 8)) <
-        0
-      ) {
+      if (newPattern[index] - Math.floor(movementY / (containerHeight / 8)) < 0) {
         newPattern[index] = 0;
-      } else if (
-        newPattern[index] - Math.floor(movementY / (containerHeight / 8)) >
-        8
-      ) {
+      } else if (newPattern[index] - Math.floor(movementY / (containerHeight / 8)) > 8) {
         newPattern[index] = 8;
       } else {
-        newPattern[index] =
-          newPattern[index] - Math.floor(movementY / (containerHeight / 8));
+        newPattern[index] = newPattern[index] - Math.floor(movementY / (containerHeight / 8));
       }
       setPattern(newPattern);
+      // 시청패턴 변경 API
+      myPatternChange({ pattern: newPattern });
     };
 
-    const handleTouchEnd = () => {
+    const handleTouchEnd = async () => {
       document.removeEventListener("touchmove", handleTouchMove);
       document.removeEventListener("touchend", handleTouchEnd);
       console.log("finished"); //TODO: 이 자리에서 axios
-      if (initialValue === pattern) {
-        setActiveIndex(3);
-      }
     };
 
     document.addEventListener("touchmove", handleTouchMove);
