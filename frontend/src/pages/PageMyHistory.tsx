@@ -4,10 +4,14 @@ import { myHistoryInfo } from "apis/apiMy";
 import HistoryCalendar from "components/mypage/history/HistoryCalendar";
 import HistoryBottomSheet from "components/mypage/history/HistoryBottomSheet";
 import { useRecoilState } from "recoil";
-import { historyDetailState } from "recoil/history";
+import { HistoryDetailContent } from "interface/content";
 
 interface HistoryData {
   [key: string]: number;
+}
+
+interface HistoryDetailContentObject {
+  [key: number]: HistoryDetailContent[];
 }
 
 const PageMyHistory = () => {
@@ -20,7 +24,7 @@ const PageMyHistory = () => {
   const [month, setMonth] = useState(startMonth);
   const [date, setDate] = useState(startDay);
 
-  const [historyDetail, setHistoryDetail] = useRecoilState(historyDetailState);
+  const [historyDetail, setHistoryDetail] = useState<HistoryDetailContentObject>();
 
   // 히스토리 상세 정보 받아오기
   async function MyHistoryInfoAPI() {
@@ -46,20 +50,22 @@ const PageMyHistory = () => {
 
   return (
     <div>
-      <HistoryCalendar
-        historyDetail={historyDetail}
-        onDateClick={(date: number, month: number) => {
-          setMonth(month);
-          setDate(date);
-          setIsOpen(true);
-          setSheetLevel(1);
-        }}
-        bottomSheetState={sheetLevel}
-        onCloseSheet={() => {
-          setIsOpen(false);
-          setSheetLevel(0);
-        }}
-      />
+      {historyDetail && (
+        <HistoryCalendar
+          historyDetail={historyDetail}
+          onDateClick={(date: number, month: number) => {
+            setMonth(month);
+            setDate(date);
+            setIsOpen(true);
+            setSheetLevel(1);
+          }}
+          bottomSheetState={sheetLevel}
+          onCloseSheet={() => {
+            setIsOpen(false);
+            setSheetLevel(0);
+          }}
+        />
+      )}
       <HistoryBottomSheet
         isOpen={isOpen}
         onClose={() => {

@@ -18,3 +18,8 @@ export interface content {
   // ★★★ API 수정후 추가 필요 (평점)
   // rating: number
 }
+
+export interface HistoryDetailContent extends content {
+  date: string;
+  episode: number;
+}

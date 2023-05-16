@@ -135,6 +135,7 @@ const HistoryComponent: React.FC<HistoryComponentProps> = ({ contentHistory }) =
       year: contentHistory.firstYear,
       month: contentHistory.firstMonth,
       day: contentHistory.firstDay,
+      pk: contentHistory.pk,
     };
     navigate(`/my/history/${contentHistory.pk}`, { state: params });
   };
