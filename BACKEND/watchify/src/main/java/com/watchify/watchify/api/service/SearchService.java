@@ -28,32 +28,29 @@ public class SearchService {
         return res;
     }
 
+
     public List<DefaultContentDTO> getSearchResult(Long userId, String word) {
-        List<DefaultContentDTO> res = new ArrayList<>();
-        Content content = contentRepository.getSearchRes(word);
+        List<Content> contentList = contentRepository.getSearchAllRes(word);
         List<Long> wishContentList = wishContentRepository.getContentIdInMyWishList(userId);
         List<LikeContent> likeContentList = likeContentRepository.getLikeContent(userId);
 
-        if (content == null) {
-            return res;
-        }
+        List<DefaultContentDTO> res = new ArrayList<>();
 
-        DefaultContentDTO defaultContentDTO = new DefaultContentDTO(content);
+        if (contentList.size() == 0) {return res;}
 
-        if (userId == null) {
-            res.add(defaultContentDTO);
-            return res;
-        }
+        for (Content content : contentList) {
+            DefaultContentDTO defaultContentDTO = new DefaultContentDTO(content);
 
-        defaultContentDTO.setIsWish(wishContentList.contains(content.getId()));
-        for (LikeContent lc : likeContentList) {
-            if (lc.getContent().equals(content)) {
-                defaultContentDTO.setIsLike(lc.isLike() ? 1 : -1);
-                break;
+            defaultContentDTO.setIsWish(wishContentList.contains(content.getId()));
+            for (LikeContent lc : likeContentList) {
+                if (lc.getContent().equals(content)) {
+                    defaultContentDTO.setIsLike(lc.isLike() ? 1 : -1);
+                    break;
+                }
             }
-        }
 
-        res.add(defaultContentDTO);
+            res.add(defaultContentDTO);
+        }
         return res;
     }
 }

@@ -17,4 +17,7 @@ public interface ContentRepository extends JpaRepository<Content, Long> {
 
     @Query(value = "select * from content where title = :word LIMIT 1", nativeQuery = true)
     Content getSearchRes(String word);
+
+    @Query(value = "select * from content where title like concat('%', :word, '%')", nativeQuery = true)
+    List<Content> getSearchAllRes(String word);
 }
