@@ -26,8 +26,8 @@ class Calender(models.Model):
 class Content(models.Model):
     id = models.BigAutoField(primary_key=True)
     audience_age = models.IntegerField()
+    backdrop_path = models.CharField(max_length=255, blank=True, null=True)
     final_episode = models.IntegerField(blank=True, null=True)
-    horizontial_img_path = models.CharField(max_length=255, blank=True, null=True)
     img_path = models.CharField(max_length=255, blank=True, null=True)
     rate = models.FloatField()
     release_date = models.IntegerField(blank=True, null=True)
@@ -35,7 +35,6 @@ class Content(models.Model):
     season = models.IntegerField(blank=True, null=True)
     summarize = models.CharField(max_length=5000, blank=True, null=True)
     title = models.CharField(max_length=255, blank=True, null=True)
-    type = models.CharField(max_length=255, blank=True, null=True)
 
     class Meta:
         managed = False
@@ -54,6 +53,7 @@ class ContentGenre(models.Model):
 
 class Contentott(models.Model):
     id = models.BigAutoField(primary_key=True)
+    ott_url = models.CharField(max_length=255, blank=True, null=True)
     content = models.ForeignKey(Content, models.DO_NOTHING, blank=True, null=True)
     ott = models.ForeignKey('Ott', models.DO_NOTHING, blank=True, null=True)
 
@@ -83,9 +83,10 @@ class Genre(models.Model):
 class LikeContent(models.Model):
     id = models.BigAutoField(primary_key=True)
     is_deleted = models.TextField()  # This field type is a guess.
-    is_like = models.TextField()  # This field type is a guess.
+    like = models.FloatField(blank=True, null=True)
     content = models.ForeignKey(Content, models.DO_NOTHING, blank=True, null=True)
     user = models.ForeignKey('User', models.DO_NOTHING, blank=True, null=True)
+    is_like = models.TextField()  # This field type is a guess.
 
     class Meta:
         managed = False
@@ -99,6 +100,25 @@ class Ott(models.Model):
     class Meta:
         managed = False
         db_table = 'ott'
+
+
+class RankingContent(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    content = models.ForeignKey(Content, models.DO_NOTHING, blank=True, null=True)
+    ott = models.ForeignKey(Ott, models.DO_NOTHING, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'ranking_content'
+
+
+class ScheduleShare(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    schedule = models.TextField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'schedule_share'
 
 
 class TurnContent(models.Model):
@@ -121,6 +141,10 @@ class User(models.Model):
     is_content_alarm = models.TextField()  # This field type is a guess.
     is_deleted = models.TextField()  # This field type is a guess.
     is_ott_alarm = models.TextField()  # This field type is a guess.
+    name = models.CharField(max_length=255, blank=True, null=True)
+    nick_name = models.CharField(max_length=255, blank=True, null=True)
+    provider = models.CharField(max_length=255, blank=True, null=True)
+    fcm_token = models.CharField(max_length=255, blank=True, null=True)
 
     class Meta:
         managed = False
@@ -138,9 +162,23 @@ class UserDay(models.Model):
         db_table = 'user_day'
 
 
+class UserViewingStatus(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    last_episode = models.IntegerField()
+    content = models.ForeignKey(Content, models.DO_NOTHING, blank=True, null=True)
+    user = models.ForeignKey(User, models.DO_NOTHING, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'user_viewing_status'
+
+
 class Userott(models.Model):
     id = models.BigAutoField(primary_key=True)
+    end = models.DateField(blank=True, null=True)
     is_deleted = models.TextField()  # This field type is a guess.
+    is_overed = models.TextField()  # This field type is a guess.
+    start = models.DateField(blank=True, null=True)
     ott = models.ForeignKey(Ott, models.DO_NOTHING, blank=True, null=True)
     user = models.ForeignKey(User, models.DO_NOTHING, blank=True, null=True)
 
@@ -152,6 +190,7 @@ class Userott(models.Model):
 class WishContent(models.Model):
     id = models.BigAutoField(primary_key=True)
     is_deleted = models.TextField()  # This field type is a guess.
+    updated_at = models.DateTimeField(blank=True, null=True)
     content = models.ForeignKey(Content, models.DO_NOTHING, blank=True, null=True)
     user = models.ForeignKey(User, models.DO_NOTHING, blank=True, null=True)
 
