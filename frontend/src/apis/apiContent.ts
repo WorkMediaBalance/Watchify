@@ -11,7 +11,7 @@ const data = {
 */
 export const contentRecommend = async (data: ContentRecForm) => {
   try {
-    const res = await api.get("api/content/recommend", { params: data });
+    const res = await api.post("api/recommend", data);
     return res.data;
   } catch (err) {
     console.log("컨텐츠 추천 실패");
@@ -42,7 +42,7 @@ export const contentWishSwitch = async (data: { [pk: string]: number }) => {
   isLike: true,
 }
 */
-export const contentLike = async (data: { pk: number; isLike: boolean }) => {
+export const contentLike = async (data: { pk: number; like: number }) => {
   try {
     await api.put("api/content/like", data);
     return true;

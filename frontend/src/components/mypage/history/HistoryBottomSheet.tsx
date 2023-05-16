@@ -35,7 +35,8 @@ const BottomSheetContent = styled.div`
 `;
 
 const HistoryBottomSheet = (props: { isOpen: boolean; onClose: () => void }) => {
-  const { sheet, content, openBottomSheet, closeBottomSheet, isOpenSheet } = useRecBottomSheet();
+  const { sheet, content, openBottomSheet, closeBottomSheet, isOpenSheet, handle } =
+    useRecBottomSheet();
   const isOpen = props.isOpen;
   useEffect(() => {
     if (isOpen) {
@@ -51,9 +52,12 @@ const HistoryBottomSheet = (props: { isOpen: boolean; onClose: () => void }) => 
       closeBottomSheet();
     }
   }, [isOpenSheet]);
+
   return (
     <Wrapper ref={sheet}>
-      <HistoryBottomSheetHeader />
+      <div ref={handle}>
+        <HistoryBottomSheetHeader />
+      </div>
       <BottomSheetContent ref={content}>
         <HistoryBottomSheetContent />
       </BottomSheetContent>

@@ -67,4 +67,4 @@ export type Schedule = {
   ott: string[];
 };
 
-export type ContentRecForm = { isAdult: boolean; ott: string[]; genre: string[] };
+export type ContentRecForm = { isAdult: boolean; ottList: string[]; genres: string[] };

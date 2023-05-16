@@ -33,9 +33,12 @@ async function requestPermission() {
   });
 
   if (token) {
-    console.log("token: ", token);
-    console.log(token);
-    fcmSave({ fcmToken: token });
+    if (localStorage.getItem("accessToken") !== null) {
+      fcmSave({ fcmToken: token });
+      console.log("FCM 토큰 저장");
+    } else {
+      console.log("로그인 안된 사용자");
+    }
   } else console.log("Can not get Token");
 
   onMessage(messaging, (payload) => {
