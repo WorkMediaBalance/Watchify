@@ -39,5 +39,17 @@ public class Calender implements Serializable {
     @JoinColumn(name = "ott_id")
     private OTT ott;
 
+    public Calender(User user, TurnContent turnContent, OTT ott, LocalDate date) {
+        this.user = user;
+        this.turnContent = turnContent;
+        this.ott = ott;
+        this.date = date;
+        this.viewDate = null;
+        this.isView = false;
+        this.isDeleted = false;
+    }
+
+    public void updateDelete(boolean flag) {this.isDeleted = flag;}
+
 
 }

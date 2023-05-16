@@ -29,4 +29,15 @@ public class UserDay implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "day_id")
     private Day day;
+
+    public UserDay(User user, Day day) {
+        this.user = user;
+        this.day = day;
+        this.time = 1;
+    }
+
+    public void setTime(int time) {
+        this.time = time;
+    }
+
 }
