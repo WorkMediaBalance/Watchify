@@ -1,7 +1,9 @@
 import React from "react";
+import { HistoryDetailContent } from "interface/content";
 
-const HistoryBottomSheetContent = () => {
-  return <div>히스토리 바텀 시트 컨텐츠</div>;
+const HistoryBottomSheetContent = (props: { data: HistoryDetailContent[] }) => {
+  console.log(props.data);
+  return <div style={{ color: "white" }}>{props.data[0].title}</div>;
 };
 
 export default HistoryBottomSheetContent;

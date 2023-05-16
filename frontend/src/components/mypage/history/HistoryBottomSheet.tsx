@@ -5,6 +5,7 @@ import { BOTTOM_SHEET_HEIGHT } from "constant/constant";
 import HistoryBottomSheetHeader from "./HistoryBottomSheetHeader";
 import HistoryBottomSheetContent from "./HistoryBottomSheetContent";
 import useRecBottomSheet from "hooks/useRecBottomSheet";
+import { HistoryDetailContent } from "interface/content";
 
 const Wrapper = styled(motion.div)`
   display: flex;
@@ -34,7 +35,11 @@ const BottomSheetContent = styled.div`
   -webkit-overflow-scrolling: touch;
 `;
 
-const HistoryBottomSheet = (props: { isOpen: boolean; onClose: () => void }) => {
+const HistoryBottomSheet = (props: {
+  isOpen: boolean;
+  onClose: () => void;
+  data: HistoryDetailContent[];
+}) => {
   const { sheet, content, openBottomSheet, closeBottomSheet, isOpenSheet, handle } =
     useRecBottomSheet();
   const isOpen = props.isOpen;
@@ -59,7 +64,7 @@ const HistoryBottomSheet = (props: { isOpen: boolean; onClose: () => void }) => 
         <HistoryBottomSheetHeader />
       </div>
       <BottomSheetContent ref={content}>
-        <HistoryBottomSheetContent />
+        <HistoryBottomSheetContent data={props.data} />
       </BottomSheetContent>
     </Wrapper>
   );
