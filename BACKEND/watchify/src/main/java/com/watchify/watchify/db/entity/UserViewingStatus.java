@@ -20,7 +20,7 @@ public class UserViewingStatus implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private boolean isDeleted;
+    private boolean isDeleted = false;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -30,6 +30,12 @@ public class UserViewingStatus implements Serializable {
     @JoinColumn(name = "turn_content_id")
     private TurnContent turnContent;
 
+    public UserViewingStatus(User user, TurnContent turnContent) {
+        this.user = user;
+        this.turnContent = turnContent;
+    }
 
-
+    public void deleted() {
+        this.isDeleted = true;
+    }
 }

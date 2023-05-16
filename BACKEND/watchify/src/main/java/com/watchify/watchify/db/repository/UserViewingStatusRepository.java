@@ -7,8 +7,11 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
-public interface UserViewingStatusRepository extends JpaRepository<WishContent, Long> {
+public interface UserViewingStatusRepository extends JpaRepository<UserViewingStatus, Long> {
 
-    @Query(value = "select * from user_viewing_status where user_id = :userId", nativeQuery = true)
+    @Query(value = "select * from user_viewing_status where user_id = :userId and is_deleted = false", nativeQuery = true)
     List<UserViewingStatus> getMyViewStatue(Long userId);
+
+    @Query(value = "select * from user_viewing_status where user_id = :userId and turn_content_id =:tcId and is_deleted = false", nativeQuery = true)
+    UserViewingStatus getByUserTurnContent(Long userId, Long tcId);
 }
