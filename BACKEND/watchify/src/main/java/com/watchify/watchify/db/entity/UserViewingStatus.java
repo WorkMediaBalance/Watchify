@@ -20,15 +20,15 @@ public class UserViewingStatus implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private int lastEpisode; // 마지막으로 본 에피소드
+    private boolean isDeleted;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "content_id")
-    private Content content;
+    @JoinColumn(name = "turn_content_id")
+    private TurnContent turnContent;
 
 
 
