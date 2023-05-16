@@ -10,6 +10,7 @@ import com.watchify.watchify.db.repository.CalenderRepository;
 import com.watchify.watchify.db.repository.ScheduleShareRepository;
 import com.watchify.watchify.db.repository.TurnContentRepository;
 import com.watchify.watchify.dto.response.HistoryInfoDTO;
+import com.watchify.watchify.dto.response.ScheduleObjDTO;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -42,7 +43,7 @@ public class ScheduleShareService {
             return res;
         }
 
-        Map<String, Map<Integer, List<HistoryInfoDTO>>> data = scheduleGetService.getSchedule(userId);
+        Map<String, Map<Integer, List<ScheduleObjDTO>>> data = scheduleGetService.getSchedule(userId);
 
         Gson gson = new Gson();
         String stringData = gson.toJson(data);
@@ -55,12 +56,12 @@ public class ScheduleShareService {
         return res;
     }
 
-    public Map<String, Map<Integer, List<HistoryInfoDTO>>> getShareSchedule(Long pk) {
+    public Map<String, Map<Integer, List<ScheduleObjDTO>>> getShareSchedule(Long pk) {
 
         ScheduleShare scheduleShare = scheduleShareRepository.findById(pk).get();
         String data = scheduleShare.getSchedule();
 
-        List<HistoryInfoDTO> historyInfoDTOList = new ArrayList<>();
+        List<ScheduleObjDTO> scheduleObjDTOList = new ArrayList<>();
 
         JSONObject rootObject = new JSONObject(data);
 
@@ -81,34 +82,36 @@ public class ScheduleShareService {
                     int yearData = dateObj.getInt("year");
                     int monthData = dateObj.getInt("month");
                     int dayData = dateObj.getInt("day");
+                    String stringIsView = dateObj.getString("isView");
 
                     LocalDate date = LocalDate.of(yearData, monthData, dayData);
                     Long contentId = contentObject.getLong("pk");
                     Integer episode = contentObject.getInt("episode");
 
+
                     TurnContent turnContent = turnContentRepository.getSpecificTurnContent(contentId, episode);
                     Content content = turnContent.getContent();
 
                     // 객체 반환용
-                    HistoryInfoDTO historyInfoDTO = new HistoryInfoDTO(content, date, turnContent.getEpisode());
-                    historyInfoDTOList.add(historyInfoDTO);
+                    ScheduleObjDTO scheduleObjDTO = new ScheduleObjDTO(content, date, turnContent.getEpisode());
+                    scheduleObjDTOList.add(scheduleObjDTO);
                 }
             }
         }
 
-        Map<String, Map<Integer, List<HistoryInfoDTO>>> res = new HashMap<>();
+        Map<String, Map<Integer, List<ScheduleObjDTO>>> res = new HashMap<>();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM"); // 키 값 만들 포멧터
-        for (HistoryInfoDTO historyInfoDTO :historyInfoDTOList) {
-            LocalDate date = historyInfoDTO.getDate();
+        for (ScheduleObjDTO scheduleObjDTO :scheduleObjDTOList) {
+            LocalDate date = scheduleObjDTO.getDate();
             String key = date.format(formatter);
             int day = date.getDayOfMonth();
 
             // String Key 값이 있나 없나~
-            Map<Integer, List<HistoryInfoDTO>> tmp;
+            Map<Integer, List<ScheduleObjDTO>> tmp;
             if (res.containsKey(key)) {
                 // 있을경우 Map<Integer, List<HistoryInfoDTO>> 를 또 검사 해봐야함.
                 tmp = res.get(key);
-                List<HistoryInfoDTO> tmpList;
+                List<ScheduleObjDTO> tmpList;
 
                 if (tmp.containsKey(day)) {
                     tmpList = tmp.get(day);
@@ -116,13 +119,13 @@ public class ScheduleShareService {
                 } else {
                     tmpList = new ArrayList<>();
                 }
-                tmpList.add(historyInfoDTO);
+                tmpList.add(scheduleObjDTO);
                 tmp.put(day, tmpList);
 
             } else {
                 tmp = new HashMap<>();
-                List<HistoryInfoDTO> tmpList = new ArrayList<>();
-                tmpList.add(historyInfoDTO);
+                List<ScheduleObjDTO> tmpList = new ArrayList<>();
+                tmpList.add(scheduleObjDTO);
                 tmp.put(day, tmpList);
             }
             res.put(key, tmp);
