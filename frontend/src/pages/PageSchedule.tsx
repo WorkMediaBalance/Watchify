@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 
 import WatchingPattern from "components/common/WatchingPattern";
-import OttSubscription from "components/common/OttSubscription";
+import ScheduleOttDate from "components/common/ScheduleOttDate";
 
 const PageSchedule = () => {
   const navigate = useNavigate();
@@ -20,7 +20,7 @@ const PageSchedule = () => {
       >
         <WatchingPattern />
       </div>
-      <OttSubscription />
+      <ScheduleOttDate />
       <SBtnContainer>
         <SNextBtn onClick={() => navigate("/schedule/content")}>다음</SNextBtn>
       </SBtnContainer>

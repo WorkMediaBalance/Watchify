@@ -1,0 +1,190 @@
+import React, { useState, useEffect } from "react";
+import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
+
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+
+import disneyIcon from "assets/img/otticons/DisneyIcon.png";
+import disneySelected from "assets/img/otticons/DisneyIconSelected.png";
+import netflixIcon from "assets/img/otticons/NetflixIcon.png";
+import netflixSelected from "assets/img/otticons/NetflixIconSelected.png";
+import watchaIcon from "assets/img/otticons/WatchaIcon.png";
+import watchaSelected from "assets/img/otticons/WatchaIconSelected.png";
+import wavveIcon from "assets/img/otticons/WavveIcon.png";
+import wavveSelected from "assets/img/otticons/WavveIconSelected.png";
+import { theme } from "styles/theme";
+
+const ScheduleOttDate = () => {
+  const navigate = useNavigate();
+
+  // OTT별 구독 상태 state
+  const [ott, setOtt] = useState<string[]>([]);
+  const [startDate, setStartDate] = useState<string>();
+  const [showDatePicker, setShowDatePicker] = useState<boolean>(false);
+  const [today, setToday] = useState<number>();
+
+  useEffect(() => {
+    const date = new Date();
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    const newDate = `${year}-${month}-${day}`;
+
+    const numberDate = Number(`${year}${month}${day}`);
+    setToday(numberDate);
+    setStartDate(newDate);
+  }, []);
+
+  const ottChange = (e: React.MouseEvent<HTMLImageElement>) => {
+    const clickedOtt: string = e.currentTarget.alt;
+
+    if (ott.includes(clickedOtt)) {
+      const index = ott.indexOf(clickedOtt);
+      setOtt((prevOtt) => {
+        const newOtt = [...prevOtt];
+        newOtt.splice(index, 1);
+        return newOtt;
+      });
+    } else {
+      setOtt((prevOtt) => prevOtt.concat(clickedOtt));
+    }
+  };
+
+  const handleDateChange = (date: Date) => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    const newDate = `${year}-${month}-${day}`;
+
+    const numberDate = Number(`${year}${month}${day}`);
+    if (today) {
+      if (numberDate >= today) {
+        setStartDate(newDate);
+        setShowDatePicker(false);
+      } else {
+        alert("좋은 말로 할 때 오늘보다 뒤에 날짜 선택해라");
+      }
+    }
+  };
+  return (
+    <Wrapper>
+      <SContainer>
+        <Sdiv>OTT</Sdiv>
+        <SDiv2>
+          스케줄에 포함시킬 OTT가 있으시면 알려주세요. <br /> OTT 맞춤으로 스케줄링 할게요!
+        </SDiv2>
+        <OTTContainer>
+          <SImg
+            onClick={ottChange}
+            src={ott.includes("netflix") ? netflixSelected : netflixIcon}
+            alt="netflix"
+          />
+          <SImg
+            onClick={ottChange}
+            src={ott.includes("disney") ? disneySelected : disneyIcon}
+            alt="disney"
+          />
+          <SImg
+            onClick={ottChange}
+            src={ott.includes("watcha") ? watchaSelected : watchaIcon}
+            alt="watcha"
+          />
+          <SImg
+            onClick={ottChange}
+            src={ott.includes("wavve") ? wavveSelected : wavveIcon}
+            alt="wavve"
+          />
+        </OTTContainer>
+        <Sdiv>
+          시작 날짜 <span onClick={() => setShowDatePicker(true)}>: {startDate}</span>
+        </Sdiv>
+        {showDatePicker ? (
+          <DatePickerWrapper>
+            <DatePicker
+              selected={new Date()}
+              inline
+              onChange={(date: Date) => handleDateChange(date)}
+            />
+          </DatePickerWrapper>
+        ) : null}
+      </SContainer>
+    </Wrapper>
+  );
+};
+
+export default ScheduleOttDate;
+
+const DatePickerWrapper = styled.div`
+  position: fixed;
+  z-index: 10;
+
+  top: 50%;
+  left: 20%;
+`;
+
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const SContainer = styled.div`
+  height: 40vh;
+  overflow: auto;
+  width: 90%;
+`;
+
+const Sdiv = styled.div`
+  font-size: ${({ theme }) => theme.fontSizeType.big.fontSize};
+  font-weight: ${({ theme }) => theme.fontSizeType.big.fontWeight};
+  text-align: left;
+  margin: 1vh 0;
+  padding-left: 0.5rem;
+`;
+
+const SDiv2 = styled.div`
+  font-size: ${({ theme }) => theme.fontSizeType.middle.fontSize};
+  font-weight: ${({ theme }) => theme.fontSizeType.middle.fontWeight};
+  text-align: left;
+  margin: 1vh 0;
+  padding-left: 2vw;
+  margin-bottom: 1vh;
+`;
+
+const SOttDiv = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  margin-bottom: 0.5rem;
+`;
+
+const SImg = styled.img`
+  width: 17vw;
+  height: 17vw;
+
+  margin: 1vw;
+`;
+
+const SBoxContainer = styled.div`
+  display: flex;
+  justify-content: center;
+`;
+
+const SAddBox = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px dashed white;
+  border-radius: 10px;
+  padding: 0.5rem;
+  width: 80vw;
+  height: 15vw;
+  font-size: ${({ theme }) => theme.fontSizeType.big.fontSize};
+  font-weight: ${({ theme }) => theme.fontSizeType.big.fontWeight};
+`;
+
+const OTTContainer = styled.div`
+  display: flex;
+  justify-content: center;
+`;
