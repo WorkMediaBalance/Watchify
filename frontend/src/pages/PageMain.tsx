@@ -68,7 +68,6 @@ const PageMain = () => {
         <RecommendRest />
         <PlaceHolders /> */}
       </div>
-      <button onClick={() => navigate("/login")}>로그인 페이지로</button>
     </div>
   );
 };

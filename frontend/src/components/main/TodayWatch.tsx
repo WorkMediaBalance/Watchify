@@ -30,6 +30,12 @@ const TodayWatch: React.FC<TodayWatchProps> = ({
 
   const navigate = useNavigate();
 
+  useEffect(() => {
+    if (isUserLoggedIn === false) {
+      setClickState(1);
+    }
+  }, []);
+
   return (
     <Container
       clickState={clickState}
@@ -53,8 +59,10 @@ const TodayWatch: React.FC<TodayWatchProps> = ({
                 <NoContentDiv>스케줄이 없습니다.</NoContentDiv>
               ) : (
                 <NoContentDiv>
-                  <div>시청 스케줄을 만들고 싶다면 로그인하세요!</div>
-                  <div>로그인 하러 가기</div>
+                  <div>
+                    시청 스케줄을 만들고 싶다면{" "}
+                    <ColoredLogin onClick={() => navigate("/login")}>로그인</ColoredLogin>하세요!
+                  </div>
                 </NoContentDiv>
               )}
             </Episode>
@@ -62,7 +70,12 @@ const TodayWatch: React.FC<TodayWatchProps> = ({
           {todayWatch.length > 0 ? (
             <CalendarLink
               onClick={() => {
-                navigate("/schedule/result");
+                navigate("/schedule/result", {
+                  state: {
+                    month: new Date().getMonth() + 1,
+                    date: new Date().getDate(),
+                  },
+                });
               }}
             >
               {"보러가기"}
@@ -98,7 +111,12 @@ const TodayWatch: React.FC<TodayWatchProps> = ({
               </div>
               <CalendarLink
                 onClick={() => {
-                  navigate("/schedule/result");
+                  navigate("/schedule/result", {
+                    state: {
+                      month: new Date().getMonth() + 1,
+                      date: new Date().getDate(),
+                    },
+                  });
                 }}
               >
                 {"보러가기"}
@@ -212,10 +230,16 @@ const state2to1 = keyframes`
     clip-path: polygon(25% 100%, 100% 70%, 100% 70%, 100% 100%, 25% 100%);
   }
 
+
   
 
 
   
+`;
+
+const ColoredLogin = styled.span`
+  color: ${({ theme }) => theme.netflix.lightColor};
+  text-decoration: underline;
 `;
 
 // 아랫쪽 사각형
@@ -321,8 +345,9 @@ const CalendarLink = styled.div`
 const NoContentDiv = styled.div`
   font-size: ${({ theme }) => theme.fontSizeType.big.fontSize};
   font-weight: ${({ theme }) => theme.fontSizeType.big.fontWeight};
+  width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: start;
+  align-items: center;
 `;

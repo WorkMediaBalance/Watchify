@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { EffectCoverflow, Navigation, Mousewheel } from "swiper";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 
 import { content } from "interface/content";
 
@@ -128,6 +129,23 @@ const More = styled.div`
   margin-bottom: 3.5vw;
 `;
 
+const DivForUnlogged = styled.div`
+  width: 100%;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const ToLogIn = styled.div`
+  border: ${({ theme }) => `1px solid ${theme.netflix.pointColor}`};
+  background-color: ${({ theme }) => `${theme.netflix.pointColor}`};
+
+  margin: 1vh;
+  padding: 1vh;
+  border-radius: 20%;
+`;
+
 interface contentEpisode extends content {
   episode: number;
 }
@@ -151,93 +169,122 @@ const Carousel: React.FC<CarouselProps> = ({ weeklySchedule }) => {
 
   let days = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
 
+  const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
+  useEffect(() => {
+    if (localStorage.getItem("accessToken") !== null) {
+      setIsUserLoggedIn(true);
+    }
+  }, []);
+  const navigate = useNavigate();
   return (
     <Container className="CarouselContainer">
-      <Swiper
-        effect={"coverflow"}
-        grabCursor={true}
-        centeredSlides={true}
-        slidesPerView={2} // 몇개가 동시에 보이는지 (2면 1개 + 0.5개 * 2)
-        spaceBetween={-40} // 겹치는 정도
-        initialSlide={3} // 시작 슬라이드!
-        coverflowEffect={{
-          rotate: 20,
-          stretch: 0,
-          depth: 100,
-          modifier: 2,
-          slideShadows: true,
-        }}
-        onSlideChange={(swiper) => {
-          setActiveIndex(swiper.activeIndex);
-        }}
-        navigation={true} // 네비게이션 버튼
-        mousewheel={true} // 마우스 휠
-        pagination={true}
-        modules={[EffectCoverflow, Navigation, Mousewheel]}
-        className="mySwiper"
-      >
-        {contentArray.map((content, index) => (
-          <SwiperSlide key={index}>
-            <SlideContainer>
-              <SlideImage
-                url={
-                  weeklySchedule[index].length === 0
-                    ? "/WatchifyLogo2.png"
-                    : weeklySchedule[index][0]["backdropPath"]
-                }
-              >
-                <Overlay isActive={activeIndex === index}>
-                  <OverlayContainer>
-                    <DateContainer>
-                      <MonthDiv>
-                        {new Date(thisWeek[index]).getMonth() + 1 < 10
-                          ? "0" + (new Date(thisWeek[index]).getMonth() + 1)
-                          : new Date(thisWeek[index]).getMonth() + 1}
-                      </MonthDiv>
-                      <DateDiv>
-                        {new Date(thisWeek[index]).getDate() < 10
-                          ? "0" + new Date(thisWeek[index]).getDate()
-                          : new Date(thisWeek[index]).getDate()}
-                      </DateDiv>
-                      <DayDiv>{days[new Date(thisWeek[index]).getDay()]}</DayDiv>
-                    </DateContainer>
-                    {weeklySchedule[index].length === 0 ? null : weeklySchedule[index].length <=
-                      2 ? (
-                      <OverlayEpisodesContainer>
-                        <EpisodeAndMore>
-                          {weeklySchedule[index].map((episode, index) => (
-                            <Episode>
-                              <EpisodeTitle>{episode["title"]}</EpisodeTitle>
-                              <EpisodeNumber>
-                                {episode["episode"] === 0 ? null : episode["episode"] + "화"}
-                              </EpisodeNumber>
-                            </Episode>
-                          ))}
-                        </EpisodeAndMore>
-                      </OverlayEpisodesContainer>
-                    ) : (
-                      <OverlayEpisodesContainer>
-                        <EpisodeAndMore>
-                          {weeklySchedule[index].slice(0, 2).map((episode, index) => (
-                            <Episode>
-                              <EpisodeTitle>{episode["title"]}</EpisodeTitle>
-                              <EpisodeNumber>
-                                {episode["episode"] === 0 ? null : episode["episode"] + "화"}
-                              </EpisodeNumber>
-                            </Episode>
-                          ))}
-                          <Extra>{`외 ${weeklySchedule[index].length - 2}편`}</Extra>
-                        </EpisodeAndMore>
-                        <More>{`more >`}</More>
-                      </OverlayEpisodesContainer>
-                    )}
-                  </OverlayContainer>
-                </Overlay>
-              </SlideImage>
-            </SlideContainer>
-          </SwiperSlide>
-        ))}
-      </Swiper>
+      {isUserLoggedIn ? (
+        <Swiper
+          effect={"coverflow"}
+          grabCursor={true}
+          centeredSlides={true}
+          slidesPerView={2} // 몇개가 동시에 보이는지 (2면 1개 + 0.5개 * 2)
+          spaceBetween={-40} // 겹치는 정도
+          initialSlide={3} // 시작 슬라이드!
+          coverflowEffect={{
+            rotate: 20,
+            stretch: 0,
+            depth: 100,
+            modifier: 2,
+            slideShadows: true,
+          }}
+          onSlideChange={(swiper) => {
+            setActiveIndex(swiper.activeIndex);
+          }}
+          navigation={true} // 네비게이션 버튼
+          mousewheel={true} // 마우스 휠
+          pagination={true}
+          modules={[EffectCoverflow, Navigation, Mousewheel]}
+          className="mySwiper"
+        >
+          {contentArray.map((content, index) => (
+            <SwiperSlide key={index}>
+              <SlideContainer>
+                <SlideImage
+                  url={
+                    weeklySchedule[index].length === 0
+                      ? "/WatchifyLogo2.png"
+                      : weeklySchedule[index][0]["backdropPath"]
+                  }
+                >
+                  <Overlay isActive={activeIndex === index}>
+                    <OverlayContainer>
+                      <DateContainer>
+                        <MonthDiv>
+                          {new Date(thisWeek[index]).getMonth() + 1 < 10
+                            ? "0" + (new Date(thisWeek[index]).getMonth() + 1)
+                            : new Date(thisWeek[index]).getMonth() + 1}
+                        </MonthDiv>
+                        <DateDiv>
+                          {new Date(thisWeek[index]).getDate() < 10
+                            ? "0" + new Date(thisWeek[index]).getDate()
+                            : new Date(thisWeek[index]).getDate()}
+                        </DateDiv>
+                        <DayDiv>{days[new Date(thisWeek[index]).getDay()]}</DayDiv>
+                      </DateContainer>
+                      {weeklySchedule[index].length === 0 ? null : weeklySchedule[index].length <=
+                        2 ? (
+                        <OverlayEpisodesContainer>
+                          <EpisodeAndMore>
+                            {weeklySchedule[index].map((episode, index) => (
+                              <Episode>
+                                <EpisodeTitle>{episode["title"]}</EpisodeTitle>
+                                <EpisodeNumber>
+                                  {episode["episode"] === 0 ? null : episode["episode"] + "화"}
+                                </EpisodeNumber>
+                              </Episode>
+                            ))}
+                          </EpisodeAndMore>
+                        </OverlayEpisodesContainer>
+                      ) : (
+                        <OverlayEpisodesContainer>
+                          <EpisodeAndMore>
+                            {weeklySchedule[index].slice(0, 2).map((episode, index) => (
+                              <Episode>
+                                <EpisodeTitle>{episode["title"]}</EpisodeTitle>
+                                <EpisodeNumber>
+                                  {episode["episode"] === 0 ? null : episode["episode"] + "화"}
+                                </EpisodeNumber>
+                              </Episode>
+                            ))}
+                            <Extra>{`외 ${weeklySchedule[index].length - 2}편`}</Extra>
+                          </EpisodeAndMore>
+                          <More
+                            onClick={() => {
+                              navigate("/schedule/result", {
+                                state: {
+                                  month: new Date(thisWeek[index]).getMonth() + 1,
+                                  date: new Date(thisWeek[index]).getDate(),
+                                },
+                              });
+                            }}
+                          >{`more >`}</More>
+                        </OverlayEpisodesContainer>
+                      )}
+                    </OverlayContainer>
+                  </Overlay>
+                </SlideImage>
+              </SlideContainer>
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      ) : (
+        <DivForUnlogged>
+          <div>로그인 해서 스케줄을 확인하세요!</div>
+          <ToLogIn
+            onClick={() => {
+              navigate("/login");
+            }}
+          >
+            로그인
+          </ToLogIn>
+        </DivForUnlogged>
+      )}
     </Container>
   );
 };

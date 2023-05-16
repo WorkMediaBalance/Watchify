@@ -35,7 +35,7 @@ async function requestPermission() {
   if (token) {
     console.log("token: ", token);
     console.log(token);
-    fcmSave(token);
+    fcmSave({ fcmToken: token });
   } else console.log("Can not get Token");
 
   onMessage(messaging, (payload) => {
