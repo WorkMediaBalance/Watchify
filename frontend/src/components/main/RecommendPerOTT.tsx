@@ -4,6 +4,10 @@ import disney from "../../assets/img/otticons/DisneyIcon.png";
 import netflix from "../../assets/img/otticons/NetflixIcon.png";
 import watcha from "../../assets/img/otticons/WatchaIcon.png";
 import wavve from "../../assets/img/otticons/WavveIcon.png";
+import disneySelected from "../../assets/img/otticons/DisneyIconSelected.png";
+import netflixSelected from "../../assets/img/otticons/NetflixIconSelected.png";
+import watchaSelected from "../../assets/img/otticons/WatchaIconSelected.png";
+import wavveSelected from "../../assets/img/otticons/WavveIconSelected.png";
 
 import { mainRecommend, mainRecommendNon } from "apis/apiMain";
 
@@ -83,25 +87,25 @@ const RecommendPerOTT = () => {
         <Content>
           <OTTIcons>
             <OTTIcon
-              src={netflix}
+              src={ott === "netflix" ? netflixSelected : netflix}
               onClick={() => {
                 handleIconClick("netflix");
               }}
             ></OTTIcon>
             <OTTIcon
-              src={disney}
+              src={ott === "disney" ? disneySelected : disney}
               onClick={() => {
                 handleIconClick("disney");
               }}
             ></OTTIcon>
             <OTTIcon
-              src={wavve}
+              src={ott === "wavve" ? wavveSelected : wavve}
               onClick={() => {
                 handleIconClick("wavve");
               }}
             ></OTTIcon>
             <OTTIcon
-              src={watcha}
+              src={ott === "watcha" ? watchaSelected : watcha}
               onClick={() => {
                 handleIconClick("watcha");
               }}
@@ -187,7 +191,7 @@ const OTTIcons = styled.div`
   width: 50vw;
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  justify-content: space-evenly;
   align-items: center;
   position: absolute;
   top: -6vh;
@@ -195,8 +199,8 @@ const OTTIcons = styled.div`
 `;
 
 const OTTIcon = styled.img`
-  width: 12vw;
-  height: 12vw;
+  width: 9vw;
+  height: 9vw;
 `;
 
 const ContentContainer = styled.div`

@@ -12,7 +12,7 @@ export interface content {
   genres: string[];
   wish: boolean;
   // ★★★ 곧 사망할 친구
-  isLike: number;
+  like: number;
   summarize: string;
   audienceAge: number;
   // ★★★ API 수정후 추가 필요 (평점)
