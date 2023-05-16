@@ -1,16 +1,11 @@
 import numpy as np
 from rating_count_matrix import RatingCountMatrix
-from ml.models import User
 
 class SimilarityMatrix:
-
     similarity_matrix = None
-    # userdict = User.objects.values_list('id')
 
     def __init__(self, userdict):
-        # print('semilarity_matrix.py ===== userdict')
         self.build(userdict)
-        # print('유저 리스트 : ',userdict)
     
     def build(self, userdict):
         max_user_id = int(max(userdict)) + 1

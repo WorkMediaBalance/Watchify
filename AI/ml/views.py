@@ -76,6 +76,5 @@ class scheduleRecommendAPIView(APIView):
           contents = {
                'contentPk' : result
               }
-          print('contents : ', contents)
           serializer = scheduleSerializer(contents)
           return Response(serializer.data, status=status.HTTP_200_OK)
