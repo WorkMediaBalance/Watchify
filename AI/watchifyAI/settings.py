@@ -87,11 +87,16 @@ WSGI_APPLICATION = 'watchifyAI.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': "django.db.backends.mysql",
-        'NAME': DB_NAME,
-        'USER': DB_USER,
-        'PASSWORD': DB_PW,
-        'HOST': DB_HOST,
-        'PORT': DB_PORT,
+        'NAME': os.environ.get('DB_NAME'),
+        'USER': os.environ.get('DB_USER'),
+        'PASSWORD': os.environ.get('DB_PW'),
+        'HOST': os.environ.get('DB_HOST'),
+        'PORT': os.environ.get('DB_PORT'),
+        # 'NAME': DB_NAME,
+        # 'USER': DB_USER,
+        # 'PASSWORD': DB_PW,
+        # 'HOST': DB_HOST,
+        # 'PORT': DB_PORT,
     }
 }
 
@@ -140,9 +145,6 @@ STATIC_URL = '/static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 ############################ modifid ##################################
-# MODELS = os.path.join(BASE_DIR, 'ml/models')
-
-
 #### AWS
 AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
