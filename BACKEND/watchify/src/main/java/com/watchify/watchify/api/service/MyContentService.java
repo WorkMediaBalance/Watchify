@@ -34,9 +34,9 @@ public class MyContentService {
         List<WishContent> wishList = wishContentRepository.getMyWishList(userId);
         List<LikeContent> likeList = likeContentRepository.getLikeContent(userId);
 
-        Map<Long, Integer> likeMapPk = new HashMap<>(); // 내가 좋거나 싫거나한 컨텐츠
+        Map<Long, Double> likeMapPk = new HashMap<>(); // 내가 좋거나 싫거나한 컨텐츠
         for (LikeContent lc : likeList) {
-            likeMapPk.put(lc.getContent().getId(), lc.isLike() == true ? 1 : -1);
+            likeMapPk.put(lc.getContent().getId(), lc.getLike());
         }
 
         List<DefaultContentDTO> res = new ArrayList<>();
@@ -45,7 +45,7 @@ public class MyContentService {
             DefaultContentDTO defaultContentDTO = new DefaultContentDTO(content);
             defaultContentDTO.setIsWish(true); // 찜목록 조회라서 무조건 true
             if (likeMapPk.containsKey(defaultContentDTO.getPk())) {
-                defaultContentDTO.setIsLike(likeMapPk.get(defaultContentDTO.getPk()));
+                defaultContentDTO.setLike(likeMapPk.get(defaultContentDTO.getPk()));
             }
             res.add(defaultContentDTO);
         }
@@ -77,20 +77,17 @@ public class MyContentService {
     @Transactional
     public void updateContentLike(Long userId, ContentLikeRequestDTO contentLikeRequestDTO) {
         Long contentId = contentLikeRequestDTO.getPk();
-        boolean isLike = contentLikeRequestDTO.getIsLikeAsBoolean();
+        Double like = contentLikeRequestDTO.getLike();
         LikeContent likeContent = likeContentRepository.getSpecificLikeContent(userId, contentId);
 
-        System.out.println("isLike : " + isLike);
         if (likeContent == null) {
             // DB 에 없는 경우
             User user = userRepository.findById(userId).get();
             Content content = contentRepository.findById(contentId).get();
-            LikeContent newLikeContent = new LikeContent(user, content, isLike);
+            LikeContent newLikeContent = new LikeContent(user, content, like);
             likeContentRepository.save(newLikeContent);
         } else {
-            // DB 에 있는 데
-            // 삭제된 데이터의 경우 or 삭제된 데이터가 아닌경우
-            likeContent.setIsLike(isLike); // 공통으로 처리 가능함.
+            likeContent.setLike(like);
             likeContentRepository.save(likeContent);
         }
     }

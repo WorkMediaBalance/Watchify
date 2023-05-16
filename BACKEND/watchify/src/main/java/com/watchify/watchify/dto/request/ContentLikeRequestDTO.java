@@ -7,9 +7,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ContentLikeRequestDTO {
     private Long pk;
-    private String isLike;
-
-    public boolean getIsLikeAsBoolean() {
-        return Boolean.parseBoolean(this.isLike);
-    }
+    private Double like;
 }

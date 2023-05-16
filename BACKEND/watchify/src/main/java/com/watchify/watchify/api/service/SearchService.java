@@ -44,7 +44,7 @@ public class SearchService {
             defaultContentDTO.setIsWish(wishContentList.contains(content.getId()));
             for (LikeContent lc : likeContentList) {
                 if (lc.getContent().equals(content)) {
-                    defaultContentDTO.setIsLike(lc.isLike() ? 1 : -1);
+                    defaultContentDTO.setLike(lc.getLike());
                     break;
                 }
             }
