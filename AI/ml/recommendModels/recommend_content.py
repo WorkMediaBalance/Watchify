@@ -1,12 +1,23 @@
 from predict_rating import predict, ott_predict
-from ml.models import User, Content, LikeContent, Genre, ContentGenre, Contentott, WishContent
+from ml.models import User, Content, LikeContent, Genre, ContentGenre, Contentott, WishContent, Ott
 from collections import defaultdict
 
-def recommend(user_id, genres, age, top_n):
+def recommend(user_id, genres, otts, age, top_n):
     userdict = User.objects.values_list('id', flat=True) # 리스트 반환
-    itemdict = Content.objects.filter(audience_age__lte=age).values_list('id', flat=True)
+    ott_list = Ott.objects.filter(name__in=otts).values_list('id', flat=True)
+    ottitem = Contentott.objects.filter(ott_id__in=ott_list).values_list('content_id', flat=True)
+    # print('ottitem : ', ottitem, len(ottitem))
+    itemdict = Content.objects.filter(id__in=ottitem).values_list('id', flat=True)
+    # print('itemdict :: ', itemdict, len(itemdict))
     genre_ids = Genre.objects.filter(name__in=genres).values_list('id', flat=True)
-    items_reviewed = LikeContent.objects.filter(user_id=user_id, is_deleted=False).values_list('content_id', flat=True) # user_id가 같고 is_deleted 값이 False인 데이터만 가져오기
+
+    items_reviewed = []
+    reviewed_item = LikeContent.objects.filter(user_id=user_id, is_deleted=False).values_list('content_id', flat=True) # user_id가 같고 is_deleted 값이 False인 데이터만 가져오기
+    wished_item = WishContent.objects.filter(user_id=user_id, is_deleted=False).values_list('content_id', flat=True)
+    items_reviewed += reviewed_item
+    items_reviewed += wished_item
+    items_reviewed = list(set(items_reviewed))
+    # print('items_reviewed : ', items_reviewed)
 
     neighbor_user = LikeContent.objects.filter(content_id__in=items_reviewed, is_deleted=False).values_list('user_id', flat=True)
     neighbor_user = list(set(neighbor_user))
