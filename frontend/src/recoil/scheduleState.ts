@@ -15,6 +15,7 @@ export const weekScheduleState = atom<schedule>({
         type: "드라마",
         season: 1,
         finalEpisode: 10,
+        episode: 5,
         ott: { netflix: "https://www.netflix.com/kr/title/81519223" },
         genres: ["드라마"],
         wish: false,
@@ -22,6 +23,8 @@ export const weekScheduleState = atom<schedule>({
         summarize:
           "어느 날 길을 걷던 걸무고는 우연히 알 수 없는 동전을 줍게 되고, 이 동전의 충격적인 정체가 알려지며 사건에 휩싸이게 되는데... 과연 걸무고는 무사할 수 있을까?",
         audienceAge: 15,
+        date: "2023-05-18",
+        view: false,
       },
       {
         pk: 2,
@@ -33,6 +36,7 @@ export const weekScheduleState = atom<schedule>({
         type: "영화",
         season: 0,
         finalEpisode: 0,
+        episode: 0,
         ott: {
           wavve: "https://www.wavve.com/player/movie?movieid=MV_LO01_LO0000000038",
           watcha: "https://watcha.com/contents/myWqyBW",
@@ -42,6 +46,8 @@ export const weekScheduleState = atom<schedule>({
         like: -1,
         summarize: "뱀파이어가 울부지저따. 뱀파이어는 짱 쎄따. 크와아앙",
         audienceAge: 15,
+        date: "2023-05-18",
+        view: false,
       },
     ],
     1: [
@@ -55,6 +61,7 @@ export const weekScheduleState = atom<schedule>({
         type: "드라마",
         season: 1,
         finalEpisode: 10,
+        episode: 6,
         ott: { netflix: "https://www.netflix.com/kr/title/81519223" },
         genres: ["드라마"],
         wish: false,
@@ -62,6 +69,8 @@ export const weekScheduleState = atom<schedule>({
         summarize:
           "어느 날 길을 걷던 걸무고는 우연히 알 수 없는 동전을 줍게 되고, 이 동전의 충격적인 정체가 알려지며 사건에 휩싸이게 되는데... 과연 걸무고는 무사할 수 있을까?",
         audienceAge: 15,
+        date: "2023-05-18",
+        view: false,
       },
       {
         pk: 2,
@@ -73,6 +82,7 @@ export const weekScheduleState = atom<schedule>({
         type: "영화",
         season: 0,
         finalEpisode: 0,
+        episode: 0,
         ott: {
           wavve: "https://www.wavve.com/player/movie?movieid=MV_LO01_LO0000000038",
           watcha: "https://watcha.com/contents/myWqyBW",
@@ -82,6 +92,8 @@ export const weekScheduleState = atom<schedule>({
         like: -1,
         summarize: "뱀파이어가 울부지저따. 뱀파이어는 짱 쎄따. 크와아앙",
         audienceAge: 15,
+        date: "2023-05-18",
+        view: false,
       },
     ],
     2: [],
@@ -96,6 +108,7 @@ export const weekScheduleState = atom<schedule>({
         type: "영화",
         season: 0,
         finalEpisode: 0,
+        episode: 0,
         ott: {
           wavve: "https://www.wavve.com/player/movie?movieid=MV_LO01_LO0000000038",
           watcha: "https://watcha.com/contents/myWqyBW",
@@ -105,6 +118,8 @@ export const weekScheduleState = atom<schedule>({
         like: -1,
         summarize: "뱀파이어가 울부지저따. 뱀파이어는 짱 쎄따. 크와아앙",
         audienceAge: 15,
+        date: "2023-05-18",
+        view: false,
       },
     ],
     4: [],
@@ -127,6 +142,7 @@ export const monthScheduleState = atom<schedule>({
         type: "영화",
         season: 0,
         finalEpisode: 0,
+        episode: 0,
         ott: {
           wavve: "https://www.wavve.com/player/movie?movieid=MV_LO01_LO0000000038",
           watcha: "https://watcha.com/contents/myWqyBW",
@@ -136,6 +152,8 @@ export const monthScheduleState = atom<schedule>({
         like: -1,
         summarize: "뱀파이어가 울부지저따. 뱀파이어는 짱 쎄따. 크와아앙",
         audienceAge: 15,
+        date: "2023-05-18",
+        view: false,
       },
     ],
     3: [
@@ -149,6 +167,7 @@ export const monthScheduleState = atom<schedule>({
         type: "영화",
         season: 0,
         finalEpisode: 0,
+        episode: 0,
         ott: {
           wavve: "https://www.wavve.com/player/movie?movieid=MV_LO01_LO0000000038",
           watcha: "https://watcha.com/contents/myWqyBW",
@@ -158,6 +177,8 @@ export const monthScheduleState = atom<schedule>({
         like: -1,
         summarize: "뱀파이어가 울부지저따. 뱀파이어는 짱 쎄따. 크와아앙",
         audienceAge: 15,
+        date: "2023-05-18",
+        view: false,
       },
     ],
     7: [
@@ -171,6 +192,7 @@ export const monthScheduleState = atom<schedule>({
         type: "영화",
         season: 0,
         finalEpisode: 0,
+        episode: 0,
         ott: {
           wavve: "https://www.wavve.com/player/movie?movieid=MV_LO01_LO0000000038",
           watcha: "https://watcha.com/contents/myWqyBW",
@@ -180,6 +202,8 @@ export const monthScheduleState = atom<schedule>({
         like: -1,
         summarize: "뱀파이어가 울부지저따. 뱀파이어는 짱 쎄따. 크와아앙",
         audienceAge: 15,
+        date: "2023-05-18",
+        view: false,
       },
     ],
     11: [
@@ -193,6 +217,7 @@ export const monthScheduleState = atom<schedule>({
         type: "영화",
         season: 0,
         finalEpisode: 0,
+        episode: 0,
         ott: {
           wavve: "https://www.wavve.com/player/movie?movieid=MV_LO01_LO0000000038",
           watcha: "https://watcha.com/contents/myWqyBW",
@@ -202,6 +227,8 @@ export const monthScheduleState = atom<schedule>({
         like: -1,
         summarize: "뱀파이어가 울부지저따. 뱀파이어는 짱 쎄따. 크와아앙",
         audienceAge: 15,
+        date: "2023-05-18",
+        view: false,
       },
     ],
     13: [
@@ -215,6 +242,7 @@ export const monthScheduleState = atom<schedule>({
         type: "드라마",
         season: 1,
         finalEpisode: 10,
+        episode: 5,
         ott: { netflix: "https://www.netflix.com/kr/title/81519223" },
         genres: ["드라마"],
         wish: false,
@@ -222,6 +250,8 @@ export const monthScheduleState = atom<schedule>({
         summarize:
           "어느 날 길을 걷던 걸무고는 우연히 알 수 없는 동전을 줍게 되고, 이 동전의 충격적인 정체가 알려지며 사건에 휩싸이게 되는데... 과연 걸무고는 무사할 수 있을까?",
         audienceAge: 15,
+        date: "2023-05-18",
+        view: false,
       },
     ],
     15: [
@@ -235,6 +265,7 @@ export const monthScheduleState = atom<schedule>({
         type: "드라마",
         season: 1,
         finalEpisode: 10,
+        episode: 6,
         ott: { netflix: "https://www.netflix.com/kr/title/81519223" },
         genres: ["드라마"],
         wish: false,
@@ -242,6 +273,8 @@ export const monthScheduleState = atom<schedule>({
         summarize:
           "어느 날 길을 걷던 걸무고는 우연히 알 수 없는 동전을 줍게 되고, 이 동전의 충격적인 정체가 알려지며 사건에 휩싸이게 되는데... 과연 걸무고는 무사할 수 있을까?",
         audienceAge: 15,
+        date: "2023-05-18",
+        view: false,
       },
     ],
     17: [
@@ -255,6 +288,7 @@ export const monthScheduleState = atom<schedule>({
         type: "영화",
         season: 0,
         finalEpisode: 0,
+        episode: 0,
         ott: {
           wavve: "https://www.wavve.com/player/movie?movieid=MV_LO01_LO0000000038",
           watcha: "https://watcha.com/contents/myWqyBW",
@@ -264,6 +298,8 @@ export const monthScheduleState = atom<schedule>({
         like: -1,
         summarize: "뱀파이어가 울부지저따. 뱀파이어는 짱 쎄따. 크와아앙",
         audienceAge: 15,
+        date: "2023-05-18",
+        view: false,
       },
     ],
     21: [
@@ -277,6 +313,7 @@ export const monthScheduleState = atom<schedule>({
         type: "드라마",
         season: 1,
         finalEpisode: 10,
+        episode: 7,
         ott: { netflix: "https://www.netflix.com/kr/title/81519223" },
         genres: ["드라마"],
         wish: false,
@@ -284,6 +321,8 @@ export const monthScheduleState = atom<schedule>({
         summarize:
           "어느 날 길을 걷던 걸무고는 우연히 알 수 없는 동전을 줍게 되고, 이 동전의 충격적인 정체가 알려지며 사건에 휩싸이게 되는데... 과연 걸무고는 무사할 수 있을까?",
         audienceAge: 15,
+        date: "2023-05-18",
+        view: false,
       },
     ],
     24: [
@@ -297,6 +336,7 @@ export const monthScheduleState = atom<schedule>({
         type: "영화",
         season: 0,
         finalEpisode: 0,
+        episode: 0,
         ott: {
           wavve: "https://www.wavve.com/player/movie?movieid=MV_LO01_LO0000000038",
           watcha: "https://watcha.com/contents/myWqyBW",
@@ -306,6 +346,8 @@ export const monthScheduleState = atom<schedule>({
         like: -1,
         summarize: "뱀파이어가 울부지저따. 뱀파이어는 짱 쎄따. 크와아앙",
         audienceAge: 15,
+        date: "2023-05-18",
+        view: false,
       },
       {
         pk: 1,
@@ -317,6 +359,7 @@ export const monthScheduleState = atom<schedule>({
         type: "드라마",
         season: 1,
         finalEpisode: 10,
+        episode: 8,
         ott: { netflix: "https://www.netflix.com/kr/title/81519223" },
         genres: ["드라마"],
         wish: false,
@@ -324,6 +367,8 @@ export const monthScheduleState = atom<schedule>({
         summarize:
           "어느 날 길을 걷던 걸무고는 우연히 알 수 없는 동전을 줍게 되고, 이 동전의 충격적인 정체가 알려지며 사건에 휩싸이게 되는데... 과연 걸무고는 무사할 수 있을까?",
         audienceAge: 15,
+        date: "2023-05-18",
+        view: false,
       },
     ],
     27: [
@@ -337,6 +382,7 @@ export const monthScheduleState = atom<schedule>({
         type: "영화",
         season: 0,
         finalEpisode: 0,
+        episode: 0,
         ott: {
           wavve: "https://www.wavve.com/player/movie?movieid=MV_LO01_LO0000000038",
           watcha: "https://watcha.com/contents/myWqyBW",
@@ -346,6 +392,8 @@ export const monthScheduleState = atom<schedule>({
         like: -1,
         summarize: "뱀파이어가 울부지저따. 뱀파이어는 짱 쎄따. 크와아앙",
         audienceAge: 15,
+        date: "2023-05-18",
+        view: false,
       },
     ],
     30: [
@@ -359,6 +407,7 @@ export const monthScheduleState = atom<schedule>({
         type: "영화",
         season: 0,
         finalEpisode: 0,
+        episode: 0,
         ott: {
           wavve: "https://www.wavve.com/player/movie?movieid=MV_LO01_LO0000000038",
           watcha: "https://watcha.com/contents/myWqyBW",
@@ -368,6 +417,8 @@ export const monthScheduleState = atom<schedule>({
         like: -1,
         summarize: "뱀파이어가 울부지저따. 뱀파이어는 짱 쎄따. 크와아앙",
         audienceAge: 15,
+        date: "2023-05-18",
+        view: false,
       },
       {
         pk: 1,
@@ -379,6 +430,7 @@ export const monthScheduleState = atom<schedule>({
         type: "드라마",
         season: 1,
         finalEpisode: 10,
+        episode: 9,
         ott: { netflix: "https://www.netflix.com/kr/title/81519223" },
         genres: ["드라마"],
         wish: false,
@@ -386,6 +438,8 @@ export const monthScheduleState = atom<schedule>({
         summarize:
           "어느 날 길을 걷던 걸무고는 우연히 알 수 없는 동전을 줍게 되고, 이 동전의 충격적인 정체가 알려지며 사건에 휩싸이게 되는데... 과연 걸무고는 무사할 수 있을까?",
         audienceAge: 15,
+        date: "2023-05-18",
+        view: false,
       },
     ],
   },

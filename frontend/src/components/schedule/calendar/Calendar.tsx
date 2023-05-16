@@ -16,6 +16,7 @@ const Calendar = (props: {
   bottomSheetState: number;
   monthSchedule: schedule;
   setMonthSchedule: (data: schedule) => void;
+  setMonth: React.Dispatch<React.SetStateAction<number>>;
 }) => {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [clickedDay, setClickedDay] = useState<HTMLElement | null>(null);
@@ -79,18 +80,26 @@ const Calendar = (props: {
   rows.push({ cells });
 
   function thisMonth() {
-    console.log("thismonth");
     setSelectedDate(new Date());
+    props.setMonth(new Date().getMonth() + 1);
     props.onCloseSheet();
   }
 
   function prevMonth() {
-    setSelectedDate((prevDate) => new Date(prevDate.getFullYear(), prevDate.getMonth() - 1, 1));
+    setSelectedDate((prevDate) => {
+      const newDate = new Date(prevDate.getFullYear(), prevDate.getMonth() - 1, 1);
+      props.setMonth(newDate.getMonth() + 1);
+      return newDate;
+    });
     props.onCloseSheet();
   }
 
   function nextMonth() {
-    setSelectedDate((prevDate) => new Date(prevDate.getFullYear(), prevDate.getMonth() + 1, 1));
+    setSelectedDate((prevDate) => {
+      const newDate = new Date(prevDate.getFullYear(), prevDate.getMonth() + 1, 1);
+      props.setMonth(newDate.getMonth() + 1);
+      return newDate;
+    });
     props.onCloseSheet();
   }
 
@@ -241,7 +250,11 @@ const Calendar = (props: {
                                       return (
                                         <ContentTag>
                                           <ContentTagDot />
-                                          <ContentName>{"1화"}</ContentName>
+                                          <ContentName>
+                                            {content.finalEpisode === 0
+                                              ? "단일"
+                                              : `${content.episode}화`}
+                                          </ContentName>
                                         </ContentTag>
                                       );
                                     })
@@ -385,7 +398,7 @@ const ContentTagDot = styled.div`
 
 const ContentName = styled.div`
   color: ${theme.netflix.tabColor};
-  font-size: 0.8rem;
+  font-size: 0.7rem;
   margin: 0.4vw;
   margin-right: 2vw;
 `;

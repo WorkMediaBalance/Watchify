@@ -48,7 +48,7 @@ const CalendarBottomSheetSecond = (props: { date: number; month: number }) => {
     Array.isArray(dateScheduleList) &&
     dateScheduleList.length > 0 &&
     dateScheduleList[index]["finalEpisode"] !== 0
-      ? `${dateScheduleList[index]["finalEpisode"]} 화`
+      ? `${dateScheduleList[index]["episode"]} 화`
       : "";
   return (
     <Container {...handlers}>

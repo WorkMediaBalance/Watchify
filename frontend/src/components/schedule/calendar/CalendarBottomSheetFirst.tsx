@@ -7,15 +7,15 @@ import { monthScheduleState } from "recoil/scheduleState";
 import { useRecoilState } from "recoil";
 // 좌우 스와이프
 import { useSwipeable } from "react-swipeable";
+import { scheduleCheck, scheduleCheckCancel } from "apis/apiSchedule";
+import { scheduleAllState } from "recoil/scheduleState";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import Swal from "sweetalert2";
 
-const CalendarBottomSheetFirst = (props: { date: number; month: number }) => {
+const CalendarBottomSheetFirst = (props: { date: number; month: number; year: number }) => {
   // month 스케줄
   const [monthSchedule, setMonthSchedule] = useRecoilState(monthScheduleState);
-  // const [dateSchedule, setDateSchedule] = useState(monthSchedule[Number(props.date)]);
-  //  useEffect(() => {
-  // const [dateScheduleList, setDateScheduleList] = useState(monthSchedule[props.date]);
-  //   }, )
-
   const dateScheduleList = monthSchedule[props.date] === undefined ? [] : monthSchedule[props.date];
 
   const nextContent = () => {
@@ -39,16 +39,67 @@ const CalendarBottomSheetFirst = (props: { date: number; month: number }) => {
   });
 
   const [index, setIndex] = useState(0);
+  const [isSeen, setIsSeen] = useState(dateScheduleList[index]?.view);
+  useEffect(() => {
+    setIsSeen(dateScheduleList[index]?.view);
+  }, [index]);
+  const seenHandler = async () => {
+    const data = {
+      pk: dateScheduleList[index].pk,
+      episode: dateScheduleList[index].finalEpisode !== 0 ? dateScheduleList[index].episode : 0,
+      date: dateScheduleList[index].date,
+    };
+    if (!isSeen) {
+      try {
+        await scheduleCheck(data);
+      } catch {}
+    } else {
+      try {
+        await scheduleCheckCancel(data);
+      } catch {}
+    }
+    setIsSeen(!isSeen);
+  };
 
-  const seenHandler = () => {};
+  const [scheduleAll, setScheduleAll] = useRecoilState(scheduleAllState);
+  const [onChange, setOnChange] = useState(false);
+  const laterHandler = (date: Date) => {
+    const year1 = date.getFullYear();
+    const month1 = date.getMonth();
+    const day1 = date.getDate();
 
-  const laterHandler = () => {};
+    const year2 = new Date().getFullYear();
+    const month2 = new Date().getMonth();
+    const day2 = new Date().getDate();
+
+    if (
+      year1 < year2 ||
+      (year1 === year2 && month1 < month2) ||
+      (year1 === year2 && month1 === month2 && day1 < day2)
+    ) {
+      Swal.fire({
+        title: "오늘 이후의 날짜를 선택해주세요",
+        text: "오늘 이후의 날짜를 선택해주세요",
+        icon: "warning",
+        timer: 2000,
+        showCloseButton: true,
+        customClass: {
+          container: "my-swal-container",
+          confirmButton: "my-swal-confirm-button",
+          cancelButton: "my-swal-cancel-button",
+          icon: "my-swal-icon",
+        },
+      });
+    } else {
+      setOnChange(false);
+    }
+  };
 
   return (
     <div>
       <Container {...handlers}>
         <DateAndAdd>
-          <Date>{`${props.month}월 ${props.date}일`}</Date>
+          <SDate>{`${props.month}월 ${props.date}일`}</SDate>
           <Add>
             {"일정 추가"}
             {/* <AiOutlinePlusCircle /> */}
@@ -67,14 +118,31 @@ const CalendarBottomSheetFirst = (props: { date: number; month: number }) => {
                 content={dateScheduleList[index]}
               ></ContentPoster>
             </PosterContainer>
+            {onChange ? (
+              <DatePickerWrapper>
+                <DatePicker
+                  selected={new Date(dateScheduleList[index].date)}
+                  onChange={(date: Date) => {
+                    laterHandler(date);
+                  }}
+                  inline
+                />
+              </DatePickerWrapper>
+            ) : null}
             <TextContainer>
               <TitleAndDot>
                 <Title>{dateScheduleList[index]["title"]}</Title>
                 {/* <Dot></Dot> */}
               </TitleAndDot>
               <ButtonContainer>
-                <SeenButton onClick={seenHandler}>{"시청함"}</SeenButton>
-                <PostponeButton onClick={laterHandler}>{"미루기"}</PostponeButton>
+                <SeenButton onClick={seenHandler}>{isSeen ? "시청 취소" : "시청함"}</SeenButton>
+                <PostponeButton
+                  onClick={() => {
+                    setOnChange(true);
+                  }}
+                >
+                  {"미루기"}
+                </PostponeButton>
               </ButtonContainer>
             </TextContainer>
           </ContentContainer>
@@ -108,7 +176,7 @@ const DateAndAdd = styled.div`
   align-items: baseline;
 `;
 
-const Date = styled.div`
+const SDate = styled.div`
   font-size: ${({ theme }) => theme.fontSizeType.big.fontSize};
   font-weight: ${({ theme }) => theme.fontSizeType.big.fontWeight};
   margin-left: 10vw;
@@ -203,4 +271,10 @@ const NoContentDiv = styled.div`
   flex-direction: column;
   justify-content: start;
   align-items: center;
+`;
+
+const DatePickerWrapper = styled.div`
+  position: absolute;
+  top: 5%;
+  right: 5%;
 `;

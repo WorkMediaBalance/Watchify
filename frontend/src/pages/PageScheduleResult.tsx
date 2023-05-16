@@ -1,11 +1,11 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { theme } from "styles/theme";
 import Calendar from "components/schedule/calendar/Calendar";
 import CalendarBottomSheet from "components/schedule/calendar/CalendarBottomSheet";
 import { useNavigate, useLocation } from "react-router-dom";
 // month 스케줄 state
-import { monthScheduleState } from "recoil/scheduleState";
+import { monthScheduleState, scheduleAllState } from "recoil/scheduleState";
 import { useRecoilState } from "recoil";
 import { scheduleInfo } from "apis/apiSchedule";
 
@@ -23,20 +23,22 @@ const PageScheduleResult = () => {
   const [close, setClose] = useState(0);
   const [year, setYear] = useState(new Date().getFullYear());
 
+  // 전체 스케줄
+  const [scheduleAll, setScheduleAll] = useRecoilState(scheduleAllState);
+
   // month 스케줄
   const [monthSchedule, setMonthSchedule] = useRecoilState(monthScheduleState);
   const getMonthSchedule = async () => {
     try {
+      console.log(`${year}년 ${month}월 스케줄 정보 받아오기`);
       const data = await scheduleInfo(year, month);
-      console.log(data);
       setMonthSchedule(data);
+      console.log(data);
     } catch {}
   };
   useEffect(() => {
     getMonthSchedule();
   }, [month]);
-  // 바텀시트 위치 구하기
-  const bottomSheetRef = useRef<HTMLTableElement>(null);
 
   const [bottomSheetState, setBottomSheetState] = useState(0);
 
@@ -67,12 +69,14 @@ const PageScheduleResult = () => {
         bottomSheetState={bottomSheetState}
         monthSchedule={monthSchedule}
         setMonthSchedule={setMonthSchedule}
+        setMonth={setMonth}
       />
 
       <CalendarBottomSheet
         close={close}
         date={date}
         month={month}
+        year={year}
         sheet={sheet}
         setMonthSchedule={setMonthSchedule}
         setBottomSheetState={setBottomSheetState}

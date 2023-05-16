@@ -11,6 +11,7 @@ const CalendarBottomSheet = (props: {
   sheet: number;
   date: number;
   month: number;
+  year: number;
   close: number;
   setBottomSheetState: React.Dispatch<React.SetStateAction<number>>;
   setMonthSchedule: (data: schedule) => void;
@@ -39,7 +40,12 @@ const CalendarBottomSheet = (props: {
         <CalendarBottomSheetHeader />
       </div>
       <BottomSheetContent ref={content}>
-        <CalendarBottomSheetContent date={props.date} month={props.month} sheetDepth={sheetDepth} />
+        <CalendarBottomSheetContent
+          date={props.date}
+          month={props.month}
+          year={props.year}
+          sheetDepth={sheetDepth}
+        />
       </BottomSheetContent>
     </Wrapper>
   );
