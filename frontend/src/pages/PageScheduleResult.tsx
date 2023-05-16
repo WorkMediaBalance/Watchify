@@ -43,8 +43,6 @@ const PageScheduleResult = () => {
 
   return (
     <Wrapper>
-      {/* 스케줄 다시 추천 받기 (5.12 민혁 추가) */}
-      <button onClick={() => navigate("/schedule")}>스케줄 다시 만들기 버튼</button>
       <Calendar
         onDateClick={(date: number, month: number) => {
           setSheet(sheet + 1);

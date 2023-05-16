@@ -166,7 +166,8 @@ export const myHistoryInfo = async (data: { [key: string]: number }) => {
 // FCM TOKEN 전송
 export const fcmSave = async (data: { fcmToken: string }) => {
   try {
-    await api.put("api/fcm/save", data);
+    await api.put("api/fcm/save/nonauth", data);
+    console.log("성공");
     return true;
   } catch (err) {
     console.log(data);

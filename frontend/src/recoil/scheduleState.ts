@@ -1,5 +1,11 @@
 import { atom } from "recoil";
-import { schedule } from "interface/schedule";
+import { recoilPersist } from "recoil-persist";
+import { schedule, ScheduleAll } from "interface/schedule";
+
+const { persistAtom } = recoilPersist({
+  key: "recoil-persist",
+  storage: localStorage,
+});
 
 export const weekScheduleState = atom<schedule>({
   key: "weekScheduleState",
@@ -18,7 +24,7 @@ export const weekScheduleState = atom<schedule>({
         ott: { netflix: "https://www.netflix.com/kr/title/81519223" },
         genres: ["드라마"],
         wish: false,
-        isLike: 1,
+        like: 1,
         summarize:
           "어느 날 길을 걷던 걸무고는 우연히 알 수 없는 동전을 줍게 되고, 이 동전의 충격적인 정체가 알려지며 사건에 휩싸이게 되는데... 과연 걸무고는 무사할 수 있을까?",
         audienceAge: 15,
@@ -39,7 +45,7 @@ export const weekScheduleState = atom<schedule>({
         },
         genres: ["야생", "뱀파이어"],
         wish: true,
-        isLike: -1,
+        like: -1,
         summarize: "뱀파이어가 울부지저따. 뱀파이어는 짱 쎄따. 크와아앙",
         audienceAge: 15,
       },
@@ -58,7 +64,7 @@ export const weekScheduleState = atom<schedule>({
         ott: { netflix: "https://www.netflix.com/kr/title/81519223" },
         genres: ["드라마"],
         wish: false,
-        isLike: 1,
+        like: 1,
         summarize:
           "어느 날 길을 걷던 걸무고는 우연히 알 수 없는 동전을 줍게 되고, 이 동전의 충격적인 정체가 알려지며 사건에 휩싸이게 되는데... 과연 걸무고는 무사할 수 있을까?",
         audienceAge: 15,
@@ -79,7 +85,7 @@ export const weekScheduleState = atom<schedule>({
         },
         genres: ["야생", "뱀파이어"],
         wish: true,
-        isLike: -1,
+        like: -1,
         summarize: "뱀파이어가 울부지저따. 뱀파이어는 짱 쎄따. 크와아앙",
         audienceAge: 15,
       },
@@ -102,7 +108,7 @@ export const weekScheduleState = atom<schedule>({
         },
         genres: ["야생", "뱀파이어"],
         wish: true,
-        isLike: -1,
+        like: -1,
         summarize: "뱀파이어가 울부지저따. 뱀파이어는 짱 쎄따. 크와아앙",
         audienceAge: 15,
       },
@@ -133,7 +139,7 @@ export const monthScheduleState = atom<schedule>({
         },
         genres: ["야생", "뱀파이어"],
         wish: true,
-        isLike: -1,
+        like: -1,
         summarize: "뱀파이어가 울부지저따. 뱀파이어는 짱 쎄따. 크와아앙",
         audienceAge: 15,
       },
@@ -156,7 +162,7 @@ export const monthScheduleState = atom<schedule>({
         },
         genres: ["야생", "뱀파이어"],
         wish: true,
-        isLike: -1,
+        like: -1,
         summarize: "뱀파이어가 울부지저따. 뱀파이어는 짱 쎄따. 크와아앙",
         audienceAge: 15,
       },
@@ -181,7 +187,7 @@ export const monthScheduleState = atom<schedule>({
         },
         genres: ["야생", "뱀파이어"],
         wish: true,
-        isLike: -1,
+        like: -1,
         summarize: "뱀파이어가 울부지저따. 뱀파이어는 짱 쎄따. 크와아앙",
         audienceAge: 15,
       },
@@ -206,7 +212,7 @@ export const monthScheduleState = atom<schedule>({
         },
         genres: ["야생", "뱀파이어"],
         wish: true,
-        isLike: -1,
+        like: -1,
         summarize: "뱀파이어가 울부지저따. 뱀파이어는 짱 쎄따. 크와아앙",
         audienceAge: 15,
       },
@@ -226,7 +232,7 @@ export const monthScheduleState = atom<schedule>({
         ott: { netflix: "https://www.netflix.com/kr/title/81519223" },
         genres: ["드라마"],
         wish: false,
-        isLike: 1,
+        like: 1,
         summarize:
           "어느 날 길을 걷던 걸무고는 우연히 알 수 없는 동전을 줍게 되고, 이 동전의 충격적인 정체가 알려지며 사건에 휩싸이게 되는데... 과연 걸무고는 무사할 수 있을까?",
         audienceAge: 15,
@@ -247,7 +253,7 @@ export const monthScheduleState = atom<schedule>({
         ott: { netflix: "https://www.netflix.com/kr/title/81519223" },
         genres: ["드라마"],
         wish: false,
-        isLike: 1,
+        like: 1,
         summarize:
           "어느 날 길을 걷던 걸무고는 우연히 알 수 없는 동전을 줍게 되고, 이 동전의 충격적인 정체가 알려지며 사건에 휩싸이게 되는데... 과연 걸무고는 무사할 수 있을까?",
         audienceAge: 15,
@@ -271,7 +277,7 @@ export const monthScheduleState = atom<schedule>({
         },
         genres: ["야생", "뱀파이어"],
         wish: true,
-        isLike: -1,
+        like: -1,
         summarize: "뱀파이어가 울부지저따. 뱀파이어는 짱 쎄따. 크와아앙",
         audienceAge: 15,
       },
@@ -293,7 +299,7 @@ export const monthScheduleState = atom<schedule>({
         ott: { netflix: "https://www.netflix.com/kr/title/81519223" },
         genres: ["드라마"],
         wish: false,
-        isLike: 1,
+        like: 1,
         summarize:
           "어느 날 길을 걷던 걸무고는 우연히 알 수 없는 동전을 줍게 되고, 이 동전의 충격적인 정체가 알려지며 사건에 휩싸이게 되는데... 과연 걸무고는 무사할 수 있을까?",
         audienceAge: 15,
@@ -318,7 +324,7 @@ export const monthScheduleState = atom<schedule>({
         },
         genres: ["야생", "뱀파이어"],
         wish: true,
-        isLike: -1,
+        like: -1,
         summarize: "뱀파이어가 울부지저따. 뱀파이어는 짱 쎄따. 크와아앙",
         audienceAge: 15,
       },
@@ -335,7 +341,7 @@ export const monthScheduleState = atom<schedule>({
         ott: { netflix: "https://www.netflix.com/kr/title/81519223" },
         genres: ["드라마"],
         wish: false,
-        isLike: 1,
+        like: 1,
         summarize:
           "어느 날 길을 걷던 걸무고는 우연히 알 수 없는 동전을 줍게 되고, 이 동전의 충격적인 정체가 알려지며 사건에 휩싸이게 되는데... 과연 걸무고는 무사할 수 있을까?",
         audienceAge: 15,
@@ -360,7 +366,7 @@ export const monthScheduleState = atom<schedule>({
         },
         genres: ["야생", "뱀파이어"],
         wish: true,
-        isLike: -1,
+        like: -1,
         summarize: "뱀파이어가 울부지저따. 뱀파이어는 짱 쎄따. 크와아앙",
         audienceAge: 15,
       },
@@ -384,7 +390,7 @@ export const monthScheduleState = atom<schedule>({
         },
         genres: ["야생", "뱀파이어"],
         wish: true,
-        isLike: -1,
+        like: -1,
         summarize: "뱀파이어가 울부지저따. 뱀파이어는 짱 쎄따. 크와아앙",
         audienceAge: 15,
       },
@@ -401,7 +407,7 @@ export const monthScheduleState = atom<schedule>({
         ott: { netflix: "https://www.netflix.com/kr/title/81519223" },
         genres: ["드라마"],
         wish: false,
-        isLike: 1,
+        like: 1,
         summarize:
           "어느 날 길을 걷던 걸무고는 우연히 알 수 없는 동전을 줍게 되고, 이 동전의 충격적인 정체가 알려지며 사건에 휩싸이게 되는데... 과연 걸무고는 무사할 수 있을까?",
         audienceAge: 15,
@@ -409,4 +415,10 @@ export const monthScheduleState = atom<schedule>({
     ],
     31: [],
   },
+});
+
+export const scheduleAllState = atom<ScheduleAll>({
+  key: "scheduleAllState",
+  default: {},
+  effects_UNSTABLE: [persistAtom],
 });

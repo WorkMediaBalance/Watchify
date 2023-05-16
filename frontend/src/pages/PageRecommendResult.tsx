@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import styled from "styled-components";
 import { recResultState } from "recoil/recommendState";
+import { userState } from "recoil/userState";
 import { useRecoilState } from "recoil";
-import { USER_NAME } from "constant/constant";
+// import { USER_NAME } from "constant/constant";
 import { theme } from "styles/theme";
 import NameTicker from "components/recommend/NameTicker";
 
@@ -78,7 +80,7 @@ const SMainDiv = styled.div`
   display: flex;
   width: 100vw;
   height: 55vh;
-  // border: 1px solid ${theme.netflix.fontColor}; TODO: 여기 보더 별로라고 하심...
+  // border: 1px solid grey; TODO: 여기 보더 별로라고 하심...
   border-radius: 12px;
   background-color: ${theme.netflix.tabColor};
   flex-direction: column;
@@ -130,6 +132,7 @@ const UserSpan = styled.span`
 const PageRecommendResult = () => {
   const [recResult, SetRecResult] = useRecoilState(recResultState);
   const [selectedNum, SetSelectedNum] = useState<number>(0);
+  const [user, SetUser] = useRecoilState(userState);
 
   const onClickHandler = (event: React.MouseEvent<HTMLDivElement>) => {
     const selectedId = event.currentTarget.id;
@@ -176,10 +179,17 @@ const PageRecommendResult = () => {
       ? `${minute}분`
       : `${hour}시간 ${minute}분`;
 
+  const location = useLocation();
+
+  useEffect(() => {
+    const data = location.state?.data;
+    SetRecResult(data);
+  }, []);
+
   return (
     <Wrapper>
       <STitleP>
-        <UserSpan>{USER_NAME}</UserSpan>님을 위한 추천 컨텐츠
+        <UserSpan>{user["name"] ? user["name"] : "guest"}</UserSpan>님을 위한 추천 컨텐츠
       </STitleP>
       <SMainDiv className={"mainDiv"}>
         <div style={{ display: "flex", marginLeft: "5vw", position: "absolute" }}>
@@ -201,7 +211,7 @@ const PageRecommendResult = () => {
           <div style={{ display: "flex", width: "100vw" }}>
             <SImg src={recResult[selectedNum].imgPath} alt="#" />
             <div style={{ marginRight: "1vw" }}>
-              <STextP>추천도 : 93%</STextP>
+              <STextP>추천도 : {recResult[selectedNum].score}</STextP>
               <STextP>장르 : {recResult[selectedNum].genres.join(", ")}</STextP>
               <STextP>재생 시간 : {run}</STextP>
               <STextP>등급 : {recResult[selectedNum].audienceAge}</STextP>
@@ -238,7 +248,7 @@ const PageRecommendResult = () => {
           modules={[EffectCoverflow, Navigation, Mousewheel]}
           className="mySwiper"
         >
-          {recResult.map((content, index) => (
+          {recResult.slice(3, 10).map((content, index) => (
             <SwiperSlide key={index}>
               <div style={{ width: "33vw" }}>
                 <ContentPoster

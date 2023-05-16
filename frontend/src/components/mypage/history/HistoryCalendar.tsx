@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { theme } from "styles/theme";
 import { months } from "constant/constant";
 import { HistoryDetailContent } from "recoil/history";
+import { myHistoryInfo } from "apis/apiMy";
 
 const HistoryCalendar = (props: {
   onDateClick: (date: number, month: number) => void;
@@ -117,6 +118,9 @@ const HistoryCalendar = (props: {
   };
 
   // 해당 스케줄 불러오기
+  useEffect(() => {
+    console.log(props.historyDetail);
+  }, []);
 
   return (
     <Wrapper className={"wrapper"}>
@@ -209,7 +213,9 @@ const HistoryCalendar = (props: {
                                         <ContentTag>
                                           <ContentTagDot />
                                           <ContentName>
-                                            {content.episode !== 0 ? `${content.episode}화` : null}
+                                            {content.episode !== 0
+                                              ? `${content.episode}화`
+                                              : "영화"}
                                           </ContentName>
                                         </ContentTag>
                                       );

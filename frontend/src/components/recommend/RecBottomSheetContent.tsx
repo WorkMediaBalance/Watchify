@@ -27,7 +27,7 @@ const SGenreBtn = styled.button<{ active: boolean }>`
 const SP = styled.p`
   font-size: 1.5rem;
   color: #ffffff;
-  margin-left: 3vw;
+  margin-left: 5vw;
   margin-top: 0;
 `;
 
@@ -45,16 +45,18 @@ const RecBottomSheetContent = () => {
 
   return (
     <>
-      <SP>장르 목록</SP>
-      <SGridDiv>
-        {genres.map((genre, idx) => {
-          return (
-            <SGenreBtn active={genreSet.has(genre)} onClick={() => genreHandler(genre)} key={idx}>
-              {genre}
-            </SGenreBtn>
-          );
-        })}
-      </SGridDiv>
+      <div>
+        <SP>장르 목록</SP>
+        <SGridDiv>
+          {genres.map((genre, idx) => {
+            return (
+              <SGenreBtn active={genreSet.has(genre)} onClick={() => genreHandler(genre)} key={idx}>
+                {genre}
+              </SGenreBtn>
+            );
+          })}
+        </SGridDiv>
+      </div>
     </>
   );
 };
