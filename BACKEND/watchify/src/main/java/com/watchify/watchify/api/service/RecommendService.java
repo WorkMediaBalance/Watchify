@@ -27,12 +27,12 @@ public class RecommendService {
     private final ContentRepository contentRepository;
 
     @Transactional
-    public List<ContentRecommendResDTO> getContentRecommend(Long userId, boolean isAdult, List<String> ottList, List<String> genres) {
+    public List<ContentRecommendResDTO> getContentRecommend(Long userId, ContentRecommendDTO contentRecommendDTO) {
         List<ContentRecommendResDTO> contentRecommendResDTOS = new ArrayList<>(); // 추가하기
-        String s = String.join(", ", genres);
-        String ottl = String.join(", ", ottList);
+        String s = String.join(", ", contentRecommendDTO.getGenres());
+        String ottl = String.join(", ", contentRecommendDTO.getOttList());
         int rating = 0;
-        if (isAdult){
+        if (contentRecommendDTO.isAdult()){
             rating = 1;
         }
         String API_URL = "https://k8a207.p.ssafy.io/v1/recommend?id=" + userId + "&genres=" + s + "&ott="+ ottl + "&rating=" + rating;

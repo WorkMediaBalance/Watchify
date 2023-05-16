@@ -116,13 +116,21 @@ public class MainScheduleService {
         return hash;
     }
 
-//    @Transactional
-//    public HashMap<String, List<DefaultContentDTO>> getrecommendnon() {
-//        HashMap<String, List<DefaultContentDTO>> hash = new HashMap<>();
-//        List<String> otts = List.of("netflix","watcha","wavve","disney");
-//        for (String ott: otts){
-//            List<ContentOTT>
+    @Transactional
+    public HashMap<String, List<DefaultContentDTO>> getrecommendnon() {
+        HashMap<String, List<DefaultContentDTO>> hash = new HashMap<>();
+        List<Long> otts = List.of(1L,2L,3L,4L);
+//        for (Long ott: otts){
+//            System.out.println(ott);
+//            List<ContentOTT> contentOTTS = contentOTTRepository.findContentOTT(ott);
+//            List<DefaultContentDTO> defaultContentDTOS = new ArrayList<>();
+//            for (ContentOTT contentOTT: contentOTTS){
+//                Content content = contentOTT.getContent();
+//                DefaultContentDTO defaultContentDTO = new DefaultContentDTO(content);
+//                defaultContentDTOS.add(defaultContentDTO);
+//            }
+//            hash.put(ott, defaultContentDTOS);
 //        }
-//        return hash;
-//    }
+        return hash;
+    }
 }

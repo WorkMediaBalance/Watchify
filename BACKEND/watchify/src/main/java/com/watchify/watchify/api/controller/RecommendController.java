@@ -23,16 +23,13 @@ public class RecommendController {
     private final RecommendService recommendService;
     private final UserService userService;
 
-    @GetMapping("")
-    public ResponseEntity<?> GetRecommendContent(HttpServletRequest request,
-                                                 @RequestParam boolean isAdult,
-                                                 @RequestParam List<String> ottList,
-                                                 @RequestParam List<String> genres) throws Exception{
+    @PostMapping("")
+    public ResponseEntity<?> GetRecommendContent(HttpServletRequest request, @RequestBody ContentRecommendDTO contentRecommendDTO) throws Exception{
         String accessToken = request.getHeader("access");
         long userId = userService.findUserIdByAccessToken(accessToken);
         try {
             // Service 단으로 넘기기
-            List<ContentRecommendResDTO> contentRecommendResDTOS = recommendService.getContentRecommend(userId, isAdult, ottList, genres);
+            List<ContentRecommendResDTO> contentRecommendResDTOS = recommendService.getContentRecommend(userId, contentRecommendDTO);
             return ResponseEntity.status(200).body(contentRecommendResDTOS);
         } catch (Exception e) {
             return ResponseEntity.status(404).body("Failed to get main schedule.");
