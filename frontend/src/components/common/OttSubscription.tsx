@@ -87,7 +87,7 @@ const OttSubscription = () => {
     }).then((result) => {
       // 구독해지시 만료일이 null이면 현재일 기준 가장 가까운 -1일 계산해서 보여줌
       if (result.isConfirmed) {
-        console.log("구독해지");
+        console.log("구독해지 - 로직 추가 필요");
         setIsAdded(false);
         const copy = { ...ott };
 
@@ -96,14 +96,17 @@ const OttSubscription = () => {
         // const today = new Date();
         // console.log(startDate, today);
 
-        //
-        copy[key] = { ...copy[key], end: null };
-        console.log(copy, "ott 구독 정보 삭제");
+        // 일단 API 돌아가는지 보기 위해 내가 이거 임시로 만들어주겠음
+        copy[key] = { ...copy[key], end: "2023-07-31" };
+        // console.log(copy, "ott 구독 정보 삭제");
         myOTTChange(copy);
         setSthHappend(!sthHappend);
       }
       if (result.dismiss === Swal.DismissReason.cancel) {
-        console.log("OTT 삭제");
+        const copy = { ...ott };
+        copy[key] = { ...copy[key], start: null, end: null };
+        console.log(copy, "OTT 삭제");
+        myOTTChange(copy);
         setIsAdded(false);
         setIs4(false);
       }
@@ -160,7 +163,6 @@ const OttSubscription = () => {
       Swal.close();
       return;
     }
-
     modalHandler();
   }, [ott]);
 
@@ -212,11 +214,22 @@ const OttSubscription = () => {
     const day = String(date.getDate()).padStart(2, "0");
     const newDate = `${year}-${month}-${day}`;
 
-    const copy = { ...ott };
-    copy[key] = { ...copy[key], start: newDate };
-    console.log(copy, "구독 시작 날짜 변경해서 ott 구독 정보 수정");
-    myOTTChange(copy);
-    setSthHappend(!sthHappend);
+    // 시작날짜, 종료날짜를 숫자 형태로 가져와서 비교
+    const startDateNumber = Number(`${year}${month}${day}`);
+    // 무기한 구독이 아닐 때 로직 (number 비교를 위해)
+    if (ott[key].end !== null) {
+      const endDateNumber = Number(ott[key].end?.replace(/-/g, "")); // 정규표현식 사용해서 -를 ''로 변경
+      if (startDateNumber > endDateNumber) {
+        alert("구독 종료일 이전 날짜를 선택해주세요.");
+        return;
+      }
+    } else {
+      const copy = { ...ott };
+      copy[key] = { ...copy[key], start: newDate };
+      console.log(copy, "구독 시작 날짜 변경해서 ott 구독 정보 수정");
+      myOTTChange(copy);
+      setSthHappend(!sthHappend);
+    }
   };
 
   // 구독 해지 날짜 변경
@@ -225,6 +238,14 @@ const OttSubscription = () => {
     const month = String(date.getMonth() + 1).padStart(2, "0");
     const day = String(date.getDate()).padStart(2, "0");
     const newDate = `${year}-${month}-${day}`;
+
+    // 시작날짜, 종료날짜를 숫자 형태로 가져와서 비교
+    const startDateNumber = Number(ott[key].start?.replace(/-/g, "")); // 정규표현식 사용해서 -를 ''로 변경
+    const endDateNumber = Number(`${year}${month}${day}`);
+    if (startDateNumber > endDateNumber) {
+      alert("구독 시작일 이후 날짜를 선택해주세요.");
+      return;
+    }
 
     const copy = { ...ott };
     copy[key] = { ...copy[key], end: newDate };
