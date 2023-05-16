@@ -73,9 +73,7 @@ public class ContentController {
         } catch (Exception e) {
             return ResponseEntity.status(404).body("Failed to get content.");
         }
-
-
-
     }
+
 
 }
