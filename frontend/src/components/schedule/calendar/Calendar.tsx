@@ -4,6 +4,7 @@ import { useSwipeable } from "react-swipeable";
 import { motion, AnimatePresence } from "framer-motion";
 import { theme } from "styles/theme";
 import { months } from "constant/constant";
+import { useNavigate } from "react-router-dom";
 import { schedule } from "interface/schedule";
 
 // month 스케줄 state
@@ -121,7 +122,7 @@ const Calendar = (props: {
 
   // 해당 스케줄 불러오기
   const monthSchedule = props.monthSchedule;
-
+  const navigate = useNavigate();
   return (
     <Wrapper className={"wrapper"}>
       <motion.div>
@@ -136,8 +137,13 @@ const Calendar = (props: {
             {...handlers}
           >
             <SHeader>
-              <SToday onClick={thisMonth}>Today</SToday>
+              <RescheduleButton
+                onClick={() => navigate("/schedule", { state: { isMakeNew: true } })}
+              >
+                New Schedule
+              </RescheduleButton>
               <SMonth>{month}</SMonth>
+              <SToday onClick={thisMonth}>Today</SToday>
             </SHeader>
 
             <STable bottomSheetState={props.bottomSheetState}>
@@ -277,22 +283,27 @@ const SHeader = styled.div`
   margin-bottom: 1vh;
   width: 100vw;
   color: ${theme.netflix.fontColor};
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
 `;
 
-const SMonth = styled.p`
+const SMonth = styled.div`
   font-size: ${theme.fontSizeType.big.fontSize};
   font-weight: ${theme.fontSizeType.big.fontWeight};
   margin-bottom: 1vh;
   margin-top: 0;
   text-align: center;
+  width: calc(100% / 3);
 `;
 
-const SToday = styled.p`
-  position: absolute;
+const SToday = styled.div`
   right: 2vw;
-  margin-bottom: 0;
-  margin-top: 0;
   line-height: 2;
+  width: calc(100% / 3);
+  text-align: end;
+  margin-right: 3vw;
 `;
 
 const STable = styled.table<{ bottomSheetState: number }>`
@@ -389,4 +400,9 @@ const IndicationBar = styled.div`
 const ContentPlus = styled.div`
   width: 100%;
   text-align: end;
+`;
+
+const RescheduleButton = styled.div`
+  width: calc(100% / 3);
+  margin-left: 3vw;
 `;

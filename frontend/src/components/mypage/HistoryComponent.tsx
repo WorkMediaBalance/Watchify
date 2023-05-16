@@ -66,7 +66,7 @@ const TitleHolder = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  flex-grow: 1;
+  width: 60%;
   margin-right: 5vw;
 `;
 
@@ -74,6 +74,9 @@ const Title = styled.div`
   color: white;
   font-size: ${({ theme }) => theme.fontSizeType.big.fontSize};
   font-weight: 900;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 interface HistoryComponentProps {
@@ -81,8 +84,21 @@ interface HistoryComponentProps {
 }
 
 const HistoryComponent: React.FC<HistoryComponentProps> = ({ contentHistory }) => {
-  const imageUrl = "https://t1.daumcdn.net/cfile/tistory/997F7A385E4A920F28";
   const navigate = useNavigate();
+  const months = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const modalStyle = {
@@ -120,38 +136,25 @@ const HistoryComponent: React.FC<HistoryComponentProps> = ({ contentHistory }) =
       day: contentHistory.firstDay,
     };
     navigate(`/my/history/${contentHistory.pk}`, { state: params });
-    // setIsModalOpen(true);
   };
 
   return (
     <div>
       <Container
-        imageUrl={imageUrl}
+        imageUrl={contentHistory && contentHistory.imgPath}
         onClick={() => {
           handleHistoryClick();
         }}
       >
         <DecorationBar />
         <DateIndicator>
-          <Date>{"18"}</Date>
-          <Month>{"Apr"}</Month>
+          <Date>{contentHistory && contentHistory.firstDay}</Date>
+          <Month>{contentHistory && months[contentHistory.firstMonth - 1]}</Month>
         </DateIndicator>
         <TitleHolder>
-          <Title>{"1945"}</Title>
+          <Title>{contentHistory && contentHistory.title}</Title>
         </TitleHolder>
       </Container>
-      <Modal
-        isOpen={isModalOpen}
-        style={modalStyle}
-        onAfterOpen={disableScroll}
-        onRequestClose={() => {
-          enableScroll();
-          setIsModalOpen(false);
-        }}
-        ariaHideApp={false}
-      >
-        {/* <Calendar /> */}
-      </Modal>
     </div>
   );
 };
