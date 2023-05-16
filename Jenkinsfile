@@ -78,7 +78,6 @@ pipeline {
                         sh 'git pull origin main'
                     }
                     dir("kubefiles"){
-                        def BUILD_NUMBER = currentBuild.number
                         sh """
                             sed -i 's/watchify:frontend\\([^:]*\\)/watchify:frontend${BUILD_NUMBER}/g' my-service.yaml
                             git add my-service.yaml
