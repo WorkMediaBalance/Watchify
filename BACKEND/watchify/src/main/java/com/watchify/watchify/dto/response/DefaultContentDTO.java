@@ -58,6 +58,7 @@ public class DefaultContentDTO {
 
     public void setIsWish(boolean flag) { this.isWish = flag;}
     public void setIsLike(int flag) {this.isLike = flag;}
+    public void setOtt(Map<String, String> ott) {this.ott = ott;}
 
 
 }

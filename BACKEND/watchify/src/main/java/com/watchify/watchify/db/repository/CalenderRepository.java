@@ -25,4 +25,10 @@ public interface CalenderRepository extends JpaRepository<Calender, Long> {
     List<Calender> getSpecificContentViewedCalender(Long userId, LocalDate startDate, LocalDate endDate);
 
 
+    // 내 전체 달력 조회 ( 삭제한거 빼고)
+    @Query(value = "select * from calender c where c.user_id = :userId and is_deleted = false order by c.date", nativeQuery = true)
+    List<Calender> getMyCalenderList(@Param("userId") Long userId);
+
+
+
 }

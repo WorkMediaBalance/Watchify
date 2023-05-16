@@ -46,6 +46,10 @@ dependencies {
 	//fcm
 	implementation 'com.google.firebase:firebase-admin:6.8.1'
 
+	// JSON 파싱 라이브러리
+	implementation 'org.json:json:20230227'
+
+
 
 
 }
