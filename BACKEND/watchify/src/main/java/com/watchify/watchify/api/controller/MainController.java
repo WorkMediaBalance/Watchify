@@ -41,7 +41,6 @@ public class MainController {
     public ResponseEntity<?> GetRecommendMovie(HttpServletRequest request) throws Exception{
         String accessToken = request.getHeader("access");
         long userId = userService.findUserIdByAccessToken(accessToken);
-
         try {
             // Service 단으로 넘기기
             HashMap<String, List<DefaultContentDTO>> defaultContentDTOS = mainScheduleService.getmainRecommend(userId);
