@@ -15,3 +15,8 @@ export interface content {
   summarize: string;
   audienceAge: number;
 }
+
+export interface HistoryDetailContent extends content {
+  date: string;
+  episode: number;
+}

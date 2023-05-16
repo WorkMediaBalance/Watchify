@@ -12,7 +12,11 @@ export const recGenreState = atom<Array<string>>({
   default: [],
 });
 
-export const recResultState = atom<Array<content>>({
+interface contentWithScore extends content {
+  score: number;
+}
+
+export const recResultState = atom<Array<contentWithScore>>({
   key: "recResultState",
   default: [
     {
@@ -29,10 +33,11 @@ export const recResultState = atom<Array<content>>({
       ott: { netflix: "https://www.netflix.com/kr/title/81519223" },
       genres: ["드라마"],
       wish: false,
-
       summarize:
         "어느 날 길을 걷던 걸무고는 우연히 알 수 없는 동전을 줍게 되고, 이 동전의 충격적인 정체가 알려지며 사건에 휩싸이게 되는데... 과연 걸무고는 무사할 수 있을까?",
       audienceAge: 15,
+
+      score: 95,
     },
     {
       pk: 2,
@@ -54,6 +59,7 @@ export const recResultState = atom<Array<content>>({
 
       summarize: "뱀파이어가 울부지저따. 뱀파이어는 짱 쎄따. 크와아앙",
       audienceAge: 15,
+      score: 95,
     },
     {
       pk: 3,
@@ -79,6 +85,7 @@ export const recResultState = atom<Array<content>>({
       summarize:
         "한참 어린 동생으로부터 스타 도전을 받은 걸무고, 과연 그는 저그의 자존심을 지켜낼 수 있을 것인가? 5월 1일. Python 개봉 박두",
       audienceAge: 15,
+      score: 95,
     },
     {
       pk: 4,
@@ -102,6 +109,7 @@ export const recResultState = atom<Array<content>>({
       summarize:
         "한참 어린 동생으로부터 스타 도전을 받은 걸무고, 과연 그는 저그의 자존심을 지켜낼 수 있을 것인가? 5월 1일. Python 개봉 박두",
       audienceAge: 15,
+      score: 95,
     },
     {
       pk: 5,
@@ -125,6 +133,7 @@ export const recResultState = atom<Array<content>>({
       summarize:
         "한참 어린 동생으로부터 스타 도전을 받은 걸무고, 과연 그는 저그의 자존심을 지켜낼 수 있을 것인가? 5월 1일. Python 개봉 박두",
       audienceAge: 15,
+      score: 95,
     },
     {
       pk: 6,
@@ -148,6 +157,7 @@ export const recResultState = atom<Array<content>>({
       summarize:
         "한참 어린 동생으로부터 스타 도전을 받은 걸무고, 과연 그는 저그의 자존심을 지켜낼 수 있을 것인가? 5월 1일. Python 개봉 박두",
       audienceAge: 15,
+      score: 95,
     },
     {
       pk: 7,
@@ -171,6 +181,7 @@ export const recResultState = atom<Array<content>>({
       summarize:
         "한참 어린 동생으로부터 스타 도전을 받은 걸무고, 과연 그는 저그의 자존심을 지켜낼 수 있을 것인가? 5월 1일. Python 개봉 박두",
       audienceAge: 15,
+      score: 95,
     },
     {
       pk: 8,
@@ -194,6 +205,7 @@ export const recResultState = atom<Array<content>>({
       summarize:
         "한참 어린 동생으로부터 스타 도전을 받은 걸무고, 과연 그는 저그의 자존심을 지켜낼 수 있을 것인가? 5월 1일. Python 개봉 박두",
       audienceAge: 15,
+      score: 95,
     },
   ],
   effects_UNSTABLE: [persistAtom],
