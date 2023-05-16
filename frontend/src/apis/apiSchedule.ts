@@ -27,8 +27,9 @@ export const scheduleInfoAll = async () => {
 // 스케줄 만들기
 export const scheduleCreate = async (data: schedulePreInfo) => {
   try {
-    await api.post("api/schedule/create", data);
-    return true;
+    const res = await api.post("api/schedule/create", data);
+    // console.log(res.data);
+    return res.data;
   } catch (err) {
     console.log("스케줄 생성 실패");
     console.log(err);
