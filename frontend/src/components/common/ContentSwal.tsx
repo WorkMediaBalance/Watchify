@@ -8,13 +8,7 @@ import wavve from "assets/img/wavveIcon.png";
 
 import { content } from "interface/content";
 
-import {
-  contentInfo,
-  contentLike,
-  contentWishSwitch,
-  contentRating,
-  contentRecommend,
-} from "apis/apiContent";
+import { contentInfo, contentLike, contentWishSwitch } from "apis/apiContent";
 
 import { AiOutlineLike, AiOutlineDislike, AiFillLike, AiFillDislike } from "react-icons/ai";
 import ReactStars from "react-stars";
@@ -25,8 +19,6 @@ interface ContentSwalProps {
 
 const ContentSwal: React.FC<ContentSwalProps> = ({ content: content }) => {
   const [isWish, setIsWish] = useState<boolean | null>(null); //TODO: props받아서 찜여부 초기값 설정 해주기
-  const [isLike, setIsLike] = useState<number | null>(null); // TODO: 여기 초기화 ★★★ 별점 업데이트 된 후 삭제 예정
-  // ★★★ 별점 state (content interface (like -> rating으로 변경해주어야 함))
   const [rating, setRating] = useState<number | undefined>(undefined);
   const [newContentInfo, setNewContentInfo] = useState<content | null>(null);
 
@@ -35,34 +27,14 @@ const ContentSwal: React.FC<ContentSwalProps> = ({ content: content }) => {
     let newData = await contentInfo({ pk: pk });
     console.log(newData, "뉴데이터");
     setNewContentInfo(newData);
-    setIsLike(newData.isLike); // 별점 업데이트 된 후 삭제 예정
     setIsWish(newData.wish);
-    // ★★★ 별점 API 업데이트 (API 연결 후 주석 해제 필요)
-    // setRating(newData.rating)
+    setRating(newData.like);
   }
   useEffect(() => {
     if (!content) return;
     console.log(content, "컨텐츠");
     contentInfoAPI(content.pk);
   }, []);
-
-  // 좋아요 조건부 - ★★★ 별점 업데이트 된 후 삭제 예정
-  const handleLike = () => {
-    contentLike({ pk: content.pk, isLike: true });
-    setIsLike(1);
-  };
-  const handleLikeCancel = () => {
-    contentLike({ pk: content.pk, isLike: false });
-    setIsLike(0);
-  };
-  const handleDislike = () => {
-    contentLike({ pk: content.pk, isLike: false });
-    setIsLike(-1);
-  };
-  const handleDislikeCancel = () => {
-    contentLike({ pk: content.pk, isLike: true });
-    setIsLike(0);
-  };
 
   const handleWishClick = () => {
     contentWishSwitch({ pk: content.pk });
@@ -88,10 +60,9 @@ const ContentSwal: React.FC<ContentSwalProps> = ({ content: content }) => {
     window.open(url, "_blank", "noopener,noreferrer");
   };
 
+  // 평점 변경 API
   const changeRating = (e: number) => {
-    console.log(e, "수정한 별점");
-    // ★★★ 평점 변경 API 요청 (백엔드 구현 시 주석 해제 예정)
-    // contentRating({ pk: content.pk, rating: e });
+    contentLike({ pk: content.pk, like: e });
     setRating(e);
   };
 
@@ -135,7 +106,7 @@ const ContentSwal: React.FC<ContentSwalProps> = ({ content: content }) => {
               color2={"#F84F5A"}
               onChange={(e) => changeRating(e)}
             />
-            <Like>
+            {/* <Like>
               {isLike === 1 ? (
                 <StyledAiFillLike
                   size={20}
@@ -172,7 +143,7 @@ const ContentSwal: React.FC<ContentSwalProps> = ({ content: content }) => {
                   }}
                 />
               )}
-            </Dislike>
+            </Dislike> */}
           </LikeDislike>
         </Header>
       </BackdropContainer>

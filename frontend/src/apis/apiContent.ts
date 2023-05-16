@@ -42,7 +42,7 @@ export const contentWishSwitch = async (data: { [pk: string]: number }) => {
   isLike: true,
 }
 */
-export const contentLike = async (data: { pk: number; isLike: boolean }) => {
+export const contentLike = async (data: { pk: number; like: number }) => {
   try {
     await api.put("api/content/like", data);
     return true;
