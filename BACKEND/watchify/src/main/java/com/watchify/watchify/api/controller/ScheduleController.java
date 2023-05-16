@@ -5,6 +5,7 @@ import com.watchify.watchify.dto.request.ScheduleCreateRequestDTO;
 import com.watchify.watchify.dto.response.CalenderDTO;
 import com.watchify.watchify.dto.response.DefaultContentDTO;
 import com.watchify.watchify.dto.response.HistoryInfoDTO;
+import com.watchify.watchify.dto.response.ScheduleObjDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -47,7 +48,7 @@ public class ScheduleController {
         long userId = userService.findUserIdByAccessToken(accessToken);
 
         try {
-            Map<String, Map<Integer, List<HistoryInfoDTO>>> res = scheduleCreateService.createSchedule(userId, req);
+            Map<String, Map<Integer, List<ScheduleObjDTO>>> res = scheduleCreateService.createSchedule(userId, req);
             return ResponseEntity.status(200).body(res);
         } catch (Exception e) {
             return ResponseEntity.status(404).body("Failed to create schedule");
@@ -61,7 +62,7 @@ public class ScheduleController {
         long userId = userService.findUserIdByAccessToken(accessToken);
 
         try {
-            Map<String, Map<Integer, List<HistoryInfoDTO>>> res = scheduleGetService.getSchedule(userId);
+            Map<String, Map<Integer, List<ScheduleObjDTO>>> res = scheduleGetService.getSchedule(userId);
             return ResponseEntity.status(200).body(res);
         } catch (Exception e) {
             return ResponseEntity.status(404).body("Failed to get schedule");
@@ -105,7 +106,7 @@ public class ScheduleController {
     @GetMapping("/nonauth/share/{pk}")
     public ResponseEntity<?> getScheduleShare(@PathVariable("pk") Long pk) {
 
-        Map<String, Map<Integer, List<HistoryInfoDTO>>> res = scheduleShareService.getShareSchedule(pk);
+        Map<String, Map<Integer, List<ScheduleObjDTO>>> res = scheduleShareService.getShareSchedule(pk);
         try {
 
             return ResponseEntity.status(200).body(res);
