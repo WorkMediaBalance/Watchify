@@ -1,5 +1,5 @@
 import api from "./axiosInstance";
-import { Schedule } from "constant/constant";
+import { schedulePreInfo } from "interface/schedule";
 
 // 월간 스케줄 조회
 export const scheduleInfo = async (year: number, month: number) => {
@@ -13,9 +13,9 @@ export const scheduleInfo = async (year: number, month: number) => {
 };
 
 // 스케줄 만들기
-export const scheduleCreate = async (data: Schedule) => {
+export const scheduleCreate = async (data: schedulePreInfo) => {
   try {
-    await api.post("api/sehedule/create", data);
+    await api.post("api/schedule/create", data);
     return true;
   } catch (err) {
     console.log("스케줄 생성 실패");
