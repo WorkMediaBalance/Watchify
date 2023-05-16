@@ -38,7 +38,7 @@ public class ContentService {
 
         for (LikeContent lc : myLikeContentList) {
             if (lc.getContent().equals(content)) {
-                res.setIsLike(lc.isLike() ? 1 : -1);
+                res.setLike(lc.getLike());
                 break;
             }
         }

@@ -119,7 +119,7 @@ public class ScheduleCreateService {
             historyInfoDTO.setIsWish(myWishContentList.contains(thisContent.getId()));
             for (LikeContent lc : myLikeContentList) {
                 if (lc.getContent().equals(thisContent)) {
-                    historyInfoDTO.setIsLike(lc.isLike() ? 1 : -1);
+                    historyInfoDTO.setLike(lc.getLike());
                     break;
                 }
             }

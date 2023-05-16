@@ -76,7 +76,7 @@ public class HistoryService {
 
             for (LikeContent lc : myLikeContentList) {
                 if (lc.getContent().equals(content)) {
-                    historyDTO.setIsLike(lc.isLike() ? 1 : -1);
+                    historyDTO.setLike(lc.getLike());
                     break;
                 }
             }
@@ -109,7 +109,7 @@ public class HistoryService {
 
             for (LikeContent lc : myLikeContentList) {
                 if (lc.getContent().equals(content)) {
-                    historyInfoDTO.setIsLike(lc.isLike() ? 1 : -1);
+                    historyInfoDTO.setLike(lc.getLike());
                     break;
                 }
             }

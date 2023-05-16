@@ -20,7 +20,7 @@ public class DefaultContentDTO {
     private Map<String, String> ott;
     private ArrayList<String> genres;
     private boolean isWish = false;
-    private int isLike = 0;
+    private Double like = -1d;
     private String summarize;
     private int audienceAge;
 
@@ -57,7 +57,7 @@ public class DefaultContentDTO {
     }
 
     public void setIsWish(boolean flag) { this.isWish = flag;}
-    public void setIsLike(int flag) {this.isLike = flag;}
+    public void setLike(Double like) {this.like = like;}
     public void setOtt(Map<String, String> ott) {this.ott = ott;}
 
 
