@@ -30,13 +30,13 @@ public class HistoryService {
     public List<HistoryDTO> getUserHistory(Long userId) {
         List<HistoryDTO> res = new ArrayList<>();
 
-        List<Calender> myCalenderList = calenderRepository.getMyViewedCalender(userId);
+        List<Calender> myCalenderList = calenderRepository.getMyViewedCalender(userId); // 시청한 것들만 확인
         List<Long> myWishContentList = wishContentRepository.getContentIdInMyWishList(userId);
         List<LikeContent> myLikeContentList = likeContentRepository.getLikeContent(userId);
         HashMap<Content, Integer> checkMap = new HashMap<>();
         HashMap<Content, LocalDate> firstDateMap = new HashMap<>();
 
-        for (Calender calender : myCalenderList) {
+        for (Calender calender : myCalenderList) { // 캘린더를 통해 시청날짜 확인
             Content content = calender.getTurnContent().getContent();
             int contentEp = calender.getTurnContent().getEpisode();
             if (checkMap.containsKey(content)) {
@@ -46,19 +46,18 @@ public class HistoryService {
                 checkMap.put(content, 1);
             }
 
-            if (contentEp <= 1) {
-                LocalDate bDate = calender.getViewDate();
-                if (firstDateMap.containsKey(content)) {
-                    LocalDate aDate = firstDateMap.get(content);
-                    if (aDate.isBefore(bDate)) {
-                        firstDateMap.put(content, aDate);
-                    } else {
-                        firstDateMap.put(content, bDate);
-                    }
+            LocalDate bDate = calender.getViewDate();
+            if (firstDateMap.containsKey(content)) {
+                LocalDate aDate = firstDateMap.get(content);
+                if (aDate.isBefore(bDate)) {
+                    firstDateMap.put(content, aDate);
                 } else {
                     firstDateMap.put(content, bDate);
                 }
+            } else {
+                firstDateMap.put(content, bDate);
             }
+
         }
 
         for (Content content : checkMap.keySet()) {
@@ -71,6 +70,8 @@ public class HistoryService {
             } else {
                 isComplete = false;
             }
+
+            System.out.println(firstDate);
             HistoryDTO historyDTO = new HistoryDTO(content, firstDate, isComplete);
             historyDTO.setIsWish(myWishContentList.contains(content.getId()));
 
@@ -82,6 +83,7 @@ public class HistoryService {
             }
             res.add(historyDTO);
         }
+
 
         return res;
     }
@@ -125,5 +127,13 @@ public class HistoryService {
         }
 
         return res;
+    }
+
+    public LocalDate compareDate(LocalDate a, LocalDate b) {
+        if (a.compareTo(b) < 0) {
+            return a;
+        } else {
+          return b;
+        }
     }
 }

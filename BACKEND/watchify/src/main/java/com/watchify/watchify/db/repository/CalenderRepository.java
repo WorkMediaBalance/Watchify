@@ -18,6 +18,7 @@ public interface CalenderRepository extends JpaRepository<Calender, Long> {
     @Query(value = "select * from calender c where c.user_id = :userId and is_deleted = false and c.date >= :startDate ORDER BY c.date ASC", nativeQuery = true)
     List<Calender> getScheduleAfterStartDate(Long userId, LocalDate startDate);
 
+    // view_date 가 있는 캘린더 만 == 시청한 켈린더만
     @Query(value = "select * from calender c where c.user_id = :userId and is_deleted = false and view_date is not null", nativeQuery = true)
     List<Calender> getMyViewedCalender(@Param("userId") Long userId);
 
@@ -29,6 +30,9 @@ public interface CalenderRepository extends JpaRepository<Calender, Long> {
     @Query(value = "select * from calender c where c.user_id = :userId and is_deleted = false order by c.date", nativeQuery = true)
     List<Calender> getMyCalenderList(@Param("userId") Long userId);
 
+
+    @Query(value = "select * from calender c where c.user_id = :userId and is_deleted = false and date=:date and turn_content_id=:tcId", nativeQuery = true)
+    Calender getSpecificByUserDateTurnContent(Long userId, LocalDate date, Long tcId);
 
 
 }
