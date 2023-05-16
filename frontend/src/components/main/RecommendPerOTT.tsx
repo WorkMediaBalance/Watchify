@@ -19,23 +19,15 @@ import ContentPoster from "components/common/ContentPoster";
 import { content } from "interface/content";
 
 type recommendPerOtt = {
-  netflix: content[];
-  wavve: content[];
-  watcha: content[];
-  disney: content[];
+  [key: string]: content[];
 };
 
 const RecommendPerOTT = () => {
   const [recResult, SetRecResult] = useRecoilState(recResultState); //TODO: recResult[0] 을 컨텐츠 result[ott][index]으로 치환하면 됨
 
-  const [result, setResult] = useState<recommendPerOtt>({
-    netflix: [],
-    wavve: [],
-    watcha: [],
-    disney: [],
-  });
+  const [result, setResult] = useState<recommendPerOtt | undefined>();
 
-  const [ott, setOtt] = useState("netflix");
+  const [ott, setOtt] = useState("Netflix");
   const [index, setIndex] = useState(0);
 
   const handleIconClick = (icon: string) => {
@@ -57,6 +49,7 @@ const RecommendPerOTT = () => {
   const getOttRecommendNon = async () => {
     const data = await mainRecommendNon();
     setResult(data);
+    console.log(data);
   };
 
   useEffect(() => {
@@ -79,17 +72,17 @@ const RecommendPerOTT = () => {
       <ContentContainer>
         <Poster className="poster">
           <ContentPoster
-            title={recResult[0].title}
-            imageUrl={recResult[0].imgPath}
-            content={recResult[0]}
+            title={result![ott][index].title}
+            imageUrl={result![ott][index].imgPath}
+            content={result![ott][index]}
           />
         </Poster>
         <Content>
           <OTTIcons>
             <OTTIcon
-              src={ott === "netflix" ? netflixSelected : netflix}
+              src={ott === "Netflix" ? netflixSelected : netflix}
               onClick={() => {
-                handleIconClick("netflix");
+                handleIconClick("Netflix");
               }}
             ></OTTIcon>
             <OTTIcon
@@ -99,9 +92,9 @@ const RecommendPerOTT = () => {
               }}
             ></OTTIcon>
             <OTTIcon
-              src={ott === "wavve" ? wavveSelected : wavve}
+              src={ott === "Wavve" ? wavveSelected : wavve}
               onClick={() => {
-                handleIconClick("wavve");
+                handleIconClick("Wavve");
               }}
             ></OTTIcon>
             <OTTIcon
@@ -121,10 +114,10 @@ const RecommendPerOTT = () => {
             }}
           >
             <div>
-              <Title>{recResult[0].title}</Title>
-              <Rating>{recResult[0].rate} / 5.0</Rating>
+              <Title>{result !== undefined && result[ott][index].title}</Title>
+              <Rating>{result !== undefined && result[ott][index].rate} / 5.0</Rating>
             </div>
-            <Story>{recResult[0].summarize}</Story>
+            <Story>{result !== undefined && result[ott][index].summarize}</Story>
             <div
               style={{
                 display: "flex",

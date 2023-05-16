@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import styled from "styled-components";
 import { recResultState } from "recoil/recommendState";
 import { useRecoilState } from "recoil";
@@ -175,6 +176,13 @@ const PageRecommendResult = () => {
       : hour === 0
       ? `${minute}분`
       : `${hour}시간 ${minute}분`;
+
+  const location = useLocation();
+
+  useEffect(() => {
+    const data = location.state?.data;
+    console.log(data);
+  }, []);
 
   return (
     <Wrapper>
