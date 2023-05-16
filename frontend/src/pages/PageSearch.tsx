@@ -11,7 +11,7 @@ import { content } from "interface/content";
 
 import { searchResult } from "apis/apiSearch";
 
-import logoImg from "assets/img/logo.png";
+import logoImg from "assets/WatchifyLogo2.png";
 import ContentPoster from "components/common/ContentPoster";
 
 const PageSearch = () => {
@@ -187,17 +187,31 @@ const PageSearch = () => {
             <SHr />
             {searchResultData && searchResultData.length > 0 ? (
               <>
-                <SSearchLengthDiv>총 {searchResultData.length}개의 컨텐츠</SSearchLengthDiv>
+                <div
+                  style={{
+                    width: "100%",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "start",
+                  }}
+                >
+                  <SSearchLengthDiv>
+                    총 <OrangeSpan>{searchResultData.length}</OrangeSpan> 개의 컨텐츠
+                  </SSearchLengthDiv>
+                </div>
                 <ContentsContainer>
                   {searchResultData.map((content, idx) => (
-                    <ContentContainer>
-                      <ContentPoster
-                        content={content}
-                        key={idx}
-                        title={content.title}
-                        imageUrl={content.imgPath}
-                      />
-                    </ContentContainer>
+                    <div>
+                      <ContentContainer>
+                        <ContentPoster
+                          content={content}
+                          key={idx}
+                          title={content.title}
+                          imageUrl={content.imgPath}
+                        />
+                      </ContentContainer>
+                      <TitleDiv>{content.title}</TitleDiv>
+                    </div>
                   ))}
                 </ContentsContainer>
               </>
@@ -310,7 +324,7 @@ const Slayout = styled.div`
 `;
 
 const SLogoImg = styled.img`
-  width: 45vw;
+  width: auto;
   height: 29vw;
   margin-top: 20vw;
   margin-bottom: 5vw;
@@ -439,6 +453,8 @@ const SNoResultDIV = styled.div`
 const SSearchLengthDiv = styled.div`
   font-size: 5vw;
   font-weight: ${({ theme }) => theme.fontSizeType.middle.fontWeight};
+  margin: 3vw;
+  margin-bottom: 0;
 `;
 
 const ContentsContainer = styled.div`
@@ -450,5 +466,16 @@ const ContentsContainer = styled.div`
 `;
 
 const ContentContainer = styled.div`
+  width: 40vw;
+`;
+
+const OrangeSpan = styled.span`
+  color: ${({ theme }) => theme.netflix.lightColor};
+`;
+
+const TitleDiv = styled.div`
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   width: 40vw;
 `;

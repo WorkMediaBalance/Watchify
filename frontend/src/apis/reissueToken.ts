@@ -15,27 +15,28 @@ const refreshAxios = axios.create({
 });
 
 export const reissueAccessToken = async () => {
-  refreshAxios.defaults.headers["Authorization"] = "Bearer " + localStorage.getItem("refreshToken");
+  // authorization -> access로 바꿨음. + bears인가 뭔가도 지웠음
+  refreshAxios.defaults.headers.access = localStorage.getItem("refreshToken");
   await refreshAxios
-    .get("/api/auth/refresh")
+    .get("api/auth/refresh")
     .then((response) => {
       localStorage.setItem("accessToken", response.data);
     })
     .catch((error) => {
-      // localStorage.clear();
-      // Swal.fire({
-      //   title: "세션이 만료되었습니다.",
-      //   text: "다시 로그인해주세요",
-      //   icon: "error",
-      //   timer: 1500,
-      //   customClass: {
-      //     container: "my-swal-container",
-      //     confirmButton: "my-swal-confirm-button",
-      //     cancelButton: "my-swal-cancel-button",
-      //     icon: "my-swal-icon",
-      //   },
-      // }).then((result) => {
-      //   window.location.href = `${BASE_URL}/login`;
-      // });
+      localStorage.clear();
+      Swal.fire({
+        title: "세션이 만료되었습니다.",
+        text: "다시 로그인해주세요",
+        icon: "error",
+        timer: 1500,
+        customClass: {
+          container: "my-swal-container",
+          confirmButton: "my-swal-confirm-button",
+          cancelButton: "my-swal-cancel-button",
+          icon: "my-swal-icon",
+        },
+      }).then((result) => {
+        window.location.href = `${BASE_URL}login`;
+      });
     });
 };
