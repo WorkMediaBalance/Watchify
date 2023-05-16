@@ -12,6 +12,18 @@ export const scheduleInfo = async (year: number, month: number) => {
   }
 };
 
+// 전체 스케줄 조회
+export const scheduleInfoAll = async () => {
+  try {
+    const res = await api.get(`api/schedule/info/all`);
+    return res.data;
+  } catch (err) {
+    console.log("월간 스케줄 받아오기 실패");
+    console.log(err);
+    return false;
+  }
+};
+
 // 스케줄 만들기
 export const scheduleCreate = async (data: Schedule) => {
   try {

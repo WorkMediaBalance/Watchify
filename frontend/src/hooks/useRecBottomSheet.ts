@@ -18,6 +18,7 @@ export default function useRecBottomSheet() {
   const sheet = useRef<HTMLDivElement>(null);
 
   const content = useRef<HTMLDivElement>(null);
+  const handle = useRef<HTMLDivElement>(null);
 
   const metrics = useRef<BottomSheetMetrics>({
     touchStart: {
@@ -53,7 +54,7 @@ export default function useRecBottomSheet() {
         return true;
       }
 
-      if (sheet.current!.getBoundingClientRect().y !== MIN_Y) {
+      if (handle.current!.getBoundingClientRect().y !== MIN_Y) {
         return true;
       }
 
@@ -65,7 +66,7 @@ export default function useRecBottomSheet() {
 
     const handleTouchStart = (e: TouchEvent) => {
       const { touchStart } = metrics.current;
-      touchStart.sheetY = sheet.current!.getBoundingClientRect().y;
+      touchStart.sheetY = handle.current!.getBoundingClientRect().y;
       touchStart.touchY = e.touches[0].clientY;
     };
 
@@ -103,8 +104,15 @@ export default function useRecBottomSheet() {
         if (nextSheetY >= MAX_Y) {
           nextSheetY = MAX_Y;
         }
-
-        sheet.current!.style.setProperty("transform", `translateY(${nextSheetY - MAX_Y}px)`); //바닥 만큼은 빼야쥬...
+        const VIEWPORT_HEIGHT = window.innerHeight;
+        sheet.current!.style.setProperty(
+          "transform",
+          `translateY(${
+            currentTouch.clientY - VIEWPORT_HEIGHT < MIN_Y - MAX_Y
+              ? MIN_Y - MAX_Y
+              : currentTouch.clientY - VIEWPORT_HEIGHT
+          }px)`
+        ); //바닥 만큼은 빼야쥬...
       } else {
         document.body.style.overflowY = "hidden";
       }
@@ -143,9 +151,14 @@ export default function useRecBottomSheet() {
       };
     };
 
-    sheet.current!.addEventListener("touchstart", handleTouchStart);
-    sheet.current!.addEventListener("touchmove", handleTouchMove);
-    sheet.current!.addEventListener("touchend", handleTouchEnd);
+    handle.current!.addEventListener("touchstart", handleTouchStart);
+    handle.current!.addEventListener("touchmove", handleTouchMove);
+    handle.current!.addEventListener("touchend", handleTouchEnd);
+    return () => {
+      handle.current?.removeEventListener("touchstart", handleTouchStart);
+      handle.current?.removeEventListener("touchmove", handleTouchMove);
+      handle.current?.removeEventListener("touchend", handleTouchEnd);
+    };
   }, []);
 
   useEffect(() => {
@@ -155,5 +168,5 @@ export default function useRecBottomSheet() {
     content.current!.addEventListener("touchstart", handleTouchStart);
   }, []);
 
-  return { sheet, content, openBottomSheet, closeBottomSheet, isOpenSheet };
+  return { sheet, content, openBottomSheet, closeBottomSheet, isOpenSheet, handle };
 }

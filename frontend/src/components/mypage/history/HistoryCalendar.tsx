@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { theme } from "styles/theme";
 import { months } from "constant/constant";
 import { HistoryDetailContent } from "recoil/history";
+import { myHistoryInfo } from "apis/apiMy";
 
 const HistoryCalendar = (props: {
   onDateClick: (date: number, month: number) => void;
