@@ -30,9 +30,11 @@ public class FCMService {
 
     @Transactional
     public void saveFcmToken(Long userId, String fcmToken) {
-        User user = userRepository.getUserById(userId);
-        user.updateFcmToken(fcmToken);
-        userRepository.save(user);
+        if (userId != null) {
+            User user = userRepository.getUserById(userId);
+            user.updateFcmToken(fcmToken);
+            userRepository.save(user);
+        }
     }
 
     @Async
