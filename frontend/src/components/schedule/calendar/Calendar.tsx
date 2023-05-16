@@ -1,18 +1,20 @@
-import React, { useState, useEffect, useRef, useMemo } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { useSwipeable } from "react-swipeable";
 import { motion, AnimatePresence } from "framer-motion";
 import { theme } from "styles/theme";
 import { months } from "constant/constant";
+import { schedule } from "interface/schedule";
 
 // month 스케줄 state
 import { monthScheduleState } from "recoil/scheduleState";
 import { useRecoilState } from "recoil";
-
 const Calendar = (props: {
-  onDateClick: (date: number, month: number) => void;
+  onDateClick: (date: number, month: number, year: number) => void;
   onCloseSheet: () => void;
   bottomSheetState: number;
+  monthSchedule: schedule;
+  setMonthSchedule: (data: schedule) => void;
 }) => {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [clickedDay, setClickedDay] = useState<HTMLElement | null>(null);
@@ -111,13 +113,14 @@ const Calendar = (props: {
       setClickedDay(event.currentTarget);
       const date = selectedDate.getMonth() + 1;
       const month = Number(YMD[2]);
-      props.onDateClick(month, date);
+      const year = selectedDate.getFullYear();
+      props.onDateClick(month, date, year);
     }
     setCurrentRowIndex(rowIndex);
   };
 
   // 해당 스케줄 불러오기
-  const [monthSchedule, setMonthSchedule] = useRecoilState(monthScheduleState);
+  const monthSchedule = props.monthSchedule;
 
   return (
     <Wrapper className={"wrapper"}>
@@ -184,7 +187,7 @@ const Calendar = (props: {
                                 <SP className="SP">{content}</SP>
 
                                 <InnerConteiner>
-                                  {typeof content === "number"
+                                  {typeof content === "number" && monthSchedule[content]
                                     ? monthSchedule[content].map((content, index) => {
                                         return <IndicationBar />;
                                       })
@@ -206,7 +209,7 @@ const Calendar = (props: {
                               <SP>{content}</SP>
 
                               <InnerConteiner>
-                                {typeof content === "number"
+                                {typeof content === "number" && monthSchedule[content]
                                   ? monthSchedule[content].map((content, index) => {
                                       return <IndicationBar />;
                                     })
@@ -227,7 +230,7 @@ const Calendar = (props: {
                               <SP>{content}</SP>
 
                               <InnerConteiner>
-                                {typeof content === "number"
+                                {typeof content === "number" && monthSchedule[content]
                                   ? monthSchedule[content].map((content, index) => {
                                       return (
                                         <ContentTag>

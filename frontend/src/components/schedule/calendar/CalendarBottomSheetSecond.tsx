@@ -15,7 +15,7 @@ const CalendarBottomSheetSecond = (props: { date: number; month: number }) => {
   //  useEffect(() => {
   // const [dateScheduleList, setDateScheduleList] = useState(monthSchedule[props.date]);
   //   }, )
-  const dateScheduleList = monthSchedule[props.date];
+  const dateScheduleList = monthSchedule[props.date] === undefined ? [] : monthSchedule[props.date];
 
   const nextContent = () => {
     if (

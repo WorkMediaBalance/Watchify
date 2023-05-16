@@ -138,7 +138,6 @@ export const monthScheduleState = atom<schedule>({
         audienceAge: 15,
       },
     ],
-    2: [],
     3: [
       {
         pk: 2,
@@ -161,9 +160,6 @@ export const monthScheduleState = atom<schedule>({
         audienceAge: 15,
       },
     ],
-    4: [],
-    5: [],
-    6: [],
     7: [
       {
         pk: 2,
@@ -186,9 +182,6 @@ export const monthScheduleState = atom<schedule>({
         audienceAge: 15,
       },
     ],
-    8: [],
-    9: [],
-    10: [],
     11: [
       {
         pk: 2,
@@ -211,7 +204,6 @@ export const monthScheduleState = atom<schedule>({
         audienceAge: 15,
       },
     ],
-    12: [],
     13: [
       {
         pk: 1,
@@ -232,7 +224,6 @@ export const monthScheduleState = atom<schedule>({
         audienceAge: 15,
       },
     ],
-    14: [],
     15: [
       {
         pk: 1,
@@ -253,7 +244,6 @@ export const monthScheduleState = atom<schedule>({
         audienceAge: 15,
       },
     ],
-    16: [],
     17: [
       {
         pk: 2,
@@ -276,9 +266,6 @@ export const monthScheduleState = atom<schedule>({
         audienceAge: 15,
       },
     ],
-    18: [],
-    19: [],
-    20: [],
     21: [
       {
         pk: 1,
@@ -299,8 +286,6 @@ export const monthScheduleState = atom<schedule>({
         audienceAge: 15,
       },
     ],
-    22: [],
-    23: [],
     24: [
       {
         pk: 2,
@@ -341,8 +326,6 @@ export const monthScheduleState = atom<schedule>({
         audienceAge: 15,
       },
     ],
-    25: [],
-    26: [],
     27: [
       {
         pk: 2,
@@ -365,8 +348,6 @@ export const monthScheduleState = atom<schedule>({
         audienceAge: 15,
       },
     ],
-    28: [],
-    29: [],
     30: [
       {
         pk: 2,
@@ -407,6 +388,5 @@ export const monthScheduleState = atom<schedule>({
         audienceAge: 15,
       },
     ],
-    31: [],
   },
 });

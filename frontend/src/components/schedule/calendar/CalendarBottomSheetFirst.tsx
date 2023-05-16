@@ -15,7 +15,8 @@ const CalendarBottomSheetFirst = (props: { date: number; month: number }) => {
   //  useEffect(() => {
   // const [dateScheduleList, setDateScheduleList] = useState(monthSchedule[props.date]);
   //   }, )
-  const dateScheduleList = monthSchedule[props.date];
+
+  const dateScheduleList = monthSchedule[props.date] === undefined ? [] : monthSchedule[props.date];
 
   const nextContent = () => {
     if (
@@ -38,6 +39,11 @@ const CalendarBottomSheetFirst = (props: { date: number; month: number }) => {
   });
 
   const [index, setIndex] = useState(0);
+
+  const seenHandler = () => {};
+
+  const laterHandler = () => {};
+
   return (
     <div>
       <Container {...handlers}>
@@ -67,8 +73,8 @@ const CalendarBottomSheetFirst = (props: { date: number; month: number }) => {
                 {/* <Dot></Dot> */}
               </TitleAndDot>
               <ButtonContainer>
-                <SeenButton>{"시청함"}</SeenButton>
-                <PostponeButton>{"미루기"}</PostponeButton>
+                <SeenButton onClick={seenHandler}>{"시청함"}</SeenButton>
+                <PostponeButton onClick={laterHandler}>{"미루기"}</PostponeButton>
               </ButtonContainer>
             </TextContainer>
           </ContentContainer>
