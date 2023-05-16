@@ -12,4 +12,6 @@ public interface ContentOTTRepository extends JpaRepository<ContentOTT, Long> {
     @Query(value = "select * from contentott c where c.content_id = :contentId order by c.ott_id", nativeQuery = true)
     List<ContentOTT> getContentOTTByContentId(@Param("contentId") Long contentId);
 
+//    @Query(value = "SELECT c FROM ContentOTT c WHERE c.ott.name = :ott ORDER BY c.content.rate DESC limit 10", nativeQuery = true)
+//    List<ContentOTT> findContentOTTByNetflix(@Param("ott") String ott);
 }

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.client.RestTemplate;
 import reactor.core.publisher.Mono;
 
+import java.lang.reflect.Array;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -29,6 +30,7 @@ public class MainScheduleService {
     private final WishContentRepository wishContentRepository;
     private final LikeContentRepository likeContentRepository;
     private final ContentRepository contentRepository;
+    private final ContentOTTRepository contentOTTRepository;
 
     public Map<Integer, List<CalenderDTO>> getMainSchedule(Long userId) {
 
@@ -115,7 +117,12 @@ public class MainScheduleService {
     }
 
 //    @Transactional
-//    public List<DefaultContentDTO> getrecommendnon() {
-//
+//    public HashMap<String, List<DefaultContentDTO>> getrecommendnon() {
+//        HashMap<String, List<DefaultContentDTO>> hash = new HashMap<>();
+//        List<String> otts = List.of("netflix","watcha","wavve","disney");
+//        for (String ott: otts){
+//            List<ContentOTT>
+//        }
+//        return hash;
 //    }
 }

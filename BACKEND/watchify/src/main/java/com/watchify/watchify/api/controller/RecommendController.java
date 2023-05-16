@@ -7,6 +7,7 @@ import com.watchify.watchify.dto.request.SchduleRecommendtestDTO;
 import com.watchify.watchify.dto.response.ContentRecommendResDTO;
 import com.watchify.watchify.dto.response.DefaultContentDTO;
 import lombok.RequiredArgsConstructor;
+import net.minidev.json.JSONUtil;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,12 +24,15 @@ public class RecommendController {
     private final UserService userService;
 
     @GetMapping("")
-    public ResponseEntity<?> GetRecommendContent(HttpServletRequest request, @RequestBody ContentRecommendDTO contentRecommendDTO) throws Exception{
+    public ResponseEntity<?> GetRecommendContent(HttpServletRequest request,
+                                                 @RequestParam boolean isAdult,
+                                                 @RequestParam List<String> ottList,
+                                                 @RequestParam List<String> genres) throws Exception{
         String accessToken = request.getHeader("access");
         long userId = userService.findUserIdByAccessToken(accessToken);
         try {
             // Service 단으로 넘기기
-            List<ContentRecommendResDTO> contentRecommendResDTOS = recommendService.getContentRecommend(userId, contentRecommendDTO);
+            List<ContentRecommendResDTO> contentRecommendResDTOS = recommendService.getContentRecommend(userId, isAdult, ottList, genres);
             return ResponseEntity.status(200).body(contentRecommendResDTOS);
         } catch (Exception e) {
             return ResponseEntity.status(404).body("Failed to get main schedule.");

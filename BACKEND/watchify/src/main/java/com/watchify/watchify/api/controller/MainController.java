@@ -51,15 +51,15 @@ public class MainController {
     }
 
     // 로직 처리 필요
-    @GetMapping("/recommendnon")
-    public ResponseEntity<?> GetRecommendNon() throws Exception{
-
-        try {
-            // Service 단으로 넘기기
-            return ResponseEntity.status(200).body("OK");
-        } catch (Exception e) {
-            return ResponseEntity.status(404).body("Failed to get main schedule.");
-        }
-    }
+//    @GetMapping("/recommendnon/nonauth")
+//    public ResponseEntity<?> GetRecommendNon() throws Exception{
+//        try {
+//            // Service 단으로 넘기기
+//            HashMap<String, List<DefaultContentDTO>> defaultContentsDTOS = mainScheduleService.getrecommendnon();
+//            return ResponseEntity.status(200).body("OK");
+//        } catch (Exception e) {
+//            return ResponseEntity.status(404).body("Failed to get main schedule.");
+//        }
+//    }
 
 }
