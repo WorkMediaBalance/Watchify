@@ -154,6 +154,11 @@ export default function useRecBottomSheet() {
     handle.current!.addEventListener("touchstart", handleTouchStart);
     handle.current!.addEventListener("touchmove", handleTouchMove);
     handle.current!.addEventListener("touchend", handleTouchEnd);
+    return () => {
+      handle.current?.removeEventListener("touchstart", handleTouchStart);
+      handle.current?.removeEventListener("touchmove", handleTouchMove);
+      handle.current?.removeEventListener("touchend", handleTouchEnd);
+    };
   }, []);
 
   useEffect(() => {

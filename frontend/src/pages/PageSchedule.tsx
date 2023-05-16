@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 import WatchingPattern from "components/common/WatchingPattern";
 import OttSubscription from "components/common/OttSubscription";
@@ -23,22 +23,26 @@ const PageSchedule = () => {
     return data;
   };
 
+  const location = useLocation();
+
   const setNavigation = async () => {
-    if (localStorage.getItem("accessToken") !== null) {
-      const data = await getScheduleAll();
-      console.log(data, "이프문");
-      if (Object.keys(data).length !== 0) {
-        console.log("회원 예스 스케줄");
-        navigate("/schedule/result");
+    if (!location.state?.isMakeNew) {
+      if (localStorage.getItem("accessToken") !== null) {
+        const data = await getScheduleAll();
+        console.log(data, "이프문");
+        if (Object.keys(data).length !== 0) {
+          console.log("회원 예스 스케줄");
+          navigate("/schedule/result");
+        } else {
+          console.log("회원 노스케줄");
+        }
       } else {
-        console.log("회원 노스케줄");
-      }
-    } else {
-      if (recoilScheduleAll !== null) {
-        console.log("비회원 예스 스케줄");
-        navigate("/schedule/result");
-      } else {
-        console.log("비회원 노 스케줄");
+        if (recoilScheduleAll !== null) {
+          console.log("비회원 예스 스케줄");
+          navigate("/schedule/result");
+        } else {
+          console.log("비회원 노 스케줄");
+        }
       }
     }
   };

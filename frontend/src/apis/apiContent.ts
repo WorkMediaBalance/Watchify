@@ -11,7 +11,7 @@ const data = {
 */
 export const contentRecommend = async (data: ContentRecForm) => {
   try {
-    const res = await api.get("api/recommend", { params: data });
+    const res = await api.post("api/recommend", data);
     return res.data;
   } catch (err) {
     console.log("컨텐츠 추천 실패");

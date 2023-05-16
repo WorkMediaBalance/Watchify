@@ -112,7 +112,8 @@ const PageRecommend = () => {
   const [recResultList, setRecResultList] = useState<ContentRecForm>();
 
   const getRecResult = async () => {
-    const data = await contentRecommend({ isAdult: isAdult, ott: ott, genre: recGenre });
+    console.log({ isAdult: isAdult, ottList: ott, genre: recGenre });
+    const data = await contentRecommend({ isAdult: isAdult, ottList: ott, genre: recGenre });
     setRecResultList(data);
   };
 

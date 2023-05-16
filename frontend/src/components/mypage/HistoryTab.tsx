@@ -11,7 +11,7 @@ import { myHistory } from "apis/apiMy";
 
 const HistoryTab = () => {
   const dummyArray = [0, 0, 0, 0, 0, 0, 0];
-  const [historyArray, setHistoryArray] = useRecoilState<HistoryContent[]>(historyState);
+  const [historyArray, setHistoryArray] = useState<HistoryContent[]>();
 
   // async function MyHistoryAPI() {
   //   try {
@@ -26,7 +26,16 @@ const HistoryTab = () => {
 
   // month 스케줄 state
 
+  const getMyHistoryArray = async () => {
+    const result = await myHistory();
+    setHistoryArray(result);
+  };
+
   const [monthSchedule, setMonthSchedule] = useRecoilState(monthScheduleState);
+
+  useEffect(() => {
+    getMyHistoryArray();
+  }, []);
 
   return (
     <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
@@ -41,9 +50,10 @@ const HistoryTab = () => {
           }}
         >
           <div style={{ height: "100%", overflowY: "auto" }}>
-            {historyArray.map((history, index) => {
-              return <HistoryComponent contentHistory={history} />;
-            })}
+            {historyArray &&
+              historyArray.map((history, index) => {
+                return <HistoryComponent contentHistory={history} />;
+              })}
           </div>
         </div>
       </div>

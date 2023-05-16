@@ -341,7 +341,7 @@ const Wrapper = styled.div`
 const SContainer = styled.div`
   height: 40vh;
   overflow: auto;
-  width: 90%;
+  // width: 90%;
 `;
 
 const Sdiv = styled.div`

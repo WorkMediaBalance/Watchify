@@ -79,7 +79,7 @@ const SMainDiv = styled.div`
   display: flex;
   width: 100vw;
   height: 55vh;
-  // border: 1px solid ${theme.netflix.fontColor}; TODO: 여기 보더 별로라고 하심...
+  // border: 1px solid grey; TODO: 여기 보더 별로라고 하심...
   border-radius: 12px;
   background-color: ${theme.netflix.tabColor};
   flex-direction: column;

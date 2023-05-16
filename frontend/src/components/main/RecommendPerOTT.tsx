@@ -71,11 +71,13 @@ const RecommendPerOTT = () => {
 
       <ContentContainer>
         <Poster className="poster">
-          <ContentPoster
-            title={result![ott][index].title}
-            imageUrl={result![ott][index].imgPath}
-            content={result![ott][index]}
-          />
+          {result && (
+            <ContentPoster
+              title={result[ott][index].title}
+              imageUrl={result[ott][index].imgPath}
+              content={result[ott][index]}
+            />
+          )}
         </Poster>
         <Content>
           <OTTIcons>
