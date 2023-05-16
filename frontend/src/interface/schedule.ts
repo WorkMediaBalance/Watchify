@@ -10,3 +10,7 @@ export interface schedulePreInfo {
   patterns: number[];
   ott: string[];
 }
+
+export interface ScheduleAll {
+  [key: string]: schedule;
+}

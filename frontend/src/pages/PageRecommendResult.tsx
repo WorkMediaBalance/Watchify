@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import styled from "styled-components";
 import { recResultState } from "recoil/recommendState";
 import { useRecoilState } from "recoil";
@@ -78,7 +79,7 @@ const SMainDiv = styled.div`
   display: flex;
   width: 100vw;
   height: 55vh;
-  // border: 1px solid ${theme.netflix.fontColor}; TODO: 여기 보더 별로라고 하심...
+  // border: 1px solid grey; TODO: 여기 보더 별로라고 하심...
   border-radius: 12px;
   background-color: ${theme.netflix.tabColor};
   flex-direction: column;
@@ -175,6 +176,13 @@ const PageRecommendResult = () => {
       : hour === 0
       ? `${minute}분`
       : `${hour}시간 ${minute}분`;
+
+  const location = useLocation();
+
+  useEffect(() => {
+    const data = location.state?.data;
+    console.log(data);
+  }, []);
 
   return (
     <Wrapper>

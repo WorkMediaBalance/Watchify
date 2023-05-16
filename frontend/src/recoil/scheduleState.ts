@@ -1,5 +1,5 @@
 import { atom } from "recoil";
-import { schedule } from "interface/schedule";
+import { schedule, ScheduleAll } from "interface/schedule";
 
 export const weekScheduleState = atom<schedule>({
   key: "weekScheduleState",
@@ -409,4 +409,9 @@ export const monthScheduleState = atom<schedule>({
     ],
     31: [],
   },
+});
+
+export const scheduleAllState = atom<ScheduleAll>({
+  key: "scheduleAllState",
+  default: {},
 });

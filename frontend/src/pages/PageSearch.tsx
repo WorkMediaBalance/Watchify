@@ -99,7 +99,7 @@ const PageSearch = () => {
         appBarMargin.style.marginTop = "0";
       }
       if (searchLayout) {
-        searchLayout.style.height = "96vh";
+        searchLayout.style.minHeight = "96vh";
       }
     } else {
       if (appBar) {
@@ -110,7 +110,7 @@ const PageSearch = () => {
         appBarMargin.style.marginTop = "5vh";
       }
       if (searchLayout) {
-        searchLayout.style.height = "91vh";
+        searchLayout.style.minHeight = "91vh";
       }
     }
     return () => {
@@ -122,7 +122,7 @@ const PageSearch = () => {
         appBarMargin.style.marginTop = "5vh";
       }
       if (searchLayout) {
-        searchLayout.style.height = "91vh";
+        searchLayout.style.minHeight = "91vh";
       }
     };
   }, [autocompleteVisible]);
@@ -201,7 +201,7 @@ const PageSearch = () => {
                 </div>
                 <ContentsContainer>
                   {searchResultData.map((content, idx) => (
-                    <div>
+                    <PosterWrapper>
                       <ContentContainer>
                         <ContentPoster
                           content={content}
@@ -211,7 +211,7 @@ const PageSearch = () => {
                         />
                       </ContentContainer>
                       <TitleDiv>{content.title}</TitleDiv>
-                    </div>
+                    </PosterWrapper>
                   ))}
                 </ContentsContainer>
               </>
@@ -316,7 +316,7 @@ const PageSearch = () => {
 export default PageSearch;
 
 const Slayout = styled.div`
-  height: 91vh;
+  min-height: 91vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -477,5 +477,12 @@ const TitleDiv = styled.div`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  width: 100%;
+`;
+
+const PosterWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   width: 40vw;
 `;

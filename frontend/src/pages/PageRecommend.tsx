@@ -14,6 +14,9 @@ import wavveSelected from "../assets/img/otticons/WavveIconSelected.png";
 import { recGenreState } from "../recoil/recommendState";
 import { useRecoilState } from "recoil";
 
+import { contentRecommend } from "apis/apiContent";
+import { ContentRecForm } from "constant/constant";
+
 const BaseDiv = styled.div`
   width: 100vw;
   display: flex;
@@ -106,9 +109,18 @@ const PageRecommend = () => {
     setRecGenre(recGenre.filter((genre) => genre !== selGenre));
   };
   const navigate = useNavigate();
-  const goRecHandler = () => {
+  const [recResultList, setRecResultList] = useState<ContentRecForm>();
+
+  const getRecResult = async () => {
+    console.log({ isAdult: isAdult, ottList: ott, genre: recGenre });
+    const data = await contentRecommend({ isAdult: isAdult, ottList: ott, genre: recGenre });
+    setRecResultList(data);
+  };
+
+  const goRecHandler = async () => {
     // 추천 요청 axios 필요
-    navigate("/recommend/result");
+    await getRecResult();
+    navigate("/recommend/result", { state: { data: recResultList } });
   };
 
   const ottChange = (e: React.MouseEvent<HTMLImageElement>) => {
