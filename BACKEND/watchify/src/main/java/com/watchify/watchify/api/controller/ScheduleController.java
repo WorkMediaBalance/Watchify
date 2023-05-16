@@ -1,6 +1,7 @@
 package com.watchify.watchify.api.controller;
 
 import com.watchify.watchify.api.service.*;
+import com.watchify.watchify.dto.request.ScheduleCheckRequestDTO;
 import com.watchify.watchify.dto.request.ScheduleCreateRequestDTO;
 import com.watchify.watchify.dto.response.CalenderDTO;
 import com.watchify.watchify.dto.response.DefaultContentDTO;
@@ -26,6 +27,7 @@ public class ScheduleController {
     private final ScheduleGetService scheduleGetService;
     private final ScheduleUpdateService scheduleUpdateService;
     private final ScheduleShareService scheduleShareService;
+    private final ScheduleCheckService scheduleCheckService;
 
     @GetMapping("/info/{year}/{month}")
     public ResponseEntity<?> getScheduleInfo(HttpServletRequest request, @PathVariable int year, @PathVariable int month) {
@@ -112,6 +114,34 @@ public class ScheduleController {
             return ResponseEntity.status(200).body(res);
         } catch (Exception e) {
             return ResponseEntity.status(404).body("Failed to save scheduleShare");
+        }
+    }
+
+    @PostMapping("/check")
+    public ResponseEntity<?> CheckSchedule(HttpServletRequest request, @RequestBody ScheduleCheckRequestDTO dto) {
+
+        String accessToken = request.getHeader("access");
+        long userId = userService.findUserIdByAccessToken(accessToken);
+
+        try {
+            scheduleCheckService.checkSchedule(userId, dto);
+            return ResponseEntity.status(200).body("succeed to check schedule");
+        } catch (Exception e) {
+            return ResponseEntity.status(404).body("Failed to check schedule");
+        }
+    }
+
+    @PutMapping("/cancel")
+    public ResponseEntity<?> CheckCancelSchedule(HttpServletRequest request, @RequestBody ScheduleCheckRequestDTO dto) {
+
+        String accessToken = request.getHeader("access");
+        long userId = userService.findUserIdByAccessToken(accessToken);
+
+        try {
+            scheduleCheckService.checkCancelSchedule(userId, dto);
+            return ResponseEntity.status(200).body("succeed to check schedule");
+        } catch (Exception e) {
+            return ResponseEntity.status(404).body("Failed to check schedule");
         }
     }
 }

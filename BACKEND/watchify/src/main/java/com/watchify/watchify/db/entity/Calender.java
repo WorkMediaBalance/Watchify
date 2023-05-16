@@ -51,5 +51,18 @@ public class Calender implements Serializable {
 
     public void updateDelete(boolean flag) {this.isDeleted = flag;}
 
+    public void watchThis() {
+        LocalDate date = LocalDate.now();
+        this.viewDate = date;
+        this.isView = true;
+    }
+
+    public void cancelWatchThis() {
+        this.viewDate = null;
+        this.isView = false;
+    }
+
+
+
 
 }
