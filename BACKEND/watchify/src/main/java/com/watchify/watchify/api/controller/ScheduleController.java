@@ -36,7 +36,7 @@ public class ScheduleController {
         long userId = userService.findUserIdByAccessToken(accessToken);
 
         try {
-            Map<Integer, List<CalenderDTO>> res = scheduleInfoService.getScheduleInfo(userId, year, month);
+            Map<Integer, List<ScheduleObjDTO>> res = scheduleInfoService.getScheduleInfo(userId, year, month);
             return ResponseEntity.status(200).body(res);
         } catch (Exception e) {
             return ResponseEntity.status(404).body("Failed to get schedule info");

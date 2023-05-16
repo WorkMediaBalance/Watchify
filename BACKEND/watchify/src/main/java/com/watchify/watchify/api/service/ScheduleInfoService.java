@@ -8,6 +8,7 @@ import com.watchify.watchify.db.repository.CalenderRepository;
 import com.watchify.watchify.db.repository.LikeContentRepository;
 import com.watchify.watchify.db.repository.WishContentRepository;
 import com.watchify.watchify.dto.response.CalenderDTO;
+import com.watchify.watchify.dto.response.ScheduleObjDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,7 +26,7 @@ public class ScheduleInfoService {
     private final LikeContentRepository likeContentRepository;
 
     @Transactional
-    public Map<Integer, List<CalenderDTO>> getScheduleInfo(Long userId, int year, int month) {
+    public Map<Integer, List<ScheduleObjDTO>> getScheduleInfo(Long userId, int year, int month) {
 
         LocalDate startDate = LocalDate.of(year, month, 1);
         LocalDate endDate = startDate.withDayOfMonth(startDate.lengthOfMonth());
@@ -35,40 +36,34 @@ public class ScheduleInfoService {
         monthOfCalenders.sort(Comparator.comparing(Calender :: getDate)); // 날짜순으로 정렬
 
 
-        List<WishContent> wishContents = wishContentRepository.getMyWishList(userId);
-        List<LikeContent> likeContents = likeContentRepository.getLikeContent(userId);
-        Map<Integer, List<CalenderDTO>> res = new HashMap<>();
+        List<Long> myWishContentList = wishContentRepository.getContentIdInMyWishList(userId);
+        List<LikeContent> myLikeContentList = likeContentRepository.getLikeContent(userId);
+        Map<Integer, List<ScheduleObjDTO>> res = new HashMap<>();
 
         for (int i=0; i<endDate.getDayOfMonth(); i++) {
             LocalDate point = startDate.plusDays(i);
-            List<CalenderDTO> calenderDTOS = new ArrayList<>(); // point 일자의 컨텐츠를 담을 리스트
+            List<ScheduleObjDTO> scheduleObjDTOList = new ArrayList<>(); // point 일자의 컨텐츠를 담을 리스트
             for (Calender calender : monthOfCalenders) {
                 Content thisContent = calender.getTurnContent().getContent();
                 if (calender.getDate().isEqual(point)) {
-                    CalenderDTO calenderDTO = new CalenderDTO(thisContent, calender.getDate(), calender.getViewDate(), calender.getTurnContent().getEpisode());
-                    calenderDTOS.add(calenderDTO);
+                    ScheduleObjDTO scheduleObjDTO = new ScheduleObjDTO(thisContent, calender.getDate(), calender.getTurnContent().getEpisode());
+                    if (calender.isView()) {
+                        scheduleObjDTO.watchContent();
+                    }
 
-                    for (WishContent wishContent : wishContents) {
-                        if (wishContent.getContent().equals(thisContent)) {
-                            if (wishContent.isDeleted() != true) {
-                                calenderDTO.setIsWish(true);
-                            }
+                    scheduleObjDTO.setIsWish(myWishContentList.contains(thisContent.getId()));
+                    for (LikeContent lc : myLikeContentList) {
+                        if (lc.getContent().equals(thisContent)) {
+                            scheduleObjDTO.setLike(lc.getLike());
                             break;
                         }
                     }
 
-                    for (LikeContent likeContent : likeContents) {
-                        if (likeContent.getContent().equals(thisContent)) {
-                            if (likeContent.isDeleted() != true) {
-                                calenderDTO.setLike(likeContent.getLike());
-                            }
-                            break;
-                        }
-                    }
+                    scheduleObjDTOList.add(scheduleObjDTO);
                 }
             }
-            if (!calenderDTOS.isEmpty()) {
-                res.put(point.getDayOfMonth(), calenderDTOS);
+            if (!scheduleObjDTOList.isEmpty()) {
+                res.put(point.getDayOfMonth(), scheduleObjDTOList);
             }
         }
 
