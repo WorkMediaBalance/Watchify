@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled, { keyframes, css } from "styled-components";
 
 import disney from "assets/img/disneyIcon.png";
@@ -8,16 +8,64 @@ import wavve from "assets/img/wavveIcon.png";
 
 import { content } from "interface/content";
 
+import {
+  contentInfo,
+  contentLike,
+  contentWishSwitch,
+  contentRating,
+  contentRecommend,
+} from "apis/apiContent";
+
+import { AiOutlineLike, AiOutlineDislike, AiFillLike, AiFillDislike } from "react-icons/ai";
+import ReactStars from "react-stars";
+
 interface ContentSwalProps {
   content: content;
 }
 
 const ContentSwal: React.FC<ContentSwalProps> = ({ content: content }) => {
-  const [isWish, setIsWish] = useState(content.isWish); //TODO: props받아서 찜여부 초기값 설정 해주기
+  const [isWish, setIsWish] = useState<boolean | null>(null); //TODO: props받아서 찜여부 초기값 설정 해주기
+  const [isLike, setIsLike] = useState<number | null>(null); // TODO: 여기 초기화 ★★★ 별점 업데이트 된 후 삭제 예정
+  // ★★★ 별점 state (content interface (like -> rating으로 변경해주어야 함))
+  const [rating, setRating] = useState<number | undefined>(undefined);
+  const [newContentInfo, setNewContentInfo] = useState<content | null>(null);
+
+  // 단일 컨텐츠 정보 조회 API - 찜 최신화용
+  async function contentInfoAPI(pk: number) {
+    let newData = await contentInfo({ pk: pk });
+    console.log(newData, "뉴데이터");
+    setNewContentInfo(newData);
+    setIsLike(newData.isLike); // 별점 업데이트 된 후 삭제 예정
+    setIsWish(newData.wish);
+    // ★★★ 별점 API 업데이트 (API 연결 후 주석 해제 필요)
+    // setRating(newData.rating)
+  }
+  useEffect(() => {
+    if (!content) return;
+    console.log(content, "컨텐츠");
+    contentInfoAPI(content.pk);
+  }, []);
+
+  // 좋아요 조건부 - ★★★ 별점 업데이트 된 후 삭제 예정
+  const handleLike = () => {
+    contentLike({ pk: content.pk, isLike: true });
+    setIsLike(1);
+  };
+  const handleLikeCancel = () => {
+    contentLike({ pk: content.pk, isLike: false });
+    setIsLike(0);
+  };
+  const handleDislike = () => {
+    contentLike({ pk: content.pk, isLike: false });
+    setIsLike(-1);
+  };
+  const handleDislikeCancel = () => {
+    contentLike({ pk: content.pk, isLike: true });
+    setIsLike(0);
+  };
 
   const handleWishClick = () => {
-    //TODO: axios 요청보내서 찜 설정/ 해제
-    // 그 후 동작
+    contentWishSwitch({ pk: content.pk });
     setIsWish(!isWish);
   };
 
@@ -35,6 +83,17 @@ const ContentSwal: React.FC<ContentSwalProps> = ({ content: content }) => {
   const OTTStaticArray = Object.keys(content.ott); //TODO: 나중에 props 여기 초기화
 
   // const [OTTArray, setOTTArray] = useState(["disney", "netflix", "watcha", "wavve"]); //TODO: 여기서 나중에 초기값 세팅
+  // 다른 탭 열기
+  const openNewTab = (url: string) => {
+    window.open(url, "_blank", "noopener,noreferrer");
+  };
+
+  const changeRating = (e: number) => {
+    console.log(e, "수정한 별점");
+    // ★★★ 평점 변경 API 요청 (백엔드 구현 시 주석 해제 예정)
+    // contentRating({ pk: content.pk, rating: e });
+    setRating(e);
+  };
 
   return (
     <Container className="myModal">
@@ -43,24 +102,79 @@ const ContentSwal: React.FC<ContentSwalProps> = ({ content: content }) => {
       ) : (
         <RibonFalse onClick={() => handleWishClick()} />
       )}
-      <BackdropContainer className="backdropContainer" backdrop={content.backdrop_path}>
-        <TitleSeasonContainer>
-          <Title>{content.title}</Title>
-          <Season>{content.season > 0 ? `시즌 ${content.season}` : ""}</Season>
-        </TitleSeasonContainer>
-        <RateAndGenresContainer>
-          <Rate>{`${content.rate} / 5.0`}</Rate>
-          <Genres>
-            {content.genres.length > 1
-              ? `${content.genres.join(", ")}`
-              : content.genres.length === 1
-              ? content.genres[0]
-              : ""}
-          </Genres>
-          <FinalEpisode>
-            {content.finalEpisode > 0 ? `${content.finalEpisode}부작` : ""}
-          </FinalEpisode>
-        </RateAndGenresContainer>
+      <BackdropContainer className="backdropContainer" backdrop={content.backdropPath}>
+        <Header>
+          <div>
+            <TitleSeasonContainer>
+              <Title>
+                {content.title}
+                <Season>{content.season > 0 ? `시즌 ${content.season}` : ""}</Season>
+              </Title>
+            </TitleSeasonContainer>
+            <RateAndGenresContainer>
+              <Rate>{`${content.rate} / 5.0`}</Rate>
+              <Genres>
+                {content.genres.length > 1
+                  ? `${content.genres.join(", ")}`
+                  : content.genres.length === 1
+                  ? content.genres[0]
+                  : ""}
+              </Genres>
+              <FinalEpisode>
+                {content.finalEpisode > 0 ? `${content.finalEpisode}부작` : ""}
+              </FinalEpisode>
+            </RateAndGenresContainer>
+          </div>
+          <LikeDislike>
+            <ReactStars
+              count={5}
+              value={rating}
+              edit={true}
+              size={20}
+              color1={"rgba(128, 128, 128, 0.2)"}
+              color2={"#F84F5A"}
+              onChange={(e) => changeRating(e)}
+            />
+            <Like>
+              {isLike === 1 ? (
+                <StyledAiFillLike
+                  size={20}
+                  color="#FF5500"
+                  onClick={() => {
+                    handleLikeCancel();
+                  }}
+                />
+              ) : (
+                <StyledAiOutlineLike
+                  size={20}
+                  color="white"
+                  onClick={() => {
+                    handleLike();
+                  }}
+                />
+              )}
+            </Like>
+            <Dislike>
+              {isLike === -1 ? (
+                <StyledAiFillDislike
+                  size={20}
+                  color="#FF5500"
+                  onClick={() => {
+                    handleDislikeCancel();
+                  }}
+                />
+              ) : (
+                <StyledAiOutlineDislike
+                  size={20}
+                  color="white"
+                  onClick={() => {
+                    handleDislike();
+                  }}
+                />
+              )}
+            </Dislike>
+          </LikeDislike>
+        </Header>
       </BackdropContainer>
 
       <ContentContainer>
@@ -69,7 +183,14 @@ const ContentSwal: React.FC<ContentSwalProps> = ({ content: content }) => {
           <LinkDescriptions>보러가기</LinkDescriptions>
           <OTTContainer>
             {OTTStaticArray.map((OTT: string, index) => {
-              return <OTTIcon src={OTTIcons[OTT]}></OTTIcon>;
+              return (
+                <OTTIcon
+                  src={OTTIcons[OTT]}
+                  onClick={() => {
+                    openNewTab(content.ott[OTT]);
+                  }}
+                ></OTTIcon>
+              );
             })}
           </OTTContainer>
         </Footer>
@@ -119,13 +240,13 @@ const TitleSeasonContainer = styled.div`
   display: flex;
   flex-direction: row;
   align-items: baseline;
-  margin-left: 2vw;
+  margin-left: 4vw;
 `;
 const Title = styled.div`
   font-size: ${({ theme }) => theme.fontSizeType.big.fontSize};
   font-weight: ${({ theme }) => theme.fontSizeType.big.fontWeight};
 `;
-const Season = styled.div`
+const Season = styled.span`
   font-size: ${({ theme }) => theme.fontSizeType.middle.fontSize};
   font-weight: ${({ theme }) => theme.fontSizeType.middle.fontWeight};
   margin-left: 1vw;
@@ -135,8 +256,8 @@ const RateAndGenresContainer = styled.div`
   display: flex;
   flex-direction: row;
   align-items: baseline;
-  margin-left: 3vw;
-  margin-bottom: 1vw;
+  margin-left: 5vw;
+  margin-bottom: 2vw;
 `;
 const Rate = styled.div`
   font-size: ${({ theme }) => theme.fontSizeType.small.fontSize};
@@ -154,14 +275,19 @@ const FinalEpisode = styled.div`
 `;
 
 const Summarize = styled.div`
-  margin: 3vw;
+  margin: 4vw;
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 const Footer = styled.div`
   width: 100%;
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: end;
   align-items: center;
 `;
 const LinkDescriptions = styled.div`
@@ -194,8 +320,8 @@ const RibonTrue = styled.div`
   position: absolute;
   right: 3%;
 
-  width: 10%;
-  height: 15%;
+  width: 8%;
+  height: 12%;
   clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 50% 67%, 0% 100%);
 
   background-color: ${({ theme }) => theme.netflix.pointColor};
@@ -205,10 +331,52 @@ const RibonFalse = styled.div`
   position: absolute;
   right: 3%;
 
-  width: 10%;
-  height: 15%;
+  width: 8%;
+  height: 12%;
   clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 50% 67%, 0% 100%);
 
   background-color: white;
+  animation: ${growShrink} 0.6s ease-in-out forwards;
+`;
+
+const Header = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+`;
+
+const LikeDislike = styled.div`
+  display: flex;
+  flex-direction: row;
+  margin-right: 2vw;
+  height: 100%;
+  align-items: end;
+`;
+
+const Like = styled.div`
+  margin: 1vw;
+  animation: ${growShrink} 0.6s ease-in-out forwards;
+`;
+
+const Dislike = styled.div`
+  margin: 1vw;
+  animation: ${growShrink} 0.6s ease-in-out forwards;
+`;
+
+const StyledAiFillLike = styled(AiFillLike)`
+  margin: 1vw;
+  animation: ${growShrink} 0.6s ease-in-out forwards;
+`;
+const StyledAiOutlineLike = styled(AiOutlineLike)`
+  margin: 1vw;
+  animation: ${growShrink} 0.6s ease-in-out forwards;
+`;
+const StyledAiFillDislike = styled(AiFillDislike)`
+  margin: 1vw;
+  animation: ${growShrink} 0.6s ease-in-out forwards;
+`;
+const StyledAiOutlineDislike = styled(AiOutlineDislike)`
+  margin: 1vw;
   animation: ${growShrink} 0.6s ease-in-out forwards;
 `;

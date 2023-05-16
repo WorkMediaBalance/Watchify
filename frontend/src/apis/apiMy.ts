@@ -56,6 +56,7 @@ export const myProfileName = async (data: { [key: string]: string }) => {
 // 찜 리스트 가져오기
 export const myWishList = async () => {
   try {
+    console.log("성공?");
     const res = await api.get("api/my/wishlist");
     return res.data;
   } catch (err) {
@@ -78,7 +79,9 @@ export const myPatternGet = async () => {
 // 시청 패턴 수정
 export const myPatternChange = async (data: { [key: string]: number[] }) => {
   try {
+    console.log(data, "데이터!!!!");
     await api.put("api/my/pattern", data);
+    console.log("here");
     return true;
   } catch (err) {
     console.log("시청 패턴 변경 실패");
@@ -121,6 +124,7 @@ export const myOTTget = async () => {
 
 // 유저 ott 구독 정보 수정
 export const myOTTChange = async (data: OttPeriods) => {
+  console.log(data, "고뱀이 신청한 데이터다!");
   try {
     const res = await api.put("api/my/ott", data);
     return res.data;
@@ -162,9 +166,10 @@ export const myHistoryInfo = async (data: { [key: string]: number }) => {
 // FCM TOKEN 전송
 export const fcmSave = async (data: { fcmToken: string }) => {
   try {
-    await api.put("api/my/save", data);
+    await api.put("api/fcm/save", data);
     return true;
   } catch (err) {
+    console.log(data);
     console.log("fcm 토큰 전송 실패");
     console.log(err);
   }

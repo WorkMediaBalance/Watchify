@@ -37,7 +37,10 @@ const Title = styled.div<{
   arrayLength: number;
 }>`
   width: ${({ arrayLength }) => 100 / arrayLength}%;
-  color: ${({ isSelected }) => (isSelected ? "red" : "white")};
+  color: ${({ isSelected, theme }) => (isSelected ? theme.netflix.lightColor : "grey")};
+  font-weight: ${({ isSelected, theme }) => (isSelected ? "800" : "600")};
+  margin-bottom: 0.6vh;
+
   display: flex;
   justify-content: center;
   align-items: center;

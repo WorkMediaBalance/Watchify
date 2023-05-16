@@ -6,10 +6,18 @@ import NotificationSettingComponent from "./NotificationSettingComponent";
 import { myAlarmInfo } from "apis/apiMy";
 import { content } from "./../../interface/content";
 
+import LogoutLogic from "hooks/LogoutLogic";
+import { useNavigate } from "react-router-dom";
+
 const MyInfoTab = () => {
+  const navigate = useNavigate();
   const [ottInfo, setOttInfo] = useState("없음");
   const [contentInfo, setContentInfo] = useState("없음");
 
+  const logout = LogoutLogic();
+  const onClickLogout = () => {
+    logout();
+  };
   // 유저 알람 설정 정보 불러오기
   async function setMyAlarmInfo() {
     try {
@@ -34,24 +42,36 @@ const MyInfoTab = () => {
   }, []);
 
   return (
-    <Container>
-      <OttSubscription />
-      <Title>알림 설정</Title>
-      <RadioConatainerContainer>
-        <RadioConatainer>
-          <NotificationSettingComponent
-            title={"OTT 구독 알림"}
-            apiLink={"ottalarm"}
-            isOn={ottInfo} // TODO: 여기 axios 받아온 값을 문자로 바꿔서 내려주기
-          />
-          <NotificationSettingComponent
-            title={"컨텐츠 시청 알림"}
-            apiLink={"contentalarm"}
-            isOn={contentInfo} // TODO: 여기 axios 받아온 값을 문자로 바꿔서 내려주기
-          />
-        </RadioConatainer>
-      </RadioConatainerContainer>
-    </Container>
+    <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+      <div style={{ width: "90%" }}>
+        <Container>
+          {/* <OttSubscription /> */}
+          <Title>알림 설정</Title>
+          <RadioConatainerContainer>
+            <RadioConatainer>
+              <NotificationSettingComponent
+                title={"OTT 구독 알림"}
+                apiLink={"ottalarm"}
+                isOn={ottInfo} // TODO: 여기 axios 받아온 값을 문자로 바꿔서 내려주기
+              />
+              <NotificationSettingComponent
+                title={"컨텐츠 시청 알림"}
+                apiLink={"contentalarm"}
+                isOn={contentInfo} // TODO: 여기 axios 받아온 값을 문자로 바꿔서 내려주기
+              />
+            </RadioConatainer>
+          </RadioConatainerContainer>
+          <button
+            onClick={() => {
+              onClickLogout();
+              navigate("/login");
+            }}
+          >
+            로그아웃
+          </button>
+        </Container>
+      </div>
+    </div>
   );
 };
 

@@ -3,16 +3,18 @@ export interface content {
   title: string;
   runtime: number;
   rate: number;
-  img_path: string;
-  backdrop_path: string;
+  imgPath: string;
+  backdropPath: string;
   type: string;
   season: number;
   finalEpisode: number;
   ott: { [key: string]: string };
   genres: string[];
-  isWish: boolean;
+  wish: boolean;
+  // ★★★ 곧 사망할 친구
   isLike: number;
   summarize: string;
   audienceAge: number;
+  // ★★★ API 수정후 추가 필요 (평점)
+  // rating: number
 }
-// TODO: 가로 포스터 이미지도 필요!

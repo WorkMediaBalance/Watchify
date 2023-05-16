@@ -6,10 +6,10 @@ import { USER_NAME } from "constant/constant";
 import { theme } from "styles/theme";
 import NameTicker from "components/recommend/NameTicker";
 
-import disney from "assets/img/disneyIcon.png";
-import netflix from "assets/img/netflixIcon.png";
-import watcha from "assets/img/watchaIcon.png";
-import wavve from "assets/img/wavveIcon.png";
+import disney from "../assets/img/otticons/DisneyIcon.png";
+import netflix from "../assets/img/otticons/NetflixIcon.png";
+import watcha from "../assets/img/otticons/WatchaIcon.png";
+import wavve from "../assets/img/otticons/WavveIcon.png";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import { EffectCoverflow, Navigation, Mousewheel } from "swiper";
@@ -36,9 +36,12 @@ const SRibbonDiv = styled.div<{ selected: boolean }>`
   margin-right: 2.5vw;
   border-bottom: ${(props) =>
     props.selected ? "2.1vh solid transparent" : "1.6vh solid transparent"};
-  border-top: ${(props) => (props.selected ? "5vh solid #ff0000" : "4vh solid #ccc")};
-  border-left: ${(props) => (props.selected ? "2.1vh solid #ff0000" : "1.6vh solid #ccc")};
-  border-right: ${(props) => (props.selected ? "2.1vh solid #ff0000" : "1.6vh solid #ccc")};
+  border-top: ${(props) =>
+    props.selected ? `5vh solid ${props.theme.netflix.pointColor}` : "4vh solid #ffffff"};
+  border-left: ${(props) =>
+    props.selected ? `2.1vh solid ${props.theme.netflix.pointColor}` : "1.6vh solid #ffffff"};
+  border-right: ${(props) =>
+    props.selected ? `2.1vh solid ${props.theme.netflix.pointColor}` : "1.6vh solid #ffffff"};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -50,7 +53,8 @@ const SRibbonP = styled.p<{ selected: boolean }>`
   font-size: ${(props) => (props.selected ? "1.5rem" : "1.3rem")};
   font-weight: 600;
   margin-bottom: ${(props) => (props.selected ? "8.5vh" : "6.5vh")};
-  color: #ffffff;
+  color: ${(props) =>
+    props.selected ? `${props.theme.netflix.fontColor}` : `${props.theme.netflix.pointColor}`};
   transition: all 0.2s ease-in-out;
 `;
 
@@ -74,7 +78,7 @@ const SMainDiv = styled.div`
   display: flex;
   width: 100vw;
   height: 55vh;
-  border: 1px solid ${theme.netflix.fontColor};
+  // border: 1px solid ${theme.netflix.fontColor}; TODO: 여기 보더 별로라고 하심...
   border-radius: 12px;
   background-color: ${theme.netflix.tabColor};
   flex-direction: column;
@@ -117,6 +121,10 @@ const Container = styled.div`
   z-index: 0;
   position: relative;
   margin: 1vw;
+`;
+
+const UserSpan = styled.span`
+  color: ${theme.netflix.lightColor};
 `;
 
 const PageRecommendResult = () => {
@@ -170,7 +178,9 @@ const PageRecommendResult = () => {
 
   return (
     <Wrapper>
-      <STitleP>{USER_NAME}님을 위한 추천 컨텐츠</STitleP>
+      <STitleP>
+        <UserSpan>{USER_NAME}</UserSpan>님을 위한 추천 컨텐츠
+      </STitleP>
       <SMainDiv className={"mainDiv"}>
         <div style={{ display: "flex", marginLeft: "5vw", position: "absolute" }}>
           <SRibbonDiv id="0" onClick={onClickHandler} selected={selectedNum === 0}>
@@ -189,7 +199,7 @@ const PageRecommendResult = () => {
             episode={recResult[selectedNum].finalEpisode}
           />
           <div style={{ display: "flex", width: "100vw" }}>
-            <SImg src={recResult[selectedNum].img_path} alt="#" />
+            <SImg src={recResult[selectedNum].imgPath} alt="#" />
             <div style={{ marginRight: "1vw" }}>
               <STextP>추천도 : 93%</STextP>
               <STextP>장르 : {recResult[selectedNum].genres.join(", ")}</STextP>
@@ -232,7 +242,7 @@ const PageRecommendResult = () => {
             <SwiperSlide key={index}>
               <div style={{ width: "33vw" }}>
                 <ContentPoster
-                  imageUrl={content["img_path"]}
+                  imageUrl={content["imgPath"]}
                   title={content["title"]}
                   content={content}
                 />

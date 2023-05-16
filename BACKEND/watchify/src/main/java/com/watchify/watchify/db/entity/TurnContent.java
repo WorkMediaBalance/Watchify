@@ -30,4 +30,10 @@ public class TurnContent implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "content_id")
     private Content content;
+
+    public TurnContent(int episode, Content content) {
+        this.content = content;
+        this.episode = episode;
+
+    }
 }

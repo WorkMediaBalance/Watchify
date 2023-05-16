@@ -20,7 +20,7 @@ public class LikeContent implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private boolean isLike;
+    private Double like; // 점수
     private boolean isDeleted = false;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -31,23 +31,16 @@ public class LikeContent implements Serializable {
     @JoinColumn(name = "content_id")
     private Content content;
 
-    public LikeContent(User user, Content content, boolean isLike) {
+    public LikeContent(User user, Content content, Double like) {
         this.user = user;
         this.content = content;
-        this.isLike = isLike;
+        this.like = like;
     }
 
     public void switchIsDeleted() {this.isDeleted = !this.isDeleted;}
-    public void setIsLike(boolean isLike) {
-        // 값을 업데이트 한다는건 DB 에 데이터가 있다는 거임
-        if (this.isDeleted == true) {
-            this.isLike = isLike;
-            this.isDeleted = false;
-        } else if (this.isLike == isLike){
-            this.isDeleted = true;
-        } else {
-            this.isLike = isLike;
-        }
+    public void setLike(Double like) {
+        this.like = like;
+        this.isDeleted = false;
     }
 
 }

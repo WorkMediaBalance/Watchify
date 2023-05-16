@@ -16,22 +16,43 @@ spec:
     spec:
       containers:
         - name: back-service
-          image: docker.io/runtogether/watchify:backend169
-      imagePullSecrets:
-        - name: dockerhub
+          image: docker.io/runtogether/watchify:backend200
           ports:
             - containerPort: 8000
           env:
             - name: DB_HOST
-              value: watchifydb.cph3uafcff1h.ap-northeast-2.rds.amazonaws.com
+              valueFrom:
+                secretKeyRef:
+                  namespace: my-namespace
+                  name: db-secret
+                  key: DB_HOST
             - name: DB_PORT
-              value: "3306"
+              valueFrom:
+                secretKeyRef:
+                  namespace: my-namespace
+                  name: db-secret
+                  key: DB_PORT
             - name: DB_NAME
-              value: sins
+              valueFrom:
+                secretKeyRef:
+                  namespace: my-namespace
+                  name: db-secret
+                  key: DB_NAME
             - name: DB_USER
-              value: watchifyadmin
+              valueFrom:
+                secretKeyRef:
+                  namespace: my-namespace
+                  name: db-secret
+                  key: DB_USER
             - name: DB_Password
-              value: qudwlsgoa
+              valueFrom:
+                secretKeyRef:
+                  namespace: my-namespace
+                  name: db-secret
+                  key: DB_PASSWORD
+      imagePullSecrets:
+        - name: dockerhub
+
 ---
 apiVersion: v1
 kind: Service

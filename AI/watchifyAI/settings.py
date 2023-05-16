@@ -15,20 +15,6 @@ import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 
-import environ
-# Set the project base directory
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
-env = environ.Env(
-    # set casting, default value
-    DEBUG=(bool, False)
-)
-
-# Take environment variables from .env file
-environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
-
-BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
@@ -39,7 +25,7 @@ SECRET_KEY = 'django-insecure-wh@evx76il%y^4cti2_^**&d=u()p8jc)5e=&i0i+!xcka_@e=
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -50,6 +36,9 @@ INSTALLED_APPS = [
 
     # rest API
     'rest_framework',
+
+    # CORS
+    'corsheaders',
 
     # basis
     'django.contrib.admin',
@@ -63,6 +52,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -96,12 +86,17 @@ WSGI_APPLICATION = 'watchifyAI.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': os.environ.get('DB_ENGINE'),
-        'NAME': os.environ.get('DB_NAME'),
-        'USER': os.environ.get('DB_USER'),
-        'PASSWORD': os.environ.get('DB_PW'),  # git에 올리지 않기
-        'HOST': os.environ.get('DB_HOST'),
-        'PORT': os.environ.get('DB_PORT'),
+        'ENGINE': "django.db.backends.mysql",
+        # 'NAME': os.environ.get('DB_NAME'),
+        # 'USER': os.environ.get('DB_USER'),
+        # 'PASSWORD': os.environ.get('DB_PW'),
+        # 'HOST': os.environ.get('DB_HOST'),
+        # 'PORT': os.environ.get('DB_PORT'),
+        'NAME': DB_NAME,
+        'USER': DB_USER,
+        'PASSWORD': DB_PW,
+        'HOST': DB_HOST,
+        'PORT': DB_PORT,
     }
 }
 
@@ -150,9 +145,6 @@ STATIC_URL = '/static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 ############################ modifid ##################################
-MODELS = os.path.join(BASE_DIR, 'ml/models')
-
-
 #### AWS
 AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
@@ -168,6 +160,7 @@ AWS_S3_OBJECT_PARAMETERS = {
 # MEDIA_ROOT = os.path.join(BASE_DIR, 'path/to/store/my/files/')
 
 ## CORS
+# CORS_ORIGIN_WHITELIST = ['https://k8a207.p.ssafy.io', 'http://localhost:8000', 'http://127.0.0.1:3000']
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
 

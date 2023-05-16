@@ -36,7 +36,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   color: white;
-  margin-top: 10vw;
+  width: 100vw;
 `;
 
 const SBtnContainer = styled.div`
