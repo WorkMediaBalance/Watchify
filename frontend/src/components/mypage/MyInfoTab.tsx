@@ -6,10 +6,18 @@ import NotificationSettingComponent from "./NotificationSettingComponent";
 import { myAlarmInfo } from "apis/apiMy";
 import { content } from "./../../interface/content";
 
+import LogoutLogic from "hooks/LogoutLogic";
+import { useNavigate } from "react-router-dom";
+
 const MyInfoTab = () => {
+  const navigate = useNavigate();
   const [ottInfo, setOttInfo] = useState("없음");
   const [contentInfo, setContentInfo] = useState("없음");
 
+  const logout = LogoutLogic();
+  const onClickLogout = () => {
+    logout();
+  };
   // 유저 알람 설정 정보 불러오기
   async function setMyAlarmInfo() {
     try {
@@ -53,6 +61,14 @@ const MyInfoTab = () => {
               />
             </RadioConatainer>
           </RadioConatainerContainer>
+          <button
+            onClick={() => {
+              onClickLogout();
+              navigate("/login");
+            }}
+          >
+            로그아웃
+          </button>
         </Container>
       </div>
     </div>

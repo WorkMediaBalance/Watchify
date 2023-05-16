@@ -206,7 +206,7 @@ const OttSubscription = () => {
   };
 
   // 구독 시작 날짜 변경
-  const handDateChange = (date: Date, key: string) => {
+  const handleDateChange = (date: Date, key: string) => {
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, "0");
     const day = String(date.getDate()).padStart(2, "0");
@@ -220,7 +220,7 @@ const OttSubscription = () => {
   };
 
   // 구독 해지 날짜 변경
-  const handDateChange2 = (date: Date, key: string) => {
+  const handleDateChange2 = (date: Date, key: string) => {
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, "0");
     const day = String(date.getDate()).padStart(2, "0");
@@ -281,7 +281,7 @@ const OttSubscription = () => {
                       <DatePicker
                         selected={today}
                         onChange={(date: Date) => {
-                          handDateChange(date, key);
+                          handleDateChange(date, key);
                           closeDatePicker(key);
                         }}
                         inline
@@ -293,7 +293,7 @@ const OttSubscription = () => {
                       <DatePicker
                         selected={today}
                         onChange={(date: Date) => {
-                          handDateChange2(date, key);
+                          handleDateChange2(date, key);
                           closeDatePicker2(key);
                         }}
                         inline
