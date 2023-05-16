@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { theme } from "styles/theme";
 import Calendar from "components/schedule/calendar/Calendar";
 import CalendarBottomSheet from "components/schedule/calendar/CalendarBottomSheet";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 // month 스케줄 state
 import { monthScheduleState } from "recoil/scheduleState";
 import { useRecoilState } from "recoil";
@@ -28,6 +28,18 @@ const PageScheduleResult = () => {
   const bottomSheetRef = useRef<HTMLTableElement>(null);
 
   const [bottomSheetState, setBottomSheetState] = useState(0);
+
+  const location = useLocation();
+
+  useEffect(() => {
+    const routerMonth = location.state?.month;
+    const routerDate = location.state?.date;
+    if (routerMonth !== undefined && routerDate !== undefined) {
+      setMonth(routerMonth);
+      setDate(routerDate);
+      setSheet(1);
+    }
+  }, []);
 
   return (
     <Wrapper>
