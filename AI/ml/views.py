@@ -26,7 +26,6 @@ class RecommendAPIView(APIView):
           rating = request.GET.get('rating')
           genres = genres.split(',')
           otts = otts.split(',')
-          print(otts)
           audience_age = 19 if rating == 1 else 15
 
           start_time = time.time()
