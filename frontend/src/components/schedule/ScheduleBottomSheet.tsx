@@ -45,7 +45,7 @@ const Wrapper = styled(motion.div)`
   border-top-left-radius: 16px;
   border-top-right-radius: 16px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.6);
-  border-top: 2px solid #ffffff;
+  border-top: 2px solid grey;
   height: ${BOTTOM_SHEET_HEIGHT}px;
 
   // background: linear-gradient(359.26deg, #3c41c7 0.02%, #3742b2 83.23%, #3642ae 98.76%);
