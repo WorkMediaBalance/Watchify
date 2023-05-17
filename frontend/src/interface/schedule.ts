@@ -19,3 +19,6 @@ export interface schedulePreInfo {
 export interface ScheduleAll {
   [key: string]: schedule;
 }
+export interface SharedScheduleAll {
+  [key: string]: schedule;
+}
