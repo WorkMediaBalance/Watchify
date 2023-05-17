@@ -97,7 +97,6 @@ pipeline {
                     // git pull을 미리 받음
                     withCredentials([usernamePassword(credentialsId: credentialId, passwordVariable: gitpassword, usernameVariable: gitId)]) {
                         sh 'git remote set-url origin https://sdc00035:diligent0924!@lab.ssafy.com/s08-final/S08P31A207.git'
-                        sh 'git stash'
                         sh 'git switch main'
                         sh 'git pull origin main'
                     }
