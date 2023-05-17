@@ -45,10 +45,10 @@ cloud:
     region:
       static: ap-northeast-2
     credentials:
-      access-key: AKIARUG4SJJSHO3XLN6C
-      secret-key: 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
+      access-key: S3_ACCESSKEY
+      secret-key: S3_SECRETKEY
     s3:
-      bucket: watchify
+      bucket: S3_BUCKET
 
 fcm:
   certification: watchify-1539c-firebase-adminsdk-kxc1g-9fcd95424d.json
