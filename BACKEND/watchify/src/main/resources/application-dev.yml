@@ -45,10 +45,10 @@ cloud:
     region:
       static: ap-northeast-2
     credentials:
-      access-key: S3_ACCESSKEY
-      secret-key: S3_SECRETKEY
+      access-key: THREE_S_ACCESSKEY
+      secret-key: THREE_S_SECRETKEY
     s3:
-      bucket: S3_BUCKET
+      bucket: THREE_S_BUCKET
 
 fcm:
   certification: FCM_JSON
