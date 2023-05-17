@@ -1,9 +1,6 @@
 package com.watchify.watchify.api.service;
 
-import com.watchify.watchify.db.entity.Calender;
-import com.watchify.watchify.db.entity.Content;
-import com.watchify.watchify.db.entity.LikeContent;
-import com.watchify.watchify.db.entity.UserViewingStatus;
+import com.watchify.watchify.db.entity.*;
 import com.watchify.watchify.db.repository.CalenderRepository;
 import com.watchify.watchify.db.repository.LikeContentRepository;
 import com.watchify.watchify.db.repository.UserViewingStatusRepository;
@@ -105,12 +102,12 @@ public class HistoryService {
         for (UserViewingStatus userViewingStatus : myViewStatus) {
             LocalDate date = userViewingStatus.getDate(); // 본날짜
             Content content = userViewingStatus.getTurnContent().getContent();
+            TurnContent turnContent = userViewingStatus.getTurnContent();
             int ep = userViewingStatus.getTurnContent().getEpisode();
             int day = date.getDayOfMonth();
-            if (content.getId() != contentId) {
+            if (!content.getId().equals(contentId)) {
                 continue;
             }
-
             HistoryInfoDTO historyInfoDTO = new HistoryInfoDTO(content, date, ep);
             historyInfoDTO.setIsWish(myWishContentList.contains(content.getId()));
 
