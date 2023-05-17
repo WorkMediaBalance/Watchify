@@ -7,7 +7,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 // month 스케줄 state
 import { monthScheduleState, scheduleAllState } from "recoil/scheduleState";
 import { useRecoilState } from "recoil";
-import { scheduleInfo } from "apis/apiSchedule";
+import { scheduleInfo, scheduleInfoAll } from "apis/apiSchedule";
 
 const Wrapper = styled.div`
   height: 91vh;
@@ -25,6 +25,17 @@ const PageScheduleResult = () => {
 
   // 전체 스케줄
   const [scheduleAll, setScheduleAll] = useRecoilState(scheduleAllState);
+  const getScheduleAll = async () => {
+    const data = await scheduleInfoAll();
+    if (data !== false) {
+      setScheduleAll(data);
+      console.log("전체 스케줄", data);
+    }
+  };
+
+  useEffect(() => {
+    getScheduleAll();
+  }, []);
 
   // month 스케줄
   const [monthSchedule, setMonthSchedule] = useRecoilState(monthScheduleState);

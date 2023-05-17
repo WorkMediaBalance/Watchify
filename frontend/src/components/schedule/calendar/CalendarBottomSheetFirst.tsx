@@ -12,6 +12,8 @@ import { scheduleAllState } from "recoil/scheduleState";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Swal from "sweetalert2";
+import { scheduleModify, scheduleInfoAll } from "apis/apiSchedule";
+import { ScheduleAll } from "interface/schedule";
 
 const CalendarBottomSheetFirst = (props: { date: number; month: number; year: number }) => {
   // month 스케줄
@@ -91,7 +93,32 @@ const CalendarBottomSheetFirst = (props: { date: number; month: number; year: nu
         },
       });
     } else {
+      const paddedPropsMonth = props.month.toString().padStart(2, "0");
+      const paddedMonth = (month1 + 1).toString().padStart(2, "0");
+      const paddedDay = day1.toString().padStart(2, "0");
+
+      let newSchedule = { ...scheduleAll };
+      console.log(`${year1}-${paddedMonth}-${paddedDay}`);
+      newSchedule[`${props.year}-${paddedPropsMonth}`][props.date][
+        index
+      ].date = `${year1}-${paddedMonth}-${paddedDay}`;
+      console.log(newSchedule);
+
+      ChangeScheduleAll(newSchedule);
+
       setOnChange(false);
+    }
+  };
+
+  const ChangeScheduleAll = async (data: ScheduleAll) => {
+    const success = await scheduleModify(data);
+
+    if (success) {
+      const newData = await scheduleInfoAll();
+      if (newData !== false) {
+        setScheduleAll(newData);
+        console.log("전체 스케줄", newData);
+      }
     }
   };
 

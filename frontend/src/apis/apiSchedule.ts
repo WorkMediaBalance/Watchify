@@ -19,7 +19,7 @@ export const scheduleInfoAll = async () => {
     const res = await api.get(`api/schedule/info/all`);
     return res.data;
   } catch (err) {
-    console.log("월간 스케줄 받아오기 실패");
+    console.log("전체 스케줄 받아오기 실패");
     console.log(err);
     return false;
   }
@@ -83,10 +83,11 @@ recoil의 scheduleAllState를 변경한 뒤, 해당 state 전체를 인자로 �
 export const scheduleModify = async (data: ScheduleAll) => {
   try {
     await api.put("api/schedule/modify", data);
-    console.log("스케줄 변경 / 미루기 성공");
+    console.log("스케줄 미루기 성공");
     return true;
   } catch (err) {
-    console.log("스케줄 변경 / 미루기 실패");
+    console.log("스케줄 미루기 실패");
     console.log(err);
+    return false;
   }
 };
