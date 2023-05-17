@@ -43,13 +43,6 @@ const PageShared = () => {
       }
     } catch {}
   }
-  useEffect(() => {
-    MyHistoryInfoAPI(pk, selectedDate.getFullYear(), selectedDate.getMonth() + 1);
-  }, [selectedDate]);
-
-  useEffect(() => {
-    MyHistoryInfoAPI(pk, year, month);
-  }, [month]);
 
   // bottomsheet open 변수
   const [isOpen, setIsOpen] = useState<boolean>(false);

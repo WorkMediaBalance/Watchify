@@ -42,13 +42,11 @@ const PageShare = () => {
   }
 
   useEffect(() => {
+    console.log(sharedPK);
     if (sharedPK === undefined) {
-      const pk = 1;
     } else {
-      const pk = sharedPK;
+      getScheduleShare(Number(sharedPK));
     }
-
-    getScheduleShare(pk);
   }, []);
 
   // useEffect(() => {

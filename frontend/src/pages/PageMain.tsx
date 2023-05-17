@@ -29,9 +29,9 @@ const PageMain = () => {
   };
 
   useEffect(() => {
-    getWeeklySchedule();
     if (localStorage.getItem("accessToken") !== null) {
       setIsUserLoggedIn(true);
+      getWeeklySchedule();
     } else {
       setIsUserLoggedIn(false);
     }
