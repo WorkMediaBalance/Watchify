@@ -75,7 +75,7 @@ const OttSubscription = () => {
   const onClickDeleteOtt = (key: string) => {
     Swal.fire({
       title: "",
-      text: "구독해지 or 삭제",
+      text: "구독해지 또는 삭제 버튼을 터치하세요.",
       background: theme.netflix.backgroundColor,
       confirmButtonText: "구독해지",
       confirmButtonColor: theme.netflix.pointColor,
@@ -240,7 +240,13 @@ const OttSubscription = () => {
     if (ott[key].end !== null) {
       const endDateNumber = Number(ott[key].end?.replace(/-/g, "")); // 정규표현식 사용해서 -를 ''로 변경
       if (startDateNumber > endDateNumber) {
-        alert("구독 종료일 이전 날짜를 선택해주세요.");
+        Swal.fire({
+          title: "",
+          text: "구독 종료일 이전 날짜를 선택해주세요.",
+          background: theme.netflix.backgroundColor,
+          confirmButtonText: "확인",
+          confirmButtonColor: theme.netflix.pointColor,
+        });
         return;
       }
     }
@@ -262,7 +268,13 @@ const OttSubscription = () => {
     const startDateNumber = Number(ott[key].start?.replace(/-/g, "")); // 정규표현식 사용해서 -를 ''로 변경
     const endDateNumber = Number(`${year}${month}${day}`);
     if (startDateNumber > endDateNumber) {
-      alert("구독 시작일 이후 날짜를 선택해주세요.");
+      Swal.fire({
+        title: "",
+        text: "구독 시작일 이후 날짜를 선택해주세요.",
+        background: theme.netflix.backgroundColor,
+        confirmButtonText: "확인",
+        confirmButtonColor: theme.netflix.pointColor,
+      });
       return;
     }
 

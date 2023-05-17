@@ -65,6 +65,10 @@ public class Calender implements Serializable {
         this.isView = false;
     }
 
+    public void changeDate(LocalDate date) {
+        this.date = date;
+    }
+
 
 
 
