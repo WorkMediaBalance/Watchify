@@ -39,7 +39,7 @@ const PageSchedule = () => {
       } else {
         if (recoilScheduleAll !== null) {
           console.log("비회원 예스 스케줄");
-          navigate("/schedule/result");
+          // TODO: 여기 어떡할까... 그냥 result로 보내면 오류뜸...
         } else {
           console.log("비회원 노 스케줄");
         }

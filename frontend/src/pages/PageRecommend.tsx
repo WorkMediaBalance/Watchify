@@ -17,6 +17,10 @@ import { useRecoilState } from "recoil";
 import { contentRecommend } from "apis/apiContent";
 import { ContentRecForm } from "constant/constant";
 
+import spinner from "./../assets/gif/93297-simple-spinner.json";
+
+import Lottie from "lottie-react";
+
 const BaseDiv = styled.div`
   width: 100vw;
   display: flex;
@@ -105,6 +109,9 @@ const PageRecommend = () => {
   const [isAdult, setIsAdult] = useState<boolean>(false);
   const [ott, setOtt] = useState<Array<string>>([]);
   const [recGenre, setRecGenre] = useRecoilState(recGenreState);
+
+  const [isLoading, setIsLoading] = useState(false);
+
   const genreHandler = (selGenre: string) => {
     setRecGenre(recGenre.filter((genre) => genre !== selGenre));
   };
@@ -113,15 +120,18 @@ const PageRecommend = () => {
 
   const getRecResult = async () => {
     console.log({ isAdult: isAdult, ottList: ott, genre: recGenre });
+    setIsLoading(true);
     if (ott.length === 0) {
       const ottList = ["netflix", "watcha", "wavve", "disney"];
       const data = await contentRecommend({ isAdult: isAdult, ottList: ottList, genres: recGenre });
-      navigate("/recommend/result", { state: { data: data } });
       setRecResultList(data);
+      navigate("/recommend/result", { state: { data: data } });
+      setIsLoading(false);
     } else {
       const data = await contentRecommend({ isAdult: isAdult, ottList: ott, genres: recGenre });
-      navigate("/recommend/result", { state: { data: data } });
       setRecResultList(data);
+      navigate("/recommend/result", { state: { data: data } });
+      setIsLoading(false);
     }
   };
 
@@ -148,81 +158,97 @@ const PageRecommend = () => {
   useEffect(() => {
     console.log(ott);
   }, [ott]);
+
   return (
     <BaseDiv>
-      <SheetDiv>
-        <STitleP>선호 장르</STitleP>
-        {recGenre.length ? (
-          <SGridDiv>
-            {recGenre.map((genre, idx) => {
-              return (
-                <SGenreBtn onClick={() => genreHandler(genre)} key={idx}>
-                  {genre}
-                </SGenreBtn>
-              );
-            })}
+      {isLoading ? (
+        <div
+          style={{
+            height: "70vh",
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "center",
+          }}
+        >
+          <Lottie animationData={spinner} />
+        </div>
+      ) : (
+        <SheetDiv>
+          <STitleP>선호 장르</STitleP>
+          {recGenre.length ? (
+            <SGridDiv>
+              {recGenre.map((genre, idx) => {
+                return (
+                  <SGenreBtn onClick={() => genreHandler(genre)} key={idx}>
+                    {genre}
+                  </SGenreBtn>
+                );
+              })}
+              <SheetBtn
+                style={{ width: "10vw" }}
+                onClick={() => {
+                  setIsOpen(true);
+                }}
+              >
+                +
+              </SheetBtn>
+            </SGridDiv>
+          ) : (
             <SheetBtn
-              style={{ width: "10vw" }}
               onClick={() => {
                 setIsOpen(true);
               }}
             >
-              +
+              선호 장르 선택
             </SheetBtn>
-          </SGridDiv>
-        ) : (
-          <SheetBtn
-            onClick={() => {
-              setIsOpen(true);
-            }}
-          >
-            선호 장르 선택
-          </SheetBtn>
-        )}
+          )}
 
-        <STitleP>대상 OTT</STitleP>
-        <div style={{ display: "flex" }}>
-          <SImg
-            onClick={ottChange}
-            src={ott.includes("netflix") ? netflixSelected : netflix}
-            alt="netflix"
-          />
-          <SImg
-            onClick={ottChange}
-            src={ott.includes("wavve") ? wavveSelected : wavve}
-            alt="wavve"
-          />
-          <SImg
-            onClick={ottChange}
-            src={ott.includes("disney") ? disneySelected : disney}
-            alt="disney"
-          />
-          <SImg
-            onClick={ottChange}
-            src={ott.includes("watcha") ? watchaSelected : watcha}
-            alt="watcha"
-          />
-        </div>
-        <SLabel>
-          민감 정보 포함 &nbsp;
-          <input
-            type="radio"
-            name="sensitive"
-            checked={isAdult}
-            onClick={() => {
-              setIsAdult(!isAdult);
-            }}
-            readOnly
-          />
-        </SLabel>
-        <SRecBtn onClick={goRecHandler}>추천 받기</SRecBtn>
-      </SheetDiv>
-      <RecBottomSheet
-        isOpen={isOpen}
-        onClose={() => {
-          setIsOpen(false);
-        }}
-      />
+          <STitleP>대상 OTT</STitleP>
+          <div style={{ display: "flex" }}>
+            <SImg
+              onClick={ottChange}
+              src={ott.includes("netflix") ? netflixSelected : netflix}
+              alt="netflix"
+            />
+            <SImg
+              onClick={ottChange}
+              src={ott.includes("wavve") ? wavveSelected : wavve}
+              alt="wavve"
+            />
+            <SImg
+              onClick={ottChange}
+              src={ott.includes("disney") ? disneySelected : disney}
+              alt="disney"
+            />
+            <SImg
+              onClick={ottChange}
+              src={ott.includes("watcha") ? watchaSelected : watcha}
+              alt="watcha"
+            />
+          </div>
+          <SLabel>
+            민감 정보 포함 &nbsp;
+            <input
+              type="radio"
+              name="sensitive"
+              checked={isAdult}
+              onClick={() => {
+                setIsAdult(!isAdult);
+              }}
+              readOnly
+            />
+          </SLabel>
+          <SRecBtn onClick={goRecHandler}>추천 받기</SRecBtn>
+        </SheetDiv>
+      )}
+      {!isLoading && (
+        <RecBottomSheet
+          isOpen={isOpen}
+          onClose={() => {
+            setIsOpen(false);
+          }}
+        />
+      )}
     </BaseDiv>
   );
 };
