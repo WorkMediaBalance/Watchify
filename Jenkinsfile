@@ -35,7 +35,7 @@ pipeline {
                     dir('BACKEND/watchify/src/main/resources'){
                         sh """
                             sed -i 's/THREE_S_ACCESSKEY/"$THREE_S_ACCESSKEY"/g' application-dev.yml
-                            sed -i 's/THREE_S_SECRETKEY/"$THREE_S_SECRETKEY"/g' application-dev.yml
+                            sed -i 's~THREE_S_SECRETKEY~'"$THREE_S_SECRETKEY"'~g' application-dev.yml
                             sed -i 's/THREE_S_BUCKET/"$THREE_S_BUCKET"/g' application-dev.yml
                             sed -i 's/FCM_JSON/"$FCM_JSON"/g' application-dev.yml
                         """
@@ -62,7 +62,7 @@ pipeline {
                     dir('BACKEND/watchify/src/main/resources'){
                         sh """
                             sed -i 's/"$THREE_S_ACCESSKEY"/THREE_S_ACCESSKEY/g' application-dev.yml
-                            sed -i 's/"$THREE_S_SECRETKEY"/THREE_S_SECRETKEY/g' application-dev.yml
+                            sed -i 's~"$THREE_S_SECRETKEY"~'THREE_S_SECRETKEY'~g' application-dev.yml
                             sed -i 's/"$THREE_S_BUCKET"/THREE_S_BUCKET/g' application-dev.yml
                             sed -i 's/"$FCM_JSON"/FCM_JSON/g' application-dev.yml
                         """
@@ -89,7 +89,7 @@ pipeline {
                     dir('readOnlyBackend/watchify/src/main/resources'){
                         sh """
                             sed -i 's/THREE_S_ACCESSKEY/"$THREE_S_ACCESSKEY"/g' application-dev.yml
-                            sed -i 's/THREE_S_SECRETKEY/"$THREE_S_SECRETKEY"/g' application-dev.yml
+                            sed -i 's~THREE_S_SECRETKEY~'"$THREE_S_SECRETKEY"'~g' application-dev.yml
                             sed -i 's/THREE_S_BUCKET/"$THREE_S_BUCKET"/g' application-dev.yml
                             sed -i 's/FCM_JSON/"$FCM_JSON"/g' application-dev.yml
                         """
@@ -116,7 +116,7 @@ pipeline {
                     dir('readOnlyBackend/watchify/src/main/resources'){
                         sh """
                             sed -i 's/"$THREE_S_ACCESSKEY"/THREE_S_ACCESSKEY/g' application-dev.yml
-                            sed -i 's/"$THREE_S_SECRETKEY"/THREE_S_SECRETKEY/g' application-dev.yml
+                            sed -i 's~"$THREE_S_SECRETKEY"~'THREE_S_SECRETKEY'~g' application-dev.yml
                             sed -i 's/"$THREE_S_BUCKET"/THREE_S_BUCKET/g' application-dev.yml
                             sed -i 's/"$FCM_JSON"/FCM_JSON/g' application-dev.yml
                         """
