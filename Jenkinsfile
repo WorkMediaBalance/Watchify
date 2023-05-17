@@ -23,19 +23,18 @@ pipeline {
                 script {
                     def BUILD_NUMBER = currentBuild.number
 
-                    dir('BACKEND/watchify') { // 해당 directory로 들어가기 위해서는 cd는 안되고 대신 dir를 사용해야한다.
-                        sh 'chmod +x gradlew'
-                        sh './gradlew clean build -x test'
-                    }
-
                     dir('BACKEND/watchify/src/main/resources'){
                         sh 'ls -a'
                         sh """
                             sed -i 's/DB_USER/"$DB_USER"/g' application.yml
                             sed -i 's/DB_PW/"$DB_PW"/g' application.yml
-                            sed -i 's/DB_HOST/"$DB_HOST"/g' application.yml
                             sed -i 's/SERVER_HOST/"$SERVER_HOST"/g' application.yml
                         """
+                    }
+
+                    dir('BACKEND/watchify') { // 해당 directory로 들어가기 위해서는 cd는 안되고 대신 dir를 사용해야한다.
+                        sh 'chmod +x gradlew'
+                        sh './gradlew clean build -x test'
                     }
 
                     sh 'docker build -t $repository:backend$BUILD_NUMBER ./BACKEND/watchify'
@@ -46,7 +45,6 @@ pipeline {
                         sh """
                             sed -i 's/"$DB_USER"/DB_USER/g' application.yml
                             sed -i 's/"$DB_PW"/DB_PW/g' application.yml
-                            sed -i 's/"$DB_HOST"/DB_HOST/g' application.yml
                             sed -i 's/"$SERVER_HOST"/SERVER_HOST/g' application.yml
                         """
                     }
