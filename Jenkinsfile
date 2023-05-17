@@ -77,7 +77,7 @@ pipeline {
                 script {
                     def BUILD_NUMBER = currentBuild.number
 
-                    dir('readOnlyBackend/watchify/src/main/resources'){
+                    dir('ReadOnlyBackend/watchify/src/main/resources'){
                         sh """
                             sed -i 's/DB_USER/"$DB_USER"/g' application.yml
                             sed -i 's/DB_PW/"$DB_PW"/g' application.yml
@@ -86,7 +86,7 @@ pipeline {
                         """
                     }
 
-                    dir('readOnlyBackend/watchify/src/main/resources'){
+                    dir('ReadOnlyBackend/watchify/src/main/resources'){
                         sh """
                             sed -i 's/THREE_S_ACCESSKEY/"$THREE_S_ACCESSKEY"/g' application-dev.yml
                             sed -i 's~THREE_S_SECRETKEY~'"$THREE_S_SECRETKEY"'~g' application-dev.yml
@@ -104,7 +104,7 @@ pipeline {
                     sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin' // docker hub 로그인
                     sh 'docker push $repository:readonlybackend$BUILD_NUMBER'
 
-                    dir('readOnlyBackend/watchify/src/main/resources'){
+                    dir('ReadOnlyBackend/watchify/src/main/resources'){
                         sh """
                             sed -i 's/"$DB_USER"/DB_USER/g' application.yml
                             sed -i 's/"$DB_PW"/DB_PW/g' application.yml
@@ -113,7 +113,7 @@ pipeline {
                         """
                     }
 
-                    dir('readOnlyBackend/watchify/src/main/resources'){
+                    dir('ReadOnlyBackend/watchify/src/main/resources'){
                         sh """
                             sed -i 's/"$THREE_S_ACCESSKEY"/THREE_S_ACCESSKEY/g' application-dev.yml
                             sed -i 's~"$THREE_S_SECRETKEY"~'THREE_S_SECRETKEY'~g' application-dev.yml
