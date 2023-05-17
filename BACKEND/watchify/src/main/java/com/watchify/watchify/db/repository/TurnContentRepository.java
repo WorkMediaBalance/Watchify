@@ -23,6 +23,10 @@ public interface TurnContentRepository extends JpaRepository<TurnContent, Long> 
     @Query(value = "select * from turn_content t where t.content_id = :contentId and episode = :ep", nativeQuery = true)
     TurnContent getSpecificTurnContent(Long contentId, int ep);
 
+    // 특정 컨텐츠의 TurnContentPK 값들을 불러옴
+    @Query(value = "select id from turn_content t where t.content_id = :contentId ", nativeQuery = true)
+    List<Long> getTurnContentListPkByContentId(Long contentId);
+
 
 
 
