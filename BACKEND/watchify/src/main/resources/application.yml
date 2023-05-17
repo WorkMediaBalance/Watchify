@@ -5,7 +5,7 @@ spring:
 #    username: root
 #    password: '0000'
     url: jdbc:mysql://DB_HOST/sins?useUnicode=true&characterEncoding=utf8&s&zeroDateTimeBehavior=convertToNull&rewriteBatchedStatements=true&tinyInt1isBit=false
-    username: DB_NAME
+    username: DB_USER
     password: DB_PW
   jpa:
     properties:

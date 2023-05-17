@@ -29,6 +29,7 @@ pipeline {
                     }
 
                     dir('BACKEND/watchify/src/main/resources'){
+                        sh 'ls -a'
                         sh """
                             sed -i 's/DB_USER/"$DB_USER"/g' application.yml
                             sed -i 's/DB_PW/"$DB_PW"/g' application.yml
@@ -36,6 +37,7 @@ pipeline {
                             sed -i 's/SERVER_HOST/"$SERVER_HOST"/g' application.yml
                         """
                     }
+
                     sh 'docker build -t $repository:backend$BUILD_NUMBER ./BACKEND/watchify'
                     sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin' // docker hub 로그인
                     sh 'docker push $repository:backend$BUILD_NUMBER'
