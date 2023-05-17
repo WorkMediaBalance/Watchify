@@ -45,9 +45,9 @@ def recommend(user_id, genres, otts, age, top_n):
 
 def ottRecommend(user_id):
     userdict = User.objects.values_list('id', flat=True)
-    itemdict = Contentott.objects.values_list('content_id','ott_id')  # 현재 ott에 해당하는 컨텐츠만 가져오기
-
     items_reviewed = LikeContent.objects.filter(user_id=user_id, is_deleted=False).values_list('content_id', flat=True) # user_id가 같고 is_deleted 값이 False인 데이터만 가져오기
+    itemdict = Contentott.objects.filter().values_list('content_id','ott_id')
+
 
     neighbor_user = LikeContent.objects.filter(content_id__in=items_reviewed, is_deleted=False).values_list('user_id', flat=True)
     neighbor_user = list(set(neighbor_user))
@@ -56,6 +56,7 @@ def ottRecommend(user_id):
     except:
         pass
     neighbor_user = sorted(neighbor_user)
+    print('이웃 : ', neighbor_user)
 
     neighbor_item_like = LikeContent.objects.filter(user_id__in=neighbor_user, is_deleted=False).values_list('user_id', 'content_id', 'like')
     neighbor_item_wish = WishContent.objects.filter(user_id__in=neighbor_user, is_deleted=False).values_list('user_id', 'content_id')
@@ -64,36 +65,41 @@ def ottRecommend(user_id):
         neighbor_like_list[id].append((content_id, like))
     for id, content_id in neighbor_item_wish:
         neighbor_wish_list[id].append((content_id))
+    print('이웃 유저 컨텐츠 : ', neighbor_like_list, neighbor_wish_list)
 
     recommendations = [[] for _ in range(4)]
     for item_id, ott_id in itemdict:  # itemdict : DB에서 Content 테이블 조회하기
         if item_id not in items_reviewed:
             recommendations[ott_id-1].append((item_id, ott_predict(user_id, item_id, neighbor_user, userdict, neighbor_like_list, neighbor_wish_list)))
-    
-    for r in recommendations:
+    print('추천 완료올ㅇㄹㅇㄴ로ㅗ오오오오')
+    result = dict()
+    for i in range(4):
+        r = recommendations[i]
         r = list(set(r))
         r.sort(key = lambda x:x[1], reverse=True) # 유사도가 높은 순서대로 정렬
-
-    result = dict()
-    for r in range(4):
-        try:
-            content = recommendations[r][:10]
-            result[r+1] = [x[0] for x in content]
-        except:
-            pass
+        content = r[:10]
+        result[i+1] = [x[0] for x in content]
+        print(result[i+1])
+    print('result : ', result)
     return result
 
 def scheduleRecommend(user_id, content_ids, ott_ids):
     userdict = User.objects.values_list('id', flat=True)
     itemdict = Contentott.objects.filter(ott_id__in=ott_ids).values_list('id')  # 현재 ott에 해당하는 컨텐츠만 가져오기
-    items_reviewed = content_ids # 작업대에 올라가있는 컨텐츠 id를 사용
-    neighbor_user = LikeContent.objects.filter(content_id__in=items_reviewed, is_deleted=False).values_list('user_id', flat=True)
+    schedule_items = content_ids # 작업대에 올라가있는 컨텐츠 id를 사용
+    items_reviewed = LikeContent.objects.filter(user_id=user_id, is_deleted=False).values_list('content_id', flat=True)
+    # print('like content : ', items_reviewed)
+    schedule_items += items_reviewed
+    schedule_items = list(set(schedule_items))
+    # print('스케줄 아이템 : ', schedule_items)
+    neighbor_user = LikeContent.objects.filter(content_id__in=schedule_items, is_deleted=False).values_list('user_id', flat=True)
     neighbor_user = list(set(neighbor_user))
     try:
         neighbor_user.pop(list(neighbor_user).index(int(user_id)))
     except:
         pass
     neighbor_user = sorted(neighbor_user)
+    # print('유사도 유저 : ', neighbor_user)
 
     neighbor_item_like = LikeContent.objects.filter(user_id__in=neighbor_user, is_deleted=False).values_list('user_id', 'content_id', 'like')
     neighbor_item_wish = WishContent.objects.filter(user_id__in=neighbor_user, is_deleted=False).values_list('user_id', 'content_id')
@@ -102,6 +108,8 @@ def scheduleRecommend(user_id, content_ids, ott_ids):
         neighbor_like_list[id].append((content_id, like))
     for id, content_id in neighbor_item_wish:
         neighbor_wish_list[id].append((content_id))
+    # print('이웃 좋아요 : ', neighbor_like_list)
+    # print('이웃 찜 : ', neighbor_wish_list)
 
     recommendations = []
     for item_id in itemdict:  # itemdict : DB에서 Content 테이블 조회하기
@@ -109,6 +117,7 @@ def scheduleRecommend(user_id, content_ids, ott_ids):
             recommendations.append((item_id[0], ott_predict(user_id, item_id, neighbor_user, userdict, neighbor_like_list, neighbor_wish_list)))
     recommendations = list(set(recommendations))
     recommendations.sort(key = lambda x:x[1], reverse=True) # 유사도(x[1])가 높은 순서대로 정렬
+    print(recommendations[:20])
 
     result = [x[0] for x in recommendations[:10]]
     return result

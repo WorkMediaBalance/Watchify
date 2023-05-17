@@ -9,9 +9,14 @@ def predict(user_id, item_id, neighbor_user, userdict, neighbor_item_list, neigh
         items_liked_u = neighbor_item_list[other_id]
         items_wished_u = neighbor_wish_list[other_id]
         if item_id in (x[0] for x in items_liked_u):
+            item_genre = ContentGenre.objects.filter(content_id=item_id).values_list('genre_id', flat=True)
+            a = 0
+            for genre in item_genre:
+                if genre in genre_ids:
+                    a += 1
             id, like = items_liked_u[list(x[0] for x in items_liked_u).index(item_id)]
-
-            item_rating = like * 2
+            genre_rating = (a / len(genre_ids))*5
+            item_rating = like + genre_rating
             user_similarity = SimilarityMatrix(userdict).get_user_similarity(int(user_id), int(other_id))
 
             weighted_rating = user_similarity * item_rating
