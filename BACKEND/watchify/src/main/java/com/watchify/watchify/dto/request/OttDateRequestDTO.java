@@ -8,8 +8,8 @@ import java.time.LocalDate;
 @Getter
 @NoArgsConstructor
 public class OttDateRequestDTO {
-    private String start;
-    private String end;
+    private LocalDate start;
+    private LocalDate end;
 
 
 }
