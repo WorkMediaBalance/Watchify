@@ -13,19 +13,20 @@ import { searchResult } from "apis/apiSearch";
 
 import logoImg from "assets/WatchifyLogo2.png";
 import ContentPoster from "components/common/ContentPoster";
+import { getRegExp } from "korean-regexp";
+
+import titleJson from "./../assets/titles.json";
 
 const PageSearch = () => {
+  const [titles, setTitles] = useState<string[]>([]);
   const navigate = useNavigate();
 
+  useEffect(() => {
+    setTitles(titleJson);
+  }, []);
+
   const [searchWord, setSearchWord] = useState<string>("");
-  const [autocompleteWords, setAutocompleteWords] = useState<string[] | null>([
-    "고병진은 살아있다",
-    "고병진 프리즌 브레이크",
-    "나는 내일 어제의 고병진과 만난다",
-    "고병진스 :: 인피니트 워",
-    "6시 내 고병진",
-    "내 머릿속의 고병진",
-  ]);
+  const [autocompleteWords, setAutocompleteWords] = useState<string[] | null>([]);
   // 검색 했는지 여부 state
   const [isResult, setIsResult] = useState<boolean>(false);
   // 검색 결과에 컨텐츠 존재하는지 여부 state
@@ -36,6 +37,23 @@ const PageSearch = () => {
   const [autocompleteVisible, setAutocompleteVisible] = useState(false);
 
   const wordChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const targetWord = getRegExp(e.target.value, {
+      initialSearch: true,
+      startsWith: false,
+      endsWith: false,
+      ignoreSpace: true,
+      ignoreCase: false,
+      global: true,
+    });
+
+    let suggestion = [];
+    suggestion = titles.filter((title) => {
+      return targetWord.test(title);
+    });
+    let uniqueArray = [...new Set(suggestion)];
+
+    console.log(uniqueArray, "suggestion");
+    setAutocompleteWords(uniqueArray.slice(0, 9));
     setSearchWord(e.target.value);
   };
 
