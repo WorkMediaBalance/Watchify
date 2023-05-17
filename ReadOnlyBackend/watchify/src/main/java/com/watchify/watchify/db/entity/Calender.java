@@ -21,7 +21,10 @@ public class Calender implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(nullable = false)
     private LocalDate date;
+
     private LocalDate viewDate;
 
     private boolean isView;
