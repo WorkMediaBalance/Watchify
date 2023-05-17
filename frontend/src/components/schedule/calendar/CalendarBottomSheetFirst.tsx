@@ -12,8 +12,9 @@ import { scheduleAllState } from "recoil/scheduleState";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Swal from "sweetalert2";
-import { scheduleModify, scheduleInfoAll } from "apis/apiSchedule";
+import { scheduleModify, scheduleInfoAll, scheduleInfo } from "apis/apiSchedule";
 import { ScheduleAll } from "interface/schedule";
+import { later } from "constant/constant";
 
 const CalendarBottomSheetFirst = (props: { date: number; month: number; year: number }) => {
   // month 스케줄
@@ -97,20 +98,20 @@ const CalendarBottomSheetFirst = (props: { date: number; month: number; year: nu
       const paddedMonth = (month1 + 1).toString().padStart(2, "0");
       const paddedDay = day1.toString().padStart(2, "0");
 
-      let newSchedule = { ...scheduleAll };
-      console.log(`${year1}-${paddedMonth}-${paddedDay}`);
-      newSchedule[`${props.year}-${paddedPropsMonth}`][props.date][
-        index
-      ].date = `${year1}-${paddedMonth}-${paddedDay}`;
-      console.log(newSchedule);
+      const changed: later = {
+        date: scheduleAll[`${props.year}-${paddedPropsMonth}`][props.date][index].date,
+        contentId: scheduleAll[`${props.year}-${paddedPropsMonth}`][props.date][index].pk,
+        episode: scheduleAll[`${props.year}-${paddedPropsMonth}`][props.date][index].episode,
+        newDate: `${year1}-${paddedMonth}-${paddedDay}`,
+      };
 
-      ChangeScheduleAll(newSchedule);
+      ChangeScheduleAll(changed);
 
       setOnChange(false);
     }
   };
 
-  const ChangeScheduleAll = async (data: ScheduleAll) => {
+  const ChangeScheduleAll = async (data: later) => {
     const success = await scheduleModify(data);
 
     if (success) {
@@ -118,8 +119,17 @@ const CalendarBottomSheetFirst = (props: { date: number; month: number; year: nu
       if (newData !== false) {
         setScheduleAll(newData);
         console.log("전체 스케줄", newData);
+        await getMonthSchedule();
       }
     }
+  };
+
+  const getMonthSchedule = async () => {
+    try {
+      console.log(`${props.year}년 ${props.month}월 스케줄 정보 받아오기`);
+      const data = await scheduleInfo(props.year, props.month);
+      setMonthSchedule(data);
+    } catch {}
   };
 
   return (
@@ -168,7 +178,7 @@ const CalendarBottomSheetFirst = (props: { date: number; month: number; year: nu
                     setOnChange(true);
                   }}
                 >
-                  {"미루기"}
+                  {"일정 변경"}
                 </PostponeButton>
               </ButtonContainer>
             </TextContainer>
