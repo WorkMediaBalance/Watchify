@@ -6,8 +6,10 @@ import CalendarBottomSheet from "components/schedule/calendar/CalendarBottomShee
 import { useNavigate, useLocation } from "react-router-dom";
 // month 스케줄 state
 import { monthScheduleState, scheduleAllState } from "recoil/scheduleState";
+import { userState } from "recoil/userState";
 import { useRecoilState } from "recoil";
-import { scheduleInfo, scheduleInfoAll } from "apis/apiSchedule";
+import { scheduleInfo, scheduleInfoAll, scheduleShare } from "apis/apiSchedule";
+import { shareKakao } from "hooks/shareKakaoLink";
 
 const Wrapper = styled.div`
   height: 91vh;
@@ -22,6 +24,8 @@ const PageScheduleResult = () => {
   const [date, setDate] = useState(1);
   const [close, setClose] = useState(0);
   const [year, setYear] = useState(new Date().getFullYear());
+
+  const [user, SetUser] = useRecoilState(userState);
 
   // 전체 스케줄
   const [scheduleAll, setScheduleAll] = useRecoilState(scheduleAllState);
@@ -65,8 +69,36 @@ const PageScheduleResult = () => {
     }
   }, []);
 
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.src = "https://developers.kakao.com/sdk/js/kakao.js";
+    script.async = true;
+    document.body.appendChild(script);
+
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
+
+  const sharing = async (name: string) => {
+    const sharePk = await scheduleShare(scheduleAll);
+    shareKakao(
+      `https://k8a207.p.ssafy.io/share/${sharePk.pk}`,
+      `${name}님의 OTT 시청 패턴이 궁금하다면?`
+    );
+  };
+
   return (
     <Wrapper>
+      <div>
+        <img
+          src="https://developers.kakao.com/assets/img/about/logos/kakaotalksharing/kakaotalk_sharing_btn_medium.png"
+          alt="#"
+          onClick={() => {
+            sharing(user["name"] ? user["name"] : "guest");
+          }}
+        />
+      </div>
       <Calendar
         onDateClick={(date: number, month: number, year: number) => {
           setSheet(sheet + 1);

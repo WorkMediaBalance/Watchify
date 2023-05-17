@@ -5,7 +5,6 @@ import ShareCalendar from "components/share/ShareCalendar";
 import ShareBottomSheet from "components/share/ShareBottomSheet";
 import { useRecoilState } from "recoil";
 import { ShareDetailContent } from "interface/content";
-import { scheduleShareGet } from "apis/apiSchedule";
 
 interface ShareData {
   [key: string]: number;
@@ -15,14 +14,13 @@ interface ShareDetailContentObject {
   [key: number]: ShareDetailContent[];
 }
 
-const PageShare = () => {
+const PageShared = () => {
   // const { pk } = useParams();
   const location = useLocation();
   const startYear = location.state && location.state.year;
   const startMonth = location.state && location.state.month;
   const startDay = location.state && location.state.day;
   const pk = location.state && location.state.pk;
-  let { sharedPK } = useParams();
 
   const [year, setYear] = useState(startYear);
   const [month, setMonth] = useState(startMonth);
@@ -32,32 +30,26 @@ const PageShare = () => {
 
   const [selectedDate, setSelectedDate] = useState(new Date());
   // 히스토리 상세 정보 받아오기
-  async function getScheduleShare(sharedPK: number) {
+  async function MyHistoryInfoAPI(pk: number, year: number, month: number) {
     try {
-      const newShareDetail = await scheduleShareGet(sharedPK);
+      const data: ShareData = {
+        pk: Number(pk),
+        year: Number(year),
+        month: Number(month),
+      };
+      const newShareDetail = await myHistoryInfo(data);
       if (newShareDetail !== undefined) {
         setShareDetail(newShareDetail);
       }
     } catch {}
   }
+  useEffect(() => {
+    MyHistoryInfoAPI(pk, selectedDate.getFullYear(), selectedDate.getMonth() + 1);
+  }, [selectedDate]);
 
   useEffect(() => {
-    if (sharedPK === undefined) {
-      const pk = 1;
-    } else {
-      const pk = sharedPK;
-    }
-
-    getScheduleShare(pk);
-  }, []);
-
-  // useEffect(() => {
-  //   MyHistoryInfoAPI(pk, selectedDate.getFullYear(), selectedDate.getMonth() + 1);
-  // }, [selectedDate]);
-
-  // useEffect(() => {
-  //   MyHistoryInfoAPI(pk, year, month);
-  // }, [month]);
+    MyHistoryInfoAPI(pk, year, month);
+  }, [month]);
 
   // bottomsheet open 변수
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -96,4 +88,4 @@ const PageShare = () => {
   );
 };
 
-export default PageShare;
+export default PageShared;

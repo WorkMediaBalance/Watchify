@@ -1,8 +1,7 @@
-import api from "./axiosInstance";
 import { Schedule, isSeen } from "constant/constant";
-import { ScheduleAll } from "interface/schedule";
+
 import { apiR, apiCUD } from "./axiosInstance";
-import { schedulePreInfo } from "interface/schedule";
+import { schedulePreInfo, ScheduleAll } from "interface/schedule";
 
 // 월간 스케줄 조회
 export const scheduleInfo = async (year: number, month: number) => {
@@ -39,6 +38,29 @@ export const scheduleCreate = async (data: schedulePreInfo) => {
   }
 };
 
+// 스케줄 공유
+export const scheduleShare = async (data: ScheduleAll) => {
+  try {
+    const res = await apiCUD.post("api/schedule/nonauth/share", data);
+    // console.log(res.data);
+    return res.data;
+  } catch (err) {
+    console.log("스케줄 공유 실패");
+    console.log(err);
+  }
+};
+
+// 스케줄 공유 틀기
+export const scheduleShareGet = async (pk: number) => {
+  try {
+    const res = await apiR.get(`readapi/schedule/nonauth/share/${pk}`);
+    return res.data;
+  } catch (err) {
+    console.log("공유 받은 스케줄 가져오기 실패");
+    console.log(err);
+  }
+};
+
 // 시청함 체크
 /*
 data 샘플
@@ -50,7 +72,7 @@ data 샘플
 */
 export const scheduleCheck = async (data: isSeen) => {
   try {
-    await api.post("api/schedule/check", data);
+    await apiCUD.post("api/schedule/check", data);
     console.log("시청함 체크 성공");
     return true;
   } catch (err) {
@@ -70,7 +92,7 @@ data 샘플
 */
 export const scheduleCheckCancel = async (data: isSeen) => {
   try {
-    await api.put("api/schedule/cancel", data);
+    await apiCUD.put("api/schedule/cancel", data);
     console.log("시청함 체크 취소 성공");
     return true;
   } catch (err) {
@@ -85,7 +107,7 @@ recoil의 scheduleAllState를 변경한 뒤, 해당 state 전체를 인자로 �
 */
 export const scheduleModify = async (data: ScheduleAll) => {
   try {
-    await api.put("api/schedule/modify", data);
+    await apiCUD.put("api/schedule/modify", data);
     console.log("스케줄 미루기 성공");
     return true;
   } catch (err) {
