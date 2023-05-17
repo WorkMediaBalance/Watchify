@@ -4,7 +4,9 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 
 import { essListState } from "recoil/userState";
+import { schedulePreInfoState } from "recoil/schedulePreInfoState";
 import { useRecoilState } from "recoil";
+import { scheduleAllState } from "recoil/scheduleState";
 
 import ScheduleBottomSheet from "components/schedule/ScheduleBottomSheet";
 
@@ -12,11 +14,35 @@ import { AiOutlineMinusCircle } from "react-icons/ai";
 import Lottie from "lottie-react";
 import scheduleGIF from "assets/gif/schedule-calendar-animation.json";
 
+import { scheduleCreate } from "apis/apiSchedule";
+
 const PageScheduleContent = () => {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  // 필수시청목록 (API 요청시에는 사용 X)
   const [essList, setEssList] = useRecoilState(essListState);
 
+  // 스케줄 생성 preData recoil
+  const [preData, setPreData] = useRecoilState(schedulePreInfoState);
+  const [scheduleResult, setScheduleResult] = useRecoilState(scheduleAllState);
+
+  // 필수 시청 목록 recoil 반영
+  useEffect(() => {
+    let pks: number[] = [];
+    essList.forEach((content) => {
+      pks.push(content.pk);
+    });
+    let copy = { ...preData };
+    copy = { ...copy, contents: pks };
+    setPreData(copy);
+  }, [essList]);
+
+  const scheduleCreateAPI = async () => {
+    const scheduleResultData = await scheduleCreate(preData);
+    setScheduleResult(scheduleResultData);
+  };
+
+  // 로딩 관련 state (0: 첫화면, 1: 다음 클릭 0~2초, 2: 다음 클릭 2초 후)
   const [isLoading, setIsLoading] = useState<number>(0);
 
   const onClickDelete = (idx: number) => {
@@ -74,8 +100,16 @@ const PageScheduleContent = () => {
 
   const onClickLoading = () => {
     setIsLoading(1);
+    // 스케줄 생성 API 요청
+    scheduleCreateAPI();
     setTimeout(() => {
       setIsLoading(2);
+      setPreData({
+        startDate: "",
+        contents: [],
+        patterns: [],
+        ott: [],
+      });
     }, 2000);
   };
 

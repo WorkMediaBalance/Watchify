@@ -2,8 +2,9 @@ import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import styled from "styled-components";
 import { recResultState } from "recoil/recommendState";
+import { userState } from "recoil/userState";
 import { useRecoilState } from "recoil";
-import { USER_NAME } from "constant/constant";
+// import { USER_NAME } from "constant/constant";
 import { theme } from "styles/theme";
 import NameTicker from "components/recommend/NameTicker";
 
@@ -131,6 +132,7 @@ const UserSpan = styled.span`
 const PageRecommendResult = () => {
   const [recResult, SetRecResult] = useRecoilState(recResultState);
   const [selectedNum, SetSelectedNum] = useState<number>(0);
+  const [user, SetUser] = useRecoilState(userState);
 
   const onClickHandler = (event: React.MouseEvent<HTMLDivElement>) => {
     const selectedId = event.currentTarget.id;
@@ -181,13 +183,13 @@ const PageRecommendResult = () => {
 
   useEffect(() => {
     const data = location.state?.data;
-    console.log(data);
+    SetRecResult(data);
   }, []);
 
   return (
     <Wrapper>
       <STitleP>
-        <UserSpan>{USER_NAME}</UserSpan>님을 위한 추천 컨텐츠
+        <UserSpan>{user["name"] ? user["name"] : "guest"}</UserSpan>님을 위한 추천 컨텐츠
       </STitleP>
       <SMainDiv className={"mainDiv"}>
         <div style={{ display: "flex", marginLeft: "5vw", position: "absolute" }}>
@@ -209,7 +211,7 @@ const PageRecommendResult = () => {
           <div style={{ display: "flex", width: "100vw" }}>
             <SImg src={recResult[selectedNum].imgPath} alt="#" />
             <div style={{ marginRight: "1vw" }}>
-              <STextP>추천도 : 93%</STextP>
+              <STextP>추천도 : {recResult[selectedNum].score}</STextP>
               <STextP>장르 : {recResult[selectedNum].genres.join(", ")}</STextP>
               <STextP>재생 시간 : {run}</STextP>
               <STextP>등급 : {recResult[selectedNum].audienceAge}</STextP>
@@ -246,7 +248,7 @@ const PageRecommendResult = () => {
           modules={[EffectCoverflow, Navigation, Mousewheel]}
           className="mySwiper"
         >
-          {recResult.map((content, index) => (
+          {recResult.slice(3, 10).map((content, index) => (
             <SwiperSlide key={index}>
               <div style={{ width: "33vw" }}>
                 <ContentPoster

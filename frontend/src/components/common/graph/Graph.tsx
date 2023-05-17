@@ -3,6 +3,9 @@ import styled from "styled-components";
 
 import { myPatternChange, myPatternGet } from "apis/apiMy";
 
+import { useRecoilState } from "recoil";
+import { schedulePreInfoState } from "recoil/schedulePreInfoState";
+
 const Wrapper = styled.div`
   height: 100%;
 `;
@@ -50,6 +53,16 @@ const Graph: React.FC<graphProps> = ({ data, setActiveIndex, activeIndex }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [containerHeight, setContainerHeight] = useState<number>(1);
 
+  // 스케줄 생성 preData recoil
+  const [preData, setPreData] = useRecoilState(schedulePreInfoState);
+
+  // 시청패턴 recoil 변경 로직
+  useEffect(() => {
+    let copy = { ...preData };
+    copy = { ...copy, patterns: pattern };
+    setPreData(copy);
+  }, [pattern]);
+
   const getMypattern = async () => {
     const data = await myPatternGet();
     setPattern(data.pattern);
@@ -80,6 +93,7 @@ const Graph: React.FC<graphProps> = ({ data, setActiveIndex, activeIndex }) => {
         newPattern[index] = newPattern[index] - Math.floor(movementY / (containerHeight / 8));
       }
       setPattern(newPattern);
+      // 시청패턴 변경 API
       myPatternChange({ pattern: newPattern });
     };
 

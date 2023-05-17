@@ -1,11 +1,13 @@
 import api from "./axiosInstance";
 import { Schedule, isSeen } from "constant/constant";
 import { ScheduleAll } from "interface/schedule";
+import { apiR, apiCUD } from "./axiosInstance";
+import { schedulePreInfo } from "interface/schedule";
 
 // 월간 스케줄 조회
 export const scheduleInfo = async (year: number, month: number) => {
   try {
-    const res = await api.get(`api/schedule/info/${year}/${month}`);
+    const res = await apiR.get(`api/schedule/info/${year}/${month}`);
     return res.data;
   } catch (err) {
     console.log("월간 스케줄 받아오기 실패");
@@ -16,7 +18,7 @@ export const scheduleInfo = async (year: number, month: number) => {
 // 전체 스케줄 조회
 export const scheduleInfoAll = async () => {
   try {
-    const res = await api.get(`api/schedule/info/all`);
+    const res = await apiR.get(`api/schedule/info/all`);
     return res.data;
   } catch (err) {
     console.log("전체 스케줄 받아오기 실패");
@@ -26,10 +28,11 @@ export const scheduleInfoAll = async () => {
 };
 
 // 스케줄 만들기
-export const scheduleCreate = async (data: Schedule) => {
+export const scheduleCreate = async (data: schedulePreInfo) => {
   try {
-    await api.post("api/sehedule/create", data);
-    return true;
+    const res = await apiCUD.post("api/schedule/create", data);
+    // console.log(res.data);
+    return res.data;
   } catch (err) {
     console.log("스케줄 생성 실패");
     console.log(err);

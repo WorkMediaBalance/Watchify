@@ -12,11 +12,13 @@ const HistoryCalendar = (props: {
   onCloseSheet: () => void;
   bottomSheetState: number;
   historyDetail: { [key: number]: HistoryDetailContent[] };
+  selectedDate: Date;
+  setSelectedDate: React.Dispatch<React.SetStateAction<Date>>;
 }) => {
-  const [selectedDate, setSelectedDate] = useState(new Date());
+  // const [selectedDate, setSelectedDate] = useState(new Date());
   const [clickedDay, setClickedDay] = useState<HTMLElement | null>(null);
   const weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-  const month = getMonthAbbreviation(selectedDate);
+  const month = getMonthAbbreviation(props.selectedDate);
 
   function getMonthAbbreviation(date: Date) {
     const currentDate = new Date();
@@ -42,9 +44,12 @@ const HistoryCalendar = (props: {
     return new Date(date.getFullYear(), date.getMonth() + 1, 0).getDay();
   }
 
-  const daysInMonth = getDaysInMonth(selectedDate.getFullYear(), selectedDate.getMonth());
-  const firstDayOfMonth = getFirstDayOfMonth(selectedDate);
-  const lastDayOfMonth = getLastDayOfMonth(selectedDate);
+  const daysInMonth = getDaysInMonth(
+    props.selectedDate.getFullYear(),
+    props.selectedDate.getMonth()
+  );
+  const firstDayOfMonth = getFirstDayOfMonth(props.selectedDate);
+  const lastDayOfMonth = getLastDayOfMonth(props.selectedDate);
 
   const days = [];
 
@@ -53,7 +58,7 @@ const HistoryCalendar = (props: {
   }
 
   for (let i = 1; i <= daysInMonth; i++) {
-    days.push(`${selectedDate.getFullYear()}-${selectedDate.getMonth() + 1}-${i}`);
+    days.push(`${props.selectedDate.getFullYear()}-${props.selectedDate.getMonth() + 1}-${i}`);
   }
 
   for (let i = 0; i < 6 - lastDayOfMonth; i++) {
@@ -76,17 +81,21 @@ const HistoryCalendar = (props: {
 
   function thisMonth() {
     console.log("thismonth");
-    setSelectedDate(new Date());
+    props.setSelectedDate(new Date());
     props.onCloseSheet();
   }
 
   function prevMonth() {
-    setSelectedDate((prevDate) => new Date(prevDate.getFullYear(), prevDate.getMonth() - 1, 1));
+    props.setSelectedDate(
+      (prevDate) => new Date(prevDate.getFullYear(), prevDate.getMonth() - 1, 1)
+    );
     props.onCloseSheet();
   }
 
   function nextMonth() {
-    setSelectedDate((prevDate) => new Date(prevDate.getFullYear(), prevDate.getMonth() + 1, 1));
+    props.setSelectedDate(
+      (prevDate) => new Date(prevDate.getFullYear(), prevDate.getMonth() + 1, 1)
+    );
     props.onCloseSheet();
   }
 
@@ -108,7 +117,7 @@ const HistoryCalendar = (props: {
       }
       event.currentTarget.classList.add("selected-day");
       setClickedDay(event.currentTarget);
-      const date = selectedDate.getMonth() + 1;
+      const date = props.selectedDate.getMonth() + 1;
       const month = Number(YMD[2]);
       if (props.historyDetail[parseInt(YMD[2])]) {
         props.onDateClick(month, date);
@@ -118,13 +127,16 @@ const HistoryCalendar = (props: {
   };
 
   // 해당 스케줄 불러오기
+  useEffect(() => {
+    console.log(props.historyDetail);
+  }, []);
 
   return (
     <Wrapper className={"wrapper"}>
       <motion.div>
         <AnimatePresence>
           <SCalendarDiv
-            key={selectedDate.toISOString()}
+            key={props.selectedDate.toISOString()}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{
@@ -210,7 +222,9 @@ const HistoryCalendar = (props: {
                                         <ContentTag>
                                           <ContentTagDot />
                                           <ContentName>
-                                            {content.episode !== 0 ? `${content.episode}화` : null}
+                                            {content.episode !== 0
+                                              ? `${content.episode}화`
+                                              : "영화"}
                                           </ContentName>
                                         </ContentTag>
                                       );

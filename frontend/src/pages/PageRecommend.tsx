@@ -113,14 +113,14 @@ const PageRecommend = () => {
 
   const getRecResult = async () => {
     console.log({ isAdult: isAdult, ottList: ott, genre: recGenre });
-    const data = await contentRecommend({ isAdult: isAdult, ottList: ott, genre: recGenre });
+    const data = await contentRecommend({ isAdult: isAdult, ottList: ott, genres: recGenre });
+    navigate("/recommend/result", { state: { data: data } });
     setRecResultList(data);
   };
 
   const goRecHandler = async () => {
     // 추천 요청 axios 필요
     await getRecResult();
-    navigate("/recommend/result", { state: { data: recResultList } });
   };
 
   const ottChange = (e: React.MouseEvent<HTMLImageElement>) => {

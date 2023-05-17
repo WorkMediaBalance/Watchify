@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
 
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -13,16 +12,26 @@ import watchaIcon from "assets/img/otticons/WatchaIcon.png";
 import watchaSelected from "assets/img/otticons/WatchaIconSelected.png";
 import wavveIcon from "assets/img/otticons/WavveIcon.png";
 import wavveSelected from "assets/img/otticons/WavveIconSelected.png";
-import { theme } from "styles/theme";
+
+import { useRecoilState } from "recoil";
+import { schedulePreInfoState } from "recoil/schedulePreInfoState";
 
 const ScheduleOttDate = () => {
-  const navigate = useNavigate();
-
   // OTT별 구독 상태 state
   const [ott, setOtt] = useState<string[]>([]);
   const [startDate, setStartDate] = useState<string>();
   const [showDatePicker, setShowDatePicker] = useState<boolean>(false);
   const [today, setToday] = useState<number>();
+
+  // 스케줄 생성 preData recoil
+  const [preData, setPreData] = useRecoilState(schedulePreInfoState);
+
+  // OTT 수정 recoil 반영
+  useEffect(() => {
+    let copy = { ...preData };
+    copy = { ...copy, ott: ott, startDate: startDate };
+    setPreData(copy);
+  }, [ott, startDate]);
 
   useEffect(() => {
     const date = new Date();
