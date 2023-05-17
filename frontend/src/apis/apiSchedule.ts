@@ -1,4 +1,3 @@
-import api from "./axiosInstance";
 import { Schedule, isSeen } from "constant/constant";
 import { ScheduleAll } from "interface/schedule";
 import { apiR, apiCUD } from "./axiosInstance";
@@ -50,7 +49,7 @@ data 샘플
 */
 export const scheduleCheck = async (data: isSeen) => {
   try {
-    await api.post("api/schedule/check", data);
+    await apiCUD.post("api/schedule/check", data);
     console.log("시청함 체크 성공");
     return true;
   } catch (err) {
@@ -70,7 +69,7 @@ data 샘플
 */
 export const scheduleCheckCancel = async (data: isSeen) => {
   try {
-    await api.put("api/schedule/cancel", data);
+    await apiCUD.put("api/schedule/cancel", data);
     console.log("시청함 체크 취소 성공");
     return true;
   } catch (err) {
@@ -85,7 +84,7 @@ recoil의 scheduleAllState를 변경한 뒤, 해당 state 전체를 인자로 �
 */
 export const scheduleModify = async (data: ScheduleAll) => {
   try {
-    await api.put("api/schedule/modify", data);
+    await apiCUD.put("api/schedule/modify", data);
     console.log("스케줄 미루기 성공");
     return true;
   } catch (err) {
