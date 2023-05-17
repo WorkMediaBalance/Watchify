@@ -42,7 +42,7 @@ pipeline {
                 script {
                     def BUILD_NUMBER = currentBuild.number
 
-                    dir('BACKEND/watchify') { // 해당 directory로 들어가기 위해서는 cd는 안되고 대신 dir를 사용해야한다.
+                    dir('ReadOnlyBackend/watchify') { // 해당 directory로 들어가기 위해서는 cd는 안되고 대신 dir를 사용해야한다.
                         sh 'chmod +x gradlew'
                         sh './gradlew clean build -x test'
                     }
