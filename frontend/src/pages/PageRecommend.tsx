@@ -113,9 +113,16 @@ const PageRecommend = () => {
 
   const getRecResult = async () => {
     console.log({ isAdult: isAdult, ottList: ott, genre: recGenre });
-    const data = await contentRecommend({ isAdult: isAdult, ottList: ott, genres: recGenre });
-    navigate("/recommend/result", { state: { data: data } });
-    setRecResultList(data);
+    if (ott.length === 0) {
+      const ottList = ["netflix", "watcha", "wavve", "disney"];
+      const data = await contentRecommend({ isAdult: isAdult, ottList: ottList, genres: recGenre });
+      navigate("/recommend/result", { state: { data: data } });
+      setRecResultList(data);
+    } else {
+      const data = await contentRecommend({ isAdult: isAdult, ottList: ott, genres: recGenre });
+      navigate("/recommend/result", { state: { data: data } });
+      setRecResultList(data);
+    }
   };
 
   const goRecHandler = async () => {
