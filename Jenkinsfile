@@ -120,7 +120,7 @@ pipeline {
                         """
 
                         sh """
-                            sed -i 's/watchify:ai\\([^:]*\\)/watchify:readonlybackend${BUILD_NUMBER}/g' readonlyback-service.yaml
+                            sed -i 's/watchify:readonlybackend\\([^:]*\\)/watchify:readonlybackend${BUILD_NUMBER}/g' readonlyback-service.yaml
                             git add readonlyback-service.yaml
                             git commit -m 'Update back-service tag to readonlyback-service${BUILD_NUMBER}'
                         """
