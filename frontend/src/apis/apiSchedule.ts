@@ -1,5 +1,5 @@
 import { apiR, apiCUD } from "./axiosInstance";
-import { schedulePreInfo } from "interface/schedule";
+import { schedulePreInfo, ScheduleAll } from "interface/schedule";
 
 // 월간 스케줄 조회
 export const scheduleInfo = async (year: number, month: number) => {
@@ -32,6 +32,18 @@ export const scheduleCreate = async (data: schedulePreInfo) => {
     return res.data;
   } catch (err) {
     console.log("스케줄 생성 실패");
+    console.log(err);
+  }
+};
+
+// 스케줄 공유
+export const scheduleShare = async (data: ScheduleAll) => {
+  try {
+    const res = await apiCUD.post("api/schedule/nonauth/share", data);
+    // console.log(res.data);
+    return res.data;
+  } catch (err) {
+    console.log("스케줄 공유 실패");
     console.log(err);
   }
 };

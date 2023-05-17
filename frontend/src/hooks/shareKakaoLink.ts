@@ -16,7 +16,7 @@ export const shareKakao = (route: string, title: string) => {
       content: {
         title: title,
         description: "나만의 OTT 스케줄링 서비스 watchify에 접속해보세요!",
-        imageUrl: "이미지 url",
+        imageUrl: "https://watchify.s3.ap-northeast-2.amazonaws.com/%EC%BA%A1%EC%B2%98.PNG",
         link: {
           mobileWebUrl: route,
           webUrl: route,
