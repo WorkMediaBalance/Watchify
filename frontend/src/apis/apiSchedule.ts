@@ -1,4 +1,4 @@
-import { Schedule, isSeen } from "constant/constant";
+import { Schedule, isSeen, later } from "constant/constant";
 
 import { apiR, apiCUD } from "./axiosInstance";
 import { schedulePreInfo, ScheduleAll } from "interface/schedule";
@@ -105,7 +105,7 @@ export const scheduleCheckCancel = async (data: isSeen) => {
 /*
 recoil의 scheduleAllState를 변경한 뒤, 해당 state 전체를 인자로 담아 발송
 */
-export const scheduleModify = async (data: ScheduleAll) => {
+export const scheduleModify = async (data: later) => {
   try {
     await apiCUD.put("api/schedule/modify", data);
     console.log("스케줄 미루기 성공");

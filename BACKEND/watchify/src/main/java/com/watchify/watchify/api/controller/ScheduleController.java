@@ -1,11 +1,9 @@
 package com.watchify.watchify.api.controller;
 
 import com.watchify.watchify.api.service.*;
+import com.watchify.watchify.dto.request.ScheduleCheckRequestDTO;
 import com.watchify.watchify.dto.request.ScheduleCreateRequestDTO;
-import com.watchify.watchify.dto.response.CalenderDTO;
-import com.watchify.watchify.dto.response.DefaultContentDTO;
-import com.watchify.watchify.dto.response.HistoryInfoDTO;
-import com.watchify.watchify.dto.response.ScheduleObjDTO;
+import com.watchify.watchify.dto.response.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,6 +24,7 @@ public class ScheduleController {
     private final ScheduleGetService scheduleGetService;
     private final ScheduleUpdateService scheduleUpdateService;
     private final ScheduleShareService scheduleShareService;
+    private final ScheduleCheckService scheduleCheckService;
 
     @GetMapping("/info/{year}/{month}")
     public ResponseEntity<?> getScheduleInfo(HttpServletRequest request, @PathVariable int year, @PathVariable int month) {
@@ -34,7 +33,7 @@ public class ScheduleController {
         long userId = userService.findUserIdByAccessToken(accessToken);
 
         try {
-            Map<Integer, List<CalenderDTO>> res = scheduleInfoService.getScheduleInfo(userId, year, month);
+            Map<Integer, List<ScheduleObjDTO>> res = scheduleInfoService.getScheduleInfo(userId, year, month);
             return ResponseEntity.status(200).body(res);
         } catch (Exception e) {
             return ResponseEntity.status(404).body("Failed to get schedule info");
@@ -70,18 +69,19 @@ public class ScheduleController {
     }
 
     @PutMapping("/modify")
-    public ResponseEntity<?> UpdateSchedule(HttpServletRequest request, @RequestBody String json) {
+    public ResponseEntity<?> UpdateSchedule(HttpServletRequest request, @RequestBody ScheduleModifyDTO json) {
 
         String accessToken = request.getHeader("access");
         long userId = userService.findUserIdByAccessToken(accessToken);
 
         try {
-            scheduleUpdateService.updateSchedule(userId, json);
+            scheduleUpdateService.updateScheduleVer2(userId, json);
             return ResponseEntity.status(200).body("succeed to update schedule");
         } catch (Exception e) {
             return ResponseEntity.status(404).body("Failed to update schedule");
         }
     }
+
 
     @PostMapping("/nonauth/share")
     public ResponseEntity<?> SaveScheduleShare(HttpServletRequest request, @RequestBody String json) {
@@ -112,6 +112,34 @@ public class ScheduleController {
             return ResponseEntity.status(200).body(res);
         } catch (Exception e) {
             return ResponseEntity.status(404).body("Failed to save scheduleShare");
+        }
+    }
+
+    @PostMapping("/check")
+    public ResponseEntity<?> CheckSchedule(HttpServletRequest request, @RequestBody ScheduleCheckRequestDTO dto) {
+
+        String accessToken = request.getHeader("access");
+        long userId = userService.findUserIdByAccessToken(accessToken);
+
+        try {
+            scheduleCheckService.checkSchedule(userId, dto);
+            return ResponseEntity.status(200).body("succeed to check schedule");
+        } catch (Exception e) {
+            return ResponseEntity.status(404).body("Failed to check schedule");
+        }
+    }
+
+    @PutMapping("/cancel")
+    public ResponseEntity<?> CheckCancelSchedule(HttpServletRequest request, @RequestBody ScheduleCheckRequestDTO dto) {
+
+        String accessToken = request.getHeader("access");
+        long userId = userService.findUserIdByAccessToken(accessToken);
+
+        try {
+            scheduleCheckService.checkCancelSchedule(userId, dto);
+            return ResponseEntity.status(200).body("succeed to check schedule");
+        } catch (Exception e) {
+            return ResponseEntity.status(404).body("Failed to check schedule");
         }
     }
 }

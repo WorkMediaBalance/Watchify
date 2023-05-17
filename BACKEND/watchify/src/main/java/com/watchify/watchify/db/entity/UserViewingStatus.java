@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDate;
 
 @Entity
 @Getter
@@ -20,7 +21,8 @@ public class UserViewingStatus implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private boolean isDeleted;
+    private boolean isDeleted = false;
+    private LocalDate date;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -30,6 +32,14 @@ public class UserViewingStatus implements Serializable {
     @JoinColumn(name = "turn_content_id")
     private TurnContent turnContent;
 
+    public UserViewingStatus(User user, TurnContent turnContent) {
+        LocalDate now = LocalDate.now();
+        this.user = user;
+        this.turnContent = turnContent;
+        this.date = now;
+    }
 
-
+    public void deleted() {
+        this.isDeleted = true;
+    }
 }

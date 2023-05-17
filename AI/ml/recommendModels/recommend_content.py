@@ -1,12 +1,15 @@
 from predict_rating import predict, ott_predict
 from ml.models import User, Content, LikeContent, Genre, ContentGenre, Contentott, WishContent, Ott
 from collections import defaultdict
+from django.db.models import Min, F
 
 def recommend(user_id, genres, otts, age, top_n):
     userdict = User.objects.values_list('id', flat=True) # 리스트 반환
     ott_list = Ott.objects.filter(name__in=otts).values_list('id', flat=True)
     ottitem = Contentott.objects.filter(ott_id__in=ott_list).values_list('content_id', flat=True)
-    itemdict = Content.objects.filter(id__in=ottitem, audience_age__lte=age).values_list('id', flat=True)
+    query = Content.objects.filter(id__in=ottitem).annotate(min_id=Min('id')).filter(id=F('min_id')).values_list('title', flat=True)
+    itemdict = Content.objects.filter(title__in=query, audience_age__lte=age).values_list('id', flat=True)
+
     genre_ids = Genre.objects.filter(name__in=genres).values_list('id', flat=True)
 
     items_reviewed = []
