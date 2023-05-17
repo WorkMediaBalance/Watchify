@@ -36,24 +36,24 @@ pipeline {
             }
         }
 
-        stage('ReadOnlyBACKEND Build'){
-            steps{
-                echo 'ReadOnlyBACKEND Building'
-                script {
-                    def BUILD_NUMBER = currentBuild.number
-
-                    dir('ReadOnlyBackend/watchify') { // 해당 directory로 들어가기 위해서는 cd는 안되고 대신 dir를 사용해야한다.
-                        sh 'chmod +x gradlew'
-                        sh './gradlew clean build -x test'
-                    }
-
-                    sh 'docker build -t $repository:readonlybackend$BUILD_NUMBER ./ReadOnlyBackend/watchify'
-                    sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin' // docker hub 로그인
-                    sh 'docker push $repository:readonlybackend$BUILD_NUMBER'
-
-                }
-            }
-        }
+//         stage('ReadOnlyBACKEND Build'){
+//             steps{
+//                 echo 'ReadOnlyBACKEND Building'
+//                 script {
+//                     def BUILD_NUMBER = currentBuild.number
+//
+//                     dir('ReadOnlyBackend/watchify') { // 해당 directory로 들어가기 위해서는 cd는 안되고 대신 dir를 사용해야한다.
+//                         sh 'chmod +x gradlew'
+//                         sh './gradlew clean build -x test'
+//                     }
+//
+//                     sh 'docker build -t $repository:readonlybackend$BUILD_NUMBER ./ReadOnlyBackend/watchify'
+//                     sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin' // docker hub 로그인
+//                     sh 'docker push $repository:readonlybackend$BUILD_NUMBER'
+//
+//                 }
+//             }
+//         }
 
         stage('AI Build') {
             steps {
@@ -128,7 +128,6 @@ pipeline {
                     // git main에 실제로 올린다. ( main )
                     withCredentials([usernamePassword(credentialsId: credentialId, passwordVariable: gitpassword, usernameVariable: gitId)]) {
                         sh 'git remote set-url origin https://sdc00035:diligent0924!@lab.ssafy.com/s08-final/S08P31A207.git'
-                        sh 'git stash'
                         sh 'git switch main'
                         sh 'git pull origin main'
                         sh 'git push origin main'
