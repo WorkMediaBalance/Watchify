@@ -4,7 +4,7 @@ spring:
 #    url: jdbc:mysql://localhost:3306/sins?useUnicode=true&characterEncoding=utf8&s&zeroDateTimeBehavior=convertToNull&rewriteBatchedStatements=true&tinyInt1isBit=false
 #    username: root
 #    password: '0000'
-    url: jdbc:mysql://READONLYDB_HOST/sins?useUnicode=true&characterEncoding=utf8&s&zeroDateTimeBehavior=convertToNull&rewriteBatchedStatements=true&tinyInt1isBit=false
+    url: jdbc:mysql://READONLYDB_HOSTss/sins?useUnicode=true&characterEncoding=utf8&s&zeroDateTimeBehavior=convertToNull&rewriteBatchedStatements=true&tinyInt1isBit=false
     username: DB_USER
     password: DB_PW
   jpa:
