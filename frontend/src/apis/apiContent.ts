@@ -1,4 +1,4 @@
-import api from "./axiosInstance";
+import { apiR, apiCUD } from "./axiosInstance";
 import { ContentRecForm } from "constant/constant";
 
 // 컨텐츠 추천
@@ -11,7 +11,7 @@ const data = {
 */
 export const contentRecommend = async (data: ContentRecForm) => {
   try {
-    const res = await api.post("api/recommend", data);
+    const res = await apiCUD.post("api/recommend", data);
     return res.data;
   } catch (err) {
     console.log("컨텐츠 추천 실패");
@@ -27,7 +27,7 @@ export const contentRecommend = async (data: ContentRecForm) => {
 */
 export const contentWishSwitch = async (data: { [pk: string]: number }) => {
   try {
-    await api.put("api/content/wishswitch", data);
+    await apiCUD.put("api/content/wishswitch", data);
     return true;
   } catch (err) {
     console.log("컨텐츠 찜/찜취소 실패");
@@ -44,7 +44,7 @@ export const contentWishSwitch = async (data: { [pk: string]: number }) => {
 */
 export const contentLike = async (data: { pk: number; like: number }) => {
   try {
-    await api.put("api/content/like", data);
+    await apiCUD.put("api/content/like", data);
     return true;
   } catch (err) {
     console.log("컨텐츠 좋아요/싫어요 실패");
@@ -56,7 +56,7 @@ export const contentLike = async (data: { pk: number; like: number }) => {
 export const contentInfo = async (data: { [pk: string]: number }) => {
   try {
     console.log(data.pk);
-    const res = await api.get(`api/content/nonauth/info/${data.pk}`);
+    const res = await apiR.get(`api/content/nonauth/info/${data.pk}`);
     return res.data;
   } catch (err) {
     console.log("단일 컨텐츠 정보 조회 실패");
@@ -67,7 +67,7 @@ export const contentInfo = async (data: { [pk: string]: number }) => {
 // 컨텐츠 평점 수정 (5.15 민혁 추가)
 export const contentRating = async (data: { pk: number; rating: number }) => {
   try {
-    await api.put("api/content/rating", data);
+    await apiCUD.put("api/content/rating", data);
     return true;
   } catch (err) {
     console.log("컨텐츠 평점 변경 실패");
