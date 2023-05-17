@@ -4,9 +4,9 @@ spring:
 #    url: jdbc:mysql://localhost:3306/sins?useUnicode=true&characterEncoding=utf8&s&zeroDateTimeBehavior=convertToNull&rewriteBatchedStatements=true&tinyInt1isBit=false
 #    username: root
 #    password: '0000'
-    url: jdbc:mysql://watchifydb.cph3uafcff1h.ap-northeast-2.rds.amazonaws.com/sins?useUnicode=true&characterEncoding=utf8&s&zeroDateTimeBehavior=convertToNull&rewriteBatchedStatements=true&tinyInt1isBit=false
-    username: watchifyadmin
-    password: qudwlsgoa
+    url: jdbc:mysql://DB_HOST/sins?useUnicode=true&characterEncoding=utf8&s&zeroDateTimeBehavior=convertToNull&rewriteBatchedStatements=true&tinyInt1isBit=false
+    username: DB_NAME
+    password: DB_PW
   jpa:
     properties:
       hibernate:
@@ -26,7 +26,7 @@ spring:
         max-idle: 10
         min-idle: 2
     port: 6379
-    host: k8a207.p.ssafy.io
+    host: SERVER_HOST
 #    password: 'redis0000'
 
 logging:

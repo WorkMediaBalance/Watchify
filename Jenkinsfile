@@ -28,10 +28,26 @@ pipeline {
                         sh './gradlew clean build -x test'
                     }
 
+                    dir('BACKEND/watchify/src/main/resources'){
+                        sh """
+                            sed -i 's/DB_USER/$DB_USER/g' application.yml
+                            sed -i 's/DB_PW/$DB_PW/g' application.yml
+                            sed -i 's/DB_HOST/$DB_HOST/g' application.yml
+                            sed -i 's/SERVER_HOST/$SERVER_HOST/g' application.yml
+                        """
+                    }
                     sh 'docker build -t $repository:backend$BUILD_NUMBER ./BACKEND/watchify'
                     sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin' // docker hub 로그인
                     sh 'docker push $repository:backend$BUILD_NUMBER'
 
+                    dir('BACKEND/watchify/src/main/resources'){
+                        sh """
+                            sed -i 's/$DB_USER/DB_USER/g' application.yml
+                            sed -i 's/$DB_PW/DB_PW/g' application.yml
+                            sed -i 's/$DB_HOST/DB_HOST/g' application.yml
+                            sed -i 's/$SERVER_HOST/SERVER_HOST/g' application.yml
+                        """
+                    }
                 }
             }
         }
@@ -63,11 +79,11 @@ pipeline {
                     // Django 보안 설정을 위하여 envfile에 들어가서 변경 > image 생성 > 다시 되돌리는 순서대로 진행
                     dir('AI/watchifyAI'){
                         sh """
-                            sed -i 's/DB_NAME/$DB_NAME/g' settings.py
-                            sed -i 's/DB_USER/$DB_USER/g' settings.py
-                            sed -i 's/DB_PW/$DB_PW/g' settings.py
-                            sed -i 's/DB_HOST/$DB_HOST/g' settings.py
-                            sed -i 's/DB_PORT/$DB_PORT/g' settings.py
+                            sed -i 's/DB_NAME/"$DB_NAME"/g' settings.py
+                            sed -i 's/DB_USER/"$DB_USER"/g' settings.py
+                            sed -i 's/DB_PW/"$DB_PW"/g' settings.py
+                            sed -i 's/DB_HOST/"$DB_HOST"/g' settings.py
+                            sed -i 's/DB_PORT/"$DB_PORT"/g' settings.py
                         """
                     }
                     sh 'docker build -t $repository:ai$BUILD_NUMBER ./AI' // frontend 파일 생성
@@ -75,11 +91,11 @@ pipeline {
                     sh 'docker push $repository:ai$BUILD_NUMBER' //docker push
                     dir('AI/watchifyAI'){
                         sh """
-                            sed -i 's/$DB_NAME/DB_NAME/g' settings.py
-                            sed -i 's/$DB_USER/DB_USER/g' settings.py
-                            sed -i 's/$DB_PW/DB_PW/g' settings.py
-                            sed -i 's/$DB_HOST/DB_HOST/g' settings.py
-                            sed -i 's/$DB_PORT/DB_PORT/g' settings.py
+                            sed -i 's/"$DB_NAME"/DB_NAME/g' settings.py
+                            sed -i 's/"$DB_USER"/DB_USER/g' settings.py
+                            sed -i 's/"$DB_PW"/DB_PW/g' settings.py
+                            sed -i 's/"$DB_HOST"/DB_HOST/g' settings.py
+                            sed -i 's/"$DB_PORT"/DB_PORT/g' settings.py
                         """
                     }
                 }
