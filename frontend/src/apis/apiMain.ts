@@ -5,7 +5,7 @@ import { ContentRecForm } from "constant/constant";
 export const mainSchedule = async () => {
   console.log("실행중");
   try {
-    const res = await apiR.get("api/main/schedule");
+    const res = await apiR.get("readapi/main/schedule");
     return res.data;
   } catch (err) {
     console.log("일주일 스케줄 조회 실패");

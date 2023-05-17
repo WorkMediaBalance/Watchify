@@ -56,7 +56,7 @@ export const contentLike = async (data: { pk: number; like: number }) => {
 export const contentInfo = async (data: { [pk: string]: number }) => {
   try {
     console.log(data.pk);
-    const res = await apiR.get(`api/content/nonauth/info/${data.pk}`);
+    const res = await apiR.get(`readapi/content/nonauth/info/${data.pk}`);
     return res.data;
   } catch (err) {
     console.log("단일 컨텐츠 정보 조회 실패");

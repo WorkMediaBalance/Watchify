@@ -2,7 +2,8 @@ import React, { useState, useEffect, HTMLAttributes } from "react";
 import styled from "styled-components";
 
 import { essListState } from "recoil/userState";
-import { recResultState } from "recoil/recommendState";
+// import { recResultState } from "recoil/recommendState";
+import { schedulePreInfoState } from "recoil/schedulePreInfoState";
 import { useRecoilState } from "recoil";
 
 import { FiCheckCircle } from "react-icons/fi";
@@ -11,9 +12,54 @@ import { BsPlusCircle } from "react-icons/bs";
 import { content } from "interface/content";
 import ContentPoster from "components/common/ContentPoster";
 
+import { mainRecommend } from "apis/apiMain";
+
+type recommendPerOtt = {
+  [key: string]: content[];
+};
+
 const RecList = () => {
-  const [recList, setRecList] = useRecoilState(recResultState);
+  const [recList, setRecList] = useState<content[]>([]);
   const [essList, setEssList] = useRecoilState(essListState);
+  const [preData, setPreData] = useRecoilState(schedulePreInfoState);
+
+  const [apiList, setApiList] = useState<recommendPerOtt | undefined>();
+
+  // 추천목록 가져오기 API 함수
+  const mainRecommendAPI = async () => {
+    const data = await mainRecommend();
+    setApiList(data);
+  };
+  useEffect(() => {
+    mainRecommendAPI();
+  }, []);
+
+  // 바텀시트 추천목록 띄우기
+  useEffect(() => {
+    if (!apiList) return;
+    // OTT를 선택하지 않았을 경우 - 각 OTT별 10개씩 총 40개 다 띄우기
+    let copy = [];
+    if (preData.ott.length === 0) {
+      for (const key in apiList) {
+        copy.push(...apiList[key]);
+      }
+      // OTT 선택했을 경우 - 각 OTT 컨텐츠 띄우기
+    } else {
+      if (preData.ott.includes("netflix")) {
+        copy.push(...apiList["Netflix"]);
+      }
+      if (preData.ott.includes("disney")) {
+        copy.push(...apiList["disney"]);
+      }
+      if (preData.ott.includes("watcha")) {
+        copy.push(...apiList["watcha"]);
+      }
+      if (preData.ott.includes("wavve")) {
+        copy.push(...apiList["Wavve"]);
+      }
+      setRecList(copy);
+    }
+  }, [apiList]);
 
   const onClickAddContent = (content: content) => {
     let copy = [...essList];
