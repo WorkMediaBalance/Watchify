@@ -28,6 +28,7 @@ pipeline {
                         sh """
                             sed -i 's/DB_USER/"$DB_USER"/g' application.yml
                             sed -i 's/DB_PW/"$DB_PW"/g' application.yml
+                            sed -i 's/DB_HOST/"$DB_HOST"/g' application.yml
                             sed -i 's/SERVER_HOST/"$SERVER_HOST"/g' application.yml
                         """
                     }
@@ -45,6 +46,7 @@ pipeline {
                         sh """
                             sed -i 's/"$DB_USER"/DB_USER/g' application.yml
                             sed -i 's/"$DB_PW"/DB_PW/g' application.yml
+                            sed -i 's/"$DB_HOST"/DB_HOST/g' application.yml
                             sed -i 's/"$SERVER_HOST"/SERVER_HOST/g' application.yml
                         """
                     }
