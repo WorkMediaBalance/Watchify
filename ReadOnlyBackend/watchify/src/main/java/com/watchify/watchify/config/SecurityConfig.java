@@ -71,8 +71,8 @@ public class SecurityConfig {
                 request
                         .requestMatchers(CorsUtils::isPreFlightRequest).permitAll() // << ??
                         .antMatchers("/oauth2/**").permitAll()
-                        .antMatchers("/api/search/**").permitAll()
-                        .antMatchers("/api/**/nonauth/**").permitAll()
+                        .antMatchers("/readapi/search/**").permitAll()
+                        .antMatchers("/readapi/**/nonauth/**").permitAll()
                         .anyRequest().authenticated());
 
 
