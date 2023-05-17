@@ -15,7 +15,7 @@ import java.io.IOException;
 @CrossOrigin(origins = "*")
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/readapi/image")
+@RequestMapping("/api/image")
 public class S3Controller {
 
     private final UserService userService;

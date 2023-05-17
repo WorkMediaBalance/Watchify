@@ -18,7 +18,7 @@ import java.util.List;
 
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("/readapi/content")
+@RequestMapping("/api/content")
 @RequiredArgsConstructor
 public class ContentController {
 

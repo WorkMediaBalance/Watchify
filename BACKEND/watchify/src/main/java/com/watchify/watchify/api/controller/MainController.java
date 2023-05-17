@@ -15,7 +15,7 @@ import java.util.Map;
 
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("/readapi/main")
+@RequestMapping("/api/main")
 @RequiredArgsConstructor
 public class MainController {
 

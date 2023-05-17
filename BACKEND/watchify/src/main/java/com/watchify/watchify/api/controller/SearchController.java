@@ -15,7 +15,7 @@ import java.util.Map;
 
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("/readapi/search")
+@RequestMapping("/api/search")
 @RequiredArgsConstructor
 public class SearchController {
 

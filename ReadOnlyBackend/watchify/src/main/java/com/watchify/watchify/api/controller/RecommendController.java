@@ -17,7 +17,7 @@ import java.util.List;
 
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("/api/recommend")
+@RequestMapping("/readapi/recommend")
 @RequiredArgsConstructor
 public class RecommendController {
     private final RecommendService recommendService;
