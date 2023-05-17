@@ -17,6 +17,8 @@ import { theme } from "styles/theme";
 import { myOTTget, myOTTChange } from "apis/apiMy";
 import { subscription } from "interface/user";
 
+import { DateTime } from "luxon";
+
 // ott 추가 함수 정의를 위한 기초 설정 (왜 global 설정하고 window에서 하는지는 모름..)
 declare global {
   interface Window {
@@ -55,7 +57,7 @@ const OttSubscription = () => {
   async function myOTTgetAPI() {
     try {
       const myOTTInfo = await myOTTget();
-      console.log(myOTTInfo, "현재 구독중인 OTT");
+      console.log(myOTTInfo, "현재 구독중인 OTT - API");
       let copy = { ...ott };
       copy = myOTTInfo;
       setOtt(copy);
@@ -66,7 +68,7 @@ const OttSubscription = () => {
   useEffect(() => {
     setTimeout(() => {
       myOTTgetAPI();
-    }, 50);
+    }, 100);
   }, [sthHappend]);
 
   // OTT 구독해지, 삭제 함수
@@ -92,13 +94,12 @@ const OttSubscription = () => {
         const copy = { ...ott };
 
         // 여기서부터 구독해지일 logic구현
-        // const startDate = copy[key].start;
-        // const today = new Date();
-        // console.log(startDate, today);
+        const startDate = copy[key].start as string; // 반드시 null이 아니기 때문에 string으로 지정
+        const today = new Date().toISOString().split("T")[0]; // 오늘 날짜
 
-        // 일단 API 돌아가는지 보기 위해 내가 이거 임시로 만들어주겠음
-        copy[key] = { ...copy[key], end: "2023-07-31" };
-        // console.log(copy, "ott 구독 정보 삭제");
+        const endDate = calculateNetflixSubscriptionCancellationDate(startDate, today); // 계산된 구독해지일
+        console.log("OTT 구독 해지일:", endDate);
+        copy[key] = { ...copy[key], end: endDate };
         myOTTChange(copy);
         setSthHappend(!sthHappend);
       }
@@ -109,9 +110,28 @@ const OttSubscription = () => {
         myOTTChange(copy);
         setIsAdded(false);
         setIs4(false);
+        setSthHappend(!sthHappend);
       }
     });
   };
+
+  // 구독해지일 계산 함수
+  function calculateNetflixSubscriptionCancellationDate(
+    subscriptionStartDate: string,
+    today: string
+  ): string | null {
+    const startDate = DateTime.fromISO(subscriptionStartDate).startOf("day");
+    const currentDate = DateTime.fromISO(today).startOf("day");
+
+    let cancellationDate = startDate.plus({ months: 1 }).minus({ days: 1 });
+
+    while (cancellationDate < currentDate) {
+      const daysInMonth = cancellationDate.daysInMonth;
+      cancellationDate = cancellationDate.plus({ days: daysInMonth });
+    }
+
+    return cancellationDate.toISODate();
+  }
 
   // OTT 추가 함수
   window.addOtt = (key) => {
@@ -223,13 +243,12 @@ const OttSubscription = () => {
         alert("구독 종료일 이전 날짜를 선택해주세요.");
         return;
       }
-    } else {
-      const copy = { ...ott };
-      copy[key] = { ...copy[key], start: newDate };
-      console.log(copy, "구독 시작 날짜 변경해서 ott 구독 정보 수정");
-      myOTTChange(copy);
-      setSthHappend(!sthHappend);
     }
+    const copy = { ...ott };
+    copy[key] = { ...copy[key], start: newDate };
+    console.log(copy, "구독 시작 날짜 변경해서 ott 구독 정보 수정");
+    myOTTChange(copy);
+    setSthHappend(!sthHappend);
   };
 
   // 구독 해지 날짜 변경
