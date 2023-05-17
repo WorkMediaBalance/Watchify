@@ -14,7 +14,7 @@ const PageShare = () => {
   }, []);
 
   const sharing = (name: string) => {
-    shareKakao("https://k8a207.p.ssafy.io", `${name}님의 OTT 시청 패턴이 궁금하다면?`);
+    shareKakao("https://k8a207.p.ssafy.io/share", `${name}님의 OTT 시청 패턴이 궁금하다면?`);
   };
 
   return (
