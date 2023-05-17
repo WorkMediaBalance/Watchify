@@ -24,12 +24,20 @@ pipeline {
                     def BUILD_NUMBER = currentBuild.number
 
                     dir('BACKEND/watchify/src/main/resources'){
-                        sh 'ls -a'
                         sh """
                             sed -i 's/DB_USER/"$DB_USER"/g' application.yml
                             sed -i 's/DB_PW/"$DB_PW"/g' application.yml
                             sed -i 's/DB_HOST/"$DB_HOST"/g' application.yml
                             sed -i 's/SERVER_HOST/"$SERVER_HOST"/g' application.yml
+                        """
+                    }
+
+                    dir('BACKEND/watchify/src/main/application-dev.yml'){
+                        sh """
+                            sed -i 's/S3_ACCESSKEY/"$S3_ACCESSKEY"/g' application.yml
+                            sed -i 's/S3_SECRETKEY/"$S3_SECRETKEY"/g' application.yml
+                            sed -i 's/S3_BUCKET/"$S3_BUCKET"/g' application.yml
+                            sed -i 's/FCM_JSON/"$FCM_JSON"/g' application.yml
                         """
                     }
 
@@ -50,6 +58,15 @@ pipeline {
                             sed -i 's/"$SERVER_HOST"/SERVER_HOST/g' application.yml
                         """
                     }
+
+                    dir('BACKEND/watchify/src/main/application-dev.yml'){
+                        sh """
+                            sed -i 's/"$S3_ACCESSKEY"/S3_ACCESSKEY/g' application.yml
+                            sed -i 's/"$S3_SECRETKEY"/S3_SECRETKEY/g' application.yml
+                            sed -i 's/"$S3_BUCKET"/S3_BUCKET/g' application.yml
+                            sed -i 's/"$FCM_JSON"/FCM_JSON/g' application.yml
+                        """
+                    }
                 }
             }
         }
@@ -60,6 +77,24 @@ pipeline {
                 script {
                     def BUILD_NUMBER = currentBuild.number
 
+                    dir('readOnlyBackend/watchify/src/main/resources'){
+                        sh """
+                            sed -i 's/DB_USER/"$DB_USER"/g' application.yml
+                            sed -i 's/DB_PW/"$DB_PW"/g' application.yml
+                            sed -i 's/READONLYDB_HOST/"$READONLYDB_HOST"/g' application.yml
+                            sed -i 's/SERVER_HOST/"$SERVER_HOST"/g' application.yml
+                        """
+                    }
+
+                    dir('readOnlyBackend/watchify/src/main/application-dev.yml'){
+                        sh """
+                            sed -i 's/S3_ACCESSKEY/"$S3_ACCESSKEY"/g' application.yml
+                            sed -i 's/S3_SECRETKEY/"$S3_SECRETKEY"/g' application.yml
+                            sed -i 's/S3_BUCKET/"$S3_BUCKET"/g' application.yml
+                            sed -i 's/FCM_JSON/"$FCM_JSON"/g' application.yml
+                        """
+                    }
+
                     dir('ReadOnlyBackend/watchify') { // 해당 directory로 들어가기 위해서는 cd는 안되고 대신 dir를 사용해야한다.
                         sh 'chmod +x gradlew'
                         sh './gradlew clean build -x test'
@@ -68,6 +103,24 @@ pipeline {
                     sh 'docker build -t $repository:readonlybackend$BUILD_NUMBER ./ReadOnlyBackend/watchify'
                     sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin' // docker hub 로그인
                     sh 'docker push $repository:readonlybackend$BUILD_NUMBER'
+
+                    dir('readOnlyBackend/watchify/src/main/resources'){
+                        sh """
+                            sed -i 's/"$DB_USER"/DB_USER/g' application.yml
+                            sed -i 's/"$DB_PW"/DB_PW/g' application.yml
+                            sed -i 's/"$READONLYDB_HOST"/READONLYDB_HOST/g' application.yml
+                            sed -i 's/"$SERVER_HOST"/SERVER_HOST/g' application.yml
+                        """
+                    }
+
+                    dir('readOnlyBackend/watchify/src/main/application-dev.yml'){
+                        sh """
+                            sed -i 's/"$S3_ACCESSKEY"/S3_ACCESSKEY/g' application.yml
+                            sed -i 's/"$S3_SECRETKEY"/S3_SECRETKEY/g' application.yml
+                            sed -i 's/"$S3_BUCKET"/S3_BUCKET/g' application.yml
+                            sed -i 's/"$FCM_JSON"/FCM_JSON/g' application.yml
+                        """
+                    }
 
                 }
             }
