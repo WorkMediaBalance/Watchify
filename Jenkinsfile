@@ -125,7 +125,7 @@ pipeline {
                             git commit -m 'Update back-service tag to readonlyback-service${BUILD_NUMBER}'
                         """
                     }
-                    // git main에 실제로 올린다.
+                    // git main에 실제로 올린다. ( main )
                     withCredentials([usernamePassword(credentialsId: credentialId, passwordVariable: gitpassword, usernameVariable: gitId)]) {
                         sh 'git remote set-url origin https://sdc00035:diligent0924!@lab.ssafy.com/s08-final/S08P31A207.git'
                         sh 'git stash'
