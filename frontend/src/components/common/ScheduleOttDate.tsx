@@ -19,6 +19,8 @@ import wavveSelected from "assets/img/otticons/WavveIconSelected.png";
 import { useRecoilState } from "recoil";
 import { schedulePreInfoState } from "recoil/schedulePreInfoState";
 
+import { AiOutlineCalendar } from "react-icons/ai";
+
 const ScheduleOttDate = () => {
   // OTT별 구독 상태 state
   const [ott, setOtt] = useState<string[]>([]);
@@ -114,8 +116,33 @@ const ScheduleOttDate = () => {
             alt="wavve"
           />
         </OTTContainer>
-        <Sdiv>
-          시작 날짜 <span onClick={() => setShowDatePicker(true)}>: {startDate}</span>
+        <Sdiv style={{}}>스케줄 시작 날짜</Sdiv>
+        <SDiv2>스케줄을 시작할 날짜를 설정해주세요</SDiv2>
+        <Sdiv
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            width: "100%",
+            alignItems: "center",
+            justifyContent: "center",
+            height: "10vh",
+          }}
+        >
+          <div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
+            <span>
+              {startDate &&
+                `${startDate.slice(0, 4)}년 ${startDate.slice(5, 7)}월 ${startDate.slice(
+                  8,
+                  10
+                )}일  `}
+            </span>
+            <span
+              style={{ color: "#F08C5A", marginLeft: "3vw", paddingTop: "0.5vh" }}
+              onClick={() => setShowDatePicker(true)}
+            >
+              <AiOutlineCalendar size={30} />
+            </span>
+          </div>
         </Sdiv>
         {showDatePicker ? (
           <DatePickerWrapper>
@@ -204,5 +231,5 @@ const SAddBox = styled.div`
 
 const OTTContainer = styled.div`
   display: flex;
-  justify-content: center;
+  justify-content: space-evenly;
 `;

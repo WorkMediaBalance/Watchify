@@ -21,6 +21,10 @@ const CalendarBottomSheetFirst = (props: { date: number; month: number; year: nu
   const [monthSchedule, setMonthSchedule] = useRecoilState(monthScheduleState);
   const dateScheduleList = monthSchedule[props.date] === undefined ? [] : monthSchedule[props.date];
 
+  useEffect(() => {
+    console.log(dateScheduleList, "here");
+  }, []);
+
   const nextContent = () => {
     if (
       Array.isArray(dateScheduleList) &&
@@ -137,10 +141,7 @@ const CalendarBottomSheetFirst = (props: { date: number; month: number; year: nu
       <Container {...handlers}>
         <DateAndAdd>
           <SDate>{`${props.month}월 ${props.date}일`}</SDate>
-          <Add>
-            {"일정 추가"}
-            {/* <AiOutlinePlusCircle /> */}
-          </Add>
+          <Add>{/* <AiOutlinePlusCircle /> */}</Add>
         </DateAndAdd>
         {Array.isArray(dateScheduleList) && dateScheduleList.length === 0 ? (
           <NoContentDiv>
@@ -171,6 +172,23 @@ const CalendarBottomSheetFirst = (props: { date: number; month: number; year: nu
                 <Title>{dateScheduleList[index]["title"]}</Title>
                 {/* <Dot></Dot> */}
               </TitleAndDot>
+              <div
+                style={{
+                  width: "100%",
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "center",
+                }}
+              >
+                <Season>
+                  {dateScheduleList[index]["season"] !== 0 &&
+                    `시즌 ${dateScheduleList[index]["season"]} :`}{" "}
+                </Season>
+                <Episode>
+                  {dateScheduleList[index]["episode"] !== 0 &&
+                    `${dateScheduleList[index]["episode"]} 화`}
+                </Episode>
+              </div>
               <ButtonContainer>
                 <SeenButton onClick={seenHandler}>{isSeen ? "시청 취소" : "시청함"}</SeenButton>
                 <PostponeButton
@@ -238,7 +256,8 @@ const PosterContainer = styled.div`
 const TextContainer = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  justify-content: space-evenly;
+  align-items: center;
 `;
 
 const TitleAndDot = styled.div`
@@ -254,6 +273,16 @@ const Title = styled.div`
 `;
 
 const Dot = styled.div``;
+
+const Season = styled.div`
+  font-size: ${({ theme }) => theme.fontSizeType.middle.fontSize};
+  font-weight: ${({ theme }) => theme.fontSizeType.middle.fontWeight};
+`;
+const Episode = styled.div`
+  font-size: ${({ theme }) => theme.fontSizeType.middle.fontSize};
+  font-weight: ${({ theme }) => theme.fontSizeType.middle.fontWeight};
+  margin-left: 2vw;
+`;
 
 const ButtonContainer = styled.div`
   display: flex;

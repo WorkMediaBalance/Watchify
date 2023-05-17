@@ -16,6 +16,9 @@ import ContentPoster from "components/common/ContentPoster";
 import { getRegExp } from "korean-regexp";
 
 import titleJson from "./../assets/titles.json";
+import spinner from "./../assets/gif/93297-simple-spinner.json";
+
+import Lottie from "lottie-react";
 
 const PageSearch = () => {
   const [titles, setTitles] = useState<string[]>([]);
@@ -145,10 +148,14 @@ const PageSearch = () => {
     };
   }, [autocompleteVisible]);
 
+  const [isLoading, setIsLoading] = useState(false);
+
   async function searchResultAPI(word: string) {
+    setIsLoading(true);
     const searchedWordResult = await searchResult(word);
     console.log(searchedWordResult, "검색결과");
     setSearchResultData(searchedWordResult);
+    setIsLoading(false);
   }
 
   return (
@@ -203,11 +210,22 @@ const PageSearch = () => {
               )}
             </InputContainer>
             <SHr />
-            {searchResultData && searchResultData.length > 0 ? (
+            {isLoading ? (
+              <div
+                style={{
+                  height: "70vh",
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "center",
+                }}
+              >
+                <Lottie animationData={spinner} />
+              </div>
+            ) : searchResultData && searchResultData.length > 0 ? (
               <>
                 <div
                   style={{
-                    width: "100%",
+                    width: "95%",
                     display: "flex",
                     flexDirection: "column",
                     alignItems: "start",
@@ -451,6 +469,9 @@ const SAutoCompleteDiv = styled.div`
   // border-radius: 1rem;
   // box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
   z-index: 3;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 const SP = styled.p`
@@ -466,21 +487,19 @@ const SNoResultDIV = styled.div`
 
   height: 80%;
   font-size: 5vw;
+  margin-top: 10vh;
 `;
 
 const SSearchLengthDiv = styled.div`
   font-size: 5vw;
   font-weight: ${({ theme }) => theme.fontSizeType.middle.fontWeight};
   margin: 3vw;
-  margin-bottom: 0;
 `;
 
 const ContentsContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 5vw;
-
-  margin-top: 3vh;
 `;
 
 const ContentContainer = styled.div`
@@ -503,4 +522,5 @@ const PosterWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   width: 40vw;
+  text-align: center;
 `;
