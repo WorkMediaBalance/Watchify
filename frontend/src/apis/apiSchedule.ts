@@ -50,6 +50,17 @@ export const scheduleShare = async (data: ScheduleAll) => {
   }
 };
 
+// 스케줄 공유 틀기
+export const scheduleShareGet = async (pk: number) => {
+  try {
+    const res = await apiR.get(`readapi/schedule/nonauth/share/${pk}`);
+    return res.data;
+  } catch (err) {
+    console.log("공유 받은 스케줄 가져오기 실패");
+    console.log(err);
+  }
+};
+
 // 시청함 체크
 /*
 data 샘플
