@@ -1,4 +1,4 @@
-import React, { useState, useRef, HTMLAttributes } from "react";
+import React, { useState, useRef, HTMLAttributes, useEffect } from "react";
 import { ChangeEvent } from "react";
 import styled from "styled-components";
 
@@ -15,9 +15,15 @@ import { BsPlusCircle } from "react-icons/bs";
 
 import { searchResult } from "apis/apiSearch";
 import ContentPoster from "components/common/ContentPoster";
+import { getRegExp } from "korean-regexp";
+import titleJson from "../../assets/titles.json";
 
 const Search = () => {
   const inputRef = useRef<HTMLInputElement>(null);
+  const [titles, setTitles] = useState<string[]>([]);
+  useEffect(() => {
+    setTitles(titleJson);
+  }, []);
 
   // recoil state
   const [essList, setEssList] = useRecoilState(essListState);
@@ -28,16 +34,28 @@ const Search = () => {
   // 검색창 외부를 클릭 시 위의 div가 사라짐 (상용 검색 사이트와 동일한 기능)
   const [autocompleteVisible, setAutocompleteVisible] = useState(false);
 
-  const [autocompleteWords, setAutocompleteWords] = useState<string[] | null>([
-    "6시 내 고병진",
-    "고병진 프리즌 브레이크",
-    "나는 내일 어제의 고병진과 만난다",
-    "내 머릿속의 고병진",
-  ]);
+  const [autocompleteWords, setAutocompleteWords] = useState<string[] | null>([]);
   // 검색 결과 (존재할 경우)
   const [searchResultData, setSearchResultData] = useState<content[]>([]);
 
   const wordChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const targetWord = getRegExp(e.target.value, {
+      initialSearch: true,
+      startsWith: false,
+      endsWith: false,
+      ignoreSpace: true,
+      ignoreCase: false,
+      global: true,
+    });
+
+    let suggestion = [];
+    suggestion = titles.filter((title) => {
+      return targetWord.test(title);
+    });
+    let uniqueArray = [...new Set(suggestion)];
+
+    console.log(uniqueArray, "suggestion");
+    setAutocompleteWords(uniqueArray.slice(0, 5));
     setSearchWord(e.target.value);
   };
 

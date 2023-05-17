@@ -82,7 +82,7 @@ const Profile = () => {
   const [isNameInput, setIsNameInput] = useState(false);
 
   useEffect(() => {
-    console.log(user);
+    // console.log(user);
   }, []);
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {

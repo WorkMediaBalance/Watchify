@@ -2,10 +2,10 @@ import React, { useEffect } from "react";
 import styled from "styled-components";
 import { motion } from "framer-motion";
 import { BOTTOM_SHEET_HEIGHT } from "constant/constant";
-import HistoryBottomSheetHeader from "./HistoryBottomSheetHeader";
-import HistoryBottomSheetContent from "./HistoryBottomSheetContent";
+import ShareBottomSheetHeader from "./ShareBottomSheetHeader";
+import ShareBottomSheetContent from "./ShareBottomSheetContent";
 import useRecBottomSheet from "hooks/useRecBottomSheet";
-import { HistoryDetailContent } from "interface/content";
+import { ShareDetailContent } from "interface/content";
 
 const Wrapper = styled(motion.div)`
   display: flex;
@@ -35,10 +35,10 @@ const BottomSheetContent = styled.div`
   -webkit-overflow-scrolling: touch;
 `;
 
-const HistoryBottomSheet = (props: {
+const ShareBottomSheet = (props: {
   isOpen: boolean;
   onClose: () => void;
-  data: HistoryDetailContent[];
+  data: ShareDetailContent[];
 }) => {
   const { sheet, content, openBottomSheet, closeBottomSheet, isOpenSheet, handle } =
     useRecBottomSheet();
@@ -61,13 +61,13 @@ const HistoryBottomSheet = (props: {
   return (
     <Wrapper ref={sheet}>
       <div ref={handle}>
-        <HistoryBottomSheetHeader />
+        <ShareBottomSheetHeader />
       </div>
       <BottomSheetContent ref={content}>
-        <HistoryBottomSheetContent data={props.data} />
+        <ShareBottomSheetContent data={props.data} />
       </BottomSheetContent>
     </Wrapper>
   );
 };
 
-export default HistoryBottomSheet;
+export default ShareBottomSheet;
