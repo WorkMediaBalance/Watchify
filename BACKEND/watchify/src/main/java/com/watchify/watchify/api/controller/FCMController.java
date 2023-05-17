@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("/api/fcm")
+@RequestMapping("/raedapi/fcm")
 @RequiredArgsConstructor
 public class FCMController {
 
