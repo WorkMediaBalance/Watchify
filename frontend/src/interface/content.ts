@@ -20,3 +20,8 @@ export interface HistoryDetailContent extends content {
   date: string;
   episode: number;
 }
+
+export interface ShareDetailContent extends content {
+  date: string;
+  episode: number;
+}

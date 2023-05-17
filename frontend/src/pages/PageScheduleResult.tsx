@@ -1,12 +1,15 @@
-import React, { useState, useRef, useEffect, useMemo } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { theme } from "styles/theme";
 import Calendar from "components/schedule/calendar/Calendar";
 import CalendarBottomSheet from "components/schedule/calendar/CalendarBottomSheet";
 import { useNavigate, useLocation } from "react-router-dom";
 // month 스케줄 state
-import { monthScheduleState } from "recoil/scheduleState";
+import { monthScheduleState, scheduleAllState } from "recoil/scheduleState";
+import { userState } from "recoil/userState";
 import { useRecoilState } from "recoil";
+import { scheduleInfo, scheduleInfoAll, scheduleShare } from "apis/apiSchedule";
+import { shareKakao } from "hooks/shareKakaoLink";
 
 const Wrapper = styled.div`
   height: 91vh;
@@ -17,15 +20,40 @@ const Wrapper = styled.div`
 const PageScheduleResult = () => {
   const navigate = useNavigate();
   const [sheet, setSheet] = useState(0);
-  const [month, setMonth] = useState(1);
+  const [month, setMonth] = useState(new Date().getMonth() + 1);
   const [date, setDate] = useState(1);
   const [close, setClose] = useState(0);
+  const [year, setYear] = useState(new Date().getFullYear());
+
+  const [user, SetUser] = useRecoilState(userState);
+
+  // 전체 스케줄
+  const [scheduleAll, setScheduleAll] = useRecoilState(scheduleAllState);
+  const getScheduleAll = async () => {
+    const data = await scheduleInfoAll();
+    if (data !== false) {
+      setScheduleAll(data);
+      console.log("전체 스케줄", data);
+    }
+  };
+
+  useEffect(() => {
+    getScheduleAll();
+  }, []);
 
   // month 스케줄
   const [monthSchedule, setMonthSchedule] = useRecoilState(monthScheduleState);
-
-  // 바텀시트 위치 구하기
-  const bottomSheetRef = useRef<HTMLTableElement>(null);
+  const getMonthSchedule = async () => {
+    try {
+      console.log(`${year}년 ${month}월 스케줄 정보 받아오기`);
+      const data = await scheduleInfo(year, month);
+      setMonthSchedule(data);
+      console.log(data);
+    } catch {}
+  };
+  useEffect(() => {
+    getMonthSchedule();
+  }, [month]);
 
   const [bottomSheetState, setBottomSheetState] = useState(0);
 
@@ -41,25 +69,59 @@ const PageScheduleResult = () => {
     }
   }, []);
 
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.src = "https://developers.kakao.com/sdk/js/kakao.js";
+    script.async = true;
+    document.body.appendChild(script);
+
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
+
+  const sharing = async (name: string) => {
+    const sharePk = await scheduleShare(scheduleAll);
+    shareKakao(
+      `https://k8a207.p.ssafy.io/share/${sharePk.pk}`,
+      `${name}님의 OTT 시청 패턴이 궁금하다면?`
+    );
+  };
+
   return (
     <Wrapper>
+      <div>
+        <img
+          src="https://developers.kakao.com/assets/img/about/logos/kakaotalksharing/kakaotalk_sharing_btn_medium.png"
+          alt="#"
+          onClick={() => {
+            sharing(user["name"] ? user["name"] : "guest");
+          }}
+        />
+      </div>
       <Calendar
-        onDateClick={(date: number, month: number) => {
+        onDateClick={(date: number, month: number, year: number) => {
           setSheet(sheet + 1);
           setMonth(month);
           setDate(date);
+          setYear(year);
         }}
         onCloseSheet={() => {
           setClose(close + 1);
         }}
         bottomSheetState={bottomSheetState}
+        monthSchedule={monthSchedule}
+        setMonthSchedule={setMonthSchedule}
+        setMonth={setMonth}
       />
 
       <CalendarBottomSheet
         close={close}
         date={date}
         month={month}
+        year={year}
         sheet={sheet}
+        setMonthSchedule={setMonthSchedule}
         setBottomSheetState={setBottomSheetState}
       />
     </Wrapper>

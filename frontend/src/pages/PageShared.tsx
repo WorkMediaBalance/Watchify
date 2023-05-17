@@ -1,20 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useLocation } from "react-router-dom";
 import { myHistoryInfo } from "apis/apiMy";
-import HistoryCalendar from "components/mypage/history/HistoryCalendar";
-import HistoryBottomSheet from "components/mypage/history/HistoryBottomSheet";
+import ShareCalendar from "components/share/ShareCalendar";
+import ShareBottomSheet from "components/share/ShareBottomSheet";
 import { useRecoilState } from "recoil";
-import { HistoryDetailContent } from "interface/content";
+import { ShareDetailContent } from "interface/content";
 
-interface HistoryData {
+interface ShareData {
   [key: string]: number;
 }
 
-interface HistoryDetailContentObject {
-  [key: number]: HistoryDetailContent[];
+interface ShareDetailContentObject {
+  [key: number]: ShareDetailContent[];
 }
 
-const PageMyHistory = () => {
+const PageShared = () => {
   // const { pk } = useParams();
   const location = useLocation();
   const startYear = location.state && location.state.year;
@@ -26,20 +26,20 @@ const PageMyHistory = () => {
   const [month, setMonth] = useState(startMonth);
   const [date, setDate] = useState(startDay);
 
-  const [historyDetail, setHistoryDetail] = useState<HistoryDetailContentObject>();
+  const [shareDetail, setShareDetail] = useState<ShareDetailContentObject>();
 
   const [selectedDate, setSelectedDate] = useState(new Date());
   // 히스토리 상세 정보 받아오기
   async function MyHistoryInfoAPI(pk: number, year: number, month: number) {
     try {
-      const data: HistoryData = {
+      const data: ShareData = {
         pk: Number(pk),
         year: Number(year),
         month: Number(month),
       };
-      const newHistoryDetail = await myHistoryInfo(data);
-      if (newHistoryDetail !== undefined) {
-        setHistoryDetail(newHistoryDetail);
+      const newShareDetail = await myHistoryInfo(data);
+      if (newShareDetail !== undefined) {
+        setShareDetail(newShareDetail);
       }
     } catch {}
   }
@@ -57,17 +57,17 @@ const PageMyHistory = () => {
 
   return (
     <div>
-      {historyDetail && (
-        <HistoryCalendar
+      {shareDetail && (
+        <ShareCalendar
           selectedDate={selectedDate}
           setSelectedDate={setSelectedDate}
-          historyDetail={historyDetail}
+          shareDetail={shareDetail}
           onDateClick={(date: number, month: number) => {
             setMonth(month);
             setDate(date);
             setIsOpen(true);
             setSheetLevel(1);
-            console.log(historyDetail);
+            console.log(shareDetail);
           }}
           bottomSheetState={sheetLevel}
           onCloseSheet={() => {
@@ -76,8 +76,8 @@ const PageMyHistory = () => {
           }}
         />
       )}
-      <HistoryBottomSheet
-        data={historyDetail?.[date] ?? []}
+      <ShareBottomSheet
+        data={shareDetail?.[date] ?? []}
         isOpen={isOpen}
         onClose={() => {
           setIsOpen(false);
@@ -88,4 +88,4 @@ const PageMyHistory = () => {
   );
 };
 
-export default PageMyHistory;
+export default PageShared;

@@ -21,6 +21,7 @@ export const weekScheduleState = atom<schedule>({
         type: "드라마",
         season: 1,
         finalEpisode: 10,
+        episode: 5,
         ott: { netflix: "https://www.netflix.com/kr/title/81519223" },
         genres: ["드라마"],
         wish: false,
@@ -28,6 +29,8 @@ export const weekScheduleState = atom<schedule>({
         summarize:
           "어느 날 길을 걷던 걸무고는 우연히 알 수 없는 동전을 줍게 되고, 이 동전의 충격적인 정체가 알려지며 사건에 휩싸이게 되는데... 과연 걸무고는 무사할 수 있을까?",
         audienceAge: 15,
+        date: "2023-05-18",
+        view: false,
       },
       {
         pk: 2,
@@ -39,6 +42,7 @@ export const weekScheduleState = atom<schedule>({
         type: "영화",
         season: 0,
         finalEpisode: 0,
+        episode: 0,
         ott: {
           wavve: "https://www.wavve.com/player/movie?movieid=MV_LO01_LO0000000038",
           watcha: "https://watcha.com/contents/myWqyBW",
@@ -48,6 +52,8 @@ export const weekScheduleState = atom<schedule>({
         like: -1,
         summarize: "뱀파이어가 울부지저따. 뱀파이어는 짱 쎄따. 크와아앙",
         audienceAge: 15,
+        date: "2023-05-18",
+        view: false,
       },
     ],
     1: [
@@ -61,6 +67,7 @@ export const weekScheduleState = atom<schedule>({
         type: "드라마",
         season: 1,
         finalEpisode: 10,
+        episode: 6,
         ott: { netflix: "https://www.netflix.com/kr/title/81519223" },
         genres: ["드라마"],
         wish: false,
@@ -68,6 +75,8 @@ export const weekScheduleState = atom<schedule>({
         summarize:
           "어느 날 길을 걷던 걸무고는 우연히 알 수 없는 동전을 줍게 되고, 이 동전의 충격적인 정체가 알려지며 사건에 휩싸이게 되는데... 과연 걸무고는 무사할 수 있을까?",
         audienceAge: 15,
+        date: "2023-05-18",
+        view: false,
       },
       {
         pk: 2,
@@ -79,6 +88,7 @@ export const weekScheduleState = atom<schedule>({
         type: "영화",
         season: 0,
         finalEpisode: 0,
+        episode: 0,
         ott: {
           wavve: "https://www.wavve.com/player/movie?movieid=MV_LO01_LO0000000038",
           watcha: "https://watcha.com/contents/myWqyBW",
@@ -88,6 +98,8 @@ export const weekScheduleState = atom<schedule>({
         like: -1,
         summarize: "뱀파이어가 울부지저따. 뱀파이어는 짱 쎄따. 크와아앙",
         audienceAge: 15,
+        date: "2023-05-18",
+        view: false,
       },
     ],
     2: [],
@@ -102,6 +114,7 @@ export const weekScheduleState = atom<schedule>({
         type: "영화",
         season: 0,
         finalEpisode: 0,
+        episode: 0,
         ott: {
           wavve: "https://www.wavve.com/player/movie?movieid=MV_LO01_LO0000000038",
           watcha: "https://watcha.com/contents/myWqyBW",
@@ -111,6 +124,8 @@ export const weekScheduleState = atom<schedule>({
         like: -1,
         summarize: "뱀파이어가 울부지저따. 뱀파이어는 짱 쎄따. 크와아앙",
         audienceAge: 15,
+        date: "2023-05-18",
+        view: false,
       },
     ],
     4: [],
@@ -133,6 +148,7 @@ export const monthScheduleState = atom<schedule>({
         type: "영화",
         season: 0,
         finalEpisode: 0,
+        episode: 0,
         ott: {
           wavve: "https://www.wavve.com/player/movie?movieid=MV_LO01_LO0000000038",
           watcha: "https://watcha.com/contents/myWqyBW",
@@ -142,9 +158,10 @@ export const monthScheduleState = atom<schedule>({
         like: -1,
         summarize: "뱀파이어가 울부지저따. 뱀파이어는 짱 쎄따. 크와아앙",
         audienceAge: 15,
+        date: "2023-05-18",
+        view: false,
       },
     ],
-    2: [],
     3: [
       {
         pk: 2,
@@ -156,6 +173,7 @@ export const monthScheduleState = atom<schedule>({
         type: "영화",
         season: 0,
         finalEpisode: 0,
+        episode: 0,
         ott: {
           wavve: "https://www.wavve.com/player/movie?movieid=MV_LO01_LO0000000038",
           watcha: "https://watcha.com/contents/myWqyBW",
@@ -165,11 +183,10 @@ export const monthScheduleState = atom<schedule>({
         like: -1,
         summarize: "뱀파이어가 울부지저따. 뱀파이어는 짱 쎄따. 크와아앙",
         audienceAge: 15,
+        date: "2023-05-18",
+        view: false,
       },
     ],
-    4: [],
-    5: [],
-    6: [],
     7: [
       {
         pk: 2,
@@ -181,6 +198,7 @@ export const monthScheduleState = atom<schedule>({
         type: "영화",
         season: 0,
         finalEpisode: 0,
+        episode: 0,
         ott: {
           wavve: "https://www.wavve.com/player/movie?movieid=MV_LO01_LO0000000038",
           watcha: "https://watcha.com/contents/myWqyBW",
@@ -190,11 +208,10 @@ export const monthScheduleState = atom<schedule>({
         like: -1,
         summarize: "뱀파이어가 울부지저따. 뱀파이어는 짱 쎄따. 크와아앙",
         audienceAge: 15,
+        date: "2023-05-18",
+        view: false,
       },
     ],
-    8: [],
-    9: [],
-    10: [],
     11: [
       {
         pk: 2,
@@ -206,6 +223,7 @@ export const monthScheduleState = atom<schedule>({
         type: "영화",
         season: 0,
         finalEpisode: 0,
+        episode: 0,
         ott: {
           wavve: "https://www.wavve.com/player/movie?movieid=MV_LO01_LO0000000038",
           watcha: "https://watcha.com/contents/myWqyBW",
@@ -215,9 +233,10 @@ export const monthScheduleState = atom<schedule>({
         like: -1,
         summarize: "뱀파이어가 울부지저따. 뱀파이어는 짱 쎄따. 크와아앙",
         audienceAge: 15,
+        date: "2023-05-18",
+        view: false,
       },
     ],
-    12: [],
     13: [
       {
         pk: 1,
@@ -229,6 +248,7 @@ export const monthScheduleState = atom<schedule>({
         type: "드라마",
         season: 1,
         finalEpisode: 10,
+        episode: 5,
         ott: { netflix: "https://www.netflix.com/kr/title/81519223" },
         genres: ["드라마"],
         wish: false,
@@ -236,9 +256,10 @@ export const monthScheduleState = atom<schedule>({
         summarize:
           "어느 날 길을 걷던 걸무고는 우연히 알 수 없는 동전을 줍게 되고, 이 동전의 충격적인 정체가 알려지며 사건에 휩싸이게 되는데... 과연 걸무고는 무사할 수 있을까?",
         audienceAge: 15,
+        date: "2023-05-18",
+        view: false,
       },
     ],
-    14: [],
     15: [
       {
         pk: 1,
@@ -250,6 +271,7 @@ export const monthScheduleState = atom<schedule>({
         type: "드라마",
         season: 1,
         finalEpisode: 10,
+        episode: 6,
         ott: { netflix: "https://www.netflix.com/kr/title/81519223" },
         genres: ["드라마"],
         wish: false,
@@ -257,9 +279,10 @@ export const monthScheduleState = atom<schedule>({
         summarize:
           "어느 날 길을 걷던 걸무고는 우연히 알 수 없는 동전을 줍게 되고, 이 동전의 충격적인 정체가 알려지며 사건에 휩싸이게 되는데... 과연 걸무고는 무사할 수 있을까?",
         audienceAge: 15,
+        date: "2023-05-18",
+        view: false,
       },
     ],
-    16: [],
     17: [
       {
         pk: 2,
@@ -271,6 +294,7 @@ export const monthScheduleState = atom<schedule>({
         type: "영화",
         season: 0,
         finalEpisode: 0,
+        episode: 0,
         ott: {
           wavve: "https://www.wavve.com/player/movie?movieid=MV_LO01_LO0000000038",
           watcha: "https://watcha.com/contents/myWqyBW",
@@ -280,11 +304,10 @@ export const monthScheduleState = atom<schedule>({
         like: -1,
         summarize: "뱀파이어가 울부지저따. 뱀파이어는 짱 쎄따. 크와아앙",
         audienceAge: 15,
+        date: "2023-05-18",
+        view: false,
       },
     ],
-    18: [],
-    19: [],
-    20: [],
     21: [
       {
         pk: 1,
@@ -296,6 +319,7 @@ export const monthScheduleState = atom<schedule>({
         type: "드라마",
         season: 1,
         finalEpisode: 10,
+        episode: 7,
         ott: { netflix: "https://www.netflix.com/kr/title/81519223" },
         genres: ["드라마"],
         wish: false,
@@ -303,10 +327,10 @@ export const monthScheduleState = atom<schedule>({
         summarize:
           "어느 날 길을 걷던 걸무고는 우연히 알 수 없는 동전을 줍게 되고, 이 동전의 충격적인 정체가 알려지며 사건에 휩싸이게 되는데... 과연 걸무고는 무사할 수 있을까?",
         audienceAge: 15,
+        date: "2023-05-18",
+        view: false,
       },
     ],
-    22: [],
-    23: [],
     24: [
       {
         pk: 2,
@@ -318,6 +342,7 @@ export const monthScheduleState = atom<schedule>({
         type: "영화",
         season: 0,
         finalEpisode: 0,
+        episode: 0,
         ott: {
           wavve: "https://www.wavve.com/player/movie?movieid=MV_LO01_LO0000000038",
           watcha: "https://watcha.com/contents/myWqyBW",
@@ -327,6 +352,8 @@ export const monthScheduleState = atom<schedule>({
         like: -1,
         summarize: "뱀파이어가 울부지저따. 뱀파이어는 짱 쎄따. 크와아앙",
         audienceAge: 15,
+        date: "2023-05-18",
+        view: false,
       },
       {
         pk: 1,
@@ -338,6 +365,7 @@ export const monthScheduleState = atom<schedule>({
         type: "드라마",
         season: 1,
         finalEpisode: 10,
+        episode: 8,
         ott: { netflix: "https://www.netflix.com/kr/title/81519223" },
         genres: ["드라마"],
         wish: false,
@@ -345,10 +373,10 @@ export const monthScheduleState = atom<schedule>({
         summarize:
           "어느 날 길을 걷던 걸무고는 우연히 알 수 없는 동전을 줍게 되고, 이 동전의 충격적인 정체가 알려지며 사건에 휩싸이게 되는데... 과연 걸무고는 무사할 수 있을까?",
         audienceAge: 15,
+        date: "2023-05-18",
+        view: false,
       },
     ],
-    25: [],
-    26: [],
     27: [
       {
         pk: 2,
@@ -360,6 +388,7 @@ export const monthScheduleState = atom<schedule>({
         type: "영화",
         season: 0,
         finalEpisode: 0,
+        episode: 0,
         ott: {
           wavve: "https://www.wavve.com/player/movie?movieid=MV_LO01_LO0000000038",
           watcha: "https://watcha.com/contents/myWqyBW",
@@ -369,10 +398,10 @@ export const monthScheduleState = atom<schedule>({
         like: -1,
         summarize: "뱀파이어가 울부지저따. 뱀파이어는 짱 쎄따. 크와아앙",
         audienceAge: 15,
+        date: "2023-05-18",
+        view: false,
       },
     ],
-    28: [],
-    29: [],
     30: [
       {
         pk: 2,
@@ -384,6 +413,7 @@ export const monthScheduleState = atom<schedule>({
         type: "영화",
         season: 0,
         finalEpisode: 0,
+        episode: 0,
         ott: {
           wavve: "https://www.wavve.com/player/movie?movieid=MV_LO01_LO0000000038",
           watcha: "https://watcha.com/contents/myWqyBW",
@@ -393,6 +423,8 @@ export const monthScheduleState = atom<schedule>({
         like: -1,
         summarize: "뱀파이어가 울부지저따. 뱀파이어는 짱 쎄따. 크와아앙",
         audienceAge: 15,
+        date: "2023-05-18",
+        view: false,
       },
       {
         pk: 1,
@@ -404,6 +436,7 @@ export const monthScheduleState = atom<schedule>({
         type: "드라마",
         season: 1,
         finalEpisode: 10,
+        episode: 9,
         ott: { netflix: "https://www.netflix.com/kr/title/81519223" },
         genres: ["드라마"],
         wish: false,
@@ -411,9 +444,10 @@ export const monthScheduleState = atom<schedule>({
         summarize:
           "어느 날 길을 걷던 걸무고는 우연히 알 수 없는 동전을 줍게 되고, 이 동전의 충격적인 정체가 알려지며 사건에 휩싸이게 되는데... 과연 걸무고는 무사할 수 있을까?",
         audienceAge: 15,
+        date: "2023-05-18",
+        view: false,
       },
     ],
-    31: [],
   },
 });
 
