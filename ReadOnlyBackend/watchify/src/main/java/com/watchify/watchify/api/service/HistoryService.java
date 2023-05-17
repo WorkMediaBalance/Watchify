@@ -3,8 +3,10 @@ package com.watchify.watchify.api.service;
 import com.watchify.watchify.db.entity.Calender;
 import com.watchify.watchify.db.entity.Content;
 import com.watchify.watchify.db.entity.LikeContent;
+import com.watchify.watchify.db.entity.UserViewingStatus;
 import com.watchify.watchify.db.repository.CalenderRepository;
 import com.watchify.watchify.db.repository.LikeContentRepository;
+import com.watchify.watchify.db.repository.UserViewingStatusRepository;
 import com.watchify.watchify.db.repository.WishContentRepository;
 import com.watchify.watchify.dto.response.HistoryDTO;
 import com.watchify.watchify.dto.response.HistoryInfoDTO;
@@ -26,19 +28,21 @@ public class HistoryService {
     private final CalenderRepository calenderRepository;
     private final WishContentRepository wishContentRepository;
     private final LikeContentRepository likeContentRepository;
+    private final UserViewingStatusRepository userViewingStatusRepository;
 
     public List<HistoryDTO> getUserHistory(Long userId) {
         List<HistoryDTO> res = new ArrayList<>();
 
-        List<Calender> myCalenderList = calenderRepository.getMyViewedCalender(userId); // 시청한 것들만 확인
+//        List<Calender> myCalenderList = calenderRepository.getMyViewedCalender(userId); // 시청한 것들만 확인
         List<Long> myWishContentList = wishContentRepository.getContentIdInMyWishList(userId);
         List<LikeContent> myLikeContentList = likeContentRepository.getLikeContent(userId);
+        List<UserViewingStatus> myViewStatus = userViewingStatusRepository.getMyViewStatue(userId); // 켈린더에서 말고 여기서 가져오자
         HashMap<Content, Integer> checkMap = new HashMap<>();
         HashMap<Content, LocalDate> firstDateMap = new HashMap<>();
 
-        for (Calender calender : myCalenderList) { // 캘린더를 통해 시청날짜 확인
-            Content content = calender.getTurnContent().getContent();
-            int contentEp = calender.getTurnContent().getEpisode();
+        for (UserViewingStatus userViewingStatus : myViewStatus) { // 캘린더를 통해 시청날짜 확인
+            Content content = userViewingStatus.getTurnContent().getContent();
+//            int contentEp = calender.getTurnContent().getEpisode();
             if (checkMap.containsKey(content)) {
                 int cnt = checkMap.get(content);
                 checkMap.put(content, cnt + 1);
@@ -46,7 +50,7 @@ public class HistoryService {
                 checkMap.put(content, 1);
             }
 
-            LocalDate bDate = calender.getViewDate();
+            LocalDate bDate = userViewingStatus.getDate();
             if (firstDateMap.containsKey(content)) {
                 LocalDate aDate = firstDateMap.get(content);
                 if (aDate.isBefore(bDate)) {
@@ -93,14 +97,15 @@ public class HistoryService {
 
         LocalDate startDate = LocalDate.of(year, month, 1);
         LocalDate endDate = LocalDate.of(year, month, startDate.lengthOfMonth());
-        List<Calender> myCalenderList = calenderRepository.getSpecificContentViewedCalender(userId, startDate, endDate);
+//        List<Calender> myCalenderList = calenderRepository.getSpecificContentViewedCalender(userId, startDate, endDate);
         List<Long> myWishContentList = wishContentRepository.getContentIdInMyWishList(userId);
         List<LikeContent> myLikeContentList = likeContentRepository.getLikeContent(userId);
+        List<UserViewingStatus> myViewStatus = userViewingStatusRepository.getMyViewStatue(userId);
 
-        for (Calender calender : myCalenderList) {
-            LocalDate date = calender.getViewDate(); // 본날짜
-            Content content = calender.getTurnContent().getContent();
-            int ep = calender.getTurnContent().getEpisode();
+        for (UserViewingStatus userViewingStatus : myViewStatus) {
+            LocalDate date = userViewingStatus.getDate(); // 본날짜
+            Content content = userViewingStatus.getTurnContent().getContent();
+            int ep = userViewingStatus.getTurnContent().getEpisode();
             int day = date.getDayOfMonth();
             if (content.getId() != contentId) {
                 continue;
@@ -133,7 +138,7 @@ public class HistoryService {
         if (a.compareTo(b) < 0) {
             return a;
         } else {
-          return b;
+            return b;
         }
     }
 }
