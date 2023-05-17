@@ -17,7 +17,7 @@ const Handle = styled.div`
   margin: auto;
 `;
 
-const ShareBottomSheetHeader: FC = () => {
+const HistoryBottomSheetHeader: FC = () => {
   return (
     <Wrapper>
       <Handle />
@@ -25,4 +25,4 @@ const ShareBottomSheetHeader: FC = () => {
   );
 };
 
-export default ShareBottomSheetHeader;
+export default HistoryBottomSheetHeader;
