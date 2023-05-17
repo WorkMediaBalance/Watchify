@@ -3,6 +3,9 @@ import styled from "styled-components";
 
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import Swal from "sweetalert2";
+
+import { theme } from "styles/theme";
 
 import disneyIcon from "assets/img/otticons/DisneyIcon.png";
 import disneySelected from "assets/img/otticons/DisneyIconSelected.png";
@@ -72,7 +75,13 @@ const ScheduleOttDate = () => {
         setStartDate(newDate);
         setShowDatePicker(false);
       } else {
-        alert("좋은 말로 할 때 오늘보다 뒤에 날짜 선택해라");
+        Swal.fire({
+          title: "",
+          text: "오늘 이전 날짜는 선택할 수 없습니다.",
+          background: theme.netflix.backgroundColor,
+          confirmButtonText: "확인",
+          confirmButtonColor: theme.netflix.pointColor,
+        });
       }
     }
   };
