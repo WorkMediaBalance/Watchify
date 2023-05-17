@@ -47,7 +47,7 @@ pipeline {
                         sh './gradlew clean build -x test'
                     }
 
-                    sh 'docker build -t $repository:backend$BUILD_NUMBER ./ReadOnlyBackend/watchify'
+                    sh 'docker build -t $repository:readonlybackend$BUILD_NUMBER ./ReadOnlyBackend/watchify'
                     sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin' // docker hub 로그인
                     sh 'docker push $repository:readonlybackend$BUILD_NUMBER'
 
