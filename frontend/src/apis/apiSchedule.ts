@@ -6,7 +6,7 @@ import { schedulePreInfo, ScheduleAll } from "interface/schedule";
 // 월간 스케줄 조회
 export const scheduleInfo = async (year: number, month: number) => {
   try {
-    const res = await apiR.get(`api/schedule/info/${year}/${month}`);
+    const res = await apiR.get(`readapi/schedule/info/${year}/${month}`);
     return res.data;
   } catch (err) {
     console.log("월간 스케줄 받아오기 실패");
@@ -17,7 +17,7 @@ export const scheduleInfo = async (year: number, month: number) => {
 // 전체 스케줄 조회
 export const scheduleInfoAll = async () => {
   try {
-    const res = await apiR.get(`api/schedule/info/all`);
+    const res = await apiR.get(`readapi/schedule/info/all`);
     return res.data;
   } catch (err) {
     console.log("전체 스케줄 받아오기 실패");

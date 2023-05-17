@@ -56,8 +56,7 @@ export const myProfileName = async (data: { [key: string]: string }) => {
 // 찜 리스트 가져오기
 export const myWishList = async () => {
   try {
-    console.log("성공?");
-    const res = await apiR.get("api/my/wishlist");
+    const res = await apiR.get("readapi/my/wishlist");
     return res.data;
   } catch (err) {
     console.log("찜 목록 가져오기 실패");
@@ -68,7 +67,7 @@ export const myWishList = async () => {
 // 시청 패턴 조회
 export const myPatternGet = async () => {
   try {
-    const res = await apiR.get("api/my/pattern");
+    const res = await apiR.get("readapi/my/pattern");
     return res.data;
   } catch (err) {
     console.log("시청 패턴 가져오기 실패");
@@ -92,7 +91,7 @@ export const myPatternChange = async (data: { [key: string]: number[] }) => {
 // 유저 기본 정보 조회
 export const mybasicInfo = async () => {
   try {
-    const res = await apiR.get("api/my/basicinfo");
+    const res = await apiR.get("readapi/my/basicinfo");
     return res.data;
   } catch (err) {
     console.log("유저 기본 정보 조회 실패");
@@ -103,7 +102,7 @@ export const mybasicInfo = async () => {
 // 유저 알람 정보 조회
 export const myAlarmInfo = async () => {
   try {
-    const res = await apiR.get("api/my/alarminfo");
+    const res = await apiR.get("readapi/my/alarminfo");
     return res.data;
   } catch (err) {
     console.log("유저 알람 정보 조회 실패");
@@ -114,7 +113,7 @@ export const myAlarmInfo = async () => {
 // 유저 ott 구독 정보 조회
 export const myOTTget = async () => {
   try {
-    const res = await apiR.get("api/my/ott");
+    const res = await apiR.get("readapi/my/ott");
     return res.data;
   } catch (err) {
     console.log("ott 구독 정보 조회 실패");
@@ -137,7 +136,7 @@ export const myOTTChange = async (data: OttPeriods) => {
 // 유저 히스토리 목록 조회
 export const myHistory = async () => {
   try {
-    const res = await apiR.get("api/my/history");
+    const res = await apiR.get("readapi/my/history");
     return res.data;
   } catch (err) {
     console.log("유저 히스토리 목록 조회 실패");
@@ -155,7 +154,7 @@ const data = {
 */
 export const myHistoryInfo = async (data: { [key: string]: number }) => {
   try {
-    const res = await apiR.get(`api/my/history/${data.pk}/${data.year}/${data.month}`);
+    const res = await apiR.get(`readapi/my/history/${data.pk}/${data.year}/${data.month}`);
     return res.data;
   } catch (err) {
     console.log("유저 히스토리 상세 조회 실패");
