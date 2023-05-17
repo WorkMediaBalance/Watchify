@@ -6,6 +6,7 @@ import com.watchify.watchify.dto.response.HistoryInfoDTO;
 import com.watchify.watchify.dto.response.ScheduleObjDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -16,6 +17,7 @@ import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = false)
 public class ScheduleGetService {
 
     private final UserRepository userRepository;
