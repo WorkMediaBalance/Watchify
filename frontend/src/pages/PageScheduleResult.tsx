@@ -48,8 +48,11 @@ const PageScheduleResult = () => {
       console.log(`${year}년 ${month}월 스케줄 정보 받아오기`);
       const data = await scheduleInfo(year, month);
       setMonthSchedule(data);
-      console.log(data);
-    } catch {}
+      console.log(data, "얘가 undefined?");
+    } catch {
+      console.log("여기까지 옴");
+      setMonthSchedule(scheduleAll[month]);
+    }
   };
   useEffect(() => {
     getMonthSchedule();
@@ -90,15 +93,14 @@ const PageScheduleResult = () => {
 
   return (
     <Wrapper>
-      <div>
-        <img
-          src="https://developers.kakao.com/assets/img/about/logos/kakaotalksharing/kakaotalk_sharing_btn_medium.png"
-          alt="#"
-          onClick={() => {
-            sharing(user["name"] ? user["name"] : "guest");
-          }}
-        />
-      </div>
+      <KakaoButton
+        src="https://developers.kakao.com/assets/img/about/logos/kakaotalksharing/kakaotalk_sharing_btn_medium.png"
+        alt="#"
+        onClick={() => {
+          sharing(user["name"] ? user["name"] : "guest");
+        }}
+      />
+
       <Calendar
         onDateClick={(date: number, month: number, year: number) => {
           setSheet(sheet + 1);
@@ -129,3 +131,22 @@ const PageScheduleResult = () => {
 };
 
 export default PageScheduleResult;
+
+const KakaoButton = styled.img`
+  position: absolute;
+  top: -4.5vh;
+  right: 1vh;
+  z-index: 100000;
+  width: 4vh;
+  height: 4vh;
+`;
+
+// const KakaoDiv = styled.div`
+//   position: absolute;
+//   bottom: 4vh;
+//   right: 4vh;
+//   border-radius: 50%;
+//   overflow: hidden;
+//   width: 5vh;
+//   height: 5vh;
+// `;

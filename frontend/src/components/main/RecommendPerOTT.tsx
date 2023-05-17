@@ -117,7 +117,7 @@ const RecommendPerOTT = () => {
           >
             <div>
               <Title>{result !== undefined && result[ott][index].title}</Title>
-              <Rating>{result !== undefined && result[ott][index].rate} / 5.0</Rating>
+              <Rating>{result !== undefined && `${result[ott][index].rate} / 5.0`} </Rating>
             </div>
             <Story>{result !== undefined && result[ott][index].summarize}</Story>
             <div

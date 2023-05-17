@@ -19,6 +19,8 @@ apiCUD.interceptors.request.use(
     if (accessToken) {
       config.headers.access = accessToken;
     }
+    // config.headers.access =
+    //   "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjIsImV4cCI6MTY4NDM5MjI2Nn0.Y9guMSzW5zMKYgTMdhmktVbQIMnZttRtLdRZ0agyZqA";
     return config;
   },
   function (error) {
@@ -45,7 +47,7 @@ apiCUD.interceptors.response.use(
   }
 );
 
-// CUD용 api
+// R용 api
 const apiR = axios.create({
   baseURL: BASE_URL,
 
@@ -61,6 +63,8 @@ apiR.interceptors.request.use(
     if (accessToken) {
       config.headers.access = accessToken;
     }
+    // config.headers.access =
+    //   "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjIsImV4cCI6MTY4NDM5MjI2Nn0.Y9guMSzW5zMKYgTMdhmktVbQIMnZttRtLdRZ0agyZqA";
     return config;
   },
   function (error) {
