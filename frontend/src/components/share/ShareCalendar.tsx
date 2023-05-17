@@ -4,14 +4,14 @@ import { useSwipeable } from "react-swipeable";
 import { motion, AnimatePresence } from "framer-motion";
 import { theme } from "styles/theme";
 import { months } from "constant/constant";
-import { ShareDetailContent } from "recoil/shareState";
+import { HistoryDetailContent } from "recoil/history";
 import { myHistoryInfo } from "apis/apiMy";
 
-const ShareCalendar = (props: {
+const HistoryCalendar = (props: {
   onDateClick: (date: number, month: number) => void;
   onCloseSheet: () => void;
   bottomSheetState: number;
-  shareDetail: { [key: number]: ShareDetailContent[] };
+  historyDetail: { [key: number]: HistoryDetailContent[] };
   selectedDate: Date;
   setSelectedDate: React.Dispatch<React.SetStateAction<Date>>;
 }) => {
@@ -119,7 +119,7 @@ const ShareCalendar = (props: {
       setClickedDay(event.currentTarget);
       const date = props.selectedDate.getMonth() + 1;
       const month = Number(YMD[2]);
-      if (props.shareDetail[parseInt(YMD[2])]) {
+      if (props.historyDetail[parseInt(YMD[2])]) {
         props.onDateClick(month, date);
       }
     }
@@ -128,7 +128,7 @@ const ShareCalendar = (props: {
 
   // 해당 스케줄 불러오기
   useEffect(() => {
-    console.log(props.shareDetail);
+    console.log(props.historyDetail, "여기가 디테일");
   }, []);
 
   return (
@@ -195,8 +195,8 @@ const ShareCalendar = (props: {
                               <SP>{content}</SP>
 
                               <InnerConteiner>
-                                {typeof content === "number" && props.shareDetail[content]
-                                  ? props.shareDetail[content].map((content, index) => {
+                                {typeof content === "number" && props.historyDetail[content]
+                                  ? props.historyDetail[content].map((content, index) => {
                                       return <IndicationBar />;
                                     })
                                   : null}
@@ -216,8 +216,8 @@ const ShareCalendar = (props: {
                               <SP>{content}</SP>
 
                               <InnerConteiner>
-                                {typeof content === "number" && props.shareDetail[content]
-                                  ? props.shareDetail[content].map((content, index) => {
+                                {typeof content === "number" && props.historyDetail[content]
+                                  ? props.historyDetail[content].map((content, index) => {
                                       return (
                                         <ContentTag>
                                           <ContentTagDot />
@@ -247,7 +247,7 @@ const ShareCalendar = (props: {
   );
 };
 
-export default ShareCalendar;
+export default HistoryCalendar;
 
 const Wrapper = styled.div`
   color: ${theme.netflix.fontColor};

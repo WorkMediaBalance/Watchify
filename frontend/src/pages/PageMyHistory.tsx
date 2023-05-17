@@ -67,7 +67,7 @@ const PageMyHistory = () => {
             setDate(date);
             setIsOpen(true);
             setSheetLevel(1);
-            console.log(historyDetail);
+            console.log(historyDetail, "historyDetail");
           }}
           bottomSheetState={sheetLevel}
           onCloseSheet={() => {

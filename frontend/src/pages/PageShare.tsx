@@ -1,18 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useLocation } from "react-router-dom";
 import { myHistoryInfo } from "apis/apiMy";
-import ShareCalendar from "components/share/ShareCalendar";
-import ShareBottomSheet from "components/share/ShareBottomSheet";
+import HistoryCalendar from "components/mypage/history/HistoryCalendar";
+import HistoryBottomSheet from "components/mypage/history/HistoryBottomSheet";
 import { useRecoilState } from "recoil";
-import { ShareDetailContent } from "interface/content";
+import { HistoryDetailContent } from "interface/content";
 import { scheduleShareGet } from "apis/apiSchedule";
 
-interface ShareData {
+interface HistoryData {
   [key: string]: number;
 }
 
+interface HistoryDetailContentObject {
+  [key: number]: HistoryDetailContent[];
+}
+
 interface ShareDetailContentObject {
-  [key: number]: ShareDetailContent[];
+  [key: string]: HistoryDetailContentObject;
 }
 
 const PageShare = () => {
@@ -28,8 +32,7 @@ const PageShare = () => {
   const [month, setMonth] = useState(startMonth);
   const [date, setDate] = useState(startDay);
 
-  const [shareDetail, setShareDetail] = useState<ShareDetailContentObject>();
-
+  const [shareDetail, setShareDetail] = useState<ShareDetailContentObject>({});
   const [selectedDate, setSelectedDate] = useState(new Date());
   // 히스토리 상세 정보 받아오기
   async function getScheduleShare(sharedPK: number) {
@@ -49,31 +52,62 @@ const PageShare = () => {
     }
   }, []);
 
-  // useEffect(() => {
-  //   MyHistoryInfoAPI(pk, selectedDate.getFullYear(), selectedDate.getMonth() + 1);
-  // }, [selectedDate]);
-
-  // useEffect(() => {
-  //   MyHistoryInfoAPI(pk, year, month);
-  // }, [month]);
-
   // bottomsheet open 변수
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [sheetLevel, setSheetLevel] = useState<number>(0);
 
+  // 이제 시작...
+  const [dataToProps, setDataToProps] = useState<HistoryDetailContentObject>();
+  const [formattedDate, setFormattedDate] = useState("");
+
+  useEffect(() => {
+    // const formattedYear = selectedDate.getFullYear().toString();
+    // const formattedMonth = selectedDate.getMonth() + 1;
+    // if (formattedMonth < 10) {
+    //   setFormattedDate(formattedYear + "-0" + formattedMonth.toString());
+    // } else {
+    //   setFormattedDate(formattedYear + "-" + formattedMonth.toString());
+    // }
+    // console.log(formattedDate, "foramttedDate");
+    totalFunction();
+  }, [selectedDate, shareDetail]);
+
+  // useEffect(() => {
+  //   if (shareDetail) {
+  //     setDataToProps(shareDetail[formattedDate]);
+  //     console.log(shareDetail[formattedDate], "shareDetail[foramttedDate]");
+  //   }
+  // }, [formattedDate]);
+
+  const totalFunction = async () => {
+    const formattedYear = selectedDate.getFullYear().toString();
+    const formattedMonth = selectedDate.getMonth() + 1;
+    if (formattedMonth < 10) {
+      const formattedDate = formattedYear + "-0" + formattedMonth.toString();
+      if (shareDetail) {
+        setDataToProps(shareDetail[formattedDate]);
+      }
+    } else {
+      const formattedDate = formattedYear + "-" + formattedMonth.toString();
+      if (shareDetail) {
+        setDataToProps(shareDetail[formattedDate]);
+      }
+    }
+  };
+
   return (
     <div>
-      {shareDetail && (
-        <ShareCalendar
+      {dataToProps && (
+        <HistoryCalendar
           selectedDate={selectedDate}
           setSelectedDate={setSelectedDate}
-          shareDetail={shareDetail}
+          historyDetail={dataToProps}
           onDateClick={(date: number, month: number) => {
             setMonth(month);
             setDate(date);
             setIsOpen(true);
             setSheetLevel(1);
-            console.log(shareDetail);
+            console.log(dataToProps, "dataToProps");
           }}
           bottomSheetState={sheetLevel}
           onCloseSheet={() => {
@@ -82,8 +116,8 @@ const PageShare = () => {
           }}
         />
       )}
-      <ShareBottomSheet
-        data={shareDetail?.[date] ?? []}
+      <HistoryBottomSheet
+        data={dataToProps?.[date] ?? []}
         isOpen={isOpen}
         onClose={() => {
           setIsOpen(false);
