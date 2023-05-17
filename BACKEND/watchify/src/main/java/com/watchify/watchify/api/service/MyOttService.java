@@ -54,10 +54,9 @@ public class MyOttService {
             OttDateRequestDTO ottDateDTO = userOttDTO.getOf(ott.getName()); // ott(넷플 등) 의 start 와 end 가 있는 객체 얘로 수정해야됨
             LocalDate start = ottDateDTO.getStart();
             LocalDate end = ottDateDTO.getEnd();
-
             boolean flag = true;
             for (UserOTT userOTT : userOtts) {
-                if (userOTT.getOtt().equals(ott)) { // 이건 DB 에 있는 경우
+                if (userOTT.getOtt().getName().equals(ott.getName())) { // 이건 DB 에 있는 경우
                     userOTT.setStart(start);
                     userOTT.setEnd(end);
                     userOTTRepository.save(userOTT);
@@ -65,10 +64,11 @@ public class MyOttService {
                     break;
                 }
             }
-            if (flag) { // 이건 DB 에 없는 경우
+            if (flag == true) { // 이건 DB 에 없는 경우
                 UserOTT newUserOtt = new UserOTT(user, ott);
                 newUserOtt.setStart(start);
                 newUserOtt.setEnd(end);
+                userOTTRepository.save(newUserOtt);
             }
         }
     }
