@@ -1,19 +1,22 @@
-import React, { useState, useEffect, useRef, useMemo } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { useSwipeable } from "react-swipeable";
 import { motion, AnimatePresence } from "framer-motion";
 import { theme } from "styles/theme";
 import { months } from "constant/constant";
 import { useNavigate } from "react-router-dom";
+import { schedule } from "interface/schedule";
 
 // month 스케줄 state
 import { monthScheduleState } from "recoil/scheduleState";
 import { useRecoilState } from "recoil";
-
 const Calendar = (props: {
-  onDateClick: (date: number, month: number) => void;
+  onDateClick: (date: number, month: number, year: number) => void;
   onCloseSheet: () => void;
   bottomSheetState: number;
+  monthSchedule: schedule;
+  setMonthSchedule: (data: schedule) => void;
+  setMonth: React.Dispatch<React.SetStateAction<number>>;
 }) => {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [clickedDay, setClickedDay] = useState<HTMLElement | null>(null);
@@ -77,18 +80,26 @@ const Calendar = (props: {
   rows.push({ cells });
 
   function thisMonth() {
-    console.log("thismonth");
     setSelectedDate(new Date());
+    props.setMonth(new Date().getMonth() + 1);
     props.onCloseSheet();
   }
 
   function prevMonth() {
-    setSelectedDate((prevDate) => new Date(prevDate.getFullYear(), prevDate.getMonth() - 1, 1));
+    setSelectedDate((prevDate) => {
+      const newDate = new Date(prevDate.getFullYear(), prevDate.getMonth() - 1, 1);
+      props.setMonth(newDate.getMonth() + 1);
+      return newDate;
+    });
     props.onCloseSheet();
   }
 
   function nextMonth() {
-    setSelectedDate((prevDate) => new Date(prevDate.getFullYear(), prevDate.getMonth() + 1, 1));
+    setSelectedDate((prevDate) => {
+      const newDate = new Date(prevDate.getFullYear(), prevDate.getMonth() + 1, 1);
+      props.setMonth(newDate.getMonth() + 1);
+      return newDate;
+    });
     props.onCloseSheet();
   }
 
@@ -112,13 +123,14 @@ const Calendar = (props: {
       setClickedDay(event.currentTarget);
       const date = selectedDate.getMonth() + 1;
       const month = Number(YMD[2]);
-      props.onDateClick(month, date);
+      const year = selectedDate.getFullYear();
+      props.onDateClick(month, date, year);
     }
     setCurrentRowIndex(rowIndex);
   };
 
   // 해당 스케줄 불러오기
-  const [monthSchedule, setMonthSchedule] = useRecoilState(monthScheduleState);
+  const monthSchedule = props.monthSchedule;
   const navigate = useNavigate();
   return (
     <Wrapper className={"wrapper"}>
@@ -190,7 +202,7 @@ const Calendar = (props: {
                                 <SP className="SP">{content}</SP>
 
                                 <InnerConteiner>
-                                  {typeof content === "number"
+                                  {typeof content === "number" && monthSchedule[content]
                                     ? monthSchedule[content].map((content, index) => {
                                         return <IndicationBar />;
                                       })
@@ -212,7 +224,7 @@ const Calendar = (props: {
                               <SP>{content}</SP>
 
                               <InnerConteiner>
-                                {typeof content === "number"
+                                {typeof content === "number" && monthSchedule[content]
                                   ? monthSchedule[content].map((content, index) => {
                                       return <IndicationBar />;
                                     })
@@ -233,12 +245,16 @@ const Calendar = (props: {
                               <SP>{content}</SP>
 
                               <InnerConteiner>
-                                {typeof content === "number"
+                                {typeof content === "number" && monthSchedule[content]
                                   ? monthSchedule[content].map((content, index) => {
                                       return (
                                         <ContentTag>
                                           <ContentTagDot />
-                                          <ContentName>{"1화"}</ContentName>
+                                          <ContentName>
+                                            {content.finalEpisode === 0
+                                              ? "단일"
+                                              : `${content.episode}화`}
+                                          </ContentName>
                                         </ContentTag>
                                       );
                                     })
@@ -382,7 +398,7 @@ const ContentTagDot = styled.div`
 
 const ContentName = styled.div`
   color: ${theme.netflix.tabColor};
-  font-size: 0.8rem;
+  font-size: 0.7rem;
   margin: 0.4vw;
   margin-right: 2vw;
 `;

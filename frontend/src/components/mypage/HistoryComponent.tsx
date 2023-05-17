@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { schedule } from "interface/schedule";
 import Modal from "react-modal";
-import Calendar from "components/schedule/calendar/Calendar";
 import { HistoryContent } from "recoil/history";
 
 interface BackgroundImageProps {
