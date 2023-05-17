@@ -4,7 +4,6 @@ import OttSubscription from "components/common/OttSubscription";
 import NotificationSettingComponent from "./NotificationSettingComponent";
 
 import { myAlarmInfo } from "apis/apiMy";
-import { content } from "./../../interface/content";
 
 import LogoutLogic from "hooks/LogoutLogic";
 import { useNavigate } from "react-router-dom";
