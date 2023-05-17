@@ -32,12 +32,12 @@ pipeline {
                         """
                     }
 
-                    dir('BACKEND/watchify/src/main/application-dev.yml'){
+                    dir('BACKEND/watchify/src/main/resources'){
                         sh """
-                            sed -i 's/S3_ACCESSKEY/"$S3_ACCESSKEY"/g' application.yml
-                            sed -i 's/S3_SECRETKEY/"$S3_SECRETKEY"/g' application.yml
-                            sed -i 's/S3_BUCKET/"$S3_BUCKET"/g' application.yml
-                            sed -i 's/FCM_JSON/"$FCM_JSON"/g' application.yml
+                            sed -i 's/S3_ACCESSKEY/"$S3_ACCESSKEY"/g' application-dev.yml
+                            sed -i 's/S3_SECRETKEY/"$S3_SECRETKEY"/g' application-dev.yml
+                            sed -i 's/S3_BUCKET/"$S3_BUCKET"/g' application-dev.yml
+                            sed -i 's/FCM_JSON/"$FCM_JSON"/g' application-dev.yml
                         """
                     }
 
@@ -59,12 +59,12 @@ pipeline {
                         """
                     }
 
-                    dir('BACKEND/watchify/src/main/application-dev.yml'){
+                    dir('BACKEND/watchify/src/main/resources'){
                         sh """
-                            sed -i 's/"$S3_ACCESSKEY"/S3_ACCESSKEY/g' application.yml
-                            sed -i 's/"$S3_SECRETKEY"/S3_SECRETKEY/g' application.yml
-                            sed -i 's/"$S3_BUCKET"/S3_BUCKET/g' application.yml
-                            sed -i 's/"$FCM_JSON"/FCM_JSON/g' application.yml
+                            sed -i 's/"$S3_ACCESSKEY"/S3_ACCESSKEY/g' application-dev.yml
+                            sed -i 's/"$S3_SECRETKEY"/S3_SECRETKEY/g' application-dev.yml
+                            sed -i 's/"$S3_BUCKET"/S3_BUCKET/g' application-dev.yml
+                            sed -i 's/"$FCM_JSON"/FCM_JSON/g' application-dev.yml
                         """
                     }
                 }
@@ -86,12 +86,12 @@ pipeline {
                         """
                     }
 
-                    dir('readOnlyBackend/watchify/src/main/application-dev.yml'){
+                    dir('readOnlyBackend/watchify/src/main/resources'){
                         sh """
-                            sed -i 's/S3_ACCESSKEY/"$S3_ACCESSKEY"/g' application.yml
-                            sed -i 's/S3_SECRETKEY/"$S3_SECRETKEY"/g' application.yml
-                            sed -i 's/S3_BUCKET/"$S3_BUCKET"/g' application.yml
-                            sed -i 's/FCM_JSON/"$FCM_JSON"/g' application.yml
+                            sed -i 's/S3_ACCESSKEY/"$S3_ACCESSKEY"/g' application-dev.yml
+                            sed -i 's/S3_SECRETKEY/"$S3_SECRETKEY"/g' application-dev.yml
+                            sed -i 's/S3_BUCKET/"$S3_BUCKET"/g' application-dev.yml
+                            sed -i 's/FCM_JSON/"$FCM_JSON"/g' application-dev.yml
                         """
                     }
 
@@ -113,12 +113,12 @@ pipeline {
                         """
                     }
 
-                    dir('readOnlyBackend/watchify/src/main/application-dev.yml'){
+                    dir('readOnlyBackend/watchify/src/main/resources'){
                         sh """
-                            sed -i 's/"$S3_ACCESSKEY"/S3_ACCESSKEY/g' application.yml
-                            sed -i 's/"$S3_SECRETKEY"/S3_SECRETKEY/g' application.yml
-                            sed -i 's/"$S3_BUCKET"/S3_BUCKET/g' application.yml
-                            sed -i 's/"$FCM_JSON"/FCM_JSON/g' application.yml
+                            sed -i 's/"$S3_ACCESSKEY"/S3_ACCESSKEY/g' application-dev.yml
+                            sed -i 's/"$S3_SECRETKEY"/S3_SECRETKEY/g' application-dev.yml
+                            sed -i 's/"$S3_BUCKET"/S3_BUCKET/g' application-dev.yml
+                            sed -i 's/"$FCM_JSON"/FCM_JSON/g' application-dev.yml
                         """
                     }
 
