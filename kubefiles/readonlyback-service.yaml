@@ -15,8 +15,8 @@ spec:
         app: readonlyback-service
     spec:
       containers:
-        - name: readonlyback-service
-          image: docker.io/runtogether/watchify:readonlybackend215
+        - name: back-service
+          image: docker.io/runtogether/watchify:readonlybackend230
           ports:
             - containerPort: 8001
           env:
