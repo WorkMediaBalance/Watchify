@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: back-service
-          image: docker.io/runtogether/watchify:readonlybackend285
+          image: docker.io/runtogether/watchify:readonlybackend286
           ports:
             - containerPort: 8001
           env:
