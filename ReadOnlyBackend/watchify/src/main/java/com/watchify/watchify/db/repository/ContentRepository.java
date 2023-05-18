@@ -18,6 +18,11 @@ public interface ContentRepository extends JpaRepository<Content, Long> {
     @Query(value = "select * from content where title = :word LIMIT 1", nativeQuery = true)
     Content getSearchRes(String word);
 
-    @Query(value = "select * from content where title like concat('%', :word, '%')", nativeQuery = true)
+//    @Query(value = "select * from content where title like concat('%', :word, '%')", nativeQuery = true)
+//    List<Content> getSearchAllRes(String word);
+
+
+    // 띄어쓰기 무시하고 검색
+    @Query(value = "SELECT * FROM content WHERE REPLACE(title, ' ', '') LIKE CONCAT('%', REPLACE(:word, ' ', ''), '%')", nativeQuery = true)
     List<Content> getSearchAllRes(String word);
 }
