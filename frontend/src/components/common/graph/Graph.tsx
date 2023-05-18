@@ -8,6 +8,7 @@ import { schedulePreInfoState } from "recoil/schedulePreInfoState";
 
 const Wrapper = styled.div`
   height: 100%;
+  overscroll-behavior-y: none;
 `;
 
 const Container = styled.div`

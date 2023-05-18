@@ -19,6 +19,8 @@ apiCUD.interceptors.request.use(
     if (accessToken) {
       config.headers.access = accessToken;
     }
+    // config.headers.access =
+    //   "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjIsImV4cCI6MTY4NDQ1MjQ4OH0.MUgCyoH8VVDX3qvQD6g9IzT6HYJz65VghbtWZXjxPzE";
 
     return config;
   },
@@ -62,7 +64,8 @@ apiR.interceptors.request.use(
     if (accessToken) {
       config.headers.access = accessToken;
     }
-
+    // config.headers.access =
+    //   "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjIsImV4cCI6MTY4NDQ1MjQ4OH0.MUgCyoH8VVDX3qvQD6g9IzT6HYJz65VghbtWZXjxPzE";
     return config;
   },
   function (error) {

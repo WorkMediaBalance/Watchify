@@ -229,6 +229,7 @@ const Season = styled.div`
   font-size: ${({ theme }) => theme.fontSizeType.middle.fontSize};
   font-weight: ${({ theme }) => theme.fontSizeType.middle.fontWeight};
   margin-left: 1vw;
+  width: 30%;
 `;
 
 const RateAndGenresContainer = styled.div`
@@ -255,11 +256,11 @@ const FinalEpisode = styled.div`
 
 const Summarize = styled.div`
   margin: 4vw;
-  display: -webkit-box;
-  -webkit-line-clamp: 4;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  margin-bottom: 2vw;
+
+  overflow: auto;
+
+  height: 100%;
 `;
 
 const Footer = styled.div`
@@ -268,6 +269,8 @@ const Footer = styled.div`
   flex-direction: row;
   justify-content: end;
   align-items: center;
+  height: 50%;
+  margin-top: 1vh;
 `;
 const LinkDescriptions = styled.div`
   margin-left: 10vw;
@@ -280,8 +283,8 @@ const OTTContainer = styled.div`
 `;
 
 const OTTIcon = styled.img`
-  width: 12vw;
-  height: 12vw;
+  width: 6vh;
+  height: 6vh;
   position: relative;
   margin: 1vw;
 `;

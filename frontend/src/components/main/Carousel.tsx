@@ -88,12 +88,14 @@ const OverlayEpisodesContainer = styled.div`
   margin-right: 2vw;
   height: 100%;
   color: #e4e4e4;
+  width: 70%;
 `;
 
 const EpisodeAndMore = styled.div`
   display: flex;
   flex-direction: column;
   align-items: end;
+  width: 100%;
 `;
 
 const Episode = styled.div`
@@ -101,6 +103,8 @@ const Episode = styled.div`
   flex-direction: row;
   align-items: baseline;
   margin: 1vw;
+  justify-content: end;
+  width: 100%;
 `;
 const EpisodeTitle = styled.div`
   font-size: 1rem;
@@ -108,7 +112,7 @@ const EpisodeTitle = styled.div`
   white-space: nowrap; // 줄바꿈 방지
   overflow: hidden; // 넘치는 부분 숨김
   text-overflow: ellipsis; // 넘치는 부분을 ... 으로 표시
-  max-width: 100%; // 여기가 넘어가면 안되는 너비
+  max-width: 80%; // 여기가 넘어가면 안되는 너비
 `;
 const EpisodeNumber = styled.div`
   font-size: 0.8rem;

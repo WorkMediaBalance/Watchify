@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useSwipeable } from "react-swipeable";
 import { motion, AnimatePresence } from "framer-motion";
@@ -92,11 +92,26 @@ const Calendar = (props: {
 
   rows.push({ cells });
 
-  function thisMonth() {
-    setSelectedDate(new Date());
-    props.setMonth(new Date().getMonth() + 1);
-    props.onCloseSheet();
+  // 여기서부터 클릭 로직
+  const [isTodayClicked, setIsTodayClicked] = useState(false);
+  function handleClickToday() {
+    let todayElement;
+    const event = new MouseEvent("click", { bubbles: true, cancelable: true });
+    if (document.getElementsByClassName("today").length !== 0) {
+      todayElement = document.getElementsByClassName("today")[0];
+      todayElement.dispatchEvent(event);
+    } else {
+      setIsTodayClicked(true);
+      props.setMonth(new Date().getMonth() + 1);
+      setSelectedDate(new Date());
+    }
   }
+  useEffect(() => {
+    if (isTodayClicked) {
+      handleClickToday();
+      setIsTodayClicked(false);
+    }
+  }, [selectedDate]);
 
   function prevMonth() {
     setSelectedDate((prevDate) => {
@@ -127,6 +142,7 @@ const Calendar = (props: {
     rowIndex: number,
     day: string
   ) => {
+    console.log(day);
     const YMD = day.split("-");
     if (YMD.length === 3) {
       if (clickedDay) {
@@ -165,7 +181,13 @@ const Calendar = (props: {
                 New Schedule
               </RescheduleButton>
               <SMonth>{month}</SMonth>
-              <SToday onClick={thisMonth}>Today</SToday>
+              <SToday
+                onClick={() => {
+                  handleClickToday();
+                }}
+              >
+                Today
+              </SToday>
             </SHeader>
 
             <STable bottomSheetState={props.bottomSheetState}>
@@ -183,6 +205,7 @@ const Calendar = (props: {
                       {row.cells.map((day, dayIndex) => {
                         let content;
                         let className = "";
+                        let id = "";
                         if (day.includes("prev")) {
                           content = "";
                         } else if (day.includes("next")) {
@@ -212,7 +235,8 @@ const Calendar = (props: {
                               Number(dayArray[2])
                             ).getDate() === today.getDate()
                           ) {
-                            className = "today active-day";
+                            className = "today active-day ";
+                            id = `${rowIndex}`;
                           } else {
                             className = "active-day";
                           }
@@ -422,6 +446,7 @@ const InnerConteiner = styled.div`
 
 const ContentTag = styled.div<{ view: boolean }>`
   display: flex;
+
   flex-direction: row;
   width: 90%;
   justify-content: space-between;
@@ -441,10 +466,14 @@ const ContentTagDot = styled.div<{ color: string }>`
 `;
 
 const ContentName = styled.div`
-  font-size: 0.7rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 2vw;
   font-weight: 600;
   margin: 0.4vw;
   margin-right: 2vw;
+  overflow: hidden;
 `;
 
 const IndicationBar = styled.div<{ color: string }>`
