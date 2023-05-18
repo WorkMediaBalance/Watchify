@@ -47,4 +47,14 @@ public class RecommendController {
             return ResponseEntity.status(404).body("Failed to get main schedule.");
         }
     }
+
+    @GetMapping("/deletedata/nonauth")
+    public ResponseEntity<?> DeleteData() throws Exception{
+        try {
+            recommendService.deletedata();
+            return ResponseEntity.status(200).body("deleteOK");
+        } catch (Exception e) {
+            return ResponseEntity.status(404).body("Failed to get main schedule.");
+        }
+    }
 }
