@@ -6,6 +6,7 @@ import { BsCalendarWeek } from "react-icons/bs";
 import { CgProfile } from "react-icons/cg";
 import { MdOutlineRecommend } from "react-icons/md";
 import { BiSearchAlt2 } from "react-icons/bi";
+import { AiFillHome } from "react-icons/ai";
 import { useNavigate, useLocation } from "react-router-dom";
 
 const BottomBar = styled.div`
@@ -93,6 +94,11 @@ const SemiCircle = styled(motion.span)<{
 `;
 
 // icons
+const StyledAiFillHome = styled(AiFillHome)<{ rotate: number }>`
+  transform: ${({ rotate }) => `rotate(${(2 - rotate) * 45}deg)`};
+  font-size: 5vw;
+  color: ${({ theme }) => theme.netflix.fontColor};
+`;
 const StyledBiSearchAlt2 = styled(BiSearchAlt2)`
   transform: rotate(45deg);
   font-size: 5vw;
@@ -189,9 +195,12 @@ const BottomDot: React.FC<BottomDotProps> = ({
               transform: `translate(-50%, -27.5vw) rotate(135deg)`,
             }}
             onClick={() => {
-              if (isSemiCircleRotated === false) {
+              if (isSemiCircleRotated === false && isClicked !== 1) {
                 handleClick(1);
                 navigate("/search");
+              } else if (isSemiCircleRotated === false && isClicked === 1) {
+                handleClick(0);
+                navigate("/");
               }
             }}
             rotated={isSemiCircleRotated}
@@ -199,7 +208,7 @@ const BottomDot: React.FC<BottomDotProps> = ({
             tabIdx={isClicked === 1}
           >
             <IconWrapper>
-              <StyledBiSearchAlt2 />
+              {isClicked === 1 ? <StyledAiFillHome rotate={1} /> : <StyledBiSearchAlt2 />}
             </IconWrapper>
           </SemiCircle>
         )}
@@ -217,9 +226,12 @@ const BottomDot: React.FC<BottomDotProps> = ({
               transform: `translate(-50%, -27.5vw) rotate(135deg)`,
             }}
             onClick={() => {
-              if (isSemiCircleRotated === false) {
+              if (isSemiCircleRotated === false && isClicked !== 2) {
                 handleClick(2);
                 navigate("/recommend");
+              } else if (isSemiCircleRotated === false && isClicked === 2) {
+                handleClick(0);
+                navigate("/");
               }
             }}
             rotated={isSemiCircleRotated}
@@ -227,7 +239,7 @@ const BottomDot: React.FC<BottomDotProps> = ({
             tabIdx={isClicked === 2}
           >
             <IconWrapper>
-              <StyledMdOutlineRecommend />
+              {isClicked === 2 ? <StyledAiFillHome rotate={2} /> : <StyledMdOutlineRecommend />}
             </IconWrapper>
           </SemiCircle>
         )}
@@ -245,9 +257,12 @@ const BottomDot: React.FC<BottomDotProps> = ({
               transform: `translate(-50%, -27.5vw) rotate(135deg)`,
             }}
             onClick={() => {
-              if (isSemiCircleRotated === false) {
+              if (isSemiCircleRotated === false && isClicked !== 3) {
                 handleClick(3);
                 navigate("/schedule");
+              } else if (isSemiCircleRotated === false && isClicked === 3) {
+                handleClick(0);
+                navigate("/");
               }
             }}
             rotated={isSemiCircleRotated}
@@ -255,7 +270,7 @@ const BottomDot: React.FC<BottomDotProps> = ({
             tabIdx={isClicked === 3}
           >
             <IconWrapper>
-              <StyledBsCalendarWeek />
+              {isClicked === 3 ? <StyledAiFillHome rotate={3} /> : <StyledBsCalendarWeek />}
             </IconWrapper>
           </SemiCircle>
         )}
@@ -273,9 +288,12 @@ const BottomDot: React.FC<BottomDotProps> = ({
               transform: `translate(-50%, -27.5vw) rotate(135deg)`,
             }}
             onClick={() => {
-              if (isSemiCircleRotated === false) {
+              if (isSemiCircleRotated === false && isClicked !== 4) {
                 handleClick(4);
                 navigate("/my");
+              } else if (isSemiCircleRotated === false && isClicked === 4) {
+                handleClick(0);
+                navigate("/");
               }
             }}
             rotated={isSemiCircleRotated}
@@ -283,7 +301,7 @@ const BottomDot: React.FC<BottomDotProps> = ({
             tabIdx={isClicked === 4}
           >
             <IconWrapper>
-              <StyledCgProfile />
+              {isClicked === 4 ? <StyledAiFillHome rotate={4} /> : <StyledCgProfile />}
             </IconWrapper>
           </SemiCircle>
         )}
