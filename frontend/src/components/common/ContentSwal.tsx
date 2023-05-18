@@ -83,7 +83,7 @@ const ContentSwal: React.FC<ContentSwalProps> = ({ content: content }) => {
               </Title>
             </TitleSeasonContainer>
             <RateAndGenresContainer>
-              <Rate>{`${content.rate} / 5.0`}</Rate>
+              <Rate>{`${content.rate} / 10.0`}</Rate>
               <Genres>
                 {content.genres.length > 1
                   ? `${content.genres.slice(0, 2).join(", ")}`
