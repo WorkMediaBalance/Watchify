@@ -1,5 +1,6 @@
 package com.watchify.watchify.api.service;
 
+import com.watchify.watchify.comparator.ScheduleObjComparator;
 import com.watchify.watchify.db.entity.*;
 import com.watchify.watchify.db.repository.*;
 import com.watchify.watchify.dto.response.HistoryInfoDTO;
@@ -9,10 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -59,6 +57,9 @@ public class ScheduleGetService {
             }
             scheduleObjDTOList.add(scheduleObjDTO);
         }
+
+        // 정렬, pk 순으로 오름차순, 같다면 에피소드 순으로 오름차순
+        Collections.sort(scheduleObjDTOList, new ScheduleObjComparator());
 
 
         Map<String, Map<Integer, List<ScheduleObjDTO>>> res = new HashMap<>();
