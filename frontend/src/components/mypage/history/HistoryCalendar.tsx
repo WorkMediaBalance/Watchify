@@ -12,11 +12,26 @@ const HistoryCalendar = (props: {
   onCloseSheet: () => void;
   bottomSheetState: number;
   historyDetail: { [key: number]: HistoryDetailContent[] };
+  selectedDate: Date;
+  setSelectedDate: React.Dispatch<React.SetStateAction<Date>>;
 }) => {
-  const [selectedDate, setSelectedDate] = useState(new Date());
+  // const [selectedDate, setSelectedDate] = useState(new Date());
   const [clickedDay, setClickedDay] = useState<HTMLElement | null>(null);
   const weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-  const month = getMonthAbbreviation(selectedDate);
+  const month = getMonthAbbreviation(props.selectedDate);
+
+  function stringToColor(str: string): string {
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) {
+      hash = str.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    let color = "#";
+    for (let i = 0; i < 3; i++) {
+      let value = (hash >> (i * 8)) & 255;
+      color += ("00" + value.toString(16)).substr(-2);
+    }
+    return color;
+  }
 
   function getMonthAbbreviation(date: Date) {
     const currentDate = new Date();
@@ -42,9 +57,12 @@ const HistoryCalendar = (props: {
     return new Date(date.getFullYear(), date.getMonth() + 1, 0).getDay();
   }
 
-  const daysInMonth = getDaysInMonth(selectedDate.getFullYear(), selectedDate.getMonth());
-  const firstDayOfMonth = getFirstDayOfMonth(selectedDate);
-  const lastDayOfMonth = getLastDayOfMonth(selectedDate);
+  const daysInMonth = getDaysInMonth(
+    props.selectedDate.getFullYear(),
+    props.selectedDate.getMonth()
+  );
+  const firstDayOfMonth = getFirstDayOfMonth(props.selectedDate);
+  const lastDayOfMonth = getLastDayOfMonth(props.selectedDate);
 
   const days = [];
 
@@ -53,7 +71,7 @@ const HistoryCalendar = (props: {
   }
 
   for (let i = 1; i <= daysInMonth; i++) {
-    days.push(`${selectedDate.getFullYear()}-${selectedDate.getMonth() + 1}-${i}`);
+    days.push(`${props.selectedDate.getFullYear()}-${props.selectedDate.getMonth() + 1}-${i}`);
   }
 
   for (let i = 0; i < 6 - lastDayOfMonth; i++) {
@@ -76,17 +94,21 @@ const HistoryCalendar = (props: {
 
   function thisMonth() {
     console.log("thismonth");
-    setSelectedDate(new Date());
+    props.setSelectedDate(new Date());
     props.onCloseSheet();
   }
 
   function prevMonth() {
-    setSelectedDate((prevDate) => new Date(prevDate.getFullYear(), prevDate.getMonth() - 1, 1));
+    props.setSelectedDate(
+      (prevDate) => new Date(prevDate.getFullYear(), prevDate.getMonth() - 1, 1)
+    );
     props.onCloseSheet();
   }
 
   function nextMonth() {
-    setSelectedDate((prevDate) => new Date(prevDate.getFullYear(), prevDate.getMonth() + 1, 1));
+    props.setSelectedDate(
+      (prevDate) => new Date(prevDate.getFullYear(), prevDate.getMonth() + 1, 1)
+    );
     props.onCloseSheet();
   }
 
@@ -108,7 +130,7 @@ const HistoryCalendar = (props: {
       }
       event.currentTarget.classList.add("selected-day");
       setClickedDay(event.currentTarget);
-      const date = selectedDate.getMonth() + 1;
+      const date = props.selectedDate.getMonth() + 1;
       const month = Number(YMD[2]);
       if (props.historyDetail[parseInt(YMD[2])]) {
         props.onDateClick(month, date);
@@ -127,7 +149,7 @@ const HistoryCalendar = (props: {
       <motion.div>
         <AnimatePresence>
           <SCalendarDiv
-            key={selectedDate.toISOString()}
+            key={props.selectedDate.toISOString()}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{
@@ -160,12 +182,29 @@ const HistoryCalendar = (props: {
                         } else if (day.includes("next")) {
                           content = "";
                         } else {
-                          content = new Date(day).getDate();
+                          const dayArray = day.split("-");
+                          content = new Date(
+                            Number(dayArray[0]),
+                            Number(dayArray[1]) - 1,
+                            Number(dayArray[2])
+                          ).getDate();
                           const today = new Date();
                           if (
-                            new Date(day).getFullYear() === today.getFullYear() &&
-                            new Date(day).getMonth() === today.getMonth() &&
-                            new Date(day).getDate() === today.getDate()
+                            new Date(
+                              Number(dayArray[0]),
+                              Number(dayArray[1]) - 1,
+                              Number(dayArray[2])
+                            ).getFullYear() === today.getFullYear() &&
+                            new Date(
+                              Number(dayArray[0]),
+                              Number(dayArray[1]) - 1,
+                              Number(dayArray[2])
+                            ).getMonth() === today.getMonth() &&
+                            new Date(
+                              Number(dayArray[0]),
+                              Number(dayArray[1]) - 1,
+                              Number(dayArray[2])
+                            ).getDate() === today.getDate()
                           ) {
                             className = "today active-day";
                           } else {
@@ -188,7 +227,8 @@ const HistoryCalendar = (props: {
                               <InnerConteiner>
                                 {typeof content === "number" && props.historyDetail[content]
                                   ? props.historyDetail[content].map((content, index) => {
-                                      return <IndicationBar />;
+                                      const colorCode = stringToColor(content.title);
+                                      return <IndicationBar color={colorCode} />;
                                     })
                                   : null}
                               </InnerConteiner>
@@ -208,20 +248,32 @@ const HistoryCalendar = (props: {
 
                               <InnerConteiner>
                                 {typeof content === "number" && props.historyDetail[content]
-                                  ? props.historyDetail[content].map((content, index) => {
-                                      return (
-                                        <ContentTag>
-                                          <ContentTagDot />
-                                          <ContentName>
-                                            {content.episode !== 0
-                                              ? `${content.episode}화`
-                                              : "영화"}
-                                          </ContentName>
-                                        </ContentTag>
-                                      );
-                                    })
+                                  ? props.historyDetail[content]
+                                      .slice(0, 4)
+                                      .map((content, index) => {
+                                        const colorCode = stringToColor(content.title);
+                                        return (
+                                          <ContentTag>
+                                            <ContentTagDot color={colorCode} />
+                                            <ContentName>
+                                              {content.episode !== 0
+                                                ? `${content.episode}화`
+                                                : "단편"}
+                                            </ContentName>
+                                          </ContentTag>
+                                        );
+                                      })
                                   : null}
                               </InnerConteiner>
+                              {typeof content === "number" &&
+                                props.historyDetail[content] &&
+                                props.historyDetail[content].length > 4 && (
+                                  <div
+                                    style={{ width: "100%", textAlign: "end", marginRight: "20%" }}
+                                  >
+                                    +{props.historyDetail[content].length - 4}
+                                  </div>
+                                )}
                             </STdDiv>
                           </STd>
                         );
@@ -345,9 +397,9 @@ const ContentTag = styled.div`
   margin: 1px;
 `;
 
-const ContentTagDot = styled.div`
+const ContentTagDot = styled.div<{ color: string }>`
   border-radius: 50%;
-  background-color: ${theme.netflix.pointColor};
+  background-color: ${({ color }) => color};
   height: 2vw;
   width: 2vw;
   margin: 1vw;
@@ -360,8 +412,8 @@ const ContentName = styled.div`
   margin-right: 2vw;
 `;
 
-const IndicationBar = styled.div`
-  background-color: ${theme.netflix.pointColor};
+const IndicationBar = styled.div<{ color: string }>`
+  background-color: ${({ color }) => color};
   height: 0.3vh;
   width: 90%;
   margin-bottom: 0.2vh;

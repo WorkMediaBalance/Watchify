@@ -1,4 +1,4 @@
-import React, { useState, useRef, HTMLAttributes } from "react";
+import React, { useState, useRef, HTMLAttributes, useEffect } from "react";
 import { ChangeEvent } from "react";
 import styled from "styled-components";
 
@@ -15,9 +15,15 @@ import { BsPlusCircle } from "react-icons/bs";
 
 import { searchResult } from "apis/apiSearch";
 import ContentPoster from "components/common/ContentPoster";
+import { getRegExp } from "korean-regexp";
+import titleJson from "../../assets/titles.json";
 
 const Search = () => {
   const inputRef = useRef<HTMLInputElement>(null);
+  const [titles, setTitles] = useState<string[]>([]);
+  useEffect(() => {
+    setTitles(titleJson);
+  }, []);
 
   // recoil state
   const [essList, setEssList] = useRecoilState(essListState);
@@ -28,16 +34,28 @@ const Search = () => {
   // 검색창 외부를 클릭 시 위의 div가 사라짐 (상용 검색 사이트와 동일한 기능)
   const [autocompleteVisible, setAutocompleteVisible] = useState(false);
 
-  const [autocompleteWords, setAutocompleteWords] = useState<string[] | null>([
-    "6시 내 고병진",
-    "고병진 프리즌 브레이크",
-    "나는 내일 어제의 고병진과 만난다",
-    "내 머릿속의 고병진",
-  ]);
+  const [autocompleteWords, setAutocompleteWords] = useState<string[] | null>([]);
   // 검색 결과 (존재할 경우)
   const [searchResultData, setSearchResultData] = useState<content[]>([]);
 
   const wordChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const targetWord = getRegExp(e.target.value, {
+      initialSearch: true,
+      startsWith: false,
+      endsWith: false,
+      ignoreSpace: true,
+      ignoreCase: false,
+      global: true,
+    });
+
+    let suggestion = [];
+    suggestion = titles.filter((title) => {
+      return targetWord.test(title);
+    });
+    let uniqueArray = [...new Set(suggestion)];
+
+    console.log(uniqueArray, "suggestion");
+    setAutocompleteWords(uniqueArray.slice(0, 5));
     setSearchWord(e.target.value);
   };
 
@@ -147,14 +165,26 @@ const Search = () => {
                     <S1DepthContainer>
                       <S2DepthContainer>
                         <S3DepthContainer>
-                          <STitleDiv>{content.title}</STitleDiv>
+                          <div
+                            style={{
+                              display: "flex",
+                              flexDirection: "row",
+                              justifyContent: "space-between",
+                              alignItems: "center",
+                            }}
+                          >
+                            <STitleDiv className="STitleDiv">{content.title}</STitleDiv>
+                            {isAlready ? (
+                              <SFiCheckCircle />
+                            ) : (
+                              <SBsPlusCircle
+                                onClick={() => onClickAddContent(content)}
+                                className="SBsPlusCircle"
+                              />
+                            )}
+                          </div>
                           {content.finalEpisode > 0 ? <div>{content.finalEpisode}부작</div> : null}
                         </S3DepthContainer>
-                        {isAlready ? (
-                          <SFiCheckCircle />
-                        ) : (
-                          <SBsPlusCircle onClick={() => onClickAddContent(content)} />
-                        )}
                       </S2DepthContainer>
 
                       <SSumDiv>{content.summarize}</SSumDiv>
@@ -170,11 +200,16 @@ const Search = () => {
           )}
         </SSearchResultDiv>
       )}
+      <PlaceHolder />
     </Layout>
   );
 };
 
 export default Search;
+
+const PlaceHolder = styled.div`
+  height: 10vh;
+`;
 
 const SSearchResultDiv = styled.div`
   display: flex-column;
@@ -271,18 +306,21 @@ const SNoResultDIV = styled.div`
 
 // 기존 wishList에서 가져온 태그들 (검색결과 띄우기 용)
 const SFiCheckCircle = styled(FiCheckCircle)`
-  width: 1.5rem;
-  height: 1.5rem;
+  padding-bottom: 0.2vh;
+  width: 6vw;
+  height: 6vw;
+  color: ${({ theme }) => theme.netflix.pointColor};
 `;
 
 const SBsPlusCircle = styled(BsPlusCircle)`
-  color: ${({ theme }) => theme.netflix.pointColor};
-  width: 1.5rem;
-  height: 1.5rem;
+  padding-bottom: 0.2vh;
+  width: 6vw;
+  height: 6vw;
 `;
 
 const SContentsContainer = styled.div`
   display: flex;
+  margin: 3vw;
 `;
 
 const S1DepthContainer = styled.div`
@@ -299,13 +337,23 @@ const S3DepthContainer = styled.div`
 `;
 
 const STitleDiv = styled.div`
+  width: 80%;
   font-size: 1.2rem;
   font-weight: ${({ theme }) => theme.fontSizeType.big.fontWeight};
+  // white-space: nowrap;
+  // overflow: hidden;
+  // text-overflow: ellipsis;
 `;
 
 const SSumDiv = styled.div`
-  font-size: 0.8rem;
+  font-size: ${({ theme }) => theme.fontSizeType.small.fontSize}
   font-weight: ${({ theme }) => theme.fontSizeType.small.fontWeight};
+  margin-top: 1vh;
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 interface SContentProps extends HTMLAttributes<HTMLDivElement> {
@@ -313,7 +361,7 @@ interface SContentProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 const SContent = styled.div`
-  // background-image: url(${({ imgUrl }: SContentProps) => imgUrl});
+  background-image: url(${({ imgUrl }: SContentProps) => imgUrl});
   background-size: cover;
   display: flex;
   justify-content: center;

@@ -1,11 +1,11 @@
-import api from "./axiosInstance";
+import { apiR, apiCUD } from "./axiosInstance";
 import { ContentRecForm } from "constant/constant";
 
 // 일주일 스케줄 조회
 export const mainSchedule = async () => {
   console.log("실행중");
   try {
-    const res = await api.get("api/main/schedule");
+    const res = await apiR.get("readapi/main/schedule");
     return res.data;
   } catch (err) {
     console.log("일주일 스케줄 조회 실패");
@@ -21,7 +21,7 @@ const sample = {
 */
 export const mainRecommend = async () => {
   try {
-    const res = await api.get("api/main/recommend");
+    const res = await apiR.get("readapi/main/recommend");
     return res.data;
   } catch (err) {
     console.log("로그인 유저 추천 메인페이지 추천 컨텐츠 조회 실패");
@@ -37,7 +37,7 @@ const sample = {
 */
 export const mainRecommendNon = async () => {
   try {
-    const res = await api.get("api/main/recommendnon");
+    const res = await apiR.get("readapi/main/recommendnon/nonauth");
     return res.data;
   } catch (err) {
     console.log("비로그인 유저 추천 메인페이지 추천 컨텐츠 조회 실패");

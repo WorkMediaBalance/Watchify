@@ -1,24 +1,40 @@
-import React, { useState, useEffect, useRef, useMemo } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { useSwipeable } from "react-swipeable";
 import { motion, AnimatePresence } from "framer-motion";
 import { theme } from "styles/theme";
 import { months } from "constant/constant";
 import { useNavigate } from "react-router-dom";
+import { schedule } from "interface/schedule";
 
 // month 스케줄 state
 import { monthScheduleState } from "recoil/scheduleState";
 import { useRecoilState } from "recoil";
-
 const Calendar = (props: {
-  onDateClick: (date: number, month: number) => void;
+  onDateClick: (date: number, month: number, year: number) => void;
   onCloseSheet: () => void;
   bottomSheetState: number;
+  monthSchedule: schedule;
+  setMonthSchedule: (data: schedule) => void;
+  setMonth: React.Dispatch<React.SetStateAction<number>>;
 }) => {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [clickedDay, setClickedDay] = useState<HTMLElement | null>(null);
   const weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
   const month = getMonthAbbreviation(selectedDate);
+
+  function stringToColor(str: string): string {
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) {
+      hash = str.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    let color = "#";
+    for (let i = 0; i < 3; i++) {
+      let value = (hash >> (i * 8)) & 255;
+      color += ("00" + value.toString(16)).substr(-2);
+    }
+    return color;
+  }
 
   function getMonthAbbreviation(date: Date) {
     const currentDate = new Date();
@@ -77,18 +93,26 @@ const Calendar = (props: {
   rows.push({ cells });
 
   function thisMonth() {
-    console.log("thismonth");
     setSelectedDate(new Date());
+    props.setMonth(new Date().getMonth() + 1);
     props.onCloseSheet();
   }
 
   function prevMonth() {
-    setSelectedDate((prevDate) => new Date(prevDate.getFullYear(), prevDate.getMonth() - 1, 1));
+    setSelectedDate((prevDate) => {
+      const newDate = new Date(prevDate.getFullYear(), prevDate.getMonth() - 1, 1);
+      props.setMonth(newDate.getMonth() + 1);
+      return newDate;
+    });
     props.onCloseSheet();
   }
 
   function nextMonth() {
-    setSelectedDate((prevDate) => new Date(prevDate.getFullYear(), prevDate.getMonth() + 1, 1));
+    setSelectedDate((prevDate) => {
+      const newDate = new Date(prevDate.getFullYear(), prevDate.getMonth() + 1, 1);
+      props.setMonth(newDate.getMonth() + 1);
+      return newDate;
+    });
     props.onCloseSheet();
   }
 
@@ -112,13 +136,14 @@ const Calendar = (props: {
       setClickedDay(event.currentTarget);
       const date = selectedDate.getMonth() + 1;
       const month = Number(YMD[2]);
-      props.onDateClick(month, date);
+      const year = selectedDate.getFullYear();
+      props.onDateClick(month, date, year);
     }
     setCurrentRowIndex(rowIndex);
   };
 
   // 해당 스케줄 불러오기
-  const [monthSchedule, setMonthSchedule] = useRecoilState(monthScheduleState);
+  const monthSchedule = props.monthSchedule;
   const navigate = useNavigate();
   return (
     <Wrapper className={"wrapper"}>
@@ -163,12 +188,29 @@ const Calendar = (props: {
                         } else if (day.includes("next")) {
                           content = "";
                         } else {
-                          content = new Date(day).getDate();
+                          const dayArray = day.split("-");
+                          content = new Date(
+                            Number(dayArray[0]),
+                            Number(dayArray[1]) - 1,
+                            Number(dayArray[2])
+                          ).getDate();
                           const today = new Date();
                           if (
-                            new Date(day).getFullYear() === today.getFullYear() &&
-                            new Date(day).getMonth() === today.getMonth() &&
-                            new Date(day).getDate() === today.getDate()
+                            new Date(
+                              Number(dayArray[0]),
+                              Number(dayArray[1]) - 1,
+                              Number(dayArray[2])
+                            ).getFullYear() === today.getFullYear() &&
+                            new Date(
+                              Number(dayArray[0]),
+                              Number(dayArray[1]) - 1,
+                              Number(dayArray[2])
+                            ).getMonth() === today.getMonth() &&
+                            new Date(
+                              Number(dayArray[0]),
+                              Number(dayArray[1]) - 1,
+                              Number(dayArray[2])
+                            ).getDate() === today.getDate()
                           ) {
                             className = "today active-day";
                           } else {
@@ -190,9 +232,10 @@ const Calendar = (props: {
                                 <SP className="SP">{content}</SP>
 
                                 <InnerConteiner>
-                                  {typeof content === "number"
+                                  {typeof content === "number" && monthSchedule[content]
                                     ? monthSchedule[content].map((content, index) => {
-                                        return <IndicationBar />;
+                                        const colorCode = stringToColor(content.title);
+                                        return <IndicationBar color={colorCode} />;
                                       })
                                     : null}
                                 </InnerConteiner>
@@ -212,9 +255,10 @@ const Calendar = (props: {
                               <SP>{content}</SP>
 
                               <InnerConteiner>
-                                {typeof content === "number"
+                                {typeof content === "number" && monthSchedule[content]
                                   ? monthSchedule[content].map((content, index) => {
-                                      return <IndicationBar />;
+                                      const colorCode = stringToColor(content.title);
+                                      return <IndicationBar color={colorCode} />;
                                     })
                                   : null}
                               </InnerConteiner>
@@ -233,17 +277,32 @@ const Calendar = (props: {
                               <SP>{content}</SP>
 
                               <InnerConteiner>
-                                {typeof content === "number"
-                                  ? monthSchedule[content].map((content, index) => {
+                                {typeof content === "number" && monthSchedule[content]
+                                  ? monthSchedule[content].slice(0, 4).map((content, index) => {
+                                      const colorCode = stringToColor(content.title);
+
                                       return (
-                                        <ContentTag>
-                                          <ContentTagDot />
-                                          <ContentName>{"1화"}</ContentName>
+                                        <ContentTag view={content.view}>
+                                          <ContentTagDot color={colorCode} />
+                                          <ContentName>
+                                            {content.finalEpisode === 0
+                                              ? "단편"
+                                              : `${content.episode}화`}
+                                          </ContentName>
                                         </ContentTag>
                                       );
                                     })
                                   : null}
                               </InnerConteiner>
+                              {typeof content === "number" &&
+                                monthSchedule[content] &&
+                                monthSchedule[content].length > 4 && (
+                                  <div
+                                    style={{ width: "100%", textAlign: "end", marginRight: "20%" }}
+                                  >
+                                    +{monthSchedule[content].length - 4}
+                                  </div>
+                                )}
                             </STdDiv>
                           </STd>
                         );
@@ -361,37 +420,37 @@ const InnerConteiner = styled.div`
   margin-top: 0.2vh;
 `;
 
-const ContentTag = styled.div`
+const ContentTag = styled.div<{ view: boolean }>`
   display: flex;
   flex-direction: row;
   width: 90%;
   justify-content: space-between;
   align-items: center;
-  background-color: white;
+  background-color: ${({ view }) => (view ? `#FF5500` : "white")};
+  color: ${({ view }) => (view ? "white" : "black")};
   border-radius: 15px;
   margin: 1px;
 `;
 
-const ContentTagDot = styled.div`
+const ContentTagDot = styled.div<{ color: string }>`
   border-radius: 50%;
-  background-color: ${theme.netflix.pointColor};
+  background-color: ${({ color }) => color};
   height: 2vw;
   width: 2vw;
   margin: 1vw;
 `;
 
 const ContentName = styled.div`
-  color: ${theme.netflix.tabColor};
-  font-size: 0.8rem;
+  font-size: 0.7rem;
+  font-weight: 600;
   margin: 0.4vw;
   margin-right: 2vw;
 `;
 
-const IndicationBar = styled.div`
-  background-color: ${theme.netflix.pointColor};
+const IndicationBar = styled.div<{ color: string }>`
+  background-color: ${({ color }) => color};
   height: 0.3vh;
   width: 90%;
-  margin-bottom: 0.2vh;
 `;
 
 const ContentPlus = styled.div`

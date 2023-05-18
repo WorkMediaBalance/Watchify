@@ -3,10 +3,11 @@ import React, { useState, HTMLAttributes, useEffect } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 
+import { useRecoilState } from "recoil";
 import { essListState } from "recoil/userState";
 import { schedulePreInfoState } from "recoil/schedulePreInfoState";
-import { useRecoilState } from "recoil";
 import { scheduleAllState } from "recoil/scheduleState";
+import { recListState } from "recoil/recListState";
 
 import ScheduleBottomSheet from "components/schedule/ScheduleBottomSheet";
 
@@ -15,6 +16,12 @@ import Lottie from "lottie-react";
 import scheduleGIF from "assets/gif/schedule-calendar-animation.json";
 
 import { scheduleCreate } from "apis/apiSchedule";
+import { mainRecommend, mainRecommendNon } from "apis/apiMain";
+import { content } from "interface/content";
+
+type recommendPerOtt = {
+  [key: string]: content[];
+};
 
 const PageScheduleContent = () => {
   const navigate = useNavigate();
@@ -26,14 +33,73 @@ const PageScheduleContent = () => {
   const [preData, setPreData] = useRecoilState(schedulePreInfoState);
   const [scheduleResult, setScheduleResult] = useRecoilState(scheduleAllState);
 
+  // 추천 탭
+  const [recList, setRecList] = useRecoilState(recListState);
+  const [apiList, setApiList] = useState<recommendPerOtt | undefined>();
+
+  // 추천목록 가져오기 API 함수
+  const mainRecommendAPI = async () => {
+    const data = await mainRecommend();
+    console.log(data, "회원 데이터");
+    setApiList(data);
+  };
+
+  const mainRecommendNonAPI = async () => {
+    const data = await mainRecommendNon();
+    console.log(data, "비회원 데이터");
+    setApiList(data);
+  };
+  useEffect(() => {
+    if (localStorage.getItem("accessToken") !== null) {
+      console.log("회원");
+      mainRecommendAPI();
+    } else {
+      console.log("비회원");
+      // mainRecommendAPI();
+      mainRecommendNonAPI();
+    }
+  }, []);
+
+  // 바텀시트 추천목록 띄우기
+  useEffect(() => {
+    if (!apiList) return;
+    // OTT를 선택하지 않았을 경우 - 각 OTT별 10개씩 총 40개 다 띄우기
+    let copy = [];
+    console.log(preData, "프리데이터!!!");
+    if (preData.ott.length === 0) {
+      for (const key in apiList) {
+        copy.push(...apiList[key]);
+      }
+      // OTT 선택했을 경우 - 각 OTT 컨텐츠 띄우기
+    } else {
+      if (preData.ott.includes("netflix")) {
+        copy.push(...apiList["netflix"]);
+      }
+      if (preData.ott.includes("disney")) {
+        copy.push(...apiList["disney"]);
+      }
+      if (preData.ott.includes("watcha")) {
+        copy.push(...apiList["watcha"]);
+      }
+      if (preData.ott.includes("wavve")) {
+        copy.push(...apiList["wavve"]);
+      }
+    }
+    console.log(copy, "넣을 리스트");
+    setRecList([...copy]);
+  }, [apiList]);
+
   // 필수 시청 목록 recoil 반영
   useEffect(() => {
     let pks: number[] = [];
     essList.forEach((content) => {
       pks.push(content.pk);
     });
+    console.log(pks, "pks");
     let copy = { ...preData };
+    console.log(copy);
     copy = { ...copy, contents: pks };
+    console.log(copy, "copy2");
     setPreData(copy);
   }, [essList]);
 
@@ -110,6 +176,7 @@ const PageScheduleContent = () => {
         patterns: [],
         ott: [],
       });
+      setRecList([]);
     }, 2000);
   };
 
@@ -131,7 +198,10 @@ const PageScheduleContent = () => {
         <Wrapper>
           <Container>
             <SDiv>필수 시청 목록</SDiv>
-            <SDiv2>스케줄 생성시 꼭 보고 싶은 컨텐츠를 담아주세요!</SDiv2>
+            <SDiv2 style={{ marginBottom: "0" }}>
+              스케줄 생성시 꼭 보고 싶은 컨텐츠를 담아주세요!
+            </SDiv2>
+            <SDiv2>담긴 컨텐츠 순서대로 스케줄링이 진행됩니다.</SDiv2>
             <ContentsContainer>
               {essList &&
                 essList.map((content, idx) => (
@@ -214,7 +284,7 @@ const SContent = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 1px solid white;
+  border: 1px solid transparent;
   border-radius: 10px;
   margin: 0 0.5rem;
   width: 25vw;
@@ -226,7 +296,7 @@ const SAiOutlineMinusCircle = styled(AiOutlineMinusCircle)`
   width: 1.5rem;
   height: 1.5rem;
   border-radius: 50%;
-  background-color: ${({ theme }) => theme.netflix.tabColor};
+  background-color: ${({ theme }) => theme.netflix.fontColor};
 `;
 
 const SRemoveDiv = styled.div`
@@ -236,6 +306,12 @@ const SRemoveDiv = styled.div`
 `;
 
 const SBoxContainer = styled.div`
+  display: flex;
+  position: relative;
+  margin-top: 0.5rem;
+`;
+
+const SBoxContainerFill = styled.div`
   display: flex;
   position: relative;
   margin-top: 0.5rem;

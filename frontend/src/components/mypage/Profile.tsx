@@ -8,7 +8,7 @@ import { RxCrossCircled } from "react-icons/rx";
 import { useRecoilState } from "recoil";
 import { userState } from "recoil/userState";
 
-import { myProfileName, myProfileImg } from "apis/apiMy";
+import { myProfileName, myProfileImg, mybasicInfo } from "apis/apiMy";
 
 const ProfileContainer = styled.div`
   display: flex;
@@ -82,7 +82,7 @@ const Profile = () => {
   const [isNameInput, setIsNameInput] = useState(false);
 
   useEffect(() => {
-    console.log(user);
+    // console.log(user);
   }, []);
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -112,10 +112,14 @@ const Profile = () => {
     setIsNameInput(false);
   }
 
-  const changePhoto = function (event: React.ChangeEvent<HTMLInputElement>) {
+  const changePhoto = async function (event: React.ChangeEvent<HTMLInputElement>) {
     if (imgRef.current && imgRef.current.files) {
       const file = imgRef.current.files[0];
-      myProfileImg(file);
+      const result = await myProfileImg(file);
+      if (result) {
+        const newUserInfo = await mybasicInfo();
+        setUser(newUserInfo);
+      }
     }
   };
 

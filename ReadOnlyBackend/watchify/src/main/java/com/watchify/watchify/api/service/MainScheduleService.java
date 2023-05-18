@@ -104,9 +104,9 @@ public class MainScheduleService {
                 l.add(defaultContentDTO);
             }
             if (count == 1){
-                hash.put("Netflix", l);
+                hash.put("netflix", l);
             }else if(count == 2){
-                hash.put("Wavve", l);
+                hash.put("wavve", l);
             }else if(count == 3){
                 hash.put("watcha", l);
             }else{

@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import styled, { keyframes, css } from "styled-components";
 
-import disney from "assets/img/disneyIcon.png";
-import netflix from "assets/img/netflixIcon.png";
-import watcha from "assets/img/watchaIcon.png";
-import wavve from "assets/img/wavveIcon.png";
+import disney from "assets/img/otticons/DisneyIcon.png";
+import netflix from "assets/img/otticons/NetflixIcon.png";
+import watcha from "assets/img/otticons/WatchaIcon.png";
+import wavve from "assets/img/otticons/WavveIcon.png";
 
 import { content } from "interface/content";
 
@@ -75,18 +75,18 @@ const ContentSwal: React.FC<ContentSwalProps> = ({ content: content }) => {
       )}
       <BackdropContainer className="backdropContainer" backdrop={content.backdropPath}>
         <Header>
-          <div>
+          <LeftDiv>
             <TitleSeasonContainer>
               <Title>
-                {content.title}
+                <div>{content.title}</div>
                 <Season>{content.season > 0 ? `시즌 ${content.season}` : ""}</Season>
               </Title>
             </TitleSeasonContainer>
             <RateAndGenresContainer>
-              <Rate>{`${content.rate} / 5.0`}</Rate>
+              <Rate>{`${content.rate} / 10.0`}</Rate>
               <Genres>
                 {content.genres.length > 1
-                  ? `${content.genres.join(", ")}`
+                  ? `${content.genres.slice(0, 2).join(", ")}`
                   : content.genres.length === 1
                   ? content.genres[0]
                   : ""}
@@ -95,17 +95,19 @@ const ContentSwal: React.FC<ContentSwalProps> = ({ content: content }) => {
                 {content.finalEpisode > 0 ? `${content.finalEpisode}부작` : ""}
               </FinalEpisode>
             </RateAndGenresContainer>
-          </div>
+          </LeftDiv>
           <LikeDislike>
-            <ReactStars
-              count={5}
-              value={rating}
-              edit={true}
-              size={20}
-              color1={"rgba(128, 128, 128, 0.2)"}
-              color2={"#F84F5A"}
-              onChange={(e) => changeRating(e)}
-            />
+            <div style={{ marginBottom: "1vh" }}>
+              <ReactStars
+                count={5}
+                value={rating}
+                edit={true}
+                size={20}
+                color1={"grey"}
+                color2={"#F08C5A"}
+                onChange={(e) => changeRating(e)}
+              />
+            </div>
             {/* <Like>
               {isLike === 1 ? (
                 <StyledAiFillLike
@@ -149,7 +151,9 @@ const ContentSwal: React.FC<ContentSwalProps> = ({ content: content }) => {
       </BackdropContainer>
 
       <ContentContainer>
-        <Summarize>{content.summarize}</Summarize>
+        <div style={{ width: "100%" }}>
+          <Summarize>{content.summarize !== "0" ? content.summarize : "추가 예정"}</Summarize>
+        </div>
         <Footer>
           <LinkDescriptions>보러가기</LinkDescriptions>
           <OTTContainer>
@@ -180,6 +184,7 @@ const Container = styled.div`
   height: 45vh;
   background-color: ${({ theme }) => theme.netflix.tabColor};
   color: white;
+  overflow: hidden;
 `;
 const BackdropContainer = styled.div<{ backdrop: string }>`
   width: 100%;
@@ -216,8 +221,11 @@ const TitleSeasonContainer = styled.div`
 const Title = styled.div`
   font-size: ${({ theme }) => theme.fontSizeType.big.fontSize};
   font-weight: ${({ theme }) => theme.fontSizeType.big.fontWeight};
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
 `;
-const Season = styled.span`
+const Season = styled.div`
   font-size: ${({ theme }) => theme.fontSizeType.middle.fontSize};
   font-weight: ${({ theme }) => theme.fontSizeType.middle.fontWeight};
   margin-left: 1vw;
@@ -227,7 +235,7 @@ const RateAndGenresContainer = styled.div`
   display: flex;
   flex-direction: row;
   align-items: baseline;
-  margin-left: 5vw;
+  margin-left: 4vw;
   margin-bottom: 2vw;
 `;
 const Rate = styled.div`
@@ -248,7 +256,7 @@ const FinalEpisode = styled.div`
 const Summarize = styled.div`
   margin: 4vw;
   display: -webkit-box;
-  -webkit-line-clamp: 5;
+  -webkit-line-clamp: 4;
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -275,6 +283,7 @@ const OTTIcon = styled.img`
   width: 12vw;
   height: 12vw;
   position: relative;
+  margin: 1vw;
 `;
 
 const growShrink = keyframes`
@@ -318,11 +327,13 @@ const Header = styled.div`
 `;
 
 const LikeDislike = styled.div`
+  width: 40%;
   display: flex;
-  flex-direction: row;
-  margin-right: 2vw;
+  flex-direction: column;
+
   height: 100%;
-  align-items: end;
+  align-items: center;
+  justify-content: end;
 `;
 
 const Like = styled.div`
@@ -350,4 +361,8 @@ const StyledAiFillDislike = styled(AiFillDislike)`
 const StyledAiOutlineDislike = styled(AiOutlineDislike)`
   margin: 1vw;
   animation: ${growShrink} 0.6s ease-in-out forwards;
+`;
+
+const LeftDiv = styled.div`
+  width: 60%;
 `;

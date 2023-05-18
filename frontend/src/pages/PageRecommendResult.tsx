@@ -23,13 +23,18 @@ import "swiper/css/pagination";
 import ContentPoster from "components/common/ContentPoster";
 
 const Wrapper = styled.div`
-  width: 100vw;
-  min-height: 100%;
+  width: 100%;
+  min-height: 94vh;
   margin-top: 0;
   background-color: ${theme.netflix.backgroundColor};
+  overflow: hidden; // 얘를 추가함...
+`;
+
+const SubWrapper = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
+  width: 100%;
 `;
 
 const SRibbonDiv = styled.div<{ selected: boolean }>`
@@ -67,19 +72,19 @@ const STitleP = styled.p`
 `;
 
 const SMiniTitle = styled.div`
-  font-size: ${theme.fontSizeType.middle.fontSize};
-  font-weight: ${theme.fontSizeType.middle.fontWeight};
+  font-size: 4vw;
+  font-weight: ${theme.fontSizeType.big.fontWeight};
   color: ${theme.netflix.fontColor};
   margin: 1vh;
-  margin-left: 5vw;
-  width: 100vw;
+  margin-left: 10vw;
+  width: 100%;
   text-align: left;
 `;
 
 const SMainDiv = styled.div`
   display: flex;
   width: 100vw;
-  height: 55vh;
+  min-height: 55vh;
   // border: 1px solid grey; TODO: 여기 보더 별로라고 하심...
   border-radius: 12px;
   background-color: ${theme.netflix.tabColor};
@@ -92,6 +97,7 @@ const SContentDiv = styled.div`
   flex-direction: column;
   align-items: center;
   margin-top: 7vh;
+  height: auto;
 `;
 
 const SImg = styled.img`
@@ -111,8 +117,8 @@ const STextP = styled.p`
 `;
 
 const SSummaryP = styled.p`
-  font-size: ${theme.fontSizeType.small.fontSize};
-  font-weight: ${theme.fontSizeType.small.fontWeight};
+  font-size: ${theme.fontSizeType.middle.fontSize};
+  font-weight: ${theme.fontSizeType.middle.fontWeight};
   color: ${theme.netflix.fontColor};
   width: 90%;
   margin-top: 3vh;
@@ -127,6 +133,9 @@ const Container = styled.div`
 
 const UserSpan = styled.span`
   color: ${theme.netflix.lightColor};
+`;
+const PlaceHolder = styled.div`
+  height: 4vh;
 `;
 
 const PageRecommendResult = () => {
@@ -153,6 +162,10 @@ const PageRecommendResult = () => {
       disney: disney,
     };
 
+    const openNewTab = (url: string) => {
+      window.open(url, "_blank", "noopener,noreferrer");
+    };
+
     return ottList.map((ott, index) => {
       if (icons.hasOwnProperty(ott)) {
         return (
@@ -161,6 +174,9 @@ const PageRecommendResult = () => {
             src={icons[ott]}
             alt={`${ott} 아이콘`}
             style={{ marginRight: "1vw", width: "5vh", height: "5vh" }}
+            onClick={() => {
+              openNewTab(recResult[selectedNum].ott[ott]);
+            }}
           />
         );
       } else {
@@ -184,83 +200,86 @@ const PageRecommendResult = () => {
   useEffect(() => {
     const data = location.state?.data;
     SetRecResult(data);
+    console.log(data);
   }, []);
 
   return (
     <Wrapper>
-      <STitleP>
-        <UserSpan>{user["name"] ? user["name"] : "guest"}</UserSpan>님을 위한 추천 컨텐츠
-      </STitleP>
-      <SMainDiv className={"mainDiv"}>
-        <div style={{ display: "flex", marginLeft: "5vw", position: "absolute" }}>
-          <SRibbonDiv id="0" onClick={onClickHandler} selected={selectedNum === 0}>
-            <SRibbonP selected={selectedNum === 0}>1</SRibbonP>
-          </SRibbonDiv>
-          <SRibbonDiv id="1" onClick={onClickHandler} selected={selectedNum === 1}>
-            <SRibbonP selected={selectedNum === 1}>2</SRibbonP>
-          </SRibbonDiv>
-          <SRibbonDiv id="2" onClick={onClickHandler} selected={selectedNum === 2}>
-            <SRibbonP selected={selectedNum === 2}>3</SRibbonP>
-          </SRibbonDiv>
-        </div>
-        <SContentDiv>
-          <NameTicker
-            title={recResult[selectedNum].title}
-            episode={recResult[selectedNum].finalEpisode}
-          />
-          <div style={{ display: "flex", width: "100vw" }}>
-            <SImg src={recResult[selectedNum].imgPath} alt="#" />
-            <div style={{ marginRight: "1vw" }}>
-              <STextP>추천도 : {recResult[selectedNum].score}</STextP>
-              <STextP>장르 : {recResult[selectedNum].genres.join(", ")}</STextP>
-              <STextP>재생 시간 : {run}</STextP>
-              <STextP>등급 : {recResult[selectedNum].audienceAge}</STextP>
-              <div style={{ marginTop: "3vh", marginLeft: "-1vh" }}>{renderOTTIcons()}</div>{" "}
-              {/*클릭 이벤트 (링크 이동) 필요 */}
-            </div>
+      <SubWrapper>
+        <STitleP>
+          <UserSpan>{user["name"] ? user["name"] : "guest"}</UserSpan>님을 위한 추천 컨텐츠
+        </STitleP>
+        <SMainDiv className={"mainDiv"}>
+          <div style={{ display: "flex", marginLeft: "5vw", position: "absolute" }}>
+            <SRibbonDiv id="0" onClick={onClickHandler} selected={selectedNum === 0}>
+              <SRibbonP selected={selectedNum === 0}>1</SRibbonP>
+            </SRibbonDiv>
+            <SRibbonDiv id="1" onClick={onClickHandler} selected={selectedNum === 1}>
+              <SRibbonP selected={selectedNum === 1}>2</SRibbonP>
+            </SRibbonDiv>
+            <SRibbonDiv id="2" onClick={onClickHandler} selected={selectedNum === 2}>
+              <SRibbonP selected={selectedNum === 2}>3</SRibbonP>
+            </SRibbonDiv>
           </div>
-          <SSummaryP>{recResult[selectedNum].summarize}</SSummaryP>
-        </SContentDiv>
-      </SMainDiv>
-      <SMiniTitle>이런 컨텐츠는 어때요?</SMiniTitle>
-      <Container>
-        <Swiper
-          style={{ width: "100vw" }}
-          effect={"coverflow"}
-          grabCursor={true}
-          centeredSlides={true}
-          slidesPerView={4} // 몇개가 동시에 보이는지 (2면 1개 + 0.5개 * 2)
-          spaceBetween={-40} // 겹치는 정도
-          initialSlide={2} // 시작 슬라이드!
-          coverflowEffect={{
-            rotate: 20,
-            stretch: 0,
-            depth: 100,
-            modifier: 2,
-            slideShadows: true,
-          }}
-          // onSlideChange={(swiper) => {
-          //   setActiveIndex(swiper.activeIndex);
-          // }}
-          navigation={true} // 네비게이션 버튼
-          mousewheel={true} // 마우스 휠
-          pagination={true}
-          modules={[EffectCoverflow, Navigation, Mousewheel]}
-          className="mySwiper"
-        >
-          {recResult.slice(3, 10).map((content, index) => (
-            <SwiperSlide key={index}>
-              <div style={{ width: "33vw" }}>
-                <ContentPoster
-                  imageUrl={content["imgPath"]}
-                  title={content["title"]}
-                  content={content}
-                />
+          <SContentDiv>
+            <NameTicker
+              title={recResult[selectedNum].title}
+              episode={recResult[selectedNum].finalEpisode}
+            />
+            <div style={{ display: "flex", width: "100%", flexDirection: "row" }}>
+              <SImg src={recResult[selectedNum].imgPath} alt="#" />
+              <div style={{ marginRight: "1vw" }}>
+                <STextP>추천도 : {recResult[selectedNum].score}</STextP>
+                <STextP>장르 : {recResult[selectedNum].genres.join(", ")}</STextP>
+                <STextP>재생 시간 : {run}</STextP>
+                <STextP>등급 : {recResult[selectedNum].audienceAge}</STextP>
+                <div style={{ marginTop: "3vh", marginLeft: "-1vh" }}>{renderOTTIcons()}</div>{" "}
               </div>
-            </SwiperSlide>
-          ))}
-        </Swiper>
-      </Container>
+            </div>
+            <SSummaryP>{recResult[selectedNum].summarize}</SSummaryP>
+          </SContentDiv>
+        </SMainDiv>
+        <SMiniTitle>이런 컨텐츠는 어때요?</SMiniTitle>
+        <Container>
+          <Swiper
+            style={{ width: "100vw" }}
+            effect={"coverflow"}
+            grabCursor={true}
+            centeredSlides={true}
+            slidesPerView={4} // 몇개가 동시에 보이는지 (2면 1개 + 0.5개 * 2)
+            spaceBetween={-40} // 겹치는 정도
+            initialSlide={2} // 시작 슬라이드!
+            coverflowEffect={{
+              rotate: 20,
+              stretch: 0,
+              depth: 100,
+              modifier: 2,
+              slideShadows: true,
+            }}
+            // onSlideChange={(swiper) => {
+            //   setActiveIndex(swiper.activeIndex);
+            // }}
+            navigation={true} // 네비게이션 버튼
+            mousewheel={true} // 마우스 휠
+            pagination={true}
+            modules={[EffectCoverflow, Navigation, Mousewheel]}
+            className="mySwiper"
+          >
+            {recResult.slice(3, 10).map((content, index) => (
+              <SwiperSlide key={index}>
+                <div style={{ width: "33vw" }}>
+                  <ContentPoster
+                    imageUrl={content["imgPath"]}
+                    title={content["title"]}
+                    content={content}
+                  />
+                </div>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        </Container>
+        <PlaceHolder></PlaceHolder>
+      </SubWrapper>
     </Wrapper>
   );
 };

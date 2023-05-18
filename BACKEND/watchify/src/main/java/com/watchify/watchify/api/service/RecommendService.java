@@ -65,7 +65,7 @@ public class RecommendService {
             contents.add(i.toString());
         }
 
-        for (Long i: schduleRecommendtestDTO.getContents()){
+        for (Long i: schduleRecommendtestDTO.getOttList()){
             ottL.add(i.toString());
         }
         // Service 추가하기
@@ -74,7 +74,7 @@ public class RecommendService {
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<ScheduleRecommendReqDTO> response = restTemplate.getForEntity(API_URL, ScheduleRecommendReqDTO.class);
         ScheduleRecommendReqDTO scheduleRecommendReqDTO = response.getBody();
-        System.out.println(scheduleRecommendReqDTO);
+        System.out.println("장고 추천 사이즈 : " + scheduleRecommendReqDTO.getContentPk().size());
         return scheduleRecommendReqDTO.getContentPk();
     }
 

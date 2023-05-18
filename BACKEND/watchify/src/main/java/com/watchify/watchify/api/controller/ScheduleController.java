@@ -3,10 +3,7 @@ package com.watchify.watchify.api.controller;
 import com.watchify.watchify.api.service.*;
 import com.watchify.watchify.dto.request.ScheduleCheckRequestDTO;
 import com.watchify.watchify.dto.request.ScheduleCreateRequestDTO;
-import com.watchify.watchify.dto.response.CalenderDTO;
-import com.watchify.watchify.dto.response.DefaultContentDTO;
-import com.watchify.watchify.dto.response.HistoryInfoDTO;
-import com.watchify.watchify.dto.response.ScheduleObjDTO;
+import com.watchify.watchify.dto.response.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -72,18 +69,19 @@ public class ScheduleController {
     }
 
     @PutMapping("/modify")
-    public ResponseEntity<?> UpdateSchedule(HttpServletRequest request, @RequestBody String json) {
+    public ResponseEntity<?> UpdateSchedule(HttpServletRequest request, @RequestBody ScheduleModifyDTO json) {
 
         String accessToken = request.getHeader("access");
         long userId = userService.findUserIdByAccessToken(accessToken);
 
         try {
-            scheduleUpdateService.updateSchedule(userId, json);
+            scheduleUpdateService.updateScheduleVer2(userId, json);
             return ResponseEntity.status(200).body("succeed to update schedule");
         } catch (Exception e) {
             return ResponseEntity.status(404).body("Failed to update schedule");
         }
     }
+
 
     @PostMapping("/nonauth/share")
     public ResponseEntity<?> SaveScheduleShare(HttpServletRequest request, @RequestBody String json) {

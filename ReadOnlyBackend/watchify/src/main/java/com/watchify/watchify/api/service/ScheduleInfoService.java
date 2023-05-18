@@ -1,5 +1,6 @@
 package com.watchify.watchify.api.service;
 
+import com.watchify.watchify.comparator.ScheduleObjComparator;
 import com.watchify.watchify.db.entity.Calender;
 import com.watchify.watchify.db.entity.Content;
 import com.watchify.watchify.db.entity.LikeContent;
@@ -63,6 +64,8 @@ public class ScheduleInfoService {
                 }
             }
             if (!scheduleObjDTOList.isEmpty()) {
+                // 정렬, pk 순으로 오름차순, 같다면 에피소드 순으로 오름차순
+                Collections.sort(scheduleObjDTOList, new ScheduleObjComparator());
                 res.put(point.getDayOfMonth(), scheduleObjDTOList);
             }
         }

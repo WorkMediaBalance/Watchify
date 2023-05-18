@@ -61,10 +61,11 @@ public class ScheduleShareService {
         ScheduleShare scheduleShare = scheduleShareRepository.findById(pk).get();
         String data = scheduleShare.getSchedule();
 
+
+
         List<ScheduleObjDTO> scheduleObjDTOList = new ArrayList<>();
 
         JSONObject rootObject = new JSONObject(data);
-
 
 
         // Goson 으로 만들 문자열이라서 파싱 과정이 좀 다름!
@@ -82,7 +83,7 @@ public class ScheduleShareService {
                     int yearData = dateObj.getInt("year");
                     int monthData = dateObj.getInt("month");
                     int dayData = dateObj.getInt("day");
-                    String stringIsView = dateObj.getString("isView");
+                    Boolean isView = contentObject.getBoolean("isView");
 
                     LocalDate date = LocalDate.of(yearData, monthData, dayData);
                     Long contentId = contentObject.getLong("pk");
@@ -93,7 +94,7 @@ public class ScheduleShareService {
                     Content content = turnContent.getContent();
 
                     // 객체 반환용
-                    ScheduleObjDTO scheduleObjDTO = new ScheduleObjDTO(content, date, turnContent.getEpisode());
+                    ScheduleObjDTO scheduleObjDTO = new ScheduleObjDTO(content, date, turnContent.getEpisode(), isView);
                     scheduleObjDTOList.add(scheduleObjDTO);
                 }
             }

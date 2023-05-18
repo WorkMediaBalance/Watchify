@@ -4,7 +4,7 @@ declare global {
   }
 }
 
-export const shareKakao = (route: string, title: string) => {
+export const shareKakao = (route: string, title: string, url: string) => {
   if (window.Kakao) {
     const kakao = window.Kakao;
     if (!kakao.isInitialized()) {
@@ -16,7 +16,7 @@ export const shareKakao = (route: string, title: string) => {
       content: {
         title: title,
         description: "나만의 OTT 스케줄링 서비스 watchify에 접속해보세요!",
-        imageUrl: "이미지 url",
+        imageUrl: url,
         link: {
           mobileWebUrl: route,
           webUrl: route,

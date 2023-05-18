@@ -18,6 +18,10 @@ import ContentPoster from "components/common/ContentPoster";
 
 import { content } from "interface/content";
 
+import spinner from "./../../assets/gif/93297-simple-spinner.json";
+
+import Lottie from "lottie-react";
+
 type recommendPerOtt = {
   [key: string]: content[];
 };
@@ -27,7 +31,9 @@ const RecommendPerOTT = () => {
 
   const [result, setResult] = useState<recommendPerOtt | undefined>();
 
-  const [ott, setOtt] = useState("Netflix");
+  const [isLoading, setIsLoading] = useState(false);
+
+  const [ott, setOtt] = useState("netflix");
   const [index, setIndex] = useState(0);
 
   const handleIconClick = (icon: string) => {
@@ -42,14 +48,18 @@ const RecommendPerOTT = () => {
   };
 
   const getOttRecommend = async () => {
+    setIsLoading(true);
     const data = await mainRecommend();
     setResult(data);
+    setIsLoading(false);
   };
 
   const getOttRecommendNon = async () => {
+    setIsLoading(true);
     const data = await mainRecommendNon();
     setResult(data);
     console.log(data);
+    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -68,90 +78,129 @@ const RecommendPerOTT = () => {
           OTT별<TitleSpan> 추천</TitleSpan>
         </Header>
       </HeaderContainer>
-
-      <ContentContainer>
-        <Poster className="poster">
-          {result && (
-            <ContentPoster
-              title={result[ott][index].title}
-              imageUrl={result[ott][index].imgPath}
-              content={result[ott][index]}
-            />
-          )}
-        </Poster>
-        <Content>
-          <OTTIcons>
-            <OTTIcon
-              src={ott === "Netflix" ? netflixSelected : netflix}
-              onClick={() => {
-                handleIconClick("Netflix");
-              }}
-            ></OTTIcon>
-            <OTTIcon
-              src={ott === "disney" ? disneySelected : disney}
-              onClick={() => {
-                handleIconClick("disney");
-              }}
-            ></OTTIcon>
-            <OTTIcon
-              src={ott === "Wavve" ? wavveSelected : wavve}
-              onClick={() => {
-                handleIconClick("Wavve");
-              }}
-            ></OTTIcon>
-            <OTTIcon
-              src={ott === "watcha" ? watchaSelected : watcha}
-              onClick={() => {
-                handleIconClick("watcha");
-              }}
-            ></OTTIcon>
-          </OTTIcons>
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "space-between",
-              height: "80%",
-              margin: "2vw",
-            }}
-          >
-            <div>
-              <Title>{result !== undefined && result[ott][index].title}</Title>
-              <Rating>{result !== undefined && result[ott][index].rate} / 5.0</Rating>
-            </div>
-            <Story>{result !== undefined && result[ott][index].summarize}</Story>
+      {isLoading ? (
+        <div
+          className="here"
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            width: "100%",
+            height: "100%",
+          }}
+        >
+          <Lottie animationData={spinner} />
+        </div>
+      ) : (
+        <ContentContainer>
+          <Poster className="poster">
+            {result && (
+              <ContentPoster
+                title={result[ott][index].title}
+                imageUrl={result[ott][index].imgPath}
+                content={result[ott][index]}
+              />
+            )}
+          </Poster>
+          <Content>
+            <OTTIcons>
+              <OTTIcon
+                src={ott === "netflix" ? netflixSelected : netflix}
+                onClick={() => {
+                  handleIconClick("netflix");
+                }}
+              ></OTTIcon>
+              <OTTIcon
+                src={ott === "disney" ? disneySelected : disney}
+                onClick={() => {
+                  handleIconClick("disney");
+                }}
+              ></OTTIcon>
+              <OTTIcon
+                src={ott === "wavve" ? wavveSelected : wavve}
+                onClick={() => {
+                  handleIconClick("wavve");
+                }}
+              ></OTTIcon>
+              <OTTIcon
+                src={ott === "watcha" ? watchaSelected : watcha}
+                onClick={() => {
+                  handleIconClick("watcha");
+                }}
+              ></OTTIcon>
+            </OTTIcons>
             <div
               style={{
                 display: "flex",
-                flexDirection: "row",
+                flexDirection: "column",
                 justifyContent: "space-between",
-                alignItems: "center",
-                margin: "1vw",
+                height: "80%",
+                margin: "2vw",
+                width: "90%",
               }}
             >
-              <Watch
-                onClick={() => {
-                  handleNext(-1);
+              <div>
+                <Title>{result !== undefined && result[ott][index].title}</Title>
+                <div>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "row",
+                      marginRight: "1vw",
+                      alignItems: "center",
+                    }}
+                  >
+                    <div></div>
+                    {result !== undefined &&
+                      (result[ott][index].season === 0 ? null : (
+                        <div style={{ marginRight: "2vw" }}>
+                          {`시즌 ${result[ott][index].season}`}
+                        </div>
+                      ))}
+                    <Rating>{result !== undefined && `${result[ott][index].rate} / 10.0`} </Rating>
+                  </div>
+                </div>
+              </div>
+              <Story>
+                {result !== undefined &&
+                  (result[ott][index].summarize === "0"
+                    ? "추가 예정"
+                    : result[ott][index].summarize)}
+              </Story>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  margin: "1vw",
                 }}
               >
-                {"<<"}
-              </Watch>
-              <DotContaier>
-                {[0, 0, 0, 0, 0, 0, 0, 0, 0, 0].map((no, i) => {
-                  return <Dot isOn={index === i} />;
-                })}
-              </DotContaier>
-              <Watch
-                onClick={() => {
-                  handleNext(1);
-                }}
-              >
-                {">>"}
-              </Watch>
+                <Watch
+                  onClick={() => {
+                    handleNext(-1);
+                  }}
+                >
+                  {"<<"}
+                </Watch>
+                <DotContaier>
+                  {[0, 0, 0, 0, 0, 0, 0, 0, 0, 0].map((no, i) => {
+                    return <Dot isOn={index === i} />;
+                  })}
+                </DotContaier>
+                <Watch
+                  onClick={() => {
+                    handleNext(1);
+                  }}
+                >
+                  {">>"}
+                </Watch>
+              </div>
             </div>
-          </div>
-        </Content>
-      </ContentContainer>
+          </Content>
+        </ContentContainer>
+      )}
     </Container>
   );
 };

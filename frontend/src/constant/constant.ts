@@ -67,4 +67,8 @@ export type Schedule = {
   ott: string[];
 };
 
+export type isSeen = { pk: number; episode: number; date: string };
+
 export type ContentRecForm = { isAdult: boolean; ottList: string[]; genres: string[] };
+
+export type later = { date: string; contentId: number; episode: number; newDate: string };

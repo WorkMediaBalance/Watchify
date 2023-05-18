@@ -27,7 +27,17 @@ import NonMemberRoute from "./components/common/NonMemberRoute";
 
 import "./firebase-messaging-sw.js";
 
+import { useEffect } from "react";
+import { schedulePreInfoState } from "recoil/schedulePreInfoState";
+import { RecoilState, useRecoilState } from "recoil";
+
 const App = () => {
+  const [preData, setPreData] = useRecoilState(schedulePreInfoState);
+
+  useEffect(() => {
+    console.log(preData, "이건 app.tsx 프리데이터");
+  }, [preData]);
+
   return (
     <div style={{ height: "100%" }}>
       <ThemeProvider theme={theme}>
@@ -37,7 +47,7 @@ const App = () => {
             <Route path="/" element={<PageMain />} />
             <Route path="/recommend" element={<PageRecommend />} />
             <Route path="/recommend/result" element={<PageRecommendResult />} />
-            <Route path="/share" element={<PageShare />} />
+            <Route path="/share/:sharedPK" element={<PageShare />} />
 
             <Route path="/schedule" element={<PageSchedule />} />
             <Route path="/schedule/content" element={<PageScheduleContent />} />
