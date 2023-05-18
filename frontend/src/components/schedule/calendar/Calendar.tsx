@@ -23,6 +23,19 @@ const Calendar = (props: {
   const weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
   const month = getMonthAbbreviation(selectedDate);
 
+  function stringToColor(str: string): string {
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) {
+      hash = str.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    let color = "#";
+    for (let i = 0; i < 3; i++) {
+      let value = (hash >> (i * 8)) & 255;
+      color += ("00" + value.toString(16)).substr(-2);
+    }
+    return color;
+  }
+
   function getMonthAbbreviation(date: Date) {
     const currentDate = new Date();
     const currentYear = currentDate.getFullYear();
@@ -204,7 +217,8 @@ const Calendar = (props: {
                                 <InnerConteiner>
                                   {typeof content === "number" && monthSchedule[content]
                                     ? monthSchedule[content].map((content, index) => {
-                                        return <IndicationBar />;
+                                        const colorCode = stringToColor(content.title);
+                                        return <IndicationBar color={colorCode} />;
                                       })
                                     : null}
                                 </InnerConteiner>
@@ -226,7 +240,8 @@ const Calendar = (props: {
                               <InnerConteiner>
                                 {typeof content === "number" && monthSchedule[content]
                                   ? monthSchedule[content].map((content, index) => {
-                                      return <IndicationBar />;
+                                      const colorCode = stringToColor(content.title);
+                                      return <IndicationBar color={colorCode} />;
                                     })
                                   : null}
                               </InnerConteiner>
@@ -247,9 +262,11 @@ const Calendar = (props: {
                               <InnerConteiner>
                                 {typeof content === "number" && monthSchedule[content]
                                   ? monthSchedule[content].slice(0, 4).map((content, index) => {
+                                      const colorCode = stringToColor(content.title);
+
                                       return (
-                                        <ContentTag>
-                                          <ContentTagDot />
+                                        <ContentTag view={content.view}>
+                                          <ContentTagDot color={colorCode} />
                                           <ContentName>
                                             {content.finalEpisode === 0
                                               ? "단편"
@@ -386,34 +403,35 @@ const InnerConteiner = styled.div`
   margin-top: 0.2vh;
 `;
 
-const ContentTag = styled.div`
+const ContentTag = styled.div<{ view: boolean }>`
   display: flex;
   flex-direction: row;
   width: 90%;
   justify-content: space-between;
   align-items: center;
-  background-color: white;
+  background-color: ${({ view }) => (view ? `#FF5500` : "white")};
+  color: ${({ view }) => (view ? "white" : "black")};
   border-radius: 15px;
   margin: 1px;
 `;
 
-const ContentTagDot = styled.div`
+const ContentTagDot = styled.div<{ color: string }>`
   border-radius: 50%;
-  background-color: ${theme.netflix.pointColor};
+  background-color: ${({ color }) => color};
   height: 2vw;
   width: 2vw;
   margin: 1vw;
 `;
 
 const ContentName = styled.div`
-  color: ${theme.netflix.tabColor};
   font-size: 0.7rem;
+  font-weight: 600;
   margin: 0.4vw;
   margin-right: 2vw;
 `;
 
-const IndicationBar = styled.div`
-  background-color: ${theme.netflix.pointColor};
+const IndicationBar = styled.div<{ color: string }>`
+  background-color: ${({ color }) => color};
   height: 0.3vh;
   width: 90%;
 `;
