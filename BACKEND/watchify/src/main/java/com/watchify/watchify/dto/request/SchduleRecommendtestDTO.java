@@ -12,4 +12,5 @@ import java.util.List;
 public class SchduleRecommendtestDTO {
     private List<Long> contents;
     private List<Long> ottList;
+
 }
