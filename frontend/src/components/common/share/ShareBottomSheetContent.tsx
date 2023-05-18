@@ -1,10 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import { HistoryDetailContent } from "interface/content";
 import { useSwipeable } from "react-swipeable";
 import ContentPoster from "components/common/ContentPoster";
+import { motion, useAnimation } from "framer-motion";
 
-const ShareBottomSheetContent = (props: { data: HistoryDetailContent[]; selectedDate: Date }) => {
+const ShareBottomSheetContent = (props: {
+  data: HistoryDetailContent[];
+  selectedDate: Date;
+  date: number;
+  month: number;
+}) => {
   const [index, setIndex] = useState(0);
   const nextContent = () => {
     if (Array.isArray(props.data) && props.data.length > 1 && index !== props.data.length - 1) {
@@ -16,60 +22,101 @@ const ShareBottomSheetContent = (props: { data: HistoryDetailContent[]; selected
       setIndex(index - 1);
     }
   };
+  const prevIndex = useRef(index);
+  const controls = useAnimation();
+  useEffect(() => {
+    setIndex(0);
+  }, [props.date, props.month]);
+  // 애니메이션
+  useEffect(() => {
+    controls
+      .start({
+        opacity: 0,
+        transition: { duration: 0 },
+      })
+      .then(() => {
+        controls.start({
+          opacity: 1,
+          transition: { duration: 0.3 },
+        });
+      });
+  }, [props.date, props.month]);
+
+  useEffect(() => {
+    const direction = index > prevIndex.current ? 1 : -1;
+
+    controls
+      .start({
+        x: 50 * direction,
+        opacity: 0,
+        transition: { duration: 0 },
+      })
+      .then(() => {
+        controls.start({
+          x: 0,
+          opacity: 1,
+          transition: { duration: 0.3 },
+        });
+      });
+
+    prevIndex.current = index;
+  }, [index, controls]);
 
   const handlers = useSwipeable({
     onSwipedLeft: nextContent,
     onSwipedRight: prevContent,
   });
 
-  console.log(props.data);
+  console.log(props.date, "formatDay");
   return (
     <div>
       {props.data && props.data[index] && (
         <Container {...handlers}>
           <DateAndAdd>
-            <SDate>{`${
-              props.selectedDate.getMonth() + 1
-            }월 ${props.selectedDate.getDate()}일`}</SDate>
+            <SDate>{`${props.month}월 ${props.date}일`}</SDate>
             <Add>{/* <AiOutlinePlusCircle /> */}</Add>
           </DateAndAdd>
-          {Array.isArray(props.data) && props.data.length === 0 ? (
-            <NoContentDiv>
-              <div>일정이 없습니다.</div>
-            </NoContentDiv>
-          ) : (
-            <ContentContainer>
-              <PosterContainer>
-                <ContentPoster
-                  imageUrl={props.data[index]["imgPath"]}
-                  title={props.data[index]["title"]}
-                  content={props.data[index]}
-                ></ContentPoster>
-              </PosterContainer>
-
-              <TextContainer>
-                <TitleAndDot>
-                  <Title>{props.data[index]["title"]}</Title>
-                  {/* <Dot></Dot> */}
-                </TitleAndDot>
-                <div
-                  style={{
-                    width: "100%",
-                    display: "flex",
-                    flexDirection: "row",
-                    justifyContent: "center",
-                  }}
-                >
-                  <Season>
-                    {props.data[index]["season"] !== 0 && `시즌 ${props.data[index]["season"]} :`}{" "}
-                  </Season>
-                  <Episode>
-                    {props.data[index]["episode"] !== 0 && `${props.data[index]["episode"]} 화`}
-                  </Episode>
-                </div>
-              </TextContainer>
-            </ContentContainer>
-          )}
+          <motion.div animate={controls}>
+            {Array.isArray(props.data) && props.data.length === 0 ? (
+              <NoContentDiv>
+                <div>일정이 없습니다.</div>
+              </NoContentDiv>
+            ) : (
+              <ContentContainer>
+                <PosterContainer>
+                  <ContentPoster
+                    imageUrl={props.data[index]["imgPath"]}
+                    title={props.data[index]["title"]}
+                    content={props.data[index]}
+                  ></ContentPoster>
+                </PosterContainer>
+                {props.data && props.data[index] && (
+                  <TextContainer>
+                    <TitleAndDot>
+                      <Title>{props.data[index]["title"]}</Title>
+                      {/* <Dot></Dot> */}
+                    </TitleAndDot>
+                    <div
+                      style={{
+                        width: "100%",
+                        display: "flex",
+                        flexDirection: "row",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <Season>
+                        {props.data[index]["season"] !== 0 &&
+                          `시즌 ${props.data[index]["season"]} :`}{" "}
+                      </Season>
+                      <Episode>
+                        {props.data[index]["episode"] !== 0 && `${props.data[index]["episode"]} 화`}
+                      </Episode>
+                    </div>
+                  </TextContainer>
+                )}
+              </ContentContainer>
+            )}
+          </motion.div>
           <Footer>
             <PageDotContainer>
               {props.data.map((data, i) => (

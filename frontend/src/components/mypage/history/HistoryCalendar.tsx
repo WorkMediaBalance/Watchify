@@ -20,6 +20,19 @@ const HistoryCalendar = (props: {
   const weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
   const month = getMonthAbbreviation(props.selectedDate);
 
+  function stringToColor(str: string): string {
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) {
+      hash = str.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    let color = "#";
+    for (let i = 0; i < 3; i++) {
+      let value = (hash >> (i * 8)) & 255;
+      color += ("00" + value.toString(16)).substr(-2);
+    }
+    return color;
+  }
+
   function getMonthAbbreviation(date: Date) {
     const currentDate = new Date();
     const currentYear = currentDate.getFullYear();
@@ -197,7 +210,8 @@ const HistoryCalendar = (props: {
                               <InnerConteiner>
                                 {typeof content === "number" && props.historyDetail[content]
                                   ? props.historyDetail[content].map((content, index) => {
-                                      return <IndicationBar />;
+                                      const colorCode = stringToColor(content.title);
+                                      return <IndicationBar color={colorCode} />;
                                     })
                                   : null}
                               </InnerConteiner>
@@ -220,9 +234,10 @@ const HistoryCalendar = (props: {
                                   ? props.historyDetail[content]
                                       .slice(0, 4)
                                       .map((content, index) => {
+                                        const colorCode = stringToColor(content.title);
                                         return (
                                           <ContentTag>
-                                            <ContentTagDot />
+                                            <ContentTagDot color={colorCode} />
                                             <ContentName>
                                               {content.episode !== 0
                                                 ? `${content.episode}화`
@@ -365,9 +380,9 @@ const ContentTag = styled.div`
   margin: 1px;
 `;
 
-const ContentTagDot = styled.div`
+const ContentTagDot = styled.div<{ color: string }>`
   border-radius: 50%;
-  background-color: ${theme.netflix.pointColor};
+  background-color: ${({ color }) => color};
   height: 2vw;
   width: 2vw;
   margin: 1vw;
@@ -380,8 +395,8 @@ const ContentName = styled.div`
   margin-right: 2vw;
 `;
 
-const IndicationBar = styled.div`
-  background-color: ${theme.netflix.pointColor};
+const IndicationBar = styled.div<{ color: string }>`
+  background-color: ${({ color }) => color};
   height: 0.3vh;
   width: 90%;
   margin-bottom: 0.2vh;
