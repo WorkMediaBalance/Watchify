@@ -16,7 +16,7 @@ spec:
    spec:
      containers:
        - name: ai-service
-         image: docker.io/runtogether/watchify:ai278
+         image: docker.io/runtogether/watchify:ai279
      imagePullSecrets:
        - name: dockerhub
          ports:
