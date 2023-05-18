@@ -8,9 +8,8 @@ import { motion, useAnimation } from "framer-motion";
 const ShareBottomSheetContent = (props: {
   data: HistoryDetailContent[];
   selectedDate: Date;
-  formatMonth: number;
-  formatYear: number;
-  formatDay: number;
+  date: number;
+  month: number;
 }) => {
   const [index, setIndex] = useState(0);
   const nextContent = () => {
@@ -27,7 +26,7 @@ const ShareBottomSheetContent = (props: {
   const controls = useAnimation();
   useEffect(() => {
     setIndex(0);
-  }, [props.formatDay, props.formatMonth]);
+  }, [props.date, props.month]);
   // 애니메이션
   useEffect(() => {
     controls
@@ -41,7 +40,7 @@ const ShareBottomSheetContent = (props: {
           transition: { duration: 0.3 },
         });
       });
-  }, [props.formatMonth, props.formatDay]);
+  }, [props.date, props.month]);
 
   useEffect(() => {
     const direction = index > prevIndex.current ? 1 : -1;
@@ -68,13 +67,13 @@ const ShareBottomSheetContent = (props: {
     onSwipedRight: prevContent,
   });
 
-  console.log(props.formatDay, "formatDay");
+  console.log(props.date, "formatDay");
   return (
     <div>
       {props.data && props.data[index] && (
         <Container {...handlers}>
           <DateAndAdd>
-            <SDate>{`${props.formatMonth}월 ${props.formatDay}일`}</SDate>
+            <SDate>{`${props.month}월 ${props.date}일`}</SDate>
             <Add>{/* <AiOutlinePlusCircle /> */}</Add>
           </DateAndAdd>
           <motion.div animate={controls}>

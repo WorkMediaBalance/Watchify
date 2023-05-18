@@ -40,9 +40,8 @@ const ShareBottomSheet = (props: {
   onClose: () => void;
   data: HistoryDetailContent[];
   selectedDate: Date;
-  formatMonth: number;
-  formatYear: number;
-  formatDay: number;
+  date: number;
+  month: number;
 }) => {
   const { sheet, content, openBottomSheet, closeBottomSheet, isOpenSheet, handle } =
     useRecBottomSheet();
@@ -71,9 +70,8 @@ const ShareBottomSheet = (props: {
         <ShareBottomSheetContent
           data={props.data}
           selectedDate={props.selectedDate}
-          formatDay={props.formatDay}
-          formatMonth={props.formatMonth}
-          formatYear={props.formatYear}
+          date={props.date}
+          month={props.month}
         />
       </BottomSheetContent>
     </Wrapper>

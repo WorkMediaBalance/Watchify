@@ -127,9 +127,8 @@ const PageShare = () => {
       <ShareBottomSheet
         data={dataToProps?.[date] ?? []}
         selectedDate={selectedDate}
-        formatDay={formatDay}
-        formatMonth={formatMonth}
-        formatYear={formatYear}
+        date={date}
+        month={month}
         isOpen={isOpen}
         onClose={() => {
           setIsOpen(false);
