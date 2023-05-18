@@ -15,7 +15,7 @@ import java.util.Map;
 
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("/dataImport/")
+@RequestMapping("/dataImport23!@$FD23fd!@$%/")
 @RequiredArgsConstructor
 public class DataImportController {
 
@@ -25,6 +25,12 @@ public class DataImportController {
     public String ImportCsv() {
         csvImporterService.importCsv();
         return "CSV data imported successfully!";
+    }
+
+    @GetMapping("/content/popularity")
+    public String ImportPopularity() {
+        csvImporterService.importPopularity();
+        return "Popularity data imported successfully!";
     }
 
 }

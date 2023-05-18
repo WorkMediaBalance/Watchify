@@ -35,6 +35,7 @@ public class Content implements Serializable {
     private Integer season;
     private Integer finalEpisode;
     private String backdropPath;
+    private int popularity;
 
     private Integer releaseDate;
 
@@ -53,4 +54,7 @@ public class Content implements Serializable {
     @OneToMany(mappedBy = "content", cascade = CascadeType.ALL)
     private List<ContentGenre> contentGenres = new ArrayList<>();
 
+    public void setPopularity(int popularity) {
+        this.popularity = popularity;
+    }
 }

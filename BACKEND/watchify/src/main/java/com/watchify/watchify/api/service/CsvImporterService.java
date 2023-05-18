@@ -1,5 +1,7 @@
 package com.watchify.watchify.api.service;
 
+import com.watchify.watchify.db.entity.Content;
+import com.watchify.watchify.db.repository.ContentRepository;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
@@ -14,15 +16,14 @@ import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class CsvImporterService {
+
+    private final ContentRepository contentRepository;
 
     @Transactional
     public void importCsv() {
@@ -158,5 +159,38 @@ public class CsvImporterService {
 
     public String s3imgPath(Long id) {
         return "https://watchify.s3.ap-northeast-2.amazonaws.com/poster/" + id + ".PNG";
+    }
+
+    @Transactional
+    public void importPopularity() {
+
+        String csvFile = "dataInput/popularityVer1.csv";
+        String databaseUrl = "jdbc:mysql://watchifydb.cph3uafcff1h.ap-northeast-2.rds.amazonaws.com/sins?useUnicode=true&characterEncoding=utf8&s&zeroDateTimeBehavior=convertToNull&rewriteBatchedStatements=true&tinyInt1isBit=false";
+        String databaseUser = "watchifyadmin";
+        String databasePassword = "qudwlsgoa";
+        String contentTable = "content";
+
+        try (Connection connection = DriverManager.getConnection(databaseUrl, databaseUser, databasePassword);
+//             PreparedStatement statement = connection.prepareStatement("INSERT INTO " + contentTable +
+//                     " (popularity) VALUES (?)");
+             BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(csvFile), "EUC-KR"));
+             CSVParser csvParser = new CSVParser(reader, CSVFormat.DEFAULT)) {
+            List<Content> files = contentRepository.getContentAll();
+            for (CSVRecord csvRecord : csvParser) {
+                int idx = Integer.parseInt(csvRecord.get(0));
+                int value = Integer.parseInt(csvRecord.get(1));
+                System.out.println("popularity : " + value);
+                Content content = files.get(idx);
+                content.setPopularity(value);
+            }
+
+            contentRepository.saveAll(files);
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("안돼?????????");
+        }
+
     }
 }
