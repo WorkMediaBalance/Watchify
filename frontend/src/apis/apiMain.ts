@@ -37,7 +37,7 @@ const sample = {
 */
 export const mainRecommendNon = async () => {
   try {
-    const res = await apiR.get("readapi/main/recommendnon");
+    const res = await apiR.get("readapi/main/recommendnon/nonauth");
     return res.data;
   } catch (err) {
     console.log("비로그인 유저 추천 메인페이지 추천 컨텐츠 조회 실패");

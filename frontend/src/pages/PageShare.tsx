@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, useLocation } from "react-router-dom";
 import { myHistoryInfo } from "apis/apiMy";
 import HistoryCalendar from "components/mypage/history/HistoryCalendar";
-import HistoryBottomSheet from "components/mypage/history/HistoryBottomSheet";
+import ShareBottomSheet from "components/common/share/ShareBottomSheet";
 import { useRecoilState } from "recoil";
 import { HistoryDetailContent } from "interface/content";
 import { scheduleShareGet } from "apis/apiSchedule";
@@ -97,6 +97,7 @@ const PageShare = () => {
 
   return (
     <div>
+      <div></div>
       {dataToProps && (
         <HistoryCalendar
           selectedDate={selectedDate}
@@ -116,8 +117,9 @@ const PageShare = () => {
           }}
         />
       )}
-      <HistoryBottomSheet
+      <ShareBottomSheet
         data={dataToProps?.[date] ?? []}
+        selectedDate={selectedDate}
         isOpen={isOpen}
         onClose={() => {
           setIsOpen(false);
