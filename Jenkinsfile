@@ -23,6 +23,24 @@ pipeline {
                 script {
                     def BUILD_NUMBER = currentBuild.number
 
+                    dir('BACKEND/watchify/src/main/resources'){
+                        sh """
+                            sed -i 's/DB_USER/"$DB_USER"/g' application.yml
+                            sed -i 's/DB_PW/"$DB_PW"/g' application.yml
+                            sed -i 's/DB_HOST/"$DB_HOST"/g' application.yml
+                            sed -i 's/SERVER_HOST/"$SERVER_HOST"/g' application.yml
+                        """
+                    }
+
+                    dir('BACKEND/watchify/src/main/resources'){
+                        sh """
+                            sed -i 's/THREE_S_ACCESSKEY/"$THREE_S_ACCESSKEY"/g' application-dev.yml
+                            sed -i 's~THREE_S_SECRETKEY~'"$THREE_S_SECRETKEY"'~g' application-dev.yml
+                            sed -i 's/THREE_S_BUCKET/"$THREE_S_BUCKET"/g' application-dev.yml
+                            sed -i 's/FCM_JSON/"$FCM_JSON"/g' application-dev.yml
+                        """
+                    }
+
                     dir('BACKEND/watchify') { // 해당 directory로 들어가기 위해서는 cd는 안되고 대신 dir를 사용해야한다.
                         sh 'chmod +x gradlew'
                         sh './gradlew clean build -x test'
@@ -32,6 +50,23 @@ pipeline {
                     sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin' // docker hub 로그인
                     sh 'docker push $repository:backend$BUILD_NUMBER'
 
+                    dir('BACKEND/watchify/src/main/resources'){
+                        sh """
+                            sed -i 's/"$DB_USER"/DB_USER/g' application.yml
+                            sed -i 's/"$DB_PW"/DB_PW/g' application.yml
+                            sed -i 's/"$DB_HOST"/DB_HOST/g' application.yml
+                            sed -i 's/"$SERVER_HOST"/SERVER_HOST/g' application.yml
+                        """
+                    }
+
+                    dir('BACKEND/watchify/src/main/resources'){
+                        sh """
+                            sed -i 's/"$THREE_S_ACCESSKEY"/THREE_S_ACCESSKEY/g' application-dev.yml
+                            sed -i 's~"$THREE_S_SECRETKEY"~'THREE_S_SECRETKEY'~g' application-dev.yml
+                            sed -i 's/"$THREE_S_BUCKET"/THREE_S_BUCKET/g' application-dev.yml
+                            sed -i 's/"$FCM_JSON"/FCM_JSON/g' application-dev.yml
+                        """
+                    }
                 }
             }
         }
@@ -42,6 +77,24 @@ pipeline {
                 script {
                     def BUILD_NUMBER = currentBuild.number
 
+                    dir('ReadOnlyBackend/watchify/src/main/resources'){
+                        sh """
+                            sed -i 's/DB_USER/"$DB_USER"/g' application.yml
+                            sed -i 's/DB_PW/"$DB_PW"/g' application.yml
+                            sed -i 's/READONLYDB_HOST/"$READONLYDB_HOST"/g' application.yml
+                            sed -i 's/SERVER_HOST/"$SERVER_HOST"/g' application.yml
+                        """
+                    }
+
+                    dir('ReadOnlyBackend/watchify/src/main/resources'){
+                        sh """
+                            sed -i 's/THREE_S_ACCESSKEY/"$THREE_S_ACCESSKEY"/g' application-dev.yml
+                            sed -i 's~THREE_S_SECRETKEY~'"$THREE_S_SECRETKEY"'~g' application-dev.yml
+                            sed -i 's/THREE_S_BUCKET/"$THREE_S_BUCKET"/g' application-dev.yml
+                            sed -i 's/FCM_JSON/"$FCM_JSON"/g' application-dev.yml
+                        """
+                    }
+
                     dir('ReadOnlyBackend/watchify') { // 해당 directory로 들어가기 위해서는 cd는 안되고 대신 dir를 사용해야한다.
                         sh 'chmod +x gradlew'
                         sh './gradlew clean build -x test'
@@ -50,6 +103,24 @@ pipeline {
                     sh 'docker build -t $repository:readonlybackend$BUILD_NUMBER ./ReadOnlyBackend/watchify'
                     sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin' // docker hub 로그인
                     sh 'docker push $repository:readonlybackend$BUILD_NUMBER'
+
+                    dir('ReadOnlyBackend/watchify/src/main/resources'){
+                        sh """
+                            sed -i 's/"$DB_USER"/DB_USER/g' application.yml
+                            sed -i 's/"$DB_PW"/DB_PW/g' application.yml
+                            sed -i 's/"$READONLYDB_HOST"/READONLYDB_HOST/g' application.yml
+                            sed -i 's/"$SERVER_HOST"/SERVER_HOST/g' application.yml
+                        """
+                    }
+
+                    dir('ReadOnlyBackend/watchify/src/main/resources'){
+                        sh """
+                            sed -i 's/"$THREE_S_ACCESSKEY"/THREE_S_ACCESSKEY/g' application-dev.yml
+                            sed -i 's~"$THREE_S_SECRETKEY"~'THREE_S_SECRETKEY'~g' application-dev.yml
+                            sed -i 's/"$THREE_S_BUCKET"/THREE_S_BUCKET/g' application-dev.yml
+                            sed -i 's/"$FCM_JSON"/FCM_JSON/g' application-dev.yml
+                        """
+                    }
 
                 }
             }
@@ -63,11 +134,11 @@ pipeline {
                     // Django 보안 설정을 위하여 envfile에 들어가서 변경 > image 생성 > 다시 되돌리는 순서대로 진행
                     dir('AI/watchifyAI'){
                         sh """
-                            sed -i 's/DB_NAME/$DB_NAME/g' settings.py
-                            sed -i 's/DB_USER/$DB_USER/g' settings.py
-                            sed -i 's/DB_PW/$DB_PW/g' settings.py
-                            sed -i 's/DB_HOST/$DB_HOST/g' settings.py
-                            sed -i 's/DB_PORT/$DB_PORT/g' settings.py
+                            sed -i 's/DB_NAME/"$DB_NAME"/g' settings.py
+                            sed -i 's/DB_USER/"$DB_USER"/g' settings.py
+                            sed -i 's/DB_PW/"$DB_PW"/g' settings.py
+                            sed -i 's/DB_HOST/"$DB_HOST"/g' settings.py
+                            sed -i 's/DB_PORT/"$DB_PORT"/g' settings.py
                         """
                     }
                     sh 'docker build -t $repository:ai$BUILD_NUMBER ./AI' // frontend 파일 생성
@@ -75,11 +146,11 @@ pipeline {
                     sh 'docker push $repository:ai$BUILD_NUMBER' //docker push
                     dir('AI/watchifyAI'){
                         sh """
-                            sed -i 's/$DB_NAME/DB_NAME/g' settings.py
-                            sed -i 's/$DB_USER/DB_USER/g' settings.py
-                            sed -i 's/$DB_PW/DB_PW/g' settings.py
-                            sed -i 's/$DB_HOST/DB_HOST/g' settings.py
-                            sed -i 's/$DB_PORT/DB_PORT/g' settings.py
+                            sed -i 's/"$DB_NAME"/DB_NAME/g' settings.py
+                            sed -i 's/"$DB_USER"/DB_USER/g' settings.py
+                            sed -i 's/"$DB_PW"/DB_PW/g' settings.py
+                            sed -i 's/"$DB_HOST"/DB_HOST/g' settings.py
+                            sed -i 's/"$DB_PORT"/DB_PORT/g' settings.py
                         """
                     }
                 }
@@ -97,6 +168,7 @@ pipeline {
                     // git pull을 미리 받음
                     withCredentials([usernamePassword(credentialsId: credentialId, passwordVariable: gitpassword, usernameVariable: gitId)]) {
                         sh 'git remote set-url origin https://sdc00035:diligent0924!@lab.ssafy.com/s08-final/S08P31A207.git'
+                        sh 'git stash'
                         sh 'git switch main'
                         sh 'git pull origin main'
                     }
