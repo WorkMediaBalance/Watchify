@@ -88,13 +88,17 @@ const PageShare = () => {
     const formattedMonth = selectedDate.getMonth() + 1;
     if (formattedMonth < 10) {
       const formattedDate = formattedYear + "-0" + formattedMonth.toString();
-      if (shareDetail) {
+      if (shareDetail[formattedDate]) {
         setDataToProps(shareDetail[formattedDate]);
+      } else {
+        setDataToProps({});
       }
     } else {
       const formattedDate = formattedYear + "-" + formattedMonth.toString();
-      if (shareDetail) {
+      if (shareDetail[formattedDate]) {
         setDataToProps(shareDetail[formattedDate]);
+      } else {
+        setDataToProps({});
       }
     }
     setFromatDay(selectedDate.getDate());
