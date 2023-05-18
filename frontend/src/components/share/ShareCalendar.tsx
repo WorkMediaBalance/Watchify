@@ -1,27 +1,24 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef, useMemo } from "react";
 import styled from "styled-components";
 import { useSwipeable } from "react-swipeable";
 import { motion, AnimatePresence } from "framer-motion";
 import { theme } from "styles/theme";
 import { months } from "constant/constant";
-import { useNavigate } from "react-router-dom";
-import { schedule } from "interface/schedule";
+import { HistoryDetailContent } from "recoil/history";
+import { myHistoryInfo } from "apis/apiMy";
 
-// month 스케줄 state
-import { monthScheduleState } from "recoil/scheduleState";
-import { useRecoilState } from "recoil";
-const Calendar = (props: {
-  onDateClick: (date: number, month: number, year: number) => void;
+const HistoryCalendar = (props: {
+  onDateClick: (date: number, month: number) => void;
   onCloseSheet: () => void;
   bottomSheetState: number;
-  monthSchedule: schedule;
-  setMonthSchedule: (data: schedule) => void;
-  setMonth: React.Dispatch<React.SetStateAction<number>>;
+  historyDetail: { [key: number]: HistoryDetailContent[] };
+  selectedDate: Date;
+  setSelectedDate: React.Dispatch<React.SetStateAction<Date>>;
 }) => {
-  const [selectedDate, setSelectedDate] = useState(new Date());
+  // const [selectedDate, setSelectedDate] = useState(new Date());
   const [clickedDay, setClickedDay] = useState<HTMLElement | null>(null);
   const weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-  const month = getMonthAbbreviation(selectedDate);
+  const month = getMonthAbbreviation(props.selectedDate);
 
   function getMonthAbbreviation(date: Date) {
     const currentDate = new Date();
@@ -47,9 +44,12 @@ const Calendar = (props: {
     return new Date(date.getFullYear(), date.getMonth() + 1, 0).getDay();
   }
 
-  const daysInMonth = getDaysInMonth(selectedDate.getFullYear(), selectedDate.getMonth());
-  const firstDayOfMonth = getFirstDayOfMonth(selectedDate);
-  const lastDayOfMonth = getLastDayOfMonth(selectedDate);
+  const daysInMonth = getDaysInMonth(
+    props.selectedDate.getFullYear(),
+    props.selectedDate.getMonth()
+  );
+  const firstDayOfMonth = getFirstDayOfMonth(props.selectedDate);
+  const lastDayOfMonth = getLastDayOfMonth(props.selectedDate);
 
   const days = [];
 
@@ -58,7 +58,7 @@ const Calendar = (props: {
   }
 
   for (let i = 1; i <= daysInMonth; i++) {
-    days.push(`${selectedDate.getFullYear()}-${selectedDate.getMonth() + 1}-${i}`);
+    days.push(`${props.selectedDate.getFullYear()}-${props.selectedDate.getMonth() + 1}-${i}`);
   }
 
   for (let i = 0; i < 6 - lastDayOfMonth; i++) {
@@ -80,26 +80,22 @@ const Calendar = (props: {
   rows.push({ cells });
 
   function thisMonth() {
-    setSelectedDate(new Date());
-    props.setMonth(new Date().getMonth() + 1);
+    console.log("thismonth");
+    props.setSelectedDate(new Date());
     props.onCloseSheet();
   }
 
   function prevMonth() {
-    setSelectedDate((prevDate) => {
-      const newDate = new Date(prevDate.getFullYear(), prevDate.getMonth() - 1, 1);
-      props.setMonth(newDate.getMonth() + 1);
-      return newDate;
-    });
+    props.setSelectedDate(
+      (prevDate) => new Date(prevDate.getFullYear(), prevDate.getMonth() - 1, 1)
+    );
     props.onCloseSheet();
   }
 
   function nextMonth() {
-    setSelectedDate((prevDate) => {
-      const newDate = new Date(prevDate.getFullYear(), prevDate.getMonth() + 1, 1);
-      props.setMonth(newDate.getMonth() + 1);
-      return newDate;
-    });
+    props.setSelectedDate(
+      (prevDate) => new Date(prevDate.getFullYear(), prevDate.getMonth() + 1, 1)
+    );
     props.onCloseSheet();
   }
 
@@ -121,23 +117,26 @@ const Calendar = (props: {
       }
       event.currentTarget.classList.add("selected-day");
       setClickedDay(event.currentTarget);
-      const date = selectedDate.getMonth() + 1;
+      const date = props.selectedDate.getMonth() + 1;
       const month = Number(YMD[2]);
-      const year = selectedDate.getFullYear();
-      props.onDateClick(month, date, year);
+      if (props.historyDetail[parseInt(YMD[2])]) {
+        props.onDateClick(month, date);
+      }
     }
     setCurrentRowIndex(rowIndex);
   };
 
   // 해당 스케줄 불러오기
-  const monthSchedule = props.monthSchedule;
-  const navigate = useNavigate();
+  useEffect(() => {
+    console.log(props.historyDetail, "여기가 디테일");
+  }, []);
+
   return (
     <Wrapper className={"wrapper"}>
       <motion.div>
         <AnimatePresence>
           <SCalendarDiv
-            key={selectedDate.toISOString()}
+            key={props.selectedDate.toISOString()}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{
@@ -146,13 +145,8 @@ const Calendar = (props: {
             {...handlers}
           >
             <SHeader>
-              <RescheduleButton
-                onClick={() => navigate("/schedule", { state: { isMakeNew: true } })}
-              >
-                New Schedule
-              </RescheduleButton>
-              <SMonth>{month}</SMonth>
               <SToday onClick={thisMonth}>Today</SToday>
+              <SMonth>{month}</SMonth>
             </SHeader>
 
             <STable bottomSheetState={props.bottomSheetState}>
@@ -188,30 +182,7 @@ const Calendar = (props: {
                           }
                         }
 
-                        return props.bottomSheetState === 2 ? (
-                          currentRowIndex === rowIndex && (
-                            <STd
-                              onClick={(event) => handleDateClick(event, rowIndex, day)}
-                              key={`${rowIndex}-${dayIndex}`}
-                              data-key={`${rowIndex}-${dayIndex}`}
-                              className={className}
-                              rowsLength={rows.length}
-                              bottomSheetState={props.bottomSheetState}
-                            >
-                              <STdDiv>
-                                <SP className="SP">{content}</SP>
-
-                                <InnerConteiner>
-                                  {typeof content === "number" && monthSchedule[content]
-                                    ? monthSchedule[content].map((content, index) => {
-                                        return <IndicationBar />;
-                                      })
-                                    : null}
-                                </InnerConteiner>
-                              </STdDiv>
-                            </STd>
-                          )
-                        ) : props.bottomSheetState === 1 ? (
+                        return props.bottomSheetState === 1 ? (
                           <STd
                             onClick={(event) => handleDateClick(event, rowIndex, day)}
                             key={`${rowIndex}-${dayIndex}`}
@@ -224,8 +195,8 @@ const Calendar = (props: {
                               <SP>{content}</SP>
 
                               <InnerConteiner>
-                                {typeof content === "number" && monthSchedule[content]
-                                  ? monthSchedule[content].map((content, index) => {
+                                {typeof content === "number" && props.historyDetail[content]
+                                  ? props.historyDetail[content].map((content, index) => {
                                       return <IndicationBar />;
                                     })
                                   : null}
@@ -245,30 +216,21 @@ const Calendar = (props: {
                               <SP>{content}</SP>
 
                               <InnerConteiner>
-                                {typeof content === "number" && monthSchedule[content]
-                                  ? monthSchedule[content].slice(0, 4).map((content, index) => {
+                                {typeof content === "number" && props.historyDetail[content]
+                                  ? props.historyDetail[content].map((content, index) => {
                                       return (
                                         <ContentTag>
                                           <ContentTagDot />
                                           <ContentName>
-                                            {content.finalEpisode === 0
-                                              ? "단편"
-                                              : `${content.episode}화`}
+                                            {content.episode !== 0
+                                              ? `${content.episode}화`
+                                              : "영화"}
                                           </ContentName>
                                         </ContentTag>
                                       );
                                     })
                                   : null}
                               </InnerConteiner>
-                              {typeof content === "number" &&
-                                monthSchedule[content] &&
-                                monthSchedule[content].length > 4 && (
-                                  <div
-                                    style={{ width: "100%", textAlign: "end", marginRight: "20%" }}
-                                  >
-                                    +{monthSchedule[content].length - 4}
-                                  </div>
-                                )}
                             </STdDiv>
                           </STd>
                         );
@@ -285,7 +247,7 @@ const Calendar = (props: {
   );
 };
 
-export default Calendar;
+export default HistoryCalendar;
 
 const Wrapper = styled.div`
   color: ${theme.netflix.fontColor};
@@ -305,27 +267,22 @@ const SHeader = styled.div`
   margin-bottom: 1vh;
   width: 100vw;
   color: ${theme.netflix.fontColor};
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
 `;
 
-const SMonth = styled.div`
+const SMonth = styled.p`
   font-size: ${theme.fontSizeType.big.fontSize};
   font-weight: ${theme.fontSizeType.big.fontWeight};
   margin-bottom: 1vh;
   margin-top: 0;
   text-align: center;
-  width: calc(100% / 3);
 `;
 
-const SToday = styled.div`
+const SToday = styled.p`
+  position: absolute;
   right: 2vw;
+  margin-bottom: 0;
+  margin-top: 0;
   line-height: 2;
-  width: calc(100% / 3);
-  text-align: end;
-  margin-right: 3vw;
 `;
 
 const STable = styled.table<{ bottomSheetState: number }>`
@@ -407,7 +364,7 @@ const ContentTagDot = styled.div`
 
 const ContentName = styled.div`
   color: ${theme.netflix.tabColor};
-  font-size: 0.7rem;
+  font-size: 0.8rem;
   margin: 0.4vw;
   margin-right: 2vw;
 `;
@@ -416,14 +373,10 @@ const IndicationBar = styled.div`
   background-color: ${theme.netflix.pointColor};
   height: 0.3vh;
   width: 90%;
+  margin-bottom: 0.2vh;
 `;
 
 const ContentPlus = styled.div`
   width: 100%;
   text-align: end;
-`;
-
-const RescheduleButton = styled.div`
-  width: calc(100% / 3);
-  margin-left: 3vw;
 `;

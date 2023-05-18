@@ -1,18 +1,34 @@
 # Watchify
-다양한 컨텐츠를 스케줄링 받아 알차게 사용해보세요~~!!
+![logo](https://lab.ssafy.com/s08-final/S08P31A207/-/raw/main/OUTPUT/readme/logo.png)
+
+다양한 컨텐츠를 스케줄링 받아 OTT를 보다 알차게 사용해보세요!
+
+## 만든 사람들
+| 프로필                                                    | 이름 | 역할                                                                                                                                                                       | GitHub                                   |
+|--------------------------------------------------------|----|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------|
+| <img src="https://github.com/gittgi.png" width="50"> | 김준형 | <img src="https://img.shields.io/badge/-LEADER-yellow"> <img src="https://img.shields.io/badge/-FRONTEND-lightblue"> | [@gittgi](https://github.com/gittgi) |
+| <img src="https://github.com/gobeul.png" width="50"> | 고병진 | <img src="https://img.shields.io/badge/-BACKEND-green"> | [@gobeul](https://github.com/gobeul) |
+| <img src="https://github.com/zxzx9404.png" width="50">  | 최은성 | <img src="https://img.shields.io/badge/-FRONTEND-lightblue"> <img src="https://img.shields.io/badge/-PRESENTOR-pink">                                                     | [@zxzx9404](https://github.com/zxzx9404)   |
+| <img src="https://github.com/Diligent0924.png" width="50">   | 박용찬 | <img src="https://img.shields.io/badge/-CI/CD-gray"> <img src="https://img.shields.io/badge/-BACKEND-green">                                                     | [@Diligent0924](https://github.com/Diligent0924)     |
+| <img src="https://github.com/blosson.png" width="50"> | 손민혁 | <img src="https://img.shields.io/badge/-FRONTEND-lightblue"> | [@blosson](https://github.com/blosson) |
+| <img src="https://github.com/castleis.png" width="50">  | 김성은 | <img src="https://img.shields.io/badge/-BACKEND-green"> | [@castleis](https://github.com/castleis)   |
 
 ## 목차
-1. 서비스 개요
-   1. 서비스 소개
-   2. 기획 배경
-   3. 디자인 컨셉
-2. MVP 소개
-   1. Backend
-   2. Frontend
-3. 시연 영상
-4. 기술 스택
-5. 프로젝트 산출물
-6. 프로젝트 멤버
+### [1. 서비스 개요](#서비스-개요)
+### [2. 서비스 소개](#서비스-소개)
+   - [컨텐츠 스케줄링](#컨텐츠-스케줄링)
+   - [컨텐츠 추천](#컨텐츠-추천)
+   - [간편 로그인](#간편-로그인)
+   - [알람 및 공유](#알람-및-공유)
+### [3. UCC](#UCC)
+### [4. 기술 스택](#기술-스택)
+  - [Frontend](#frontend)
+  - [Backend](#backend)
+  - [CI/CD](#cicd)
+### [6. 프로젝트 산출물](#프로젝트-산출물)
+  - [데이터베이스](#데이터베이스)
+  - [시스템 아키텍처](#시스템-아키텍처)
+  - [Figma](#figma)
 ---
 <br>
 
@@ -24,64 +40,131 @@ Watchify는 사용자가 ott 서비스를 좀 더 알차게 즐길 수 있도록
 OTT 구독 기간과 사용자의 취향 등을 반영하여 컨텐츠를 추천받고 시청 스케줄을 만든다면 보다 OTT를 알차게 사용할 수 있을 것이라는 기대에서 시작하였습니다.
 
 ## 3. 디자인 컨셉
-- 네X버의 그린 닷을 모티브로 한 Watchify만의 레드 닷!
-- 개성적인 orenge color~~
-- 
+- 네X버의 그린 닷을 모티브로 한 Watchify만의 레드 닷으로 바텀 탭이 없는 깔끔한 UI를 확인할 수 있습니다.
+- 깔끔한 UI를 위해 black과 orenge 컬러를 사용하였습니다.
+<br>
 
-# MVP 소개
+![레드닷]()
+![메인페이지]()
+
+# 서비스 소개
 ## 컨텐츠 스케줄링
 사용자가 시청하기 원하는 컨텐츠를 사용자의 시청 패턴에 맞도록, OTT 구독 정보에 맞춰 스케줄링합니다.
-### 시청 패턴 지정
-프로필 페이지에서 자신의 시청 패턴을 저장할 수 있습니다. 그래프 바를 움직여 시청 시간을 저장하세요.
-### 스케줄링 알고리즘
-사용자가 시청하기 원하는 컨텐츠를 선택하면, 사용자가 미리 지정해놓은 시청 패턴에 따라 스케줄링을 시작합니다. 
+
+### 1. 시청 패턴 지정
+프로필 페이지에서 자신의 시청 패턴을 저장할 수 있습니다. 각 요일별로 그래프 바를 움직여 시청 시간을 저장하세요. 그래프를 직접 움직여 설정하는 것이 귀찮다면 본인 시청 패턴에 맞는 프리셋을 선택할 수도 있습니다.
+<br>
+
+![시청패턴지정]()
+
+### 2. 스케줄링 알고리즘
+사용자가 시청하기 원하는 컨텐츠를 선택하면, 사용자가 미리 지정해놓은 시청 패턴에 따라 스케줄링을 시작합니다.
+- 스케줄링 시 최소한의 OTT를 구독하도록 구성합니다.
+- 만약 사용자가 선택한 특정 OTT의 컨텐츠를 스케줄링할 때, 구독 기간이 남아있다면 사용자의 시청기록, 찜 목록, 현재 스케줄링을 요청한 컨텐츠들의 정보를 고려하여 새로운 컨텐츠를 추천하여 구독 기간동안 알차게 컨텐츠를 즐길 수 있도록 구성합니다.
+- n부작 드라마를 스케줄링할 때, m화까지 시청하였다면 m+1화부터 스케줄링을 시작합니다.
+
+### 3. 스케줄 조회
+스케줄링을 완료했다면 스케줄 페이지에서 달력으로 한 눈에 스케줄을 확인할 수 있습니다. 각 날짜를 터치하면 해당 날의 시청할 컨텐츠를 바텀시트로 확인하고, 각 컨텐츠의 세부정보를 확인할 수 있습니다. 또한 보러가기 버튼을 누른다면 해당 ott 스트리밍 페이지로 이동합니다.
+<br>
+
+![캘린더]()
+![날짜선택]()
+![바텀시트]()
+![바로가기.gif]() 
 
 ## 컨텐츠 추천
-사용자가 시청하거나 별점을 매기거나, 혹은 위시리스트에 추가한 컨텐츠를 기반으로 컨텐츠를 추천합니다.
-### 추천 알고리즘 
-- ./AI/ml/recommendModels
-- recommend_content.py
-  - itemdict : 사용자가 선택한 장르, OTT 정보와 사용자의 시청, 평점 기록 및 위시 리스트를 반영하여 컨텐츠 데이터 조회
-  - neighbor_item : 사용자와 비슷한 취향의 유저의 시청, 평점 기록을 기반으로 비슷한 취향의 유저들의 컨텐츠 데이터 조회
-  - DB에서 조회한 컨텐츠 리스트를 predict 함수를 호출하여 상호 비교
+사용자 기반 협업 필터링을 사용하여 개인별로 컨텐츠를 추천합니다. 사용자가 시청하거나 별점을 매기거나, 혹은 위시리스트에 추가한 컨텐츠를 기반으로 컨텐츠를 추천합니다.
+<br>
 
-- predict_rating.py
-  - 추천도를 계산하기 위한 추천 종류에 따라 predict 함수를 정의
-  - 비슷한 취향의 유저들의 컨텐츠 데이터와 사용자의 컨텐츠 데이터를 비교하며 SmilarytiyMatrix클래스의 get_user_similarity를 호출하여 유저 유사도(user_similarity)와 이를 이용하여 사용자들이 매긴 평점에 가중치를 부여(weighted_rating)
-  - 가중치 점수가 높을수록 추천 순위가 높아짐
-  - 가중치가 부여된 점수 순으로 컨텐츠를 정렬
+![main]()
+![user]()
+![schedule]()
 
-- smilarity_matrix.py
-  - 유저들 간의 smilarity를 계산하여 사용자와의 smilarity를 return
-  - smilarity를 계산할 때 RatingCountMatrix 클래스의 get_agreement_count 함수를 호출하여 계산
+### 1. 추천 알고리즘
+1. DB 조회
+  - 먼저 사용자가 선택한 장르, OTT 정보와 사용자의 시청, 평점 기록 및 위시 리스트를 반영하여 컨텐츠 데이터를 조회합니다.
+  - 또한 사용자 기반 협업 필터링을 위해 사용자와 비슷한 취향의 유저의 시청, 평점 기록을 기반으로 비슷한 취향의 유저들의 컨텐츠 데이터를 조회합니다.
+  - 위에서 조회한 컨텐츠들을 predict 함수를 호출하여 상호 비교하여 추천도가 높은 순으로 출력합니다.
 
-- rating_count_matrix.py
-  - smilarity를 계산할 각 유저의 취향정보를 조회
-  - 시청하거나, 평점을 매긴 컨텐츠가 겹칠수록 유사도가 높아짐
+2. 사용자 간 유사도 측정
+  - 유저들 간의 유사도를 계산하여 사용자와의 유사도를 계산합니다.
+  - smilarity를 계산할 때 `RatingCountMatrix` 클래스의 `get_agreement_count()` 함수를 호출하여 계산합니다.
+  - smilarity를 계산할 각 유저의 취향정보를 조회합니다.
+  - 시청하거나, 평점을 매긴 컨텐츠가 겹칠수록 유사도가 높아집니다.
 
-## 알람 기능
+3. 추천도 예측
+  - 추천도를 계산하기 위한 추천 종류에 따라 predict 함수를 정의하였습니다. 추천 종류에는 개인 별 추천, OTT 별 추천, 스케줄링 추천이 있습니다. 
+  - 비슷한 취향의 유저들의 컨텐츠 데이터와 사용자의 컨텐츠 데이터를 비교하며 `SmilarytiyMatrix`클래스의 `get_user_similarity()` 함수를 호출하여 유저 유사도(`user_similarity`)와 이를 이용하여 사용자들이 매긴 평점에 가중치(`weighted_rating`)를 부여합니다.
+  - 가중치 점수가 높을수록 추천 순위가 높아집니다.
+  - 가중치가 부여된 점수 순으로 컨텐츠를 정렬합니다.
 
+## 간편 로그인
+SNS 로그인으로 사용자가 간편하게 서비스에 접근할 수 있도록 합니다. 카카오톡과 구글 로그인을 지원합니다.
+<br>
 
-## 공유 기능
-컨텐츠 시청 스케줄을 받고 카카오톡 공유하기를 통해 공유할 수 있습니다.
+![로그인]()
+
+## 알람 및 공유
+### 알람
+프로필 페이지의 설정 탭에서 알람 on/off 기능으로 알람을 설정할 수 있습니다. 알람을 on으로 설정한다면, 매일 정해진 시간에 오늘의 시청 스케줄을 알림합니다.
+<br>
+
+![알람설정]()
+![알람]()
+### 공유
+컨텐츠 시청 스케줄을 받은 후, 스케줄 페이지에서 카카오톡 공유하기를 통해 공유할 수 있습니다.
+<br>
+
+![공유하기]()
+![공유받기]()
 
 
 <br>
 
-# 시연 영상
+# UCC
+
+<!-- <video controls>
+  <source src="영상 파일 경로 또는 URL" type="video/확장자">
+  대체 텍스트
+</video> -->
+
+![UCC]()
 
 # 기술 스택
-### Frontend
+## Frontend
 - React
-- 
-### Backend
-- JPA
-- Django
+- Recoil
+- Typescript
+
+
+## Backend
+### JPA
+
+
+### Django
+추천 알고리즘 서버를 Django로 구축하였습니다. Rest API를 사용하며 Spring의 요청이 들어오면 추천 알고리즘을 실행시켜 추천 결과를 전송합니다. 
+- Rest API
+Django rest_framework의 APIView를 사용하여 rest api를 구성하였습니다.
+또한 데이터 직렬화를 위해 django.serializer를 사용하여 추천 결과를 직렬화하여 Response로 전송합니다. 
+- MySQL
+보다 빠른 추천을 위해 Django의 기본 DB를 MySQL에 연결하였습니다. Django에서는 추천 요청을 받으면 MySQL의 데이터를 읽어와 사용자 기반 추천을 실행합니다. DB의 동기화?를 위해 Django에서는 읽기만 진행합니다.
+
+## CI/CD
+- Kubernetes
+- Jenkins
+- Docker
+- AWS
 
 # 프로젝트 산출물
-1. 데이터베이스
-2. 시스템 아키텍처
-3. 
+### 데이터베이스
+   
+![ERD](https://lab.ssafy.com/s08-final/S08P31A207/-/raw/main/OUTPUT/ERD.png)
 
----
-## 프로젝트 멤버
+### 시스템 아키텍처
+![아키텍처]()
+
+### Figma
+
+![Figma1](https://lab.ssafy.com/s08-final/S08P31A207/-/raw/main/OUTPUT/readme/Figma1.png)
+
+![Figma2](https://lab.ssafy.com/s08-final/S08P31A207/-/raw/main/OUTPUT/readme/Figma2.png)

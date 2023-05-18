@@ -13,7 +13,7 @@ public class OttDateDTO {
 
     public OttDateDTO(LocalDate st, LocalDate et) {
         this.start = st;
-        this.end = st;
+        this.end = et;
     }
 
     public void setStart(LocalDate date) { this.start = date; }

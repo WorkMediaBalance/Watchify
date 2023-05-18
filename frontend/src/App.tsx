@@ -37,7 +37,7 @@ const App = () => {
             <Route path="/" element={<PageMain />} />
             <Route path="/recommend" element={<PageRecommend />} />
             <Route path="/recommend/result" element={<PageRecommendResult />} />
-            <Route path="/share" element={<PageShare />} />
+            <Route path="/share/:sharedPK" element={<PageShare />} />
 
             <Route path="/schedule" element={<PageSchedule />} />
             <Route path="/schedule/content" element={<PageScheduleContent />} />

@@ -15,7 +15,7 @@ const CalendarBottomSheetSecond = (props: { date: number; month: number }) => {
   //  useEffect(() => {
   // const [dateScheduleList, setDateScheduleList] = useState(monthSchedule[props.date]);
   //   }, )
-  const dateScheduleList = monthSchedule[props.date];
+  const dateScheduleList = monthSchedule[props.date] === undefined ? [] : monthSchedule[props.date];
 
   const nextContent = () => {
     if (
@@ -48,7 +48,7 @@ const CalendarBottomSheetSecond = (props: { date: number; month: number }) => {
     Array.isArray(dateScheduleList) &&
     dateScheduleList.length > 0 &&
     dateScheduleList[index]["finalEpisode"] !== 0
-      ? `${dateScheduleList[index]["finalEpisode"]} 화`
+      ? `${dateScheduleList[index]["episode"]} 화`
       : "";
   return (
     <Container {...handlers}>

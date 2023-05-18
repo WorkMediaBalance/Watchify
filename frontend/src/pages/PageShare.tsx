@@ -1,29 +1,127 @@
-import React, { useEffect } from "react";
-import { shareKakao } from "hooks/shareKakaoLink";
+import React, { useEffect, useState } from "react";
+import { useParams, useLocation } from "react-router-dom";
+import { myHistoryInfo } from "apis/apiMy";
+import HistoryCalendar from "components/mypage/history/HistoryCalendar";
+import HistoryBottomSheet from "components/mypage/history/HistoryBottomSheet";
+import { useRecoilState } from "recoil";
+import { HistoryDetailContent } from "interface/content";
+import { scheduleShareGet } from "apis/apiSchedule";
+
+interface HistoryData {
+  [key: string]: number;
+}
+
+interface HistoryDetailContentObject {
+  [key: number]: HistoryDetailContent[];
+}
+
+interface ShareDetailContentObject {
+  [key: string]: HistoryDetailContentObject;
+}
 
 const PageShare = () => {
-  useEffect(() => {
-    const script = document.createElement("script");
-    script.src = "https://developers.kakao.com/sdk/js/kakao.js";
-    script.async = true;
-    document.body.appendChild(script);
+  // const { pk } = useParams();
+  const location = useLocation();
+  const startYear = location.state && location.state.year;
+  const startMonth = location.state && location.state.month;
+  const startDay = location.state && location.state.day;
+  const pk = location.state && location.state.pk;
+  let { sharedPK } = useParams();
 
-    return () => {
-      document.body.removeChild(script);
-    };
+  const [year, setYear] = useState(startYear);
+  const [month, setMonth] = useState(startMonth);
+  const [date, setDate] = useState(startDay);
+
+  const [shareDetail, setShareDetail] = useState<ShareDetailContentObject>({});
+  const [selectedDate, setSelectedDate] = useState(new Date());
+  // 히스토리 상세 정보 받아오기
+  async function getScheduleShare(sharedPK: number) {
+    try {
+      const newShareDetail = await scheduleShareGet(sharedPK);
+      if (newShareDetail !== undefined) {
+        setShareDetail(newShareDetail);
+      }
+    } catch {}
+  }
+
+  useEffect(() => {
+    console.log(sharedPK);
+    if (sharedPK === undefined) {
+    } else {
+      getScheduleShare(Number(sharedPK));
+    }
   }, []);
 
-  const sharing = (name: string) => {
-    shareKakao("https://k8a207.p.ssafy.io", `${name}님의 OTT 시청 패턴이 궁금하다면?`);
+  // bottomsheet open 변수
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [sheetLevel, setSheetLevel] = useState<number>(0);
+
+  // 이제 시작...
+  const [dataToProps, setDataToProps] = useState<HistoryDetailContentObject>();
+  const [formattedDate, setFormattedDate] = useState("");
+
+  useEffect(() => {
+    // const formattedYear = selectedDate.getFullYear().toString();
+    // const formattedMonth = selectedDate.getMonth() + 1;
+    // if (formattedMonth < 10) {
+    //   setFormattedDate(formattedYear + "-0" + formattedMonth.toString());
+    // } else {
+    //   setFormattedDate(formattedYear + "-" + formattedMonth.toString());
+    // }
+    // console.log(formattedDate, "foramttedDate");
+    totalFunction();
+  }, [selectedDate, shareDetail]);
+
+  // useEffect(() => {
+  //   if (shareDetail) {
+  //     setDataToProps(shareDetail[formattedDate]);
+  //     console.log(shareDetail[formattedDate], "shareDetail[foramttedDate]");
+  //   }
+  // }, [formattedDate]);
+
+  const totalFunction = async () => {
+    const formattedYear = selectedDate.getFullYear().toString();
+    const formattedMonth = selectedDate.getMonth() + 1;
+    if (formattedMonth < 10) {
+      const formattedDate = formattedYear + "-0" + formattedMonth.toString();
+      if (shareDetail) {
+        setDataToProps(shareDetail[formattedDate]);
+      }
+    } else {
+      const formattedDate = formattedYear + "-" + formattedMonth.toString();
+      if (shareDetail) {
+        setDataToProps(shareDetail[formattedDate]);
+      }
+    }
   };
 
   return (
     <div>
-      <img
-        src="https://developers.kakao.com/assets/img/about/logos/kakaotalksharing/kakaotalk_sharing_btn_medium.png"
-        alt="#"
-        onClick={() => {
-          sharing("박용찬");
+      {dataToProps && (
+        <HistoryCalendar
+          selectedDate={selectedDate}
+          setSelectedDate={setSelectedDate}
+          historyDetail={dataToProps}
+          onDateClick={(date: number, month: number) => {
+            setMonth(month);
+            setDate(date);
+            setIsOpen(true);
+            setSheetLevel(1);
+            console.log(dataToProps, "dataToProps");
+          }}
+          bottomSheetState={sheetLevel}
+          onCloseSheet={() => {
+            setIsOpen(false);
+            setSheetLevel(0);
+          }}
+        />
+      )}
+      <HistoryBottomSheet
+        data={dataToProps?.[date] ?? []}
+        isOpen={isOpen}
+        onClose={() => {
+          setIsOpen(false);
+          setSheetLevel(0);
         }}
       />
     </div>

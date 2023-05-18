@@ -131,7 +131,10 @@ const PageScheduleContent = () => {
         <Wrapper>
           <Container>
             <SDiv>필수 시청 목록</SDiv>
-            <SDiv2>스케줄 생성시 꼭 보고 싶은 컨텐츠를 담아주세요!</SDiv2>
+            <SDiv2 style={{ marginBottom: "0" }}>
+              스케줄 생성시 꼭 보고 싶은 컨텐츠를 담아주세요!
+            </SDiv2>
+            <SDiv2>담긴 컨텐츠 순서대로 스케줄링이 진행됩니다.</SDiv2>
             <ContentsContainer>
               {essList &&
                 essList.map((content, idx) => (
@@ -214,7 +217,7 @@ const SContent = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 1px solid white;
+  border: 1px solid transparent;
   border-radius: 10px;
   margin: 0 0.5rem;
   width: 25vw;
@@ -226,7 +229,7 @@ const SAiOutlineMinusCircle = styled(AiOutlineMinusCircle)`
   width: 1.5rem;
   height: 1.5rem;
   border-radius: 50%;
-  background-color: ${({ theme }) => theme.netflix.tabColor};
+  background-color: ${({ theme }) => theme.netflix.fontColor};
 `;
 
 const SRemoveDiv = styled.div`
@@ -236,6 +239,12 @@ const SRemoveDiv = styled.div`
 `;
 
 const SBoxContainer = styled.div`
+  display: flex;
+  position: relative;
+  margin-top: 0.5rem;
+`;
+
+const SBoxContainerFill = styled.div`
   display: flex;
   position: relative;
   margin-top: 0.5rem;

@@ -14,7 +14,12 @@ const SDiv2 = styled.div`
   color: ${({ theme }) => theme.netflix.fontColor};
 `;
 
-const CalendarBottomSheetContent = (props: { date: number; month: number; sheetDepth: number }) => {
+const CalendarBottomSheetContent = (props: {
+  date: number;
+  month: number;
+  year: number;
+  sheetDepth: number;
+}) => {
   return (
     <div>
       {props.sheetDepth === 1 ? (
@@ -22,6 +27,7 @@ const CalendarBottomSheetContent = (props: { date: number; month: number; sheetD
           <CalendarBottomSheetFirst
             date={props.date}
             month={props.month}
+            year={props.year}
           ></CalendarBottomSheetFirst>
         </SDiv1>
       ) : (
