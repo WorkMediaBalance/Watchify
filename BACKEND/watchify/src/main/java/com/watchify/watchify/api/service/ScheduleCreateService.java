@@ -59,13 +59,15 @@ public class ScheduleCreateService {
         // -- 여기 까지 pk(작업대에 있는 컨텐츠들)값들 에피소드별로 newContents (type : TurnContent) 에 담음
 
 
-
         // 이제 newContents 을 가지고 calender 에 등록 하고 HistoryInfoDTO 생성
         List<ScheduleObjDTO> scheduleObjDTOS = new ArrayList<>();
+
         breakFlag = 0;
         while (!newContents.isEmpty()) { // newContents 가 빌때까지
             if (breakFlag >= 10) {
                 newContents.pollFirst();
+                breakFlag = 0;
+                continue;
             }
             // 처음에 myTime 의 여유분이 있는 상태로 넘어올 수 있어서 myTime 갱신은 마지막에
             TurnContent thisTurnContent = newContents.peekFirst(); // 빼지 않고 조회만 remove(thisContent 로 빼면됨)
@@ -139,6 +141,11 @@ public class ScheduleCreateService {
         ottMatchId.put("disney", 4l);
         List<Long> ottIdList = new ArrayList<>();
         for (String name : req.getOtt()) { ottIdList.add(ottMatchId.get(name)); }
+
+        // 잠깐 테스트 -> 작업대에 아무것도 안넣을경우 장고에서 오류가 나옴
+        if (req.getContents().size() == 0) {
+            req.getContents().add(1l);
+        }
 
         SchduleRecommendtestDTO schduleRecommendtestDTO = new SchduleRecommendtestDTO(req.getContents(), ottIdList);
         List<Long> returnRec = recommendService.getSchediledTest(userId, schduleRecommendtestDTO); // 장고 추천 결과
@@ -269,6 +276,7 @@ public class ScheduleCreateService {
         LinkedList<TurnContent> newContents = new LinkedList<>(); // 링크드 리스트로 변경
         for (Long contentPK : contentPkList) {
             Content newContent = contentRepository.getContentById(contentPK); // 작업대에 있는 컨텐츠
+            System.out.println(newContent.getTitle());
             int finalEp = newContent.getFinalEpisode();
 
             if (finalEp == 0) {
