@@ -150,10 +150,18 @@ Django rest_framework의 APIView를 사용하여 rest api를 구성하였습니�
 보다 빠른 추천을 위해 Django의 기본 DB를 MySQL에 연결하였습니다. Django에서는 추천 요청을 받으면 MySQL의 데이터를 읽어와 사용자 기반 추천을 실행합니다. DB의 동기화?를 위해 Django에서는 읽기만 진행합니다.
 
 ## CI/CD
-- Kubernetes
-- Jenkins
-- Docker
-- AWS
+- AWS  
+  AWS에서 사용한 주요 서비스는 RDS(MYSQL), RDSReadOnlyReplica, S3, EC2를 사용하였습니다. 2개의 RDS를 이용한 이유는 기존의 모놀리식이나 여러 port에서 하나의 RDB에만 연결하는 것이 아닌 Port하나당 하나의 RDS를 연결하여 Traffic을 관리하고자 하였습니다. 또한, S3를 통하여 Image 효과적으로 관리하고자 노력하였습니다.
+- Kubernetes  
+  Container를 관리하기 위해서 단순 docker container보다 더 확장성이 있고 체계적인 Orchestration이 있어야 한다고 생각하여 구축하였습니다. Nginx-ingress를 통하여 Reverse Proxy를 하였으며 Certification을 통한 SSL 인증 과정을 진행하였습니다. YAML 파일을 통하여 Deployment(Service 및 Pods)를 관리하였습니다.
+- Docker  
+  Kubernetes의 CRI-O containerd와는 별개로 EC2 내 Docker를 설치 후 Redis, Jenkins를 설치하였습니다. Redis와 같은 Database(NoSQL)은 Kubernetes에서 관리하는 것보다 Port가 고정적인 Docker Container가 적합하다고 생각하였습니다. 또한, 설계를 CI와 CD를 나누어서 진행하였기에 Kubernetes 내부에 있을 필요가 없는 Jenkins는 Container에서 동작하게 진행하였습니다.
+- Jenkins  
+  Jenkins는 CI만을 담당하며 Frontend, Backend1, Backend2, AI Image Build > Dockerhub push > Deployment 변경사항 변경(YAML 변경)을 진행하였습니다.  
+  Kubernetes는 Docker Image를 인식할 수 없기에 외부 Dockerhub에서 이미지를 저장한 것을 받아와 Deployment를 변경하도록 진행하였습니다.  
+  또한, AWS S3 Secret Key, RDS username/password와 같은 민감한 부분들을 Gitlab에 올리는 것은 큰 위험이 따르기 때문에 Jenkins Global Variable을 이용한 민감 정보를 변수 처리하여 진행하였습니다.
+- ArgoCD  
+  상태관리도구를 이용하여 Trouble Shooting 등을 효과적으로 확인하였습니다. 각각의 pod를 시각적으로 확인하고 Deploy에서 생성되는 문제점을 효과적으로 관리함으로써 빠른 대처가 가능하였습니다.
 
 # 프로젝트 산출물
 ### 데이터베이스
