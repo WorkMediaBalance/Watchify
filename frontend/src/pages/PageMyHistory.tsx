@@ -38,6 +38,7 @@ const PageMyHistory = () => {
         month: Number(month),
       };
       const newHistoryDetail = await myHistoryInfo(data);
+      console.log(newHistoryDetail, month, year, "here");
       if (newHistoryDetail !== undefined) {
         setHistoryDetail(newHistoryDetail);
       }
@@ -47,9 +48,9 @@ const PageMyHistory = () => {
     MyHistoryInfoAPI(pk, selectedDate.getFullYear(), selectedDate.getMonth() + 1);
   }, [selectedDate]);
 
-  useEffect(() => {
-    MyHistoryInfoAPI(pk, year, month);
-  }, [month]);
+  // useEffect(() => {
+  //   MyHistoryInfoAPI(pk, year, month);
+  // }, [month]);
 
   // bottomsheet open 변수
   const [isOpen, setIsOpen] = useState<boolean>(false);
