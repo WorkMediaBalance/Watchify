@@ -37,7 +37,19 @@ public class ScheduleCreateService {
         List<LikeContent> myLikeContentList = likeContentRepository.getLikeContent(userId);
         List<Integer> weekOfDayTime = req.getPatterns(); // 요일별 패턴 시간
         LocalDate nowDate = req.getStartDate(); // 스케줄 시작 날짜
+        int startMonth = nowDate.getMonthValue();
         int lastDay = nowDate.getDayOfMonth(); // 여기까지 스케줄짤거임
+        int maxMyTime = 0;
+        for (int time : req.getPatterns()) {
+            if (time > maxMyTime) { maxMyTime = time; }
+        }
+
+        Map<String, Map<Integer, List<ScheduleObjDTO>>> res = new HashMap<>();
+        if (maxMyTime == 0) { // 패턴이 모두 0인 경우 == 악성유저..!
+            return res;
+        }
+
+        maxMyTime = maxMyTime * 60 + 10;
 
         List<UserViewingStatus> myViewStatus = userViewingStatusRepository.getMyViewStatue(userId); // 내가 지금까지 본 것들
         HashMap<Long, List<Integer>> myViewMap = commonLogic.makeMyViewStatus(myViewStatus);
@@ -72,6 +84,11 @@ public class ScheduleCreateService {
             // 처음에 myTime 의 여유분이 있는 상태로 넘어올 수 있어서 myTime 갱신은 마지막에
             TurnContent thisTurnContent = newContents.peekFirst(); // 빼지 않고 조회만 remove(thisContent 로 빼면됨)
             int runTime = thisTurnContent.getContent().getRuntime();
+
+            if (runTime > maxMyTime) { // 내 스케줄 상 들어갈 수 없는 컨텐츠 인경우
+                newContents.pollFirst();
+                continue;
+            }
 
             if (myTime < runTime) {
                 // 지금(nowDate 에서) 남아 있는 시간이 없다면...
@@ -164,11 +181,18 @@ public class ScheduleCreateService {
         breakFlag = 0;
         while (!RedNewContents.isEmpty()) { // RedNewContents 가 빌때까지
             if (breakFlag >= 10) {
-                newContents.pollFirst();
+                RedNewContents.pollFirst();
+                breakFlag = 0;
+                continue;
             }
             // 처음에 myTime 의 여유분이 있는 상태로 넘어올 수 있어서 myTime 갱신은 마지막에
             TurnContent thisTurnContent = RedNewContents.peekFirst(); // 빼지 않고 조회만 remove(thisContent 로 빼면됨)
             int runTime = thisTurnContent.getContent().getRuntime();
+
+            if (runTime > maxMyTime) {
+                RedNewContents.pollFirst();
+                continue;
+            }
 
             if (myTime < runTime) {
                 // 지금(nowDate 에서) 남아 있는 시간이 없다면...
@@ -236,7 +260,6 @@ public class ScheduleCreateService {
         Collections.sort(scheduleObjDTOS, new ScheduleObjComparator());
 
         // res 만들기
-        Map<String, Map<Integer, List<ScheduleObjDTO>>> res = new HashMap<>();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM"); // 키 값 만들 포멧터
         for (ScheduleObjDTO scheduleObjDTO :scheduleObjDTOS) {
             LocalDate date = scheduleObjDTO.getDate();
@@ -276,7 +299,6 @@ public class ScheduleCreateService {
         LinkedList<TurnContent> newContents = new LinkedList<>(); // 링크드 리스트로 변경
         for (Long contentPK : contentPkList) {
             Content newContent = contentRepository.getContentById(contentPK); // 작업대에 있는 컨텐츠
-            System.out.println(newContent.getTitle());
             int finalEp = newContent.getFinalEpisode();
 
             if (finalEp == 0) {
