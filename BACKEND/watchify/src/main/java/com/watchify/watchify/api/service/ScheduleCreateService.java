@@ -37,6 +37,7 @@ public class ScheduleCreateService {
         List<LikeContent> myLikeContentList = likeContentRepository.getLikeContent(userId);
         List<Integer> weekOfDayTime = req.getPatterns(); // 요일별 패턴 시간
         LocalDate nowDate = req.getStartDate(); // 스케줄 시작 날짜
+        int lastDay = nowDate.getDayOfMonth(); // 여기까지 스케줄짤거임
 
         List<UserViewingStatus> myViewStatus = userViewingStatusRepository.getMyViewStatue(userId); // 내가 지금까지 본 것들
         HashMap<Long, List<Integer>> myViewMap = commonLogic.makeMyViewStatus(myViewStatus);
@@ -53,35 +54,6 @@ public class ScheduleCreateService {
         int breakFlag  = 0; // 영화가 2시간인데 시청패턴이 최대 1시간인경우 를 위해
 
         // myTime 이 남아있을 수 있음.
-//        Deque<TurnContent> newContents = new ArrayDeque<TurnContent>(); // 컨텐츠 (타입 TurnContent) x 안씀
-//        LinkedList<TurnContent> newContents = new LinkedList<>(); // 링크드 리스트로 변경
-//        for (Long contentPK : req.getContents()) {
-//            Content newContent = contentRepository.getContentById(contentPK); // 작업대에 있는 컨텐츠
-//            int finalEp = newContent.getFinalEpisode();
-//
-//            if (finalEp == 0) {
-//                if (!myViewMap.containsKey(contentPK)) {
-//                    TurnContent newTurnContent = turnContentRepository.getSoloTurnContentById(newContent.getId());
-//                    newContents.add(newTurnContent);
-//                }
-//            } else {
-//                List<TurnContent> turnContentList = turnContentRepository.getAllTurnContent(contentPK);
-//                if (myViewMap.containsKey(contentPK)) {
-//                    List<Integer> tmp = myViewMap.get(contentPK);
-//                    for (TurnContent turnContent : turnContentList) {
-//                        int i = turnContent.getEpisode();
-//                        if (!tmp.contains(i)) {
-//                            newContents.add(turnContent);
-//                        }
-//                    }
-//                } else {
-//                    for (TurnContent turnContent : turnContentList) {
-//                        newContents.add(turnContent);
-//                    }
-//                }
-//
-//            }
-//        }
 
         LinkedList<TurnContent> newContents = makeNewContents(req.getContents(), myViewMap); // 메서드오 관리
         // -- 여기 까지 pk(작업대에 있는 컨텐츠들)값들 에피소드별로 newContents (type : TurnContent) 에 담음
@@ -159,7 +131,7 @@ public class ScheduleCreateService {
         }
 
         // 켈린더 끝날짜가 다 끝나면 추천받아서 추가할거 더 추가 해도 됨
-        int lastDayOfMonth = nowDate.lengthOfMonth(); // 그달의 마지막 날
+        int lastDayOfMonth = nowDate.lengthOfMonth(); // 그달의 마지막 날 05.19 수정 그날 마지막날까지 스케줄링 -> 시작일 -1 일까지 스케줄링
         Map<String, Long> ottMatchId = new HashMap<>();
         ottMatchId.put("netflix", 1l);
         ottMatchId.put("watcha", 2l);
@@ -208,7 +180,7 @@ public class ScheduleCreateService {
 
                 if (alterTurnContent == null) { // 적절한 값을 못찾았을 경우
                     nowDate = nowDate.plusDays(1); // 하루 지나서
-                    if (nowDate.getDayOfMonth() == lastDayOfMonth) {
+                    if (nowDate.getDayOfMonth() == lastDay) {
                         break;
                     }
                     breakFlag += 1;
