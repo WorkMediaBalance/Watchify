@@ -87,7 +87,10 @@ const PageScheduleResult = () => {
     const sharePk = await scheduleShare(scheduleAll);
     shareKakao(
       `https://k8a207.p.ssafy.io/share/${sharePk.pk}`,
-      `${name}님의 OTT 시청 패턴이 궁금하다면?`
+      `${name}님의 OTT 시청 패턴이 궁금하다면?`,
+      user.imgPath
+        ? user.imgPath
+        : "https://watchify.s3.ap-northeast-2.amazonaws.com/%EC%BA%A1%EC%B2%98.PNG"
     );
   };
 
