@@ -184,6 +184,7 @@ const Container = styled.div`
   height: 45vh;
   background-color: ${({ theme }) => theme.netflix.tabColor};
   color: white;
+  overflow: hidden;
 `;
 const BackdropContainer = styled.div<{ backdrop: string }>`
   width: 100%;

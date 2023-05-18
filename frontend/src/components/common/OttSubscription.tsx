@@ -292,78 +292,89 @@ const OttSubscription = () => {
         <SDiv2>
           구독중인 OTT가 있으시면 알려주세요. <br /> OTT 맞춤으로 스케줄링 할게요!
         </SDiv2>
-        {Object.entries(ott).map(([key, value]) => {
-          let icon;
-          if (key === "netflix") {
-            icon = netflixIcon;
-          } else if (key === "disney") {
-            icon = disneyIcon;
-          } else if (key === "watcha") {
-            icon = watchaIcon;
-          } else if (key === "wavve") {
-            icon = wavveIcon;
-          }
-          return (
-            <>
-              {value.start ? (
-                <SOttDiv key={key}>
-                  <SImg src={icon} alt={key} />
-                  <span
-                    onClick={() => {
-                      let copy = { ...showDatePicker };
-                      copy[key][0] = true;
-                      setShowDatePicker(copy);
-                    }}
-                  >
-                    {value.start}
-                  </span>
-                  <span>~</span>
-                  <span
-                    onClick={() => {
-                      let copy = { ...showDatePicker };
-                      copy[key][1] = true;
-                      setShowDatePicker(copy);
-                    }}
-                  >
-                    {/* 해지일이 존재하면 띄워주고 아니면 제한없음으로 표시 */}
-                    {value.end ? <>{value.end}</> : <>∞</>}
-                  </span>
-                  {showDatePicker[key][0] ? (
-                    <DatePickerWrapper>
-                      <DatePicker
-                        selected={today}
-                        onChange={(date: Date) => {
-                          handleDateChange(date, key);
-                          closeDatePicker(key);
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+          {Object.entries(ott).map(([key, value]) => {
+            let icon;
+            if (key === "netflix") {
+              icon = netflixIcon;
+            } else if (key === "disney") {
+              icon = disneyIcon;
+            } else if (key === "watcha") {
+              icon = watchaIcon;
+            } else if (key === "wavve") {
+              icon = wavveIcon;
+            }
+            return (
+              <>
+                {value.start ? (
+                  <SOttDiv key={key}>
+                    <SImg src={icon} alt={key} />
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        justifyContent: "space-evenly",
+                        width: "60%",
+                      }}
+                    >
+                      <div
+                        onClick={() => {
+                          let copy = { ...showDatePicker };
+                          copy[key][0] = true;
+                          setShowDatePicker(copy);
                         }}
-                        inline
-                      />
-                    </DatePickerWrapper>
-                  ) : null}
-                  {showDatePicker[key][1] ? (
-                    <DatePickerWrapper>
-                      <DatePicker
-                        selected={today}
-                        onChange={(date: Date) => {
-                          handleDateChange2(date, key);
-                          closeDatePicker2(key);
+                      >
+                        {value.start}
+                      </div>
+                      <div>~</div>
+                      <div
+                        onClick={() => {
+                          let copy = { ...showDatePicker };
+                          copy[key][1] = true;
+                          setShowDatePicker(copy);
                         }}
-                        inline
-                      />
-                    </DatePickerWrapper>
-                  ) : null}
-                  <AiOutlineClose
-                    onClick={() => onClickDeleteOtt(key)}
-                    style={{
-                      fontSize: "5vw",
-                      color: "white",
-                    }}
-                  />
-                </SOttDiv>
-              ) : null}
-            </>
-          );
-        })}
+                      >
+                        {/* 해지일이 존재하면 띄워주고 아니면 제한없음으로 표시 */}
+                        {value.end ? <div>{value.end}</div> : <div>∞</div>}
+                      </div>
+                      {showDatePicker[key][0] ? (
+                        <DatePickerWrapper>
+                          <DatePicker
+                            selected={today}
+                            onChange={(date: Date) => {
+                              handleDateChange(date, key);
+                              closeDatePicker(key);
+                            }}
+                            inline
+                          />
+                        </DatePickerWrapper>
+                      ) : null}
+                      {showDatePicker[key][1] ? (
+                        <DatePickerWrapper>
+                          <DatePicker
+                            selected={today}
+                            onChange={(date: Date) => {
+                              handleDateChange2(date, key);
+                              closeDatePicker2(key);
+                            }}
+                            inline
+                          />
+                        </DatePickerWrapper>
+                      ) : null}
+                    </div>
+                    <AiOutlineClose
+                      onClick={() => onClickDeleteOtt(key)}
+                      style={{
+                        fontSize: "5vw",
+                        color: "white",
+                      }}
+                    />
+                  </SOttDiv>
+                ) : null}
+              </>
+            );
+          })}
+        </div>
 
         {!is4 ? (
           <SBoxContainer>
@@ -416,8 +427,9 @@ const SDiv2 = styled.div`
 const SOttDiv = styled.div`
   display: flex;
   align-items: center;
-  justify-content: space-around;
+  justify-content: space-between;
   margin-bottom: 0.5rem;
+  width: 90%;
 `;
 
 const SImg = styled.img`
