@@ -3,6 +3,7 @@ package com.watchify.watchify.api.service;
 import com.watchify.watchify.comparator.ScheduleObjComparator;
 import com.watchify.watchify.db.entity.*;
 import com.watchify.watchify.db.repository.*;
+import com.watchify.watchify.dto.request.SchduleRecommendtestDTO;
 import com.watchify.watchify.dto.request.ScheduleCreateRequestDTO;
 import com.watchify.watchify.dto.response.ScheduleObjDTO;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,7 @@ public class ScheduleCreateService {
     private final WishContentRepository wishContentRepository;
     private final LikeContentRepository likeContentRepository;
     private final CommonLogic commonLogic;
+    private final RecommendService recommendService;
 
     public Map<String, Map<Integer, List<ScheduleObjDTO>>> createSchedule(Long userId, ScheduleCreateRequestDTO req) {
 
@@ -137,6 +139,28 @@ public class ScheduleCreateService {
         }
 
         // 켈린더 끝날짜가 다 끝나면 추천받아서 추가할거 더 추가 해도 됨
+        int lastDayOfMonth = nowDate.lengthOfMonth(); // 그달의 마지막 날
+        int nowDay = nowDate.getDayOfMonth(); // 스케줄 편성이 끝난 날
+        if (nowDay != lastDayOfMonth) { nowDay += 1; }
+        Map<String, Long> ottMatchId = new HashMap<>();
+        ottMatchId.put("netflix", 1l);
+        ottMatchId.put("watcha", 1l);
+        ottMatchId.put("wavve", 1l);
+        ottMatchId.put("disney", 1l);
+        List<Long> ottIdList = new ArrayList<>();
+        for (String name : req.getOtt()) { ottIdList.add(ottMatchId.get(name)); }
+        SchduleRecommendtestDTO schduleRecommendtestDTO = new SchduleRecommendtestDTO(req.getContents(), ottIdList);
+        List<Long> recoContentId = recommendService.getSchediledTest(userId, schduleRecommendtestDTO);
+        int idx = 0; // recoContentId 의 인덱스
+
+        // 추천 받은 컨텐츠(100개)가 동나거나, 마지막 날까지 스케줄이 완성되면 종료
+        while (idx < recoContentId.size() && nowDay <= lastDayOfMonth) {
+            break;
+        }
+
+
+
+
 
         // 정렬, pk 순으로 오름차순, 같다면 에피소드 순으로 오름차순
         Collections.sort(scheduleObjDTOS, new ScheduleObjComparator());
