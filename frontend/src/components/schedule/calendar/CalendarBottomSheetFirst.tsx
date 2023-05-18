@@ -12,13 +12,18 @@ import { scheduleAllState } from "recoil/scheduleState";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Swal from "sweetalert2";
-import { scheduleModify, scheduleInfoAll } from "apis/apiSchedule";
+import { scheduleModify, scheduleInfoAll, scheduleInfo } from "apis/apiSchedule";
 import { ScheduleAll } from "interface/schedule";
+import { later } from "constant/constant";
 
 const CalendarBottomSheetFirst = (props: { date: number; month: number; year: number }) => {
   // month 스케줄
   const [monthSchedule, setMonthSchedule] = useRecoilState(monthScheduleState);
   const dateScheduleList = monthSchedule[props.date] === undefined ? [] : monthSchedule[props.date];
+
+  useEffect(() => {
+    console.log(dateScheduleList, "here");
+  }, []);
 
   const nextContent = () => {
     if (
@@ -97,20 +102,20 @@ const CalendarBottomSheetFirst = (props: { date: number; month: number; year: nu
       const paddedMonth = (month1 + 1).toString().padStart(2, "0");
       const paddedDay = day1.toString().padStart(2, "0");
 
-      let newSchedule = { ...scheduleAll };
-      console.log(`${year1}-${paddedMonth}-${paddedDay}`);
-      newSchedule[`${props.year}-${paddedPropsMonth}`][props.date][
-        index
-      ].date = `${year1}-${paddedMonth}-${paddedDay}`;
-      console.log(newSchedule);
+      const changed: later = {
+        date: scheduleAll[`${props.year}-${paddedPropsMonth}`][props.date][index].date,
+        contentId: scheduleAll[`${props.year}-${paddedPropsMonth}`][props.date][index].pk,
+        episode: scheduleAll[`${props.year}-${paddedPropsMonth}`][props.date][index].episode,
+        newDate: `${year1}-${paddedMonth}-${paddedDay}`,
+      };
 
-      ChangeScheduleAll(newSchedule);
+      ChangeScheduleAll(changed);
 
       setOnChange(false);
     }
   };
 
-  const ChangeScheduleAll = async (data: ScheduleAll) => {
+  const ChangeScheduleAll = async (data: later) => {
     const success = await scheduleModify(data);
 
     if (success) {
@@ -118,8 +123,17 @@ const CalendarBottomSheetFirst = (props: { date: number; month: number; year: nu
       if (newData !== false) {
         setScheduleAll(newData);
         console.log("전체 스케줄", newData);
+        await getMonthSchedule();
       }
     }
+  };
+
+  const getMonthSchedule = async () => {
+    try {
+      console.log(`${props.year}년 ${props.month}월 스케줄 정보 받아오기`);
+      const data = await scheduleInfo(props.year, props.month);
+      setMonthSchedule(data);
+    } catch {}
   };
 
   return (
@@ -127,10 +141,7 @@ const CalendarBottomSheetFirst = (props: { date: number; month: number; year: nu
       <Container {...handlers}>
         <DateAndAdd>
           <SDate>{`${props.month}월 ${props.date}일`}</SDate>
-          <Add>
-            {"일정 추가"}
-            {/* <AiOutlinePlusCircle /> */}
-          </Add>
+          <Add>{/* <AiOutlinePlusCircle /> */}</Add>
         </DateAndAdd>
         {Array.isArray(dateScheduleList) && dateScheduleList.length === 0 ? (
           <NoContentDiv>
@@ -161,6 +172,23 @@ const CalendarBottomSheetFirst = (props: { date: number; month: number; year: nu
                 <Title>{dateScheduleList[index]["title"]}</Title>
                 {/* <Dot></Dot> */}
               </TitleAndDot>
+              <div
+                style={{
+                  width: "100%",
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "center",
+                }}
+              >
+                <Season>
+                  {dateScheduleList[index]["season"] !== 0 &&
+                    `시즌 ${dateScheduleList[index]["season"]} :`}{" "}
+                </Season>
+                <Episode>
+                  {dateScheduleList[index]["episode"] !== 0 &&
+                    `${dateScheduleList[index]["episode"]} 화`}
+                </Episode>
+              </div>
               <ButtonContainer>
                 <SeenButton onClick={seenHandler}>{isSeen ? "시청 취소" : "시청함"}</SeenButton>
                 <PostponeButton
@@ -168,7 +196,7 @@ const CalendarBottomSheetFirst = (props: { date: number; month: number; year: nu
                     setOnChange(true);
                   }}
                 >
-                  {"미루기"}
+                  {"일정 변경"}
                 </PostponeButton>
               </ButtonContainer>
             </TextContainer>
@@ -228,7 +256,8 @@ const PosterContainer = styled.div`
 const TextContainer = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  justify-content: space-evenly;
+  align-items: center;
 `;
 
 const TitleAndDot = styled.div`
@@ -244,6 +273,16 @@ const Title = styled.div`
 `;
 
 const Dot = styled.div``;
+
+const Season = styled.div`
+  font-size: ${({ theme }) => theme.fontSizeType.middle.fontSize};
+  font-weight: ${({ theme }) => theme.fontSizeType.middle.fontWeight};
+`;
+const Episode = styled.div`
+  font-size: ${({ theme }) => theme.fontSizeType.middle.fontSize};
+  font-weight: ${({ theme }) => theme.fontSizeType.middle.fontWeight};
+  margin-left: 2vw;
+`;
 
 const ButtonContainer = styled.div`
   display: flex;

@@ -24,54 +24,71 @@ const RecList = () => {
     setEssList(copy);
   };
   return (
-    <Layout>
-      {recList &&
-        recList.map((content, idx) => {
-          const isAlready = essList.some((ess) => ess.pk === content.pk);
-          return (
-            <SContentsContainer key={idx}>
-              <SBoxContainer>
-                <SContent>
-                  <ContentPoster
-                    content={content}
-                    title={content.title}
-                    imageUrl={content.imgPath}
-                  ></ContentPoster>
-                </SContent>
-              </SBoxContainer>
-              <S1DepthContainer>
-                <S2DepthContainer>
-                  <S3DepthContainer>
-                    <STitleDiv>{content.title}</STitleDiv>
-                    {content.finalEpisode > 0 ? <div>{content.finalEpisode}부작</div> : null}
-                  </S3DepthContainer>
-                  {isAlready ? (
-                    <SFiCheckCircle />
-                  ) : (
-                    <SBsPlusCircle onClick={() => onClickAddContent(content)} />
-                  )}
-                </S2DepthContainer>
+    <div>
+      <Layout>
+        {recList &&
+          recList.map((content, idx) => {
+            const isAlready = essList.some((ess) => ess.pk === content.pk);
+            return (
+              <SContentsContainer key={idx}>
+                <SBoxContainer>
+                  <SContent>
+                    <ContentPoster
+                      content={content}
+                      title={content.title}
+                      imageUrl={content.imgPath}
+                    ></ContentPoster>
+                  </SContent>
+                </SBoxContainer>
+                <S1DepthContainer>
+                  <S2DepthContainer>
+                    <S3DepthContainer>
+                      <div
+                        style={{
+                          display: "flex",
+                          flexDirection: "row",
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                        }}
+                      >
+                        <STitleDiv className="STitleDiv">{content.title}</STitleDiv>
+                        {isAlready ? (
+                          <SFiCheckCircle />
+                        ) : (
+                          <SBsPlusCircle
+                            onClick={() => onClickAddContent(content)}
+                            className="SBsPlusCircle"
+                          />
+                        )}
+                      </div>
+                      {content.finalEpisode > 0 ? <div>{content.finalEpisode}부작</div> : null}
+                    </S3DepthContainer>
+                  </S2DepthContainer>
 
-                <SSumDiv>{content.summarize}</SSumDiv>
-              </S1DepthContainer>
-            </SContentsContainer>
-          );
-        })}
-    </Layout>
+                  <SSumDiv>{content.summarize}</SSumDiv>
+                </S1DepthContainer>
+              </SContentsContainer>
+            );
+          })}
+        <PlaceHolder />
+      </Layout>
+    </div>
   );
 };
 
 export default RecList;
 
 const SFiCheckCircle = styled(FiCheckCircle)`
-  width: 1.5rem;
-  height: 1.5rem;
+  padding-bottom: 0.2vh;
+  width: 6vw;
+  height: 6vw;
+  color: ${({ theme }) => theme.netflix.pointColor};
 `;
 
 const SBsPlusCircle = styled(BsPlusCircle)`
-  color: ${({ theme }) => theme.netflix.pointColor};
-  width: 1.5rem;
-  height: 1.5rem;
+  padding-bottom: 0.2vh;
+  width: 6vw;
+  height: 6vw;
 `;
 
 const Layout = styled.div`
@@ -84,6 +101,7 @@ const Layout = styled.div`
 
 const SContentsContainer = styled.div`
   display: flex;
+  margin: 3vw;
 `;
 
 const S1DepthContainer = styled.div`
@@ -100,13 +118,23 @@ const S3DepthContainer = styled.div`
 `;
 
 const STitleDiv = styled.div`
+  width: 80%;
   font-size: 1.2rem;
   font-weight: ${({ theme }) => theme.fontSizeType.big.fontWeight};
+  // white-space: nowrap;
+  // overflow: hidden;
+  // text-overflow: ellipsis;
 `;
 
 const SSumDiv = styled.div`
-  font-size: 0.8rem;
+  font-size: ${({ theme }) => theme.fontSizeType.small.fontSize}
   font-weight: ${({ theme }) => theme.fontSizeType.small.fontWeight};
+  margin-top: 1vh;
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 interface SContentProps extends HTMLAttributes<HTMLDivElement> {
@@ -129,4 +157,8 @@ const SContent = styled.div`
 const SBoxContainer = styled.div`
   display: flex;
   margin-top: 0.5rem;
+`;
+
+const PlaceHolder = styled.div`
+  height: 10vh;
 `;

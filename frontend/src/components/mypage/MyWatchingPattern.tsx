@@ -35,7 +35,6 @@ const Title = styled.div`
 `;
 
 const MyWatchingPattern = () => {
-  const [genreList, setGenreList] = useState(["임시", "임시2", "임시3"]);
   return (
     <Container>
       <div
@@ -44,14 +43,7 @@ const MyWatchingPattern = () => {
         <WatchingPattern />
       </div>
       <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-        <div style={{ width: "90%" }}>
-          <Title>선호 장르 목록</Title>
-          <FavoriteGenresContainer>
-            {genreList.map((name: string) => {
-              return <FavoriteGenres>{name}</FavoriteGenres>;
-            })}
-          </FavoriteGenresContainer>
-        </div>
+        <div style={{ width: "90%" }}></div>
       </div>
     </Container>
   );

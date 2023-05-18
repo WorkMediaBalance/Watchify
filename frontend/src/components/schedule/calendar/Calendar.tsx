@@ -246,13 +246,13 @@ const Calendar = (props: {
 
                               <InnerConteiner>
                                 {typeof content === "number" && monthSchedule[content]
-                                  ? monthSchedule[content].map((content, index) => {
+                                  ? monthSchedule[content].slice(0, 4).map((content, index) => {
                                       return (
                                         <ContentTag>
                                           <ContentTagDot />
                                           <ContentName>
                                             {content.finalEpisode === 0
-                                              ? "단일"
+                                              ? "단편"
                                               : `${content.episode}화`}
                                           </ContentName>
                                         </ContentTag>
@@ -260,6 +260,15 @@ const Calendar = (props: {
                                     })
                                   : null}
                               </InnerConteiner>
+                              {typeof content === "number" &&
+                                monthSchedule[content] &&
+                                monthSchedule[content].length > 4 && (
+                                  <div
+                                    style={{ width: "100%", textAlign: "end", marginRight: "20%" }}
+                                  >
+                                    +{monthSchedule[content].length - 4}
+                                  </div>
+                                )}
                             </STdDiv>
                           </STd>
                         );
@@ -407,7 +416,6 @@ const IndicationBar = styled.div`
   background-color: ${theme.netflix.pointColor};
   height: 0.3vh;
   width: 90%;
-  margin-bottom: 0.2vh;
 `;
 
 const ContentPlus = styled.div`

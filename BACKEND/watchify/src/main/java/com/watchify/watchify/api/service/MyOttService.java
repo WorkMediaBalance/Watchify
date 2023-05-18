@@ -46,36 +46,29 @@ public class MyOttService {
 
     @Transactional
     public void updateMyOttInfo(Long userId, UserOttRequestDTO userOttDTO) {
-        User user = userRepository.findById(userId).get();
-        List<UserOTT> userOtts = userOTTRepository.getUserOTTSByUserIdNotOver(userId);
-        List<OTT> otts = ottRepository.findAll();
+        User user = userRepository.findById(userId).get(); // 유저
+        List<UserOTT> userOtts = userOTTRepository.getUserOTTSByUserIdNotOver(userId); // 유저OTT 들 조회
+        List<OTT> otts = ottRepository.findAll(); // 모든 디폴트 OTT 조회
+
         for (OTT ott : otts) {
-            OttDateRequestDTO ottDateDTO = userOttDTO.getOf(ott.getName());
-            if (ottDateDTO.getStart() == null) {
-                // start가 null 이면 구독 그냥 안한것과 같음
-            } else {
-                String std = ottDateDTO.getStart();
-                String end = ottDateDTO.getEnd();
-                LocalDate startDate = localDateService.stringToLocalDate(std);
-                LocalDate endDate = localDateService.stringToLocalDate(end);
-                boolean flag = true;
-                for (UserOTT userOtt : userOtts) {
-                    if (userOtt.getOtt().getName().equals(ott.getName())) {
-                        // DB 에 있으면 수정
-                        userOtt.setStart(startDate);
-                        userOtt.setEnd(endDate);
-                        userOTTRepository.save(userOtt);
-                        flag = false;
-                        break;
-                    }
+            OttDateRequestDTO ottDateDTO = userOttDTO.getOf(ott.getName()); // ott(넷플 등) 의 start 와 end 가 있는 객체 얘로 수정해야됨
+            LocalDate start = ottDateDTO.getStart();
+            LocalDate end = ottDateDTO.getEnd();
+            boolean flag = true;
+            for (UserOTT userOTT : userOtts) {
+                if (userOTT.getOtt().getName().equals(ott.getName())) { // 이건 DB 에 있는 경우
+                    userOTT.setStart(start);
+                    userOTT.setEnd(end);
+                    userOTTRepository.save(userOTT);
+                    flag = false;
+                    break;
                 }
-                if (flag) {
-                    // DB에 없을때는 생성
-                    UserOTT newUserOtt = new UserOTT(user, ott);
-                    newUserOtt.setStart(startDate);
-                    newUserOtt.setEnd(endDate);
-                    userOTTRepository.save(newUserOtt);
-                }
+            }
+            if (flag == true) { // 이건 DB 에 없는 경우
+                UserOTT newUserOtt = new UserOTT(user, ott);
+                newUserOtt.setStart(start);
+                newUserOtt.setEnd(end);
+                userOTTRepository.save(newUserOtt);
             }
         }
     }

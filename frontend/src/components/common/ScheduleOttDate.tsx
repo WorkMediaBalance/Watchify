@@ -3,6 +3,9 @@ import styled from "styled-components";
 
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import Swal from "sweetalert2";
+
+import { theme } from "styles/theme";
 
 import disneyIcon from "assets/img/otticons/DisneyIcon.png";
 import disneySelected from "assets/img/otticons/DisneyIconSelected.png";
@@ -15,6 +18,8 @@ import wavveSelected from "assets/img/otticons/WavveIconSelected.png";
 
 import { useRecoilState } from "recoil";
 import { schedulePreInfoState } from "recoil/schedulePreInfoState";
+
+import { AiOutlineCalendar } from "react-icons/ai";
 
 const ScheduleOttDate = () => {
   // OTT별 구독 상태 state
@@ -72,7 +77,13 @@ const ScheduleOttDate = () => {
         setStartDate(newDate);
         setShowDatePicker(false);
       } else {
-        alert("좋은 말로 할 때 오늘보다 뒤에 날짜 선택해라");
+        Swal.fire({
+          title: "",
+          text: "오늘 이전 날짜는 선택할 수 없습니다.",
+          background: theme.netflix.backgroundColor,
+          confirmButtonText: "확인",
+          confirmButtonColor: theme.netflix.pointColor,
+        });
       }
     }
   };
@@ -105,8 +116,33 @@ const ScheduleOttDate = () => {
             alt="wavve"
           />
         </OTTContainer>
-        <Sdiv>
-          시작 날짜 <span onClick={() => setShowDatePicker(true)}>: {startDate}</span>
+        <Sdiv style={{}}>스케줄 시작 날짜</Sdiv>
+        <SDiv2>스케줄을 시작할 날짜를 설정해주세요</SDiv2>
+        <Sdiv
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            width: "100%",
+            alignItems: "center",
+            justifyContent: "center",
+            height: "10vh",
+          }}
+        >
+          <div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
+            <span>
+              {startDate &&
+                `${startDate.slice(0, 4)}년 ${startDate.slice(5, 7)}월 ${startDate.slice(
+                  8,
+                  10
+                )}일  `}
+            </span>
+            <span
+              style={{ color: "#F08C5A", marginLeft: "3vw", paddingTop: "0.5vh" }}
+              onClick={() => setShowDatePicker(true)}
+            >
+              <AiOutlineCalendar size={30} />
+            </span>
+          </div>
         </Sdiv>
         {showDatePicker ? (
           <DatePickerWrapper>
@@ -195,5 +231,5 @@ const SAddBox = styled.div`
 
 const OTTContainer = styled.div`
   display: flex;
-  justify-content: center;
+  justify-content: space-evenly;
 `;

@@ -1,18 +1,18 @@
 import React from "react";
 import styled from "styled-components";
-import { ShareDetailContent } from "interface/content";
+import { HistoryDetailContent } from "interface/content";
 
-const ShareBottomSheetContent = (props: { data: ShareDetailContent[] }) => {
+const HistoryBottomSheetContent = (props: { data: HistoryDetailContent[] }) => {
   console.log(props.data);
   return (
     <div>
       {props.data.length > 0 && <Title>{props.data[0].title}</Title>}
       {props.data.length > 0 &&
-        props.data.map((share, index) => (
+        props.data.map((history, index) => (
           <Wrapper key={index}>
-            <ShareContainer>
+            <HistoryContainer>
               {/* <Title>{history.title}</Title> */}
-              <DateDiv>{share.date}</DateDiv>
+              <DateDiv>{history.date}</DateDiv>
               <div
                 style={{
                   display: "flex",
@@ -22,19 +22,19 @@ const ShareBottomSheetContent = (props: { data: ShareDetailContent[] }) => {
                 }}
               >
                 <div style={{ display: "flex", flexDirection: "row", width: "70%" }}>
-                  <SeasonDiv>{share.season !== 0 && `시즌 ${share.season} `}</SeasonDiv>
-                  <EpisodeDiv>{share.season !== 0 ? ` ${share.episode}화` : "단편"}</EpisodeDiv>
+                  <SeasonDiv>{history.season !== 0 && `시즌 ${history.season} `}</SeasonDiv>
+                  <EpisodeDiv>{history.season !== 0 ? ` ${history.episode}화` : "단편"}</EpisodeDiv>
                 </div>
                 <div>시청함</div>
               </div>
-            </ShareContainer>
+            </HistoryContainer>
           </Wrapper>
         ))}
     </div>
   );
 };
 
-export default ShareBottomSheetContent;
+export default HistoryBottomSheetContent;
 
 const Wrapper = styled.div`
   color: white;
@@ -44,7 +44,7 @@ const Wrapper = styled.div`
   // width: 90%;
 `;
 
-const ShareContainer = styled.div`
+const HistoryContainer = styled.div`
   width: 80%;
   border-bottom: 1px solid white;
   padding: 1vh;
