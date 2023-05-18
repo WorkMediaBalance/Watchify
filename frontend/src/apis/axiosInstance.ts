@@ -15,12 +15,11 @@ const apiCUD = axios.create({
 // 요청 인터셉터 -> 토큰 체크용
 apiCUD.interceptors.request.use(
   function (config) {
-    // const accessToken = localStorage.getItem("accessToken");
-    // if (accessToken) {
-    //   config.headers.access = accessToken;
-    // }
-    config.headers.access =
-      "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjIsImV4cCI6MTY4NDQ1MjQ4OH0.MUgCyoH8VVDX3qvQD6g9IzT6HYJz65VghbtWZXjxPzE";
+    const accessToken = localStorage.getItem("accessToken");
+    if (accessToken) {
+      config.headers.access = accessToken;
+    }
+
     return config;
   },
   function (error) {
@@ -59,12 +58,11 @@ const apiR = axios.create({
 // 요청 인터셉터 -> 토큰 체크용
 apiR.interceptors.request.use(
   function (config) {
-    // const accessToken = localStorage.getItem("accessToken");
-    // if (accessToken) {
-    //   config.headers.access = accessToken;
-    // }
-    config.headers.access =
-      "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjIsImV4cCI6MTY4NDQ1MjQ4OH0.MUgCyoH8VVDX3qvQD6g9IzT6HYJz65VghbtWZXjxPzE";
+    const accessToken = localStorage.getItem("accessToken");
+    if (accessToken) {
+      config.headers.access = accessToken;
+    }
+
     return config;
   },
   function (error) {
