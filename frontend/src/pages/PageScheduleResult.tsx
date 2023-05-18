@@ -6,8 +6,8 @@ import CalendarBottomSheet from "components/schedule/calendar/CalendarBottomShee
 import { useNavigate, useLocation } from "react-router-dom";
 // month 스케줄 state
 import { monthScheduleState, scheduleAllState } from "recoil/scheduleState";
-import { userState } from "recoil/userState";
 import { useRecoilState } from "recoil";
+import { userState } from "recoil/userState";
 import { scheduleInfo, scheduleInfoAll, scheduleShare } from "apis/apiSchedule";
 import { shareKakao } from "hooks/shareKakaoLink";
 
@@ -44,6 +44,7 @@ const PageScheduleResult = () => {
   // month 스케줄
   const [monthSchedule, setMonthSchedule] = useRecoilState(monthScheduleState);
   const getMonthSchedule = async () => {
+    await setMonthSchedule({});
     try {
       console.log(`${year}년 ${month}월 스케줄 정보 받아오기`);
       const data = await scheduleInfo(year, month);

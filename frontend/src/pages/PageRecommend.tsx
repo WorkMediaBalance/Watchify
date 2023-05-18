@@ -122,16 +122,41 @@ const PageRecommend = () => {
     console.log({ isAdult: isAdult, ottList: ott, genre: recGenre });
     setIsLoading(true);
     if (ott.length === 0) {
-      const ottList = ["netflix", "watcha", "wavve", "disney"];
-      const data = await contentRecommend({ isAdult: isAdult, ottList: ottList, genres: recGenre });
-      setRecResultList(data);
-      navigate("/recommend/result", { state: { data: data } });
-      setIsLoading(false);
+      if (localStorage.getItem("accessToken") === undefined) {
+        // 여기에 비회원 추천 넣기
+        const ottList = ["netflix", "watcha", "wavve", "disney"];
+        const data = await contentRecommend({
+          isAdult: isAdult,
+          ottList: ottList,
+          genres: recGenre,
+        });
+        setRecResultList(data);
+        navigate("/recommend/result", { state: { data: data } });
+        setIsLoading(false);
+      } else {
+        const ottList = ["netflix", "watcha", "wavve", "disney"];
+        const data = await contentRecommend({
+          isAdult: isAdult,
+          ottList: ottList,
+          genres: recGenre,
+        });
+        setRecResultList(data);
+        navigate("/recommend/result", { state: { data: data } });
+        setIsLoading(false);
+      }
     } else {
-      const data = await contentRecommend({ isAdult: isAdult, ottList: ott, genres: recGenre });
-      setRecResultList(data);
-      navigate("/recommend/result", { state: { data: data } });
-      setIsLoading(false);
+      if (localStorage.getItem("accessToken") === undefined) {
+        // 여기에 비회원 추천 넣기
+        const data = await contentRecommend({ isAdult: isAdult, ottList: ott, genres: recGenre });
+        setRecResultList(data);
+        navigate("/recommend/result", { state: { data: data } });
+        setIsLoading(false);
+      } else {
+        const data = await contentRecommend({ isAdult: isAdult, ottList: ott, genres: recGenre });
+        setRecResultList(data);
+        navigate("/recommend/result", { state: { data: data } });
+        setIsLoading(false);
+      }
     }
   };
 
