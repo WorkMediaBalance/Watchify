@@ -217,20 +217,31 @@ const HistoryCalendar = (props: {
 
                               <InnerConteiner>
                                 {typeof content === "number" && props.historyDetail[content]
-                                  ? props.historyDetail[content].map((content, index) => {
-                                      return (
-                                        <ContentTag>
-                                          <ContentTagDot />
-                                          <ContentName>
-                                            {content.episode !== 0
-                                              ? `${content.episode}화`
-                                              : "영화"}
-                                          </ContentName>
-                                        </ContentTag>
-                                      );
-                                    })
+                                  ? props.historyDetail[content]
+                                      .slice(0, 4)
+                                      .map((content, index) => {
+                                        return (
+                                          <ContentTag>
+                                            <ContentTagDot />
+                                            <ContentName>
+                                              {content.episode !== 0
+                                                ? `${content.episode}화`
+                                                : "단편"}
+                                            </ContentName>
+                                          </ContentTag>
+                                        );
+                                      })
                                   : null}
                               </InnerConteiner>
+                              {typeof content === "number" &&
+                                props.historyDetail[content] &&
+                                props.historyDetail[content].length > 4 && (
+                                  <div
+                                    style={{ width: "100%", textAlign: "end", marginRight: "20%" }}
+                                  >
+                                    +{props.historyDetail[content].length - 4}
+                                  </div>
+                                )}
                             </STdDiv>
                           </STd>
                         );
