@@ -79,6 +79,10 @@ const Title = styled.div`
   text-overflow: ellipsis;
 `;
 
+const SeasonSpan = styled.span`
+  font-size: ${({ theme }) => theme.fontSizeType.middle.fontSize};
+`;
+
 interface HistoryComponentProps {
   contentHistory: HistoryContent;
 }
@@ -99,35 +103,6 @@ const HistoryComponent: React.FC<HistoryComponentProps> = ({ contentHistory }) =
     "Nov",
     "Dec",
   ];
-
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const modalStyle = {
-    content: {
-      postion: "fixed",
-      top: "50%",
-      left: "50%",
-      right: "auto",
-      bottom: "auto",
-      marginRight: "-50%",
-      transform: "translate(-50%, -50%)",
-
-      padding: "0",
-      borderRadius: "15px",
-      border: "0",
-    },
-    overlay: {
-      backgroundColor: "rgba(0,0,0,0.75)",
-      zIndex: "1000",
-    },
-  };
-
-  const disableScroll = () => {
-    document.body.style.overflow = "hidden";
-  };
-
-  const enableScroll = () => {
-    document.body.style.overflow = "auto";
-  };
 
   const handleHistoryClick = () => {
     const params = {
@@ -153,7 +128,12 @@ const HistoryComponent: React.FC<HistoryComponentProps> = ({ contentHistory }) =
           <Month>{contentHistory && months[contentHistory.firstMonth - 1]}</Month>
         </DateIndicator>
         <TitleHolder>
-          <Title>{contentHistory && contentHistory.title}</Title>
+          <Title>
+            {contentHistory && contentHistory.title}{" "}
+            {contentHistory && contentHistory.season !== 0 && (
+              <SeasonSpan>시즌 {`${contentHistory.season}`}</SeasonSpan>
+            )}{" "}
+          </Title>
         </TitleHolder>
       </Container>
     </div>

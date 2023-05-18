@@ -65,7 +65,7 @@ const MyInfoTab = () => {
               <LogOut
                 onClick={() => {
                   onClickLogout();
-                  navigate("/login");
+                  navigate("/");
                 }}
               >
                 로그아웃

@@ -122,17 +122,9 @@ const PageRecommend = () => {
     console.log({ isAdult: isAdult, ottList: ott, genre: recGenre });
     setIsLoading(true);
     if (ott.length === 0) {
-      if (localStorage.getItem("accessToken") === undefined) {
+      if (localStorage.getItem("accessToken") === null) {
         // 여기에 비회원 추천 넣기
-        const ottList = ["netflix", "watcha", "wavve", "disney"];
-        const data = await contentRecommend({
-          isAdult: isAdult,
-          ottList: ottList,
-          genres: recGenre,
-        });
-        setRecResultList(data);
-        navigate("/recommend/result", { state: { data: data } });
-        setIsLoading(false);
+        navigate("/login");
       } else {
         const ottList = ["netflix", "watcha", "wavve", "disney"];
         const data = await contentRecommend({
@@ -145,12 +137,8 @@ const PageRecommend = () => {
         setIsLoading(false);
       }
     } else {
-      if (localStorage.getItem("accessToken") === undefined) {
-        // 여기에 비회원 추천 넣기
-        const data = await contentRecommend({ isAdult: isAdult, ottList: ott, genres: recGenre });
-        setRecResultList(data);
-        navigate("/recommend/result", { state: { data: data } });
-        setIsLoading(false);
+      if (localStorage.getItem("accessToken") === null) {
+        navigate("/login");
       } else {
         const data = await contentRecommend({ isAdult: isAdult, ottList: ott, genres: recGenre });
         setRecResultList(data);
@@ -181,8 +169,10 @@ const PageRecommend = () => {
   };
 
   useEffect(() => {
-    console.log(ott);
-  }, [ott]);
+    if (localStorage.getItem("accessToken") === null) {
+      navigate("/login");
+    }
+  }, []);
 
   return (
     <BaseDiv>

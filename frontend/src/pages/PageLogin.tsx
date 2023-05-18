@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 import { BASE_URL } from "constant/constant";
 
-import logoImg from "assets/img/logo.png";
+import logoImg from "assets/WatchifyLogo2.png";
 import kakao from "assets/img/kakao.png";
 import google from "assets/img/google.png";
 import { useNavigate } from "react-router-dom";
@@ -48,7 +48,7 @@ const SLayout = styled.div`
 `;
 
 const SLogoImg = styled.img`
-  width: 45vw;
+  width: auto;
   height: 29vw;
   margin-top: 30vw;
   margin-bottom: 20vw;

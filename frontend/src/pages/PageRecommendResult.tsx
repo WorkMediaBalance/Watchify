@@ -122,6 +122,18 @@ const SSummaryP = styled.p`
   color: ${theme.netflix.fontColor};
   width: 90%;
   margin-top: 3vh;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`;
+const SSummaryP2 = styled.p`
+  font-size: ${theme.fontSizeType.middle.fontSize};
+  font-weight: ${theme.fontSizeType.middle.fontWeight};
+  color: ${theme.netflix.fontColor};
+  width: 90%;
+  margin-top: 3vh;
 `;
 
 const Container = styled.div`
@@ -203,6 +215,25 @@ const PageRecommendResult = () => {
     console.log(data);
   }, []);
 
+  const [isNeedMore, setIsNeedMore] = useState(false);
+  const [isMoreOpen, setIsMoreOpen] = useState(false);
+  const textContainer = document.getElementById("summary");
+  useEffect(() => {
+    setIsNeedMore(false);
+    if (textContainer) {
+      const computedStyle = window.getComputedStyle(textContainer);
+      const lineHeight = parseInt(computedStyle.getPropertyValue("line-height"));
+      const containerHeight = textContainer.clientHeight;
+      const textHeight = textContainer.scrollHeight;
+      const isOverflow = textHeight !== containerHeight;
+      const isExceedsFourLines = Math.ceil(textHeight / lineHeight) > 4;
+
+      if (isOverflow) {
+        setIsNeedMore(true);
+      }
+    }
+  }, [selectedNum]);
+
   return (
     <Wrapper>
       <SubWrapper>
@@ -235,14 +266,53 @@ const PageRecommendResult = () => {
                 />
               </div>
               <div style={{ marginRight: "6vw" }}>
-                <STextP>추천도 : {recResult[selectedNum].score}</STextP>
+                <STextP>추천도 : {recResult[selectedNum].score}%</STextP>
                 <STextP>장르 : {recResult[selectedNum].genres.join(", ")}</STextP>
                 <STextP>재생 시간 : {run}</STextP>
-                <STextP>등급 : {recResult[selectedNum].audienceAge}</STextP>
+                {/* <STextP>
+                  등급 :{" "}
+                  {recResult[selectedNum].audienceAge === 0
+                    ? "전체 관람가"
+                    : `${recResult[selectedNum].audienceAge}세 이용가`}
+                </STextP> */}
                 <div style={{ marginTop: "3vh", marginLeft: "-1vh" }}>{renderOTTIcons()}</div>{" "}
               </div>
             </div>
-            <SSummaryP>{recResult[selectedNum].summarize}</SSummaryP>
+            {!isMoreOpen ? (
+              <SSummaryP id="summary">
+                {recResult[selectedNum].summarize !== "0"
+                  ? recResult[selectedNum].summarize
+                  : "추가 예정"}
+              </SSummaryP>
+            ) : (
+              <SSummaryP2 id="summary">
+                {recResult[selectedNum].summarize !== "0"
+                  ? recResult[selectedNum].summarize
+                  : "추가 예정"}
+              </SSummaryP2>
+            )}
+
+            {isNeedMore ? (
+              !isMoreOpen ? (
+                <div
+                  onClick={() => {
+                    setIsMoreOpen(true);
+                  }}
+                  style={{ color: "white", marginBottom: "1vh" }}
+                >
+                  더보기
+                </div>
+              ) : (
+                <div
+                  onClick={() => {
+                    setIsMoreOpen(false);
+                  }}
+                  style={{ color: "white", marginBottom: "1vh" }}
+                >
+                  접기
+                </div>
+              )
+            ) : null}
           </SContentDiv>
         </SMainDiv>
         <SMiniTitle>이런 컨텐츠는 어때요?</SMiniTitle>
