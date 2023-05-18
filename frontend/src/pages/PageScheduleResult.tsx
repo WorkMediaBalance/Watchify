@@ -96,13 +96,16 @@ const PageScheduleResult = () => {
 
   return (
     <Wrapper>
-      <KakaoButton
-        src="https://developers.kakao.com/assets/img/about/logos/kakaotalksharing/kakaotalk_sharing_btn_medium.png"
-        alt="#"
-        onClick={() => {
-          sharing(user["name"] ? user["name"] : "guest");
-        }}
-      />
+      <KakaoWrapper>
+        공유
+        <KakaoButton
+          src="https://developers.kakao.com/assets/img/about/logos/kakaotalksharing/kakaotalk_sharing_btn_medium.png"
+          alt="#"
+          onClick={() => {
+            sharing(user["name"] ? user["name"] : "guest");
+          }}
+        />
+      </KakaoWrapper>
 
       <Calendar
         onDateClick={(date: number, month: number, year: number) => {
@@ -135,13 +138,21 @@ const PageScheduleResult = () => {
 
 export default PageScheduleResult;
 
-const KakaoButton = styled.img`
+const KakaoWrapper = styled.div`
   position: absolute;
   top: -4.5vh;
   right: 1vh;
   z-index: 100000;
+  color: white;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+`;
+
+const KakaoButton = styled.img`
   width: 4vh;
   height: 4vh;
+  margin-left: 1vh;
 `;
 
 // const KakaoDiv = styled.div`
