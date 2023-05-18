@@ -164,7 +164,7 @@ public class MyController {
     }
 
     @PutMapping("/profileimg")
-    public ResponseEntity<?> UpdateUserProfile(HttpServletRequest request, @RequestParam("image") MultipartFile multipartFile) {
+    public ResponseEntity<?> UpdateUserProfile(HttpServletRequest request, @RequestParam("profileImageFile") MultipartFile multipartFile) {
         String accessToken = request.getHeader("access");
         long userId = userService.findUserIdByAccessToken(accessToken);
 
