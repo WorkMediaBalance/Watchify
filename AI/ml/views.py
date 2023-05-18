@@ -34,7 +34,7 @@ class RecommendAPIView(APIView):
           print('recommend 소요 시간 : ', end_time - start_time)
           contents = {
                'contentPk' : [x[0] for x in result],
-               'contentRate' : [x[1]*10 for x in result]
+               'contentRate' : [x[1]*10 if x[1]*10 <= 100 else 100 for x in result]
                }
 
           serializer = RecommendSerializer(contents)
