@@ -2,9 +2,8 @@ import React, { useState, useEffect, HTMLAttributes } from "react";
 import styled from "styled-components";
 
 import { essListState } from "recoil/userState";
-
 import { useRecoilState } from "recoil";
-import { recListState } from "recoil/schedulePreInfoState";
+import { recListState } from "recoil/recListState";
 
 import { FiCheckCircle } from "react-icons/fi";
 import { BsPlusCircle } from "react-icons/bs";
@@ -12,11 +11,14 @@ import { BsPlusCircle } from "react-icons/bs";
 import { content } from "interface/content";
 import ContentPoster from "components/common/ContentPoster";
 
+import Lottie from "lottie-react";
+import spinner from "assets/gif/93297-simple-spinner.json";
+
 const RecList = () => {
-  const [recList, setRecList] = useState<content[]>([]);
+  const [recList, setRecList] = useRecoilState(recListState);
   const [essList, setEssList] = useRecoilState(essListState);
 
-  const [recList2, setRecList2] = useRecoilState(recListState);
+  useEffect(() => {}, [recList]);
 
   const onClickAddContent = (content: content) => {
     let copy = [...essList];
@@ -26,50 +28,80 @@ const RecList = () => {
   return (
     <div>
       <Layout>
-        {recList &&
-          recList.map((content, idx) => {
-            const isAlready = essList.some((ess) => ess.pk === content.pk);
-            return (
-              <SContentsContainer key={idx}>
-                <SBoxContainer>
-                  <SContent>
-                    <ContentPoster
-                      content={content}
-                      title={content.title}
-                      imageUrl={content.imgPath}
-                    ></ContentPoster>
-                  </SContent>
-                </SBoxContainer>
-                <S1DepthContainer>
-                  <S2DepthContainer>
-                    <S3DepthContainer>
-                      <div
-                        style={{
-                          display: "flex",
-                          flexDirection: "row",
-                          justifyContent: "space-between",
-                          alignItems: "center",
-                        }}
-                      >
-                        <STitleDiv className="STitleDiv">{content.title}</STitleDiv>
-                        {isAlready ? (
-                          <SFiCheckCircle />
-                        ) : (
-                          <SBsPlusCircle
-                            onClick={() => onClickAddContent(content)}
-                            className="SBsPlusCircle"
-                          />
-                        )}
-                      </div>
-                      {content.finalEpisode > 0 ? <div>{content.finalEpisode}부작</div> : null}
-                    </S3DepthContainer>
-                  </S2DepthContainer>
+        {recList !== undefined ? (
+          <>
+            {recList.length > 0 ? (
+              recList.map((content, idx) => {
+                const isAlready = essList.some((ess) => ess.pk === content.pk);
+                return (
+                  <SContentsContainer key={idx}>
+                    <SBoxContainer>
+                      <SContent>
+                        <ContentPoster
+                          content={content}
+                          title={content.title}
+                          imageUrl={content.imgPath}
+                        ></ContentPoster>
+                      </SContent>
+                    </SBoxContainer>
+                    <S1DepthContainer>
+                      <S2DepthContainer>
+                        <S3DepthContainer>
+                          <div
+                            style={{
+                              display: "flex",
+                              flexDirection: "row",
+                              justifyContent: "space-between",
+                              alignItems: "center",
+                            }}
+                          >
+                            <STitleDiv className="STitleDiv">{content.title}</STitleDiv>
+                            {isAlready ? (
+                              <SFiCheckCircle />
+                            ) : (
+                              <SBsPlusCircle
+                                onClick={() => onClickAddContent(content)}
+                                className="SBsPlusCircle"
+                              />
+                            )}
+                          </div>
+                          {content.finalEpisode > 0 ? <div>{content.finalEpisode}부작</div> : null}
+                        </S3DepthContainer>
+                      </S2DepthContainer>
 
-                  <SSumDiv>{content.summarize}</SSumDiv>
-                </S1DepthContainer>
-              </SContentsContainer>
-            );
-          })}
+                      <SSumDiv>{content.summarize}</SSumDiv>
+                    </S1DepthContainer>
+                  </SContentsContainer>
+                );
+              })
+            ) : (
+              <div
+                style={{
+                  height: "70vh",
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "center",
+                }}
+              >
+                <Lottie animationData={spinner} />
+              </div>
+            )}
+          </>
+        ) : (
+          <>
+            <div
+              style={{
+                height: "70vh",
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "center",
+              }}
+            >
+              <Lottie animationData={spinner} />
+            </div>
+          </>
+        )}
+
         <PlaceHolder />
       </Layout>
     </div>

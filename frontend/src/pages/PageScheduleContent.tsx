@@ -3,11 +3,11 @@ import React, { useState, HTMLAttributes, useEffect } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 
+import { useRecoilState } from "recoil";
 import { essListState } from "recoil/userState";
 import { schedulePreInfoState } from "recoil/schedulePreInfoState";
-import { useRecoilState } from "recoil";
 import { scheduleAllState } from "recoil/scheduleState";
-import { recListState } from "recoil/schedulePreInfoState";
+import { recListState } from "recoil/recListState";
 
 import ScheduleBottomSheet from "components/schedule/ScheduleBottomSheet";
 
@@ -16,7 +16,7 @@ import Lottie from "lottie-react";
 import scheduleGIF from "assets/gif/schedule-calendar-animation.json";
 
 import { scheduleCreate } from "apis/apiSchedule";
-import { mainRecommend } from "apis/apiMain";
+import { mainRecommend, mainRecommendNon } from "apis/apiMain";
 import { content } from "interface/content";
 
 type recommendPerOtt = {
@@ -33,17 +33,31 @@ const PageScheduleContent = () => {
   const [preData, setPreData] = useRecoilState(schedulePreInfoState);
   const [scheduleResult, setScheduleResult] = useRecoilState(scheduleAllState);
 
-  // 추천 탭 (로딩시간 단축위해 prop 내려줄 것임)
+  // 추천 탭
   const [recList, setRecList] = useRecoilState(recListState);
   const [apiList, setApiList] = useState<recommendPerOtt | undefined>();
 
   // 추천목록 가져오기 API 함수
   const mainRecommendAPI = async () => {
     const data = await mainRecommend();
+    console.log(data, "회원 데이터");
+    setApiList(data);
+  };
+
+  const mainRecommendNonAPI = async () => {
+    const data = await mainRecommendNon();
+    console.log(data, "비회원 데이터");
     setApiList(data);
   };
   useEffect(() => {
-    mainRecommendAPI();
+    if (localStorage.getItem("accessToken") !== null) {
+      console.log("회원");
+      mainRecommendAPI();
+    } else {
+      console.log("비회원");
+      // mainRecommendAPI();
+      mainRecommendNonAPI();
+    }
   }, []);
 
   // 바텀시트 추천목록 띄우기
@@ -51,6 +65,7 @@ const PageScheduleContent = () => {
     if (!apiList) return;
     // OTT를 선택하지 않았을 경우 - 각 OTT별 10개씩 총 40개 다 띄우기
     let copy = [];
+    console.log(preData, "프리데이터!!!");
     if (preData.ott.length === 0) {
       for (const key in apiList) {
         copy.push(...apiList[key]);
@@ -58,7 +73,7 @@ const PageScheduleContent = () => {
       // OTT 선택했을 경우 - 각 OTT 컨텐츠 띄우기
     } else {
       if (preData.ott.includes("netflix")) {
-        copy.push(...apiList["Netflix"]);
+        copy.push(...apiList["netflix"]);
       }
       if (preData.ott.includes("disney")) {
         copy.push(...apiList["disney"]);
@@ -67,10 +82,11 @@ const PageScheduleContent = () => {
         copy.push(...apiList["watcha"]);
       }
       if (preData.ott.includes("wavve")) {
-        copy.push(...apiList["Wavve"]);
+        copy.push(...apiList["wavve"]);
       }
-      setRecList(copy);
     }
+    console.log(copy, "넣을 리스트");
+    setRecList([...copy]);
   }, [apiList]);
 
   // 필수 시청 목록 recoil 반영
@@ -79,8 +95,11 @@ const PageScheduleContent = () => {
     essList.forEach((content) => {
       pks.push(content.pk);
     });
+    console.log(pks, "pks");
     let copy = { ...preData };
+    console.log(copy);
     copy = { ...copy, contents: pks };
+    console.log(copy, "copy2");
     setPreData(copy);
   }, [essList]);
 
@@ -157,6 +176,7 @@ const PageScheduleContent = () => {
         patterns: [],
         ott: [],
       });
+      setRecList([]);
     }, 2000);
   };
 
