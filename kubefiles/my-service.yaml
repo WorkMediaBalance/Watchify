@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: my-service
-          image: docker.io/runtogether/watchify:frontend280
+          image: docker.io/runtogether/watchify:frontend281
       imagePullSecrets:
         - name: dockerhub
           ports:
