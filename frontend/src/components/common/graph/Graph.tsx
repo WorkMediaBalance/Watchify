@@ -77,6 +77,7 @@ const Graph: React.FC<graphProps> = ({ data, setActiveIndex, activeIndex }) => {
 
   // 드래그 로직
   const handleTouchStart = (event: React.TouchEvent, index: number) => {
+    event.preventDefault();
     let initialValue = pattern;
     let initialIndex = activeIndex;
     let initialY = event.touches[0].clientY;
