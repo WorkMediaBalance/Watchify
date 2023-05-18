@@ -46,8 +46,9 @@ public class ScheduleController {
         String accessToken = request.getHeader("access");
         long userId = userService.findUserIdByAccessToken(accessToken);
 
+        Map<String, Map<Integer, List<ScheduleObjDTO>>> res = scheduleCreateService.createSchedule(userId, req);
+
         try {
-            Map<String, Map<Integer, List<ScheduleObjDTO>>> res = scheduleCreateService.createSchedule(userId, req);
             return ResponseEntity.status(200).body(res);
         } catch (Exception e) {
             return ResponseEntity.status(404).body("Failed to create schedule");
