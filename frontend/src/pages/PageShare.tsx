@@ -70,6 +70,7 @@ const PageShare = () => {
     // }
     // console.log(formattedDate, "foramttedDate");
     totalFunction();
+    console.log(selectedDate, "calendar SelectedDAte");
   }, [selectedDate, shareDetail]);
 
   // useEffect(() => {
@@ -78,6 +79,9 @@ const PageShare = () => {
   //     console.log(shareDetail[formattedDate], "shareDetail[foramttedDate]");
   //   }
   // }, [formattedDate]);
+  const [formatDay, setFromatDay] = useState(1);
+  const [formatMonth, setFromatMonth] = useState(1);
+  const [formatYear, setFromatYear] = useState(2023);
 
   const totalFunction = async () => {
     const formattedYear = selectedDate.getFullYear().toString();
@@ -93,6 +97,9 @@ const PageShare = () => {
         setDataToProps(shareDetail[formattedDate]);
       }
     }
+    setFromatDay(selectedDate.getDate());
+    setFromatMonth(formattedMonth);
+    setFromatYear(selectedDate.getFullYear());
   };
 
   return (
@@ -120,6 +127,9 @@ const PageShare = () => {
       <ShareBottomSheet
         data={dataToProps?.[date] ?? []}
         selectedDate={selectedDate}
+        formatDay={formatDay}
+        formatMonth={formatMonth}
+        formatYear={formatYear}
         isOpen={isOpen}
         onClose={() => {
           setIsOpen(false);
