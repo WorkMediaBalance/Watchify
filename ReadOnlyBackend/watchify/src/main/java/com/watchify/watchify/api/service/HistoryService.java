@@ -101,6 +101,9 @@ public class HistoryService {
 
         for (UserViewingStatus userViewingStatus : myViewStatus) {
             LocalDate date = userViewingStatus.getDate(); // 본날짜
+            if (date.getYear() != year || date.getMonthValue() != month) {
+                continue;
+            }
             Content content = userViewingStatus.getTurnContent().getContent();
             TurnContent turnContent = userViewingStatus.getTurnContent();
             int ep = userViewingStatus.getTurnContent().getEpisode();
