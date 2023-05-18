@@ -70,10 +70,15 @@ const Graph: React.FC<graphProps> = ({ data, setActiveIndex, activeIndex }) => {
   };
 
   useEffect(() => {
+    const originalOverscrollBehaviorY = document.body.style.overscrollBehaviorY;
+    document.body.style.overscrollBehaviorY = "none";
     if (containerRef.current) {
       setContainerHeight(containerRef.current.clientHeight);
     }
     getMypattern();
+    return () => {
+      document.body.style.overscrollBehaviorY = originalOverscrollBehaviorY;
+    };
   }, []);
 
   // 드래그 로직
