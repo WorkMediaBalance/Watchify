@@ -227,8 +227,14 @@ const PageRecommendResult = () => {
               episode={recResult[selectedNum].finalEpisode}
             />
             <div style={{ display: "flex", width: "100%", flexDirection: "row" }}>
-              <SImg src={recResult[selectedNum].imgPath} alt="#" />
-              <div style={{ marginRight: "1vw" }}>
+              <div style={{ width: "50%", marginLeft: "6vw", marginRight: "6vw" }}>
+                <ContentPoster
+                  imageUrl={recResult[selectedNum].imgPath}
+                  title={recResult[selectedNum].title}
+                  content={recResult[selectedNum]}
+                />
+              </div>
+              <div style={{ marginRight: "6vw" }}>
                 <STextP>추천도 : {recResult[selectedNum].score}</STextP>
                 <STextP>장르 : {recResult[selectedNum].genres.join(", ")}</STextP>
                 <STextP>재생 시간 : {run}</STextP>

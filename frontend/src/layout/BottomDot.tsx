@@ -157,21 +157,22 @@ const BottomDot: React.FC<BottomDotProps> = ({
 
   useEffect(() => {
     const path = location.pathname;
-    switch (path) {
-      case "/search":
+    switch (true) {
+      case path.startsWith("/search"):
         setIsClicked(1);
         break;
-      case "/recommend":
+      case path.startsWith("/recommend"):
         setIsClicked(2);
         break;
-      case "/schedule":
+      case path.startsWith("/schedule"):
         setIsClicked(3);
         break;
-      case "/my":
+      case path.startsWith("/my"):
         setIsClicked(4);
         break;
       default:
         setIsClicked(0);
+        break;
     }
   }, [location]);
 

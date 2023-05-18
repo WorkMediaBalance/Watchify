@@ -62,6 +62,7 @@ const PageMain = () => {
         <PlaceHolders />
         <RecommendPerOTT />
         <PlaceHolders />
+        <PlaceHolders />
         {/* <Title>
           <TitleSpan>추천</TitleSpan> 컨텐츠!
         </Title>

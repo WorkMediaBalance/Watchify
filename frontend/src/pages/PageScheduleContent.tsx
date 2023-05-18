@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { essListState } from "recoil/userState";
 import { schedulePreInfoState } from "recoil/schedulePreInfoState";
-import { scheduleAllState } from "recoil/scheduleState";
+import { scheduleAllState, monthScheduleState } from "recoil/scheduleState";
 import { recListState } from "recoil/recListState";
 
 import ScheduleBottomSheet from "components/schedule/ScheduleBottomSheet";
@@ -104,8 +104,16 @@ const PageScheduleContent = () => {
   }, [essList]);
 
   const scheduleCreateAPI = async () => {
-    const scheduleResultData = await scheduleCreate(preData);
-    setScheduleResult(scheduleResultData);
+    if (preData.ott.length === 0) {
+      let payload = { ...preData };
+      payload = { ...payload, ott: ["netflix", "disney", "wavve", "watcha"] };
+      const scheduleResultData = await scheduleCreate(payload);
+      setScheduleResult(scheduleResultData);
+    } else {
+      const scheduleResultData = await scheduleCreate(preData);
+      setScheduleResult(scheduleResultData);
+    }
+    console.log(scheduleResult, "scheduleResult");
   };
 
   // 로딩 관련 state (0: 첫화면, 1: 다음 클릭 0~2초, 2: 다음 클릭 2초 후)
@@ -164,8 +172,11 @@ const PageScheduleContent = () => {
     };
   }, [isLoading]);
 
+  const [monthSchedule, setMonthSchedule] = useRecoilState(monthScheduleState);
   const onClickLoading = () => {
     setIsLoading(1);
+    setMonthSchedule({});
+
     // 스케줄 생성 API 요청
     scheduleCreateAPI();
     setTimeout(() => {
@@ -177,6 +188,7 @@ const PageScheduleContent = () => {
         ott: [],
       });
       setRecList([]);
+      setEssList([]);
     }, 2000);
   };
 
@@ -184,7 +196,7 @@ const PageScheduleContent = () => {
     if (isLoading === 2) {
       navigate("/schedule/result");
     }
-  }, [isLoading]);
+  }, [scheduleResult]);
 
   return (
     <>

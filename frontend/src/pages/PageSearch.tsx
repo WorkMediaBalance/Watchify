@@ -151,6 +151,10 @@ const PageSearch = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   async function searchResultAPI(word: string) {
+    const searchInput = document.getElementById("search-input");
+    if (searchInput !== null) {
+      searchInput.blur();
+    }
     setIsLoading(true);
     const searchedWordResult = await searchResult(word);
     console.log(searchedWordResult, "검색결과");
@@ -183,6 +187,7 @@ const PageSearch = () => {
                 // onFocus={() => setAutocompleteVisible(true)}
                 // onTouchStart={() => setAutocompleteVisible(true)}
                 onKeyPress={(e) => onKeyPress(e)}
+                onKeyUp={(e) => onKeyPress(e)}
                 onClick={(e) => {
                   e.stopPropagation();
                   setAutocompleteVisible(true);
@@ -296,6 +301,7 @@ const PageSearch = () => {
               // onFocus={() => setAutocompleteVisible(true)}
               // onTouchStart={() => setAutocompleteVisible(true)}
               onKeyPress={(e) => onKeyPress(e)}
+              onKeyUp={(e) => onKeyPress(e)}
               onClick={(e) => {
                 e.stopPropagation();
                 setAutocompleteVisible(true);

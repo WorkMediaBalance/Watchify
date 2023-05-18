@@ -182,6 +182,7 @@ const CalendarBottomSheetFirst = (props: { date: number; month: number; year: nu
         setScheduleAll(newData);
         console.log("전체 스케줄", newData);
         await getMonthSchedule();
+        setIndex(index - 1 > 0 ? index - 1 : 0);
       }
     }
   };
