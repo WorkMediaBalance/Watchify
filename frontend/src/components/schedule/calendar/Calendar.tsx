@@ -211,12 +211,29 @@ const Calendar = (props: {
                         } else if (day.includes("next")) {
                           content = "";
                         } else {
-                          content = new Date(day).getDate();
+                          const dayArray = day.split("-");
+                          content = new Date(
+                            Number(dayArray[0]),
+                            Number(dayArray[1]) - 1,
+                            Number(dayArray[2])
+                          ).getDate();
                           const today = new Date();
                           if (
-                            new Date(day).getFullYear() === today.getFullYear() &&
-                            new Date(day).getMonth() === today.getMonth() &&
-                            new Date(day).getDate() === today.getDate()
+                            new Date(
+                              Number(dayArray[0]),
+                              Number(dayArray[1]) - 1,
+                              Number(dayArray[2])
+                            ).getFullYear() === today.getFullYear() &&
+                            new Date(
+                              Number(dayArray[0]),
+                              Number(dayArray[1]) - 1,
+                              Number(dayArray[2])
+                            ).getMonth() === today.getMonth() &&
+                            new Date(
+                              Number(dayArray[0]),
+                              Number(dayArray[1]) - 1,
+                              Number(dayArray[2])
+                            ).getDate() === today.getDate()
                           ) {
                             className = "today active-day ";
                             id = `${rowIndex}`;
