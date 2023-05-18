@@ -28,7 +28,6 @@ export const myProfileImg = async (profileImageFile: File) => {
   try {
     const formData = new FormData();
     formData.append("profileImageFile", profileImageFile);
-
     await apiCUD.put("api/my/profileimg", formData, {
       headers: {
         "Content-Type": "multipart/form-data",
@@ -39,6 +38,7 @@ export const myProfileImg = async (profileImageFile: File) => {
   } catch (err) {
     console.log("프로필 사진 변경 실패");
     console.log(err);
+    return false;
   }
 };
 
