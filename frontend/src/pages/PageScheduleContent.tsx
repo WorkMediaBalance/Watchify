@@ -7,6 +7,7 @@ import { essListState } from "recoil/userState";
 import { schedulePreInfoState } from "recoil/schedulePreInfoState";
 import { useRecoilState } from "recoil";
 import { scheduleAllState } from "recoil/scheduleState";
+import { recListState } from "recoil/schedulePreInfoState";
 
 import ScheduleBottomSheet from "components/schedule/ScheduleBottomSheet";
 
@@ -15,6 +16,12 @@ import Lottie from "lottie-react";
 import scheduleGIF from "assets/gif/schedule-calendar-animation.json";
 
 import { scheduleCreate } from "apis/apiSchedule";
+import { mainRecommend } from "apis/apiMain";
+import { content } from "interface/content";
+
+type recommendPerOtt = {
+  [key: string]: content[];
+};
 
 const PageScheduleContent = () => {
   const navigate = useNavigate();
@@ -25,6 +32,46 @@ const PageScheduleContent = () => {
   // 스케줄 생성 preData recoil
   const [preData, setPreData] = useRecoilState(schedulePreInfoState);
   const [scheduleResult, setScheduleResult] = useRecoilState(scheduleAllState);
+
+  // 추천 탭 (로딩시간 단축위해 prop 내려줄 것임)
+  const [recList, setRecList] = useRecoilState(recListState);
+  const [apiList, setApiList] = useState<recommendPerOtt | undefined>();
+
+  // 추천목록 가져오기 API 함수
+  const mainRecommendAPI = async () => {
+    const data = await mainRecommend();
+    setApiList(data);
+  };
+  useEffect(() => {
+    mainRecommendAPI();
+  }, []);
+
+  // 바텀시트 추천목록 띄우기
+  useEffect(() => {
+    if (!apiList) return;
+    // OTT를 선택하지 않았을 경우 - 각 OTT별 10개씩 총 40개 다 띄우기
+    let copy = [];
+    if (preData.ott.length === 0) {
+      for (const key in apiList) {
+        copy.push(...apiList[key]);
+      }
+      // OTT 선택했을 경우 - 각 OTT 컨텐츠 띄우기
+    } else {
+      if (preData.ott.includes("netflix")) {
+        copy.push(...apiList["Netflix"]);
+      }
+      if (preData.ott.includes("disney")) {
+        copy.push(...apiList["disney"]);
+      }
+      if (preData.ott.includes("watcha")) {
+        copy.push(...apiList["watcha"]);
+      }
+      if (preData.ott.includes("wavve")) {
+        copy.push(...apiList["Wavve"]);
+      }
+      setRecList(copy);
+    }
+  }, [apiList]);
 
   // 필수 시청 목록 recoil 반영
   useEffect(() => {

@@ -1,6 +1,7 @@
 import { atom } from "recoil";
 import { recoilPersist } from "recoil-persist";
 import { schedulePreInfo } from "interface/schedule";
+import { content } from "interface/content";
 
 const { persistAtom } = recoilPersist({
   key: "recoil-persist",
@@ -15,5 +16,11 @@ export const schedulePreInfoState = atom<schedulePreInfo>({
     patterns: [],
     ott: [],
   },
+  effects_UNSTABLE: [persistAtom],
+});
+
+export const recListState = atom<content[]>({
+  key: "schedulePreInfoState",
+  default: [],
   effects_UNSTABLE: [persistAtom],
 });
