@@ -258,7 +258,7 @@ const PageRecommendResult = () => {
               episode={recResult[selectedNum].finalEpisode}
             />
             <div style={{ display: "flex", width: "100%", flexDirection: "row" }}>
-              <div style={{ width: "50%", marginLeft: "6vw", marginRight: "6vw" }}>
+              <div style={{ width: "50%", height: "auto", marginLeft: "6vw", marginRight: "6vw" }}>
                 <ContentPoster
                   imageUrl={recResult[selectedNum].imgPath}
                   title={recResult[selectedNum].title}
