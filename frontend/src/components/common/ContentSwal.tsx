@@ -271,7 +271,7 @@ const Footer = styled.div`
   justify-content: end;
   align-items: center;
   height: 50%;
-  margin-top: 1vh;
+  margin-bottom: 1vh;
 `;
 const LinkDescriptions = styled.div`
   margin-left: 10vw;
