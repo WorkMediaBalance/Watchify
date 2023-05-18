@@ -36,7 +36,7 @@ export const reissueAccessToken = async () => {
           icon: "my-swal-icon",
         },
       }).then((result) => {
-        // window.location.href = `${BASE_URL}login`;
+        window.location.href = `${BASE_URL}login`;
       });
     });
 };
