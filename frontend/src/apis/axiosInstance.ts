@@ -15,12 +15,12 @@ const apiCUD = axios.create({
 // 요청 인터셉터 -> 토큰 체크용
 apiCUD.interceptors.request.use(
   function (config) {
-    // const accessToken = localStorage.getItem("accessToken");
-    // if (accessToken) {
-    //   config.headers.access = accessToken;
-    // }
-    config.headers.access =
-      "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjIsImV4cCI6MTY4NDM5MjI2Nn0.Y9guMSzW5zMKYgTMdhmktVbQIMnZttRtLdRZ0agyZqA";
+    const accessToken = localStorage.getItem("accessToken");
+    if (accessToken) {
+      config.headers.access = accessToken;
+    }
+    // config.headers.access =
+    //   "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjIsImV4cCI6MTY4NDM5MjI2Nn0.Y9guMSzW5zMKYgTMdhmktVbQIMnZttRtLdRZ0agyZqA";
     return config;
   },
   function (error) {
@@ -59,12 +59,12 @@ const apiR = axios.create({
 // 요청 인터셉터 -> 토큰 체크용
 apiR.interceptors.request.use(
   function (config) {
-    // const accessToken = localStorage.getItem("accessToken");
-    // if (accessToken) {
-    //   config.headers.access = accessToken;
-    // }
-    config.headers.access =
-      "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjIsImV4cCI6MTY4NDM5MjI2Nn0.Y9guMSzW5zMKYgTMdhmktVbQIMnZttRtLdRZ0agyZqA";
+    const accessToken = localStorage.getItem("accessToken");
+    if (accessToken) {
+      config.headers.access = accessToken;
+    }
+    // config.headers.access =
+    //   "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjIsImV4cCI6MTY4NDM5MjI2Nn0.Y9guMSzW5zMKYgTMdhmktVbQIMnZttRtLdRZ0agyZqA";
     return config;
   },
   function (error) {
