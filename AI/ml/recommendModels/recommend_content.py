@@ -89,6 +89,7 @@ def scheduleRecommend(user_id, content_ids, ott_ids):
     itemtitle = Content.objects.filter(id__in=ottitem, popularity__gt=0).values_list('title', flat=True)
     query = Content.objects.filter(title__in=itemtitle).annotate(min_id=Min('id')).filter(id=F('min_id')).values_list('title', flat=True)
     itemdict = Content.objects.filter(title__in=query).values_list('id', flat=True)
+    itemdict = list(set(itemdict) - set(content_ids))
 
     # itemdict = Contentott.objects.filter(popularity__gt=0, ott_id__in=ott_ids).values_list('id')  # 현재 ott에 해당하는 컨텐츠만 가져오기
     schedule_items = content_ids # 작업대에 올라가있는 컨텐츠 id를 사용
@@ -120,7 +121,7 @@ def scheduleRecommend(user_id, content_ids, ott_ids):
             recommendations.append((item_id, ott_predict(user_id, item_id, neighbor_user, max_id, neighbor_like_list, neighbor_wish_list)))
     recommendations = list(set(recommendations))
     recommendations.sort(key = lambda x:x[1], reverse=True) # 유사도(x[1])가 높은 순서대로 정렬
-    print(recommendations[:20])
-
+    print(recommendations[:30])
     result = [x[0] for x in recommendations[:100]]
+
     return result
