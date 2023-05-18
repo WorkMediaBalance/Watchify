@@ -258,9 +258,10 @@ const Summarize = styled.div`
   margin: 4vw;
   margin-bottom: 2vw;
 
-  overflow: auto;
-
-  height: 100%;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 `;
 
 const Footer = styled.div`
