@@ -1,5 +1,6 @@
 package com.watchify.watchify.api.service;
 
+import com.watchify.watchify.comparator.ScheduleObjComparator;
 import com.watchify.watchify.db.entity.*;
 import com.watchify.watchify.db.repository.*;
 import com.watchify.watchify.dto.request.ScheduleCreateRequestDTO;
@@ -137,6 +138,8 @@ public class ScheduleCreateService {
 
         // 켈린더 끝날짜가 다 끝나면 추천받아서 추가할거 더 추가 해도 됨
 
+        // 정렬, pk 순으로 오름차순, 같다면 에피소드 순으로 오름차순
+        Collections.sort(scheduleObjDTOS, new ScheduleObjComparator());
 
         // res 만들기
         Map<String, Map<Integer, List<ScheduleObjDTO>>> res = new HashMap<>();
