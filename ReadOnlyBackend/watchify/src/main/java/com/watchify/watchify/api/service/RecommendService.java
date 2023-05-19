@@ -65,11 +65,9 @@ public class RecommendService {
         }
         // Service 추가하기
         String API_URL = "https://k8a207.p.ssafy.io/v1/recommend/schedule?id="+ userId + "&content_id=" + contents + "&ott_id=" + ottL;
-        System.out.println(API_URL);
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<ScheduleRecommendReqDTO> response = restTemplate.getForEntity(API_URL, ScheduleRecommendReqDTO.class);
         ScheduleRecommendReqDTO scheduleRecommendReqDTO = response.getBody();
-        System.out.println(scheduleRecommendReqDTO);
         return scheduleRecommendReqDTO.getContentPk();
     }
 }
