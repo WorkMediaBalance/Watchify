@@ -40,21 +40,19 @@ const PageScheduleContent = () => {
   // 추천목록 가져오기 API 함수
   const mainRecommendAPI = async () => {
     const data = await mainRecommend();
-    console.log(data, "회원 데이터");
+
     setApiList(data);
   };
 
   const mainRecommendNonAPI = async () => {
     const data = await mainRecommendNon();
-    console.log(data, "비회원 데이터");
+
     setApiList(data);
   };
   useEffect(() => {
     if (localStorage.getItem("accessToken") !== null) {
-      console.log("회원");
       mainRecommendAPI();
     } else {
-      console.log("비회원");
       // mainRecommendAPI();
       mainRecommendNonAPI();
     }
@@ -65,7 +63,7 @@ const PageScheduleContent = () => {
     if (!apiList) return;
     // OTT를 선택하지 않았을 경우 - 각 OTT별 10개씩 총 40개 다 띄우기
     let copy = [];
-    console.log(preData, "프리데이터!!!");
+
     if (preData.ott.length === 0) {
       for (const key in apiList) {
         copy.push(...apiList[key]);
@@ -85,7 +83,7 @@ const PageScheduleContent = () => {
         copy.push(...apiList["wavve"]);
       }
     }
-    console.log(copy, "넣을 리스트");
+
     setRecList([...copy]);
   }, [apiList]);
 
@@ -95,11 +93,11 @@ const PageScheduleContent = () => {
     essList.forEach((content) => {
       pks.push(content.pk);
     });
-    console.log(pks, "pks");
+
     let copy = { ...preData };
-    console.log(copy);
+
     copy = { ...copy, contents: pks };
-    console.log(copy, "copy2");
+
     setPreData(copy);
   }, [essList]);
 
@@ -113,7 +111,6 @@ const PageScheduleContent = () => {
       const scheduleResultData = await scheduleCreate(preData);
       setScheduleResult(scheduleResultData);
     }
-    console.log(scheduleResult, "scheduleResult");
   };
 
   // 로딩 관련 state (0: 첫화면, 1: 다음 클릭 0~2초, 2: 다음 클릭 2초 후)

@@ -15,7 +15,7 @@ const WatchingPattern = () => {
   async function myPatternGetAPI() {
     const myPattern = await myPatternGet();
     const myPatternData = myPattern.pattern;
-    // console.log(myPatternData, "받아온 커스텀 데이터");
+
     setData(myPatternData);
   }
   useEffect(() => {

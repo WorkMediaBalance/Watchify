@@ -142,7 +142,6 @@ const Calendar = (props: {
     rowIndex: number,
     day: string
   ) => {
-    console.log(day);
     const YMD = day.split("-");
     if (YMD.length === 3) {
       if (clickedDay) {

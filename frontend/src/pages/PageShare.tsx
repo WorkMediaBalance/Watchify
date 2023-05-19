@@ -45,7 +45,6 @@ const PageShare = () => {
   }
 
   useEffect(() => {
-    console.log(sharedPK);
     if (sharedPK === undefined) {
     } else {
       getScheduleShare(Number(sharedPK));
@@ -61,24 +60,9 @@ const PageShare = () => {
   const [formattedDate, setFormattedDate] = useState("");
 
   useEffect(() => {
-    // const formattedYear = selectedDate.getFullYear().toString();
-    // const formattedMonth = selectedDate.getMonth() + 1;
-    // if (formattedMonth < 10) {
-    //   setFormattedDate(formattedYear + "-0" + formattedMonth.toString());
-    // } else {
-    //   setFormattedDate(formattedYear + "-" + formattedMonth.toString());
-    // }
-    // console.log(formattedDate, "foramttedDate");
     totalFunction();
-    console.log(selectedDate, "calendar SelectedDAte");
   }, [selectedDate, shareDetail]);
 
-  // useEffect(() => {
-  //   if (shareDetail) {
-  //     setDataToProps(shareDetail[formattedDate]);
-  //     console.log(shareDetail[formattedDate], "shareDetail[foramttedDate]");
-  //   }
-  // }, [formattedDate]);
   const [formatDay, setFromatDay] = useState(1);
   const [formatMonth, setFromatMonth] = useState(1);
   const [formatYear, setFromatYear] = useState(2023);
@@ -119,7 +103,6 @@ const PageShare = () => {
             setDate(date);
             setIsOpen(true);
             setSheetLevel(1);
-            console.log(dataToProps, "dataToProps");
           }}
           bottomSheetState={sheetLevel}
           onCloseSheet={() => {

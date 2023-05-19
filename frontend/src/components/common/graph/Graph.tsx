@@ -89,7 +89,6 @@ const Graph: React.FC<graphProps> = ({ data, setActiveIndex, activeIndex }) => {
     let initialY = event.touches[0].clientY;
     const handleTouchMove = (event: TouchEvent) => {
       const movementY = event.touches[0].clientY - initialY;
-      console.log("Y-axis movement:", movementY, "containerHeight:", containerHeight);
 
       let newPattern = [...pattern];
       if (newPattern[index] - Math.floor(movementY / (containerHeight / 8)) < 0) {
@@ -107,7 +106,6 @@ const Graph: React.FC<graphProps> = ({ data, setActiveIndex, activeIndex }) => {
     const handleTouchEnd = async () => {
       document.removeEventListener("touchmove", handleTouchMove);
       document.removeEventListener("touchend", handleTouchEnd);
-      console.log("finished"); //TODO: 이 자리에서 axios
     };
 
     document.addEventListener("touchmove", handleTouchMove);

@@ -57,7 +57,7 @@ const OttSubscription = () => {
   async function myOTTgetAPI() {
     try {
       const myOTTInfo = await myOTTget();
-      console.log(myOTTInfo, "현재 구독중인 OTT - API");
+
       let copy = { ...ott };
       copy = myOTTInfo;
       setOtt(copy);
@@ -89,7 +89,6 @@ const OttSubscription = () => {
     }).then((result) => {
       // 구독해지시 만료일이 null이면 현재일 기준 가장 가까운 -1일 계산해서 보여줌
       if (result.isConfirmed) {
-        console.log("구독해지 - 로직 추가 필요");
         setIsAdded(false);
         const copy = { ...ott };
 
@@ -98,7 +97,7 @@ const OttSubscription = () => {
         const today = new Date().toISOString().split("T")[0]; // 오늘 날짜
 
         const endDate = calculateNetflixSubscriptionCancellationDate(startDate, today); // 계산된 구독해지일
-        console.log("OTT 구독 해지일:", endDate);
+
         copy[key] = { ...copy[key], end: endDate };
         myOTTChange(copy);
         setSthHappend(!sthHappend);
@@ -106,7 +105,7 @@ const OttSubscription = () => {
       if (result.dismiss === Swal.DismissReason.cancel) {
         const copy = { ...ott };
         copy[key] = { ...copy[key], start: null, end: null };
-        console.log(copy, "OTT 삭제");
+
         myOTTChange(copy);
         setIsAdded(false);
         setIs4(false);
@@ -144,7 +143,6 @@ const OttSubscription = () => {
     const newDate = `${year}-${month}-${day}`;
     copy[key] = { start: newDate, end: null }; // 새로운 객체 생성 후 업데이트
 
-    console.log(copy, "ott 구독 정보 추가");
     myOTTChange(copy);
     setSthHappend(!sthHappend);
   };
@@ -252,7 +250,7 @@ const OttSubscription = () => {
     }
     const copy = { ...ott };
     copy[key] = { ...copy[key], start: newDate };
-    console.log(copy, "구독 시작 날짜 변경해서 ott 구독 정보 수정");
+
     myOTTChange(copy);
     setSthHappend(!sthHappend);
   };
@@ -280,7 +278,7 @@ const OttSubscription = () => {
 
     const copy = { ...ott };
     copy[key] = { ...copy[key], end: newDate };
-    console.log(copy, "구독 종료 날짜 변경해서 ott 구독 정보 수정");
+
     myOTTChange(copy);
     setSthHappend(!sthHappend);
   };

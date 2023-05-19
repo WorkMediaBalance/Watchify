@@ -15,7 +15,7 @@ const PageSchedule = () => {
   const [recoilScheduleAll, setRecoilScheduleAll] = useRecoilState(scheduleAllState);
   const getScheduleAll = async () => {
     const data = await scheduleInfoAll();
-    console.log(data);
+
     if (data !== false) {
       setScheduleAll(data);
       setRecoilScheduleAll(data);
@@ -29,20 +29,15 @@ const PageSchedule = () => {
     if (!location.state?.isMakeNew) {
       if (localStorage.getItem("accessToken") !== null) {
         const data = await getScheduleAll();
-        console.log(data, "이프문");
-        if (Object.keys(data).length !== 0) {
-          console.log("회원 예스 스케줄");
 
+        if (Object.keys(data).length !== 0) {
           navigate("/schedule/result");
         } else {
-          console.log("회원 노스케줄");
           setIsShow(true);
         }
       } else {
         if (recoilScheduleAll !== null) {
-          console.log("비회원 예스 스케줄");
         } else {
-          console.log("비회원 노 스케줄");
         }
       }
     } else {

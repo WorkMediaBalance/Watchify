@@ -27,12 +27,10 @@ const PageCallback = () => {
   function setToken() {
     try {
       if (accessToken === null) {
-        console.log("엑세스 토큰이 존재하지 않습니다.");
         accessToken = "";
       }
 
       if (refreshToken === null) {
-        console.log("리프레시 토큰이 존재하지 않습니다.");
         refreshToken = "";
       }
 

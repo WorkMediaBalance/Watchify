@@ -38,7 +38,7 @@ const PageMyHistory = () => {
         month: Number(month),
       };
       const newHistoryDetail = await myHistoryInfo(data);
-      console.log(newHistoryDetail, month, year, "here");
+
       if (newHistoryDetail !== undefined) {
         setHistoryDetail(newHistoryDetail);
       }
@@ -68,7 +68,6 @@ const PageMyHistory = () => {
             setDate(date);
             setIsOpen(true);
             setSheetLevel(1);
-            console.log(historyDetail, "historyDetail");
           }}
           bottomSheetState={sheetLevel}
           onCloseSheet={() => {

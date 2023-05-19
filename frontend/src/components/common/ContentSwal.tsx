@@ -25,14 +25,14 @@ const ContentSwal: React.FC<ContentSwalProps> = ({ content: content }) => {
   // 단일 컨텐츠 정보 조회 API - 찜 최신화용
   async function contentInfoAPI(pk: number) {
     let newData = await contentInfo({ pk: pk });
-    console.log(newData, "뉴데이터");
+
     setNewContentInfo(newData);
     setIsWish(newData.wish);
     setRating(newData.like);
   }
   useEffect(() => {
     if (!content) return;
-    console.log(content, "컨텐츠");
+
     contentInfoAPI(content.pk);
   }, []);
 

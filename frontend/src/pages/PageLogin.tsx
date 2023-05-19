@@ -13,7 +13,6 @@ const PageLogin = () => {
   useEffect(() => {
     const myToken = localStorage.getItem("accessToken");
     if (myToken) {
-      console.log("이미 로그인 되어있음!");
       navigate("/");
     }
   }, []);

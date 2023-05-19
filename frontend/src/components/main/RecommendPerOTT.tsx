@@ -42,8 +42,6 @@ const RecommendPerOTT = () => {
   };
 
   const handleNext = (add: number) => {
-    console.log((index + add + 10) % 10);
-
     setIndex((index + add + 10) % 10);
   };
 
@@ -58,7 +56,7 @@ const RecommendPerOTT = () => {
     setIsLoading(true);
     const data = await mainRecommendNon();
     setResult(data);
-    console.log(data);
+
     setIsLoading(false);
   };
 

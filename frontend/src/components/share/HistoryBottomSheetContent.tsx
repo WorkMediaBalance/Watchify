@@ -3,7 +3,6 @@ import styled from "styled-components";
 import { HistoryDetailContent } from "interface/content";
 
 const HistoryBottomSheetContent = (props: { data: HistoryDetailContent[] }) => {
-  console.log(props.data);
   return (
     <div>
       {props.data.length > 0 && <Title>{props.data[0].title}</Title>}

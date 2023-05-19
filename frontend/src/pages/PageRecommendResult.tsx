@@ -212,7 +212,6 @@ const PageRecommendResult = () => {
   useEffect(() => {
     const data = location.state?.data;
     SetRecResult(data);
-    console.log(data);
   }, []);
 
   const [isNeedMore, setIsNeedMore] = useState(false);

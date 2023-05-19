@@ -41,8 +41,6 @@ const TodayWatch: React.FC<TodayWatchProps> = ({
       clickState={clickState}
       backdropPath={todayWatch.length > 0 ? todayWatch[0]["backdropPath"] : "/WatchifyLogo2.png"}
       onClick={() => {
-        console.log(clickState);
-
         handleState(1);
       }}
     >
@@ -89,7 +87,7 @@ const TodayWatch: React.FC<TodayWatchProps> = ({
           backdropPath={todayWatch[1]["backdropPath"]}
           onClick={(e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
             e.stopPropagation();
-            console.log(clickState);
+
             handleState(2);
           }}
           clickState={clickState}

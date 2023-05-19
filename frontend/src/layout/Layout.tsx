@@ -52,7 +52,6 @@ const Layout = () => {
 
   useEffect(() => {
     const path = location.pathname;
-    // console.log(path);
 
     // 이 함수에서 AppBAr 사용여부와 RedDot 사용여부 설정해줄 것!
     // 조건문 중첩해서 중첩 url 대응

@@ -33,7 +33,6 @@ const PageScheduleResult = () => {
     const data = await scheduleInfoAll();
     if (data !== false) {
       setScheduleAll(data);
-      console.log("전체 스케줄", data);
     }
   };
 
@@ -46,12 +45,9 @@ const PageScheduleResult = () => {
   const getMonthSchedule = async () => {
     await setMonthSchedule({});
     try {
-      console.log(`${year}년 ${month}월 스케줄 정보 받아오기`);
       const data = await scheduleInfo(year, month);
       setMonthSchedule(data);
-      console.log(data, "얘가 undefined?");
     } catch {
-      console.log("여기까지 옴");
       setMonthSchedule(scheduleAll[month]);
     }
   };

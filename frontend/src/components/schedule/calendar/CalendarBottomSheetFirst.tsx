@@ -35,9 +35,7 @@ const CalendarBottomSheetFirst = (props: { date: number; month: number; year: nu
     return color;
   }
 
-  useEffect(() => {
-    console.log(dateScheduleList, "here");
-  }, []);
+  useEffect(() => {}, []);
 
   const nextContent = () => {
     if (
@@ -67,7 +65,6 @@ const CalendarBottomSheetFirst = (props: { date: number; month: number; year: nu
 
   useEffect(() => {
     setIsSeen(dateScheduleList[index]?.view);
-    console.log(index);
   }, [index, props.date]);
 
   useEffect(() => {
@@ -180,7 +177,7 @@ const CalendarBottomSheetFirst = (props: { date: number; month: number; year: nu
       const newData = await scheduleInfoAll();
       if (newData !== false) {
         setScheduleAll(newData);
-        console.log("전체 스케줄", newData);
+
         await getMonthSchedule();
         setIndex(index - 1 > 0 ? index - 1 : 0);
       }
@@ -189,7 +186,6 @@ const CalendarBottomSheetFirst = (props: { date: number; month: number; year: nu
 
   const getMonthSchedule = async () => {
     try {
-      console.log(`${props.year}년 ${props.month}월 스케줄 정보 받아오기`);
       const data = await scheduleInfo(props.year, props.month);
       setMonthSchedule(data);
     } catch {}

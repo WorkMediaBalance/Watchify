@@ -13,19 +13,6 @@ const HistoryTab = () => {
   const dummyArray = [0, 0, 0, 0, 0, 0, 0];
   const [historyArray, setHistoryArray] = useState<HistoryContent[]>();
 
-  // async function MyHistoryAPI() {
-  //   try {
-  //     const newHistoryArray = await myHistory();
-  //     console.log(newHistoryArray);
-  //     setHistoryArray(newHistoryArray);
-  //   } catch {}
-  // }
-  // useEffect(() => {
-  //   MyHistoryAPI();
-  // }, []);
-
-  // month 스케줄 state
-
   const getMyHistoryArray = async () => {
     const result = await myHistory();
     setHistoryArray(result);
