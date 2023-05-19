@@ -77,7 +77,7 @@ public class OauthController {
             e.printStackTrace();
         }
 
-        System.out.println("accessToken 받기 완료 : " + kakaoOauth2Token.getAccess_token());
+
         // -- 여기까지 accessToken 받기 완료 --
 
 
@@ -191,8 +191,7 @@ public class OauthController {
     public RedirectView reGnerateToken(@RequestHeader("refresh") String refreshToken) {
         Token token = userCheckService.reGenerateAccess(refreshToken);
         String redirectUri = userCheckService.loginRedirect(token);
-        System.out.println(token.getRefreshToken());
-        System.out.println(token.getAccessToken());
+
         return new RedirectView(redirectUri);
     }
 

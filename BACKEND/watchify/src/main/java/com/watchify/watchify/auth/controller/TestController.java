@@ -17,7 +17,7 @@ public class TestController {
         LocalDate today = LocalDate.now();
 
         for (int i = 0; i < 7; i++) {
-            System.out.println(today.plusDays(i).getDayOfWeek().getValue());
+
         }
 
         return "hi Oauth2 zzz";

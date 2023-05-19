@@ -29,7 +29,7 @@ public class CustomAuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
     protected CustomAuthenticationSuccessHandler(RedisTemplate<String, String> redisTemplate, TokenService tokenService,
                                                  @Value("${app.oauth2.frontRedirectUrl}") String redirectURl) {
-        System.out.println("CustomAuthenticationSuccessHandler 생성자 발동");
+
         this.redisTemplate = redisTemplate;
         this.tokenService = tokenService;
         this.redirectUrl = redirectURl;
@@ -39,7 +39,7 @@ public class CustomAuthenticationSuccessHandler extends SimpleUrlAuthenticationS
     @Transactional
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication)
             throws IOException {
-        System.out.println("CustomAuthenticationSuccessHandler 의 onAuthenticationSuccess 메서드");
+
 
         // 4. Access, Refresh Token 발급
         final PrincipalDetails user = (PrincipalDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -47,11 +47,11 @@ public class CustomAuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
         final String accessToken = tokenService.generateAccessToken(user);
         log.debug("generated accessToken : {}", accessToken);
-        System.out.println("어세스 토큰 발급함 : " + accessToken);
+
 
         final String refreshToken = tokenService.generateRefreshToken(user);
         log.debug("generated refreshToken : {}", refreshToken);
-        System.out.println("리프레시 토큰 발급함 : " + refreshToken);
+
 
         // 5. Refresh Token 은 DB 에 저장
         try {

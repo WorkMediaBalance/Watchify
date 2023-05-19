@@ -36,15 +36,13 @@ public class RecommendService {
             rating = 1;
         }
         String API_URL = "https://k8a207.p.ssafy.io/v1/recommend?id=" + userId + "&genres=" + s + "&ott="+ ottl + "&rating=" + rating;
-        System.out.println(API_URL);
+
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<RecommendDTO> response = restTemplate.getForEntity(API_URL, RecommendDTO.class);
         RecommendDTO recommendDTO = response.getBody(); // 여기까지 데이터는 잘 받아와짐 But 변수명 변경 필요
 
         for (int i = 0; i < 10 ; i++){
-            System.out.println(i);
-            System.out.println(recommendDTO.getContentPk().get(i));
-            System.out.println(recommendDTO.getContentRate().get(i));
+
             Content content = contentRepository.getContentById(recommendDTO.getContentPk().get(i));
             float score = recommendDTO.getContentRate().get(i);
             ContentRecommendResDTO contentRecommendResDTO = new ContentRecommendResDTO(content, score);
@@ -67,11 +65,11 @@ public class RecommendService {
         }
         // Service 추가하기
         String API_URL = "https://k8a207.p.ssafy.io/v1/recommend/schedule?id="+ userId + "&content_id=" + contents + "&ott_id=" + ottL;
-        System.out.println(API_URL);
+
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<ScheduleRecommendReqDTO> response = restTemplate.getForEntity(API_URL, ScheduleRecommendReqDTO.class);
         ScheduleRecommendReqDTO scheduleRecommendReqDTO = response.getBody();
-        System.out.println("장고 추천 사이즈 : " + scheduleRecommendReqDTO.getContentPk().size());
+
         return scheduleRecommendReqDTO.getContentPk();
     }
 }

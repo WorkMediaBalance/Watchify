@@ -131,7 +131,7 @@ public class UserCheckService {
             token = new Token(accessToken, refreshToken, false);
         } else {
             // 리프레시 만료되서 다시 발급받아야되는 경우 -> 로그인페이지로 리다이랙트 시킬 예정
-            System.out.println("리프레시 만료!");
+
             token = null;
         }
 

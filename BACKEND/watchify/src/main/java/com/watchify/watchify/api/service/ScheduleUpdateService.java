@@ -70,7 +70,7 @@ public class ScheduleUpdateService {
         EpList.sort(null);
 
         if (dateList.size() != EpList.size()) {
-            System.out.println("오류");
+
             return ;
         }
 

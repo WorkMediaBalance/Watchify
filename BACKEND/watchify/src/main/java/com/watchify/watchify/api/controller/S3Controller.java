@@ -25,9 +25,9 @@ public class S3Controller {
     public ResponseEntity<?> updateUserImage(HttpServletRequest request, @RequestParam("image")MultipartFile multipartFile) throws IOException {
         String accessToken = request.getHeader("access");
         long userId = userService.findUserIdByAccessToken(accessToken);
-        System.out.println("userID : " + userId);
+
         User user = userService.returnUserById(userId);
-        System.out.println(111111);
+
 
         // 유저프로필은 userimages/ 하위에 저장
         AwsS3 awsS3 = s3Service.upload(multipartFile, "userimages");

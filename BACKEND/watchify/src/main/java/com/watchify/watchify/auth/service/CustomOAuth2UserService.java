@@ -29,7 +29,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         DefaultOAuth2UserService oAuth2UserService = new DefaultOAuth2UserService();
         log.debug("사용자가 소셜 로그인 완료시 호출");
         log.debug("provider access token : {}", userRequest.getAccessToken().getTokenValue());
-        System.out.println("CustomOAuth2UserService // 소셜 로그인 수행");
+
         // 1. name, email, provider 획득
         final OAuth2User oAuth2User = oAuth2UserService.loadUser(userRequest);
 

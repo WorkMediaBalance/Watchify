@@ -89,7 +89,6 @@ public class MainScheduleService {
         HashMap<String, List<DefaultContentDTO>> hash = new HashMap<>();// 추가하기
         // Service 추가하기
         String API_URL = "https://k8a207.p.ssafy.io/v1/recommend/main?id=" + userId;
-        System.out.println(API_URL);
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<MainRecommendDTO> response = restTemplate.getForEntity(API_URL, MainRecommendDTO.class);
         MainRecommendDTO mainRecommendDTO = response.getBody();
