@@ -1,5 +1,5 @@
 # Watchify
-<img src="https://lab.ssafy.com/s08-final/S08P31A207/uploads/72a0fbfe7369455b93797b281b3728da/KakaoTalk_20230519_104227916.png"  width="600" height="600"/>
+<img src="https://lab.ssafy.com/s08-final/S08P31A207/uploads/72a0fbfe7369455b93797b281b3728da/KakaoTalk_20230519_104227916.png"  width="1000" height="600"/>
 
 다양한 컨텐츠를 스케줄링 받아 OTT를 보다 알차게 사용해보세요!
 
@@ -44,8 +44,10 @@ OTT 구독 기간과 사용자의 취향 등을 반영하여 컨텐츠를 추천
 - 깔끔한 UI를 위해 black과 orenge 컬러를 사용하였습니다.
 <br>
 
-![레드닷]()
-![메인페이지]()
+<img src="https://lab.ssafy.com/s08-final/S08P31A207/uploads/dfcccaa8dfa8d4cbe8cfe7474fb5c895/디자인1.gif"  width="200" height="400"/>
+
+
+<img src="https://lab.ssafy.com/s08-final/S08P31A207/uploads/613ed2d10d60d7c062a78b20d52f6371/디자인2.gif"  width="200" height="400"/>
 
 # 서비스 소개
 ## 컨텐츠 스케줄링
@@ -97,6 +99,14 @@ OTT 구독 기간과 사용자의 취향 등을 반영하여 컨텐츠를 추천
   - 비슷한 취향의 유저들의 컨텐츠 데이터와 사용자의 컨텐츠 데이터를 비교하며 `SmilarytiyMatrix`클래스의 `get_user_similarity()` 함수를 호출하여 유저 유사도(`user_similarity`)와 이를 이용하여 사용자들이 매긴 평점에 가중치(`weighted_rating`)를 부여합니다.
   - 가중치 점수가 높을수록 추천 순위가 높아집니다.
   - 가중치가 부여된 점수 순으로 컨텐츠를 정렬합니다.
+
+## 검색 기능
+실시간 검색 기능을 통하여 사용자가 검색을 더 빠르고 편하게 할 수 있도록 도움을 주는 기능
+<br>
+
+<img src="https://lab.ssafy.com/s08-final/S08P31A207/uploads/27d88c5e69809a64735f200220005f87/검색_기능.gif"  width="200" height="400"/>
+
+<img src="https://lab.ssafy.com/s08-final/S08P31A207/uploads/31c657d08a4960f463a26eb0c85dbc31/검색결과.gif"  width="200" height="400"/>
 
 ## 간편 로그인
 SNS 로그인으로 사용자가 간편하게 서비스에 접근할 수 있도록 합니다. 카카오톡과 구글 로그인을 지원합니다.
