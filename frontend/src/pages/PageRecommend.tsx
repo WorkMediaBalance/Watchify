@@ -122,10 +122,40 @@ const PageRecommend = () => {
     console.log({ isAdult: isAdult, ottList: ott, genre: recGenre });
     setIsLoading(true);
     if (ott.length === 0) {
-      if (localStorage.getItem("accessToken") === null) {
-        // 여기에 비회원 추천 넣기
-        navigate("/login");
+      if (recGenre.length === 0) {
+        console.log("0");
+        const genreAll = [
+          "액션",
+          "애니메이션",
+          "코미디",
+          "범죄",
+          "다큐멘터리",
+          "드라마",
+          "판타지",
+          "역사",
+          "공포",
+          "가족",
+          "음악",
+          "스릴러",
+          "로맨스",
+          "SF",
+          "스포츠",
+          "전쟁",
+          "서부",
+          "Reality TV",
+          "Made in Europe",
+        ];
+        const ottList = ["netflix", "watcha", "wavve", "disney"];
+        const data = await contentRecommend({
+          isAdult: isAdult,
+          ottList: ottList,
+          genres: genreAll,
+        });
+        setRecResultList(data);
+        navigate("/recommend/result", { state: { data: data } });
+        setIsLoading(false);
       } else {
+        console.log("1");
         const ottList = ["netflix", "watcha", "wavve", "disney"];
         const data = await contentRecommend({
           isAdult: isAdult,
@@ -137,9 +167,35 @@ const PageRecommend = () => {
         setIsLoading(false);
       }
     } else {
-      if (localStorage.getItem("accessToken") === null) {
-        navigate("/login");
+      if (recGenre.length === 0) {
+        console.log("2");
+        const genreAll = [
+          "액션",
+          "애니메이션",
+          "코미디",
+          "범죄",
+          "다큐멘터리",
+          "드라마",
+          "판타지",
+          "역사",
+          "공포",
+          "가족",
+          "음악",
+          "스릴러",
+          "로맨스",
+          "SF",
+          "스포츠",
+          "전쟁",
+          "서부",
+          "Reality TV",
+          "Made in Europe",
+        ];
+        const data = await contentRecommend({ isAdult: isAdult, ottList: ott, genres: genreAll });
+        setRecResultList(data);
+        navigate("/recommend/result", { state: { data: data } });
+        setIsLoading(false);
       } else {
+        console.log("3");
         const data = await contentRecommend({ isAdult: isAdult, ottList: ott, genres: recGenre });
         setRecResultList(data);
         navigate("/recommend/result", { state: { data: data } });
@@ -169,9 +225,9 @@ const PageRecommend = () => {
   };
 
   useEffect(() => {
-    if (localStorage.getItem("accessToken") === null) {
-      navigate("/login");
-    }
+    // if (localStorage.getItem("accessToken") === null) {
+    //   navigate("/login");
+    // }
   }, []);
 
   return (
