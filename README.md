@@ -57,7 +57,12 @@ OTT 구독 기간과 사용자의 취향 등을 반영하여 컨텐츠를 추천
 프로필 페이지에서 자신의 시청 패턴을 저장할 수 있습니다. 각 요일별로 그래프 바를 움직여 시청 시간을 저장하세요. 그래프를 직접 움직여 설정하는 것이 귀찮다면 본인 시청 패턴에 맞는 프리셋을 선택할 수도 있습니다.
 <br>
 
-![시청패턴지정]()
+<img src="https://lab.ssafy.com/s08-final/S08P31A207/uploads/3f59c9802097e08844328803dd3ae52b/스케쥴.gif"  width="200" height="400"/>
+
+<img src="https://lab.ssafy.com/s08-final/S08P31A207/uploads/f38304f83f10edeb6fe8105955e98d48/스케쥴목록.gif"  width="200" height="400"/>
+
+<img src="https://lab.ssafy.com/s08-final/S08P31A207/uploads/f2bcbb8816397c775deab1a528185d42/스케쥴결과.gif"  width="200" height="400"/>
+
 
 ### 2. 스케줄링 알고리즘
 사용자가 시청하기 원하는 컨텐츠를 선택하면, 사용자가 미리 지정해놓은 시청 패턴에 따라 스케줄링을 시작합니다.
@@ -78,9 +83,7 @@ OTT 구독 기간과 사용자의 취향 등을 반영하여 컨텐츠를 추천
 사용자 기반 협업 필터링을 사용하여 개인별로 컨텐츠를 추천합니다. 사용자가 시청하거나 별점을 매기거나, 혹은 위시리스트에 추가한 컨텐츠를 기반으로 컨텐츠를 추천합니다.
 <br>
 
-![main]()
-![user]()
-![schedule]()
+<img src="https://lab.ssafy.com/s08-final/S08P31A207/uploads/55142cc8c87953b74b1c4d85ddf3ce21/컨텐츠추천.gif"  width="200" height="400"/>
 
 ### 1. 추천 알고리즘
 1. DB 조회
@@ -104,21 +107,23 @@ OTT 구독 기간과 사용자의 취향 등을 반영하여 컨텐츠를 추천
 SNS 로그인으로 사용자가 간편하게 서비스에 접근할 수 있도록 합니다. 카카오톡과 구글 로그인을 지원합니다.
 <br>
 
-![로그인]()
+<img src="https://lab.ssafy.com/s08-final/S08P31A207/uploads/d3d03307050db61d25436ff1c7b651e4/Kakao_.gif"  width="200" height="400"/>
+
+<img src="https://lab.ssafy.com/s08-final/S08P31A207/uploads/4e0128544fb0c8bb756831a6ba20c294/Google.gif"  width="200" height="400"/>
 
 ## 알람 및 공유
 ### 알람
 프로필 페이지의 설정 탭에서 알람 on/off 기능으로 알람을 설정할 수 있습니다. 알람을 on으로 설정한다면, 매일 정해진 시간에 오늘의 시청 스케줄을 알림합니다.
 <br>
 
-![알람설정]()
-![알람]()
+<img src="https://lab.ssafy.com/s08-final/S08P31A207/uploads/d8d7b8adde9ee242b243f1ae5250e266/마이페이지.gif"  width="200" height="400"/>
+
+
 ### 공유
 컨텐츠 시청 스케줄을 받은 후, 스케줄 페이지에서 카카오톡 공유하기를 통해 공유할 수 있습니다.
 <br>
 
-![공유하기]()
-![공유받기]()
+<img src="https://lab.ssafy.com/s08-final/S08P31A207/uploads/52f6c8dabc2e03134a8ed442148f3621/공유_기능.gif"  width="200" height="400"/>
 
 
 <br>
