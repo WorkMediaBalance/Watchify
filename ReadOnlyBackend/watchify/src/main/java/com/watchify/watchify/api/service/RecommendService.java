@@ -36,15 +36,13 @@ public class RecommendService {
             rating = 1;
         }
         String API_URL = "https://k8a207.p.ssafy.io/v1/recommend?id=" + userId + "&genres=" + s + "&ott="+ ottl + "&rating=" + rating;
-        System.out.println(API_URL);
+//        System.out.println(API_URL);
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<RecommendDTO> response = restTemplate.getForEntity(API_URL, RecommendDTO.class);
         RecommendDTO recommendDTO = response.getBody(); // 여기까지 데이터는 잘 받아와짐 But 변수명 변경 필요
 
         for (int i = 0; i < 10 ; i++){
-            System.out.println(i);
-            System.out.println(recommendDTO.getContentPk().get(i));
-            System.out.println(recommendDTO.getContentRate().get(i));
+
             Content content = contentRepository.getContentById(recommendDTO.getContentPk().get(i));
             float score = recommendDTO.getContentRate().get(i);
             ContentRecommendResDTO contentRecommendResDTO = new ContentRecommendResDTO(content, score);

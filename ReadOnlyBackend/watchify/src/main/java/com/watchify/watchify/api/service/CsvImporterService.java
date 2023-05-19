@@ -68,7 +68,7 @@ public class CsvImporterService {
 //                System.out.println(csvRecord);
                 Long contentID = Long.parseLong(csvRecord.get(0));
                 Integer finalEpisode = Integer.parseInt(csvRecord.get(10));
-                System.out.println("contentID : " + contentID);
+//                System.out.println("contentID : " + contentID);
                 statement.setString(1, csvRecord.get(1));
                 statement.setInt(2, Integer.parseInt(csvRecord.get(2)));
                 statement.setInt(3, Integer.parseInt(csvRecord.get(3)));
