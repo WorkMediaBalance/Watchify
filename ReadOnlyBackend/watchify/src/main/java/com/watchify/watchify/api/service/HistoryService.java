@@ -72,7 +72,7 @@ public class HistoryService {
                 isComplete = false;
             }
 
-            System.out.println(firstDate);
+//            System.out.println(firstDate);
             HistoryDTO historyDTO = new HistoryDTO(content, firstDate, isComplete);
             historyDTO.setIsWish(myWishContentList.contains(content.getId()));
 
