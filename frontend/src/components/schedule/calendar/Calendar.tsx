@@ -322,7 +322,12 @@ const Calendar = (props: {
                                 monthSchedule[content] &&
                                 monthSchedule[content].length > 4 && (
                                   <div
-                                    style={{ width: "100%", textAlign: "end", marginRight: "20%" }}
+                                    style={{
+                                      backgroundColor: "transparent",
+                                      width: "100%",
+                                      textAlign: "end",
+                                      marginRight: "20%",
+                                    }}
                                   >
                                     +{monthSchedule[content].length - 4}
                                   </div>
