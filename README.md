@@ -74,11 +74,6 @@ OTT 구독 기간과 사용자의 취향 등을 반영하여 컨텐츠를 추천
 스케줄링을 완료했다면 스케줄 페이지에서 달력으로 한 눈에 스케줄을 확인할 수 있습니다. 각 날짜를 터치하면 해당 날의 시청할 컨텐츠를 바텀시트로 확인하고, 각 컨텐츠의 세부정보를 확인할 수 있습니다. 또한 보러가기 버튼을 누른다면 해당 ott 스트리밍 페이지로 이동합니다.
 <br>
 
-![캘린더]()
-![날짜선택]()
-![바텀시트]()
-![바로가기.gif]() 
-
 ## 컨텐츠 추천
 사용자 기반 협업 필터링을 사용하여 개인별로 컨텐츠를 추천합니다. 사용자가 시청하거나 별점을 매기거나, 혹은 위시리스트에 추가한 컨텐츠를 기반으로 컨텐츠를 추천합니다.
 <br>
@@ -137,8 +132,6 @@ SNS 로그인으로 사용자가 간편하게 서비스에 접근할 수 있도�
   대체 텍스트
 </video> -->
 
-![UCC]()
-
 # 기술 스택
 ## Frontend
 - React
@@ -182,7 +175,7 @@ Django rest_framework의 APIView를 사용하여 rest api를 구성하였습니�
 ![ERD](https://lab.ssafy.com/s08-final/S08P31A207/-/raw/main/OUTPUT/ERD.png)
 
 ### 시스템 아키텍처
-<img src="https://lab.ssafy.com/s08-final/S08P31A207/uploads/637b7a08a27e2e7818c5409761eef5a2/아키텍쳐.jpg"  width="200" height="400"/>
+<img src="https://lab.ssafy.com/s08-final/S08P31A207/uploads/637b7a08a27e2e7818c5409761eef5a2/아키텍쳐.jpg"  width="1000" height="500"/>
 
 ### Figma
 
