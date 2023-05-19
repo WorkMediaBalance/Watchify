@@ -18,7 +18,7 @@ const WishTab = () => {
   // 나의 찜 목록 API 불러오기
   async function myWishListAPI() {
     const newWishList = await myWishList();
-    console.log(newWishList);
+
     setWishList(newWishList);
   }
   useEffect(() => {

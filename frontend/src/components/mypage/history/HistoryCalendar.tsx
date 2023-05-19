@@ -93,7 +93,6 @@ const HistoryCalendar = (props: {
   rows.push({ cells });
 
   function thisMonth() {
-    console.log("thismonth");
     props.setSelectedDate(new Date());
     props.onCloseSheet();
   }
@@ -140,9 +139,7 @@ const HistoryCalendar = (props: {
   };
 
   // 해당 스케줄 불러오기
-  useEffect(() => {
-    console.log(props.historyDetail);
-  }, []);
+  useEffect(() => {}, []);
 
   return (
     <Wrapper className={"wrapper"}>

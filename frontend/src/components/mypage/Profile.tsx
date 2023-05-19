@@ -81,9 +81,7 @@ const Profile = () => {
   const [inputName, setInputName] = useState<string>(user.name); //TODO: 기본값을 받아온 UserName으로
   const [isNameInput, setIsNameInput] = useState(false);
 
-  useEffect(() => {
-    // console.log(user);
-  }, []);
+  useEffect(() => {}, []);
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.value && e.target.value.length > 10) {
@@ -104,7 +102,7 @@ const Profile = () => {
     const data = {
       nickName: changedName,
     };
-    console.log(data);
+
     myProfileName(data);
     // 정상작동하나 로직상 완벽하지 않아서 추후 수정 예정
     let copy = { ...user, name: data.nickName };

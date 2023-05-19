@@ -55,7 +55,6 @@ const PageSearch = () => {
     });
     let uniqueArray = [...new Set(suggestion)];
 
-    console.log(uniqueArray, "suggestion");
     setAutocompleteWords(uniqueArray.slice(0, 9));
     setSearchWord(e.target.value);
   };
@@ -63,11 +62,9 @@ const PageSearch = () => {
   // 검색 시 돋보기 아이콘 클릭 시 함수
   const onClickSearchIcon = () => {
     if (searchWord) {
-      console.log(`${searchWord}이(가) 검색되었습니다.`);
       // API 요청 보내기
       searchResultAPI(searchWord);
     } else {
-      console.log("검색어를 입력하세요.");
     }
   };
 
@@ -79,7 +76,7 @@ const PageSearch = () => {
   const onClickSearchAutoComplete = (word: string) => {
     setAutocompleteVisible(false);
     setIsResult(true);
-    console.log(`${word}이(가) 검색되었습니다.`);
+
     // API 요청 보내기
     searchResultAPI(word);
   };
@@ -91,7 +88,7 @@ const PageSearch = () => {
     if (event.key === "Enter") {
       setAutocompleteVisible(false);
       setIsResult(true);
-      console.log(`Enter 키를 눌러 ${word}을(를) 검색했습니다.`);
+
       // API 요청 보내기
       searchResultAPI(word);
     }
@@ -157,7 +154,7 @@ const PageSearch = () => {
     }
     setIsLoading(true);
     const searchedWordResult = await searchResult(word);
-    console.log(searchedWordResult, "검색결과");
+
     setSearchResultData(searchedWordResult);
     setIsLoading(false);
   }

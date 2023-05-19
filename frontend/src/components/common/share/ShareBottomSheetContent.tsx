@@ -67,7 +67,6 @@ const ShareBottomSheetContent = (props: {
     onSwipedRight: prevContent,
   });
 
-  console.log(props.date, "formatDay");
   return (
     <div>
       {props.data && props.data[index] && (

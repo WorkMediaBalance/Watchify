@@ -34,9 +34,7 @@ import { RecoilState, useRecoilState } from "recoil";
 const App = () => {
   const [preData, setPreData] = useRecoilState(schedulePreInfoState);
 
-  useEffect(() => {
-    console.log(preData, "이건 app.tsx 프리데이터");
-  }, [preData]);
+  useEffect(() => {}, [preData]);
 
   return (
     <div style={{ height: "100%" }}>

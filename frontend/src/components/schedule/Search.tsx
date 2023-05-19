@@ -54,7 +54,6 @@ const Search = () => {
     });
     let uniqueArray = [...new Set(suggestion)];
 
-    console.log(uniqueArray, "suggestion");
     setAutocompleteWords(uniqueArray.slice(0, 5));
     setSearchWord(e.target.value);
   };
@@ -67,7 +66,7 @@ const Search = () => {
 
   const onClickSearchAutoComplete = (word: string) => {
     setAutocompleteVisible(false);
-    console.log(`${word}이(가) 검색되었습니다.`);
+
     searchResultAPI(word);
     // API 요청 보내기
   };
@@ -78,7 +77,7 @@ const Search = () => {
     const word = searchWord;
     if (event.key === "Enter") {
       setAutocompleteVisible(false);
-      console.log(`Enter 키를 눌러 ${word}을(를) 검색했습니다.`);
+
       // API 요청 보내기
       searchResultAPI(word);
     }
@@ -100,7 +99,7 @@ const Search = () => {
   // 검색 Axios 요청
   async function searchResultAPI(word: string) {
     const searchedWordResult = await searchResult(word);
-    console.log(searchedWordResult, "검색결과");
+
     setSearchResultData(searchedWordResult);
   }
   return (

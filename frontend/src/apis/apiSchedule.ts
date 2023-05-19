@@ -8,10 +8,7 @@ export const scheduleInfo = async (year: number, month: number) => {
   try {
     const res = await apiR.get(`readapi/schedule/info/${year}/${month}`);
     return res.data;
-  } catch (err) {
-    console.log("월간 스케줄 받아오기 실패");
-    console.log(err);
-  }
+  } catch (err) {}
 };
 
 // 전체 스케줄 조회
@@ -20,8 +17,6 @@ export const scheduleInfoAll = async () => {
     const res = await apiR.get(`readapi/schedule/info/all`);
     return res.data;
   } catch (err) {
-    console.log("전체 스케줄 받아오기 실패");
-    console.log(err);
     return false;
   }
 };
@@ -30,24 +25,18 @@ export const scheduleInfoAll = async () => {
 export const scheduleCreate = async (data: schedulePreInfo) => {
   try {
     const res = await apiCUD.post("api/schedule/create", data);
-    // console.log(res.data);
+
     return res.data;
-  } catch (err) {
-    console.log("스케줄 생성 실패");
-    console.log(err);
-  }
+  } catch (err) {}
 };
 
 // 스케줄 공유
 export const scheduleShare = async (data: ScheduleAll) => {
   try {
     const res = await apiCUD.post("api/schedule/nonauth/share", data);
-    // console.log(res.data);
+
     return res.data;
-  } catch (err) {
-    console.log("스케줄 공유 실패");
-    console.log(err);
-  }
+  } catch (err) {}
 };
 
 // 스케줄 공유 틀기
@@ -55,10 +44,7 @@ export const scheduleShareGet = async (pk: number) => {
   try {
     const res = await apiR.get(`readapi/schedule/nonauth/share/${pk}`);
     return res.data;
-  } catch (err) {
-    console.log("공유 받은 스케줄 가져오기 실패");
-    console.log(err);
-  }
+  } catch (err) {}
 };
 
 // 시청함 체크
@@ -73,12 +59,9 @@ data 샘플
 export const scheduleCheck = async (data: isSeen) => {
   try {
     await apiCUD.post("api/schedule/check", data);
-    console.log("시청함 체크 성공");
+
     return true;
-  } catch (err) {
-    console.log("시청함 체크 실패");
-    console.log(err);
-  }
+  } catch (err) {}
 };
 
 // 스케줄 시청함 취소
@@ -93,12 +76,9 @@ data 샘플
 export const scheduleCheckCancel = async (data: isSeen) => {
   try {
     await apiCUD.put("api/schedule/cancel", data);
-    console.log("시청함 체크 취소 성공");
+
     return true;
-  } catch (err) {
-    console.log("시청함 체크 취소 실패");
-    console.log(err);
-  }
+  } catch (err) {}
 };
 
 // 스케줄 변경 + 미루기 포함
@@ -108,11 +88,9 @@ recoil의 scheduleAllState를 변경한 뒤, 해당 state 전체를 인자로 �
 export const scheduleModify = async (data: later) => {
   try {
     await apiCUD.put("api/schedule/modify", data);
-    console.log("스케줄 미루기 성공");
+
     return true;
   } catch (err) {
-    console.log("스케줄 미루기 실패");
-    console.log(err);
     return false;
   }
 };
