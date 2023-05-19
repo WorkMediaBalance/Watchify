@@ -24,7 +24,7 @@ const PageSchedule = () => {
   };
 
   const location = useLocation();
-
+  const [isShow, setIsShow] = useState(false);
   const setNavigation = async () => {
     if (!location.state?.isMakeNew) {
       if (localStorage.getItem("accessToken") !== null) {
@@ -32,18 +32,21 @@ const PageSchedule = () => {
         console.log(data, "이프문");
         if (Object.keys(data).length !== 0) {
           console.log("회원 예스 스케줄");
+
           navigate("/schedule/result");
         } else {
           console.log("회원 노스케줄");
+          setIsShow(true);
         }
       } else {
         if (recoilScheduleAll !== null) {
           console.log("비회원 예스 스케줄");
-          // TODO: 여기 어떡할까... 그냥 result로 보내면 오류뜸...
         } else {
           console.log("비회원 노 스케줄");
         }
       }
+    } else {
+      setIsShow(true);
     }
   };
 
@@ -54,24 +57,28 @@ const PageSchedule = () => {
   }, []);
 
   return (
-    <Container className={"container"}>
-      <div
-        style={{
-          height: "45vh",
-          width: "100%",
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "center",
-        }}
-      >
-        <WatchingPattern />
-      </div>
-      <ScheduleOttDate />
-      <SBtnContainer>
-        <SNextBtn onClick={() => navigate("/schedule/content")}>다음</SNextBtn>
-      </SBtnContainer>
-      <PlaceHolder />
-    </Container>
+    <>
+      {isShow && (
+        <Container className={"container"}>
+          <div
+            style={{
+              height: "45vh",
+              width: "100%",
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "center",
+            }}
+          >
+            <WatchingPattern />
+          </div>
+          <ScheduleOttDate />
+          <SBtnContainer>
+            <SNextBtn onClick={() => navigate("/schedule/content")}>다음</SNextBtn>
+          </SBtnContainer>
+          <PlaceHolder />
+        </Container>
+      )}
+    </>
   );
 };
 

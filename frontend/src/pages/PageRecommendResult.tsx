@@ -256,16 +256,17 @@ const PageRecommendResult = () => {
             <NameTicker
               title={recResult[selectedNum].title}
               episode={recResult[selectedNum].finalEpisode}
+              season={recResult[selectedNum].season}
             />
             <div style={{ display: "flex", width: "100%", flexDirection: "row" }}>
-              <div style={{ width: "50%", height: "auto", marginLeft: "6vw", marginRight: "6vw" }}>
+              <div style={{ width: "50vw", marginLeft: "6vw", marginRight: "6vw" }}>
                 <ContentPoster
                   imageUrl={recResult[selectedNum].imgPath}
                   title={recResult[selectedNum].title}
                   content={recResult[selectedNum]}
                 />
               </div>
-              <div style={{ marginRight: "6vw" }}>
+              <div style={{ marginRight: "6vw", width: "50vw" }}>
                 <STextP>추천도 : {recResult[selectedNum].score}%</STextP>
                 <STextP>장르 : {recResult[selectedNum].genres.join(", ")}</STextP>
                 <STextP>재생 시간 : {run}</STextP>
