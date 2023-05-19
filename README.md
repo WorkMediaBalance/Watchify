@@ -1,5 +1,5 @@
 # Watchify
-![logo](https://lab.ssafy.com/s08-final/S08P31A207/-/raw/main/OUTPUT/readme/logo.png)
+<img src="https://lab.ssafy.com/s08-final/S08P31A207/uploads/72a0fbfe7369455b93797b281b3728da/KakaoTalk_20230519_104227916.png"  width="600" height="600"/>
 
 다양한 컨텐츠를 스케줄링 받아 OTT를 보다 알차게 사용해보세요!
 
@@ -129,7 +129,9 @@ SNS 로그인으로 사용자가 간편하게 서비스에 접근할 수 있도�
 <br>
 
 # UCC
+<br>
 
+<img src="https://lab.ssafy.com/s08-final/S08P31A207/uploads/cfe08b35a127b2c71c38a7b76c378c2f/KakaoTalk_20230518_154739032.mp4"  width="200" height="400"/>
 <!-- <video controls>
   <source src="영상 파일 경로 또는 URL" type="video/확장자">
   대체 텍스트
@@ -180,7 +182,7 @@ Django rest_framework의 APIView를 사용하여 rest api를 구성하였습니�
 ![ERD](https://lab.ssafy.com/s08-final/S08P31A207/-/raw/main/OUTPUT/ERD.png)
 
 ### 시스템 아키텍처
-![아키텍처]()
+<img src="https://lab.ssafy.com/s08-final/S08P31A207/uploads/637b7a08a27e2e7818c5409761eef5a2/아키텍쳐.jpg"  width="200" height="400"/>
 
 ### Figma
 
