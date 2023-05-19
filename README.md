@@ -49,7 +49,7 @@ OTT 구독 기간과 사용자의 취향 등을 반영하여 컨텐츠를 추천
 
 # 서비스 소개
 ## 컨텐츠 스케줄링
-사용자가 시청하기 원하는 컨텐츠를 사용자의 시청 패턴에 맞도록, OTT 구독 정보에 맞춰 스케줄링합니다.
+사용자가 시청하기 원하는 컨텐츠를 사용자의 시청 패턴에 맞도록, OTT 구독 정보에 맞춰 스케줄링합니다.  
 <img src="https://lab.ssafy.com/s08-final/S08P31A207/uploads/3f59c9802097e08844328803dd3ae52b/스케쥴.gif"  width="200" height="400"/>
 
 <img src="https://lab.ssafy.com/s08-final/S08P31A207/uploads/f38304f83f10edeb6fe8105955e98d48/스케쥴목록.gif"  width="200" height="400"/>
@@ -81,7 +81,7 @@ OTT 구독 기간과 사용자의 취향 등을 반영하여 컨텐츠를 추천
 사용자 기반 협업 필터링을 사용하여 개인별로 컨텐츠를 추천합니다. 사용자가 시청하거나 별점을 매기거나, 혹은 위시리스트에 추가한 컨텐츠를 기반으로 컨텐츠를 추천합니다.
 <br>
 
-<img src="https://lab.ssafy.com/s08-final/S08P31A207/uploads/55142cc8c87953b74b1c4d85ddf3ce21/컨텐츠추천.gif"  width="200" height="400"/>
+<img src="https://lab.ssafy.com/s08-final/S08P31A207/uploads/55142cc8c87953b74b1c4d85ddf3ce21/컨텐츠추천.gif"  width="600" height="400"/>
 
 ### 1. 추천 알고리즘
 1. DB 조회
