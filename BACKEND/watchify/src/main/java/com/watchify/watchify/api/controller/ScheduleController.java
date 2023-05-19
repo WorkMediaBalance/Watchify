@@ -94,7 +94,7 @@ public class ScheduleController {
         try {
             userId = userService.findUserIdByAccessToken(accessToken);
         } catch (Exception e) {
-            System.out.println("잘못된 토큰");
+//            System.out.println("잘못된 토큰");
         }
 
         try {

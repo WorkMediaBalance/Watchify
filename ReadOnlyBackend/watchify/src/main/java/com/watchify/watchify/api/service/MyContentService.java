@@ -79,7 +79,7 @@ public class MyContentService {
         Long contentId = contentLikeRequestDTO.getPk();
         Double like = contentLikeRequestDTO.getLike();
         LikeContent likeContent = likeContentRepository.getSpecificLikeContent(userId, contentId);
-        System.out.println("like : " + like);
+//        System.out.println("like : " + like);
         if (likeContent == null) {
             // DB 에 없는 경우
             User user = userRepository.findById(userId).get();
