@@ -20,7 +20,7 @@ import os
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-wh@evx76il%y^4cti2_^**&d=u()p8jc)5e=&i0i+!xcka_@e='
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -160,7 +160,6 @@ AWS_S3_OBJECT_PARAMETERS = {
 # MEDIA_ROOT = os.path.join(BASE_DIR, 'path/to/store/my/files/')
 
 ## CORS
-# CORS_ORIGIN_WHITELIST = ['https://k8a207.p.ssafy.io', 'http://localhost:8000', 'http://127.0.0.1:3000']
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
 
